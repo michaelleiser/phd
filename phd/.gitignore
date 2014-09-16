@@ -1,2 +1,9 @@
-/target/
+#Eclipse
+.settings
+.project
 .classpath
+target
+
+# OS X
+
+/target/
