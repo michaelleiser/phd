@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:tp="http://java.sun.com/jsf/composite/phd">
+<h:body>
+
+	<ui:composition template="resources/phd/common.xhtml">
+		<ui:define name="content">
+
+
+			<h2>#{patient.firstname}</h2>
+	#{helloWorld.message}
+
+	<h:form>
+				<h:commandLink action="#{navigation.showPage}" value="toDatabase">
+					<f:param name="pageId" value="1" />
+				</h:commandLink>
+			</h:form>
+
+			<h:form>
+				<tp:loginComponent usernameLabel="Enter User Name: "
+					usernameValue="#{userData.name}" passwordLabel="Enter Password: "
+					passwordValue="#{userData.password}" loginButtonLabel="Login"
+					loginButtonAction="#{userData.login}" />
+			</h:form>
+
+			<h:form>
+				<h:outputText value="#{msg['greeting']}" />
+				<h:panelGrid columns="2">
+		Language:
+			<h:selectOneMenu value="#languagecontroller.locale"
+						onchange="submit()"
+						valueChangeListener="#{languagecontroller.localeChanged}">
+						<f:selectItems value="#{languagecontroller.countries}" />
+					</h:selectOneMenu>
+				</h:panelGrid>
+			</h:form>
+
+			<h:form>
+				<h:commandLink action="#{languagecontroller.bla}" value="englisch">
+					<f:param name="lang" value="en" />
+				</h:commandLink>
+				<h:commandLink action="#{languagecontroller.bla}" value="deutsch">
+					<f:param name="lang" value="de" />
+				</h:commandLink>
+				<h:commandLink action="#{languagecontroller.bla}" value="francais">
+					<f:param name="lang" value="fr" />
+				</h:commandLink>
+			</h:form>
+
+			<h:form>
+				<h:commandLink action="formular_1" value="Zum Formular">
+					<f:param name="" value="" />
+				</h:commandLink>
+			</h:form>
+
+			<h:outputScript library="js" name="help.js" />
+			<h:form id="showmsgid">
+				<h:inputText id="textenc1" value="aaaa" />
+				<h:inputText id="textenc2" value="bbbb" />
+				<h:commandButton value="Showmessage" onclick="showMessage();" />
+			</h:form>
+
+			<h:form>
+				<h:commandLink action="page1?faces-redirect=true"
+					value="page1 login page">
+				</h:commandLink>
+			</h:form>
+			<h:form>
+				<h:commandLink action="page2?faces-redirect=true"
+					value="page2 db page" />
+			</h:form>
+			<h:form>
+				<h:commandLink action="pagefortesting?faces-redirect=true"
+					value="page for testing" />
+			</h:form>
+
+			<h:form>
+				<h:panelGrid columns="2" rendered="#{!loginController.loggedin}">
+					<h:outputLabel for="name">Username</h:outputLabel>
+					<h:inputText id="name" value="#{userData.name}" />
+					<h:outputLabel for="password">Password</h:outputLabel>
+					<h:inputText id="password" value="#{userData.password}" />
+				</h:panelGrid>
+				<h:commandButton value="Login" action="#{userData.login}"
+					rendered="#{!loginController.loggedin}" />
+				<h:commandButton value="Logout" action="#{userData.logout}"
+					rendered="#{loginController.loggedin}" />
+				<h:commandButton value="Registernew"
+					action="#{userData.registernew}" />
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+
+this is not displayed
+
+   </h:body>
+</html>

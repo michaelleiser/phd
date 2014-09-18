@@ -5,26 +5,25 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
-
 <body>
-<ui:composition>
-<h:outputStylesheet library="css" name="styles.css" />
-<div id="headerlanguages">
-<h:form>
-	<h:commandLink class="headerlanguage" action="#{languagecontroller.bla}" value="englisch">
-		<f:param name="lang" value="en"/>
-	</h:commandLink>
-	<h:commandLink class="headerlanguage" action="#{languagecontroller.bla}" value="deutsch">
-		<f:param name="lang" value="de" />
-	</h:commandLink>
-	<h:commandLink class="headerlanguage" action="#{languagecontroller.bla}" value="francais">
-		<f:param name="lang" value="fr" />
-	</h:commandLink>
-</h:form>
-</div>
-<h:graphicImage height="100" value="/images/logo.png" />
-<h:graphicImage height="100" value="/images/logotext.png" />
-<hr />
-</ui:composition>
+	<ui:composition>
+		<h:outputStylesheet library="css" name="styles.css" />
+		<div id="headerlanguages">
+			<h:form>
+				<h:commandLink class="headerlanguage" action="#{languagecontroller.bla}" value="englisch">
+					<f:param name="lang" value="en" />
+				</h:commandLink>
+				<h:commandLink class="headerlanguage" action="#{languagecontroller.bla}" value="deutsch">
+					<f:param name="lang" value="de" />
+				</h:commandLink>
+				<h:commandLink class="headerlanguage" action="#{languagecontroller.bla}" value="francais">
+					<f:param name="lang" value="fr" />
+				</h:commandLink>
+			</h:form>
+		</div>
+		<h:graphicImage height="100" value="/images/logo.png" />
+		<h:graphicImage height="100" value="/images/logotext.png" />
+		<hr />
+	</ui:composition>
 </body>
 </html>

@@ -11,8 +11,7 @@
 	<composite:attribute name="passwordLabel" />
 	<composite:attribute name="passwordValue" />
 	<composite:attribute name="loginButtonLabel" />
-	<composite:attribute name="loginButtonAction"
-		method-signature="java.lang.String login()" />
+	<composite:attribute name="loginButtonAction" method-signature="java.lang.String login()" />
 </composite:interface>
 <composite:implementation>
 	<h:form>
@@ -21,11 +20,9 @@
             #{cc.attrs.usernameLabel} : 
             <h:inputText id="username" value="#{cc.attrs.usernameValue}" />
             #{cc.attrs.passwordLabel} : 
-            <h:inputSecret id="password"
-				value="#{cc.attrs.passwordValue}" />
+            <h:inputSecret id="password" value="#{cc.attrs.passwordValue}" />
 		</h:panelGrid>
-		<h:commandButton action="#{cc.attrs.loginButtonAction}"
-			value="#{cc.attrs.loginButtonLabel}" />
+		<h:commandButton action="#{cc.attrs.loginButtonAction}" value="#{cc.attrs.loginButtonLabel}" />
 	</h:form>
 </composite:implementation>
 </html>
