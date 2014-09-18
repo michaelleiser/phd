@@ -12,7 +12,7 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class LoginController {
 	
-	boolean loggedin = false;
+	private boolean loggedin = false;
 	
 	public String login(String name, String password) {
 		Boolean loggedIn = Boolean.FALSE;
@@ -87,7 +87,7 @@ public class LoginController {
 			pst = con.prepareStatement(stm1);
 			pst.execute();
 			rs = pst.getResultSet();
-			if (rs.next()) {
+			if(rs.next()) {
 				return "home";
 			}
 			pst = con.prepareStatement(stm2);
