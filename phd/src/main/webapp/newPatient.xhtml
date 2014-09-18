@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:tp="http://java.sun.com/jsf/composite/phd">
+<h:head>
+	<title>JSF Tutorial!</title>
+</h:head>
+<h:body>
+	<h2><h:outputText value="#{msg['newPatient']}" /></h2>
+	<h:form>
+		firstname:
+		<h:inputText id="firstname" value="#{patient.firstname}">
+			<f:validateLength minimum="2" maximum="10"/>
+		</h:inputText>
+		lastname:
+		<h:inputText id="lastname" value="#{patient.lastname}">
+			<f:validateLength minimum="2" maximum="10"/>
+		</h:inputText>
+		street
+		<h:inputText id="street" value="#{patient.street}">
+			<f:validateLength minimum="2" maximum="20"/>
+		</h:inputText>
+		nr:
+		<h:inputText id="nr" value="#{patient.nr}">
+			<f:validateLength minimum="1" maximum="20"/>
+		</h:inputText>		
+		city:
+		<h:inputText id="city" value="#{patient.city}">
+			<f:validateLength minimum="1" maximum="20"/>
+		</h:inputText>
+		zip:
+		<h:inputText id="zip" value="#{patient.zip}">
+			<f:validateLength minimum="2" maximum="10"/>
+		</h:inputText>
+		birth (dd.mm.yyyy) :
+		<h:inputText id="birth" value="#{patient.birth}">
+			<f:validateLength minimum="10" maximum="10"/>
+		</h:inputText>
+		<h:commandButton value="newPatient" action="#{patient.addNewPatient}"
+		/>
+	</h:form>
+</h:body>
+</html>
