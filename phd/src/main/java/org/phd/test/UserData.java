@@ -1,18 +1,17 @@
 package org.phd.test;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 
 @ManagedBean(name = "userData", eager = true)
-@RequestScoped
+@SessionScoped
 public class UserData implements Serializable {
-	
+
+	private static final long serialVersionUID = 1L;
+
 	private String name;
 	private String password;
 

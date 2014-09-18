@@ -9,6 +9,8 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class Navigation implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	@ManagedProperty(value = "#{param.pageId}")
 	private String pageId;
 
@@ -17,7 +19,7 @@ public class Navigation implements Serializable {
 			return "home";
 		}
 		if (pageId.equals("1")) {
-			return "db";
+			return "page2";
 		} else {
 			return "home";
 		}

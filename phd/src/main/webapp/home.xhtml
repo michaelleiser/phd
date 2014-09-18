@@ -25,9 +25,6 @@
 			<h:form>
 				<h:commandLink action="page2?faces-redirect=true" value="page2 db page" />
 			</h:form>
-			<h:form>
-				<h:commandLink action="pagefortesting?faces-redirect=true" value="page for testing" />
-			</h:form>
 
 			<h:form>
 				<h:panelGrid columns="2" rendered="#{!loginController.loggedin}">
@@ -38,7 +35,9 @@
 				</h:panelGrid>
 				<h:commandButton value="Login" action="#{userData.login}" rendered="#{!loginController.loggedin}" />
 				<h:commandButton value="Logout" action="#{userData.logout}" rendered="#{loginController.loggedin}" />
-				<h:commandButton value="Registernew" action="#{userData.registernew}" />
+			</h:form>
+			<h:form>
+				<h:commandButton value="Registernew" action="registernew" />
 			</h:form>
 
 		</ui:define>
