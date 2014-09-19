@@ -10,20 +10,20 @@
 	<title>JSF Tutorial!</title>
 </h:head>
 <h:body>
-	<ui:composition template="resources/phd/common.xhtml">
+	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
 
 			<h:form>
-				<h:commandLink action="formular_1" value="Zum Formular">
+				<h:commandLink action="/formular_1" value="Zum Formular">
 					<f:param name="" value="" />
 				</h:commandLink>
 			</h:form>
 
 			<h:form>
-				<h:commandLink action="page1?faces-redirect=true" value="page1 login page" />
+				<h:commandLink action="/page1?faces-redirect=true" value="page1 login page" />
 			</h:form>
 			<h:form>
-				<h:commandLink action="page2?faces-redirect=true" value="page2 db page" />
+				<h:commandLink action="/page2?faces-redirect=true" value="page2 db page" />
 			</h:form>
 
 			<h:form>
@@ -37,7 +37,14 @@
 				<h:commandButton value="Logout" action="#{userData.logout}" rendered="#{loginController.loggedin}" />
 			</h:form>
 			<h:form>
-				<h:commandButton value="Registernew" action="registernew" />
+				<h:commandButton value="Registernew" action="/registernew" />
+			</h:form>
+			
+			<h:form>
+				<h:commandLink action="/public/public" value="public page"/>
+			</h:form>
+			<h:form rendered="#{loginController.loggedin}">
+				<h:commandLink action="/restricted/restricted" value="restricted!!!" />
 			</h:form>
 
 		</ui:define>

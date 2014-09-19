@@ -7,14 +7,15 @@ import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 
 @ManagedBean(name = "languagecontroller", eager = true)
-@RequestScoped
+@RequestScoped							// Session oder Request Scoped
 public class LanguageController {
 
-	private String locale;
+	private static String locale;
 	private static Map<String, Object> countries;
 
 	static {
@@ -45,7 +46,7 @@ public class LanguageController {
 	}
 	
 	@ManagedProperty(value = "#{param.lang}")
-	String language;
+	private static String language;
 	
 	public String getLanguage() {
 		return language;

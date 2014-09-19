@@ -42,7 +42,7 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
-
+	
 
 
 <context-param>
@@ -56,6 +56,18 @@
 30
 </session-timeout>
 </session-config>
+
+
+<!-- This is just for testing. Uncomment when deploy. -->
+
+<!-- <error-page> -->
+<!-- 	<error-code>404</error-code> -->
+<!-- 	<location>/error.xhtml</location> -->
+<!-- </error-page> -->
+<!-- <error-page> -->
+<!-- 	<error-code>500</error-code> -->
+<!-- 	<location>/error.xhtml</location> -->
+<!-- </error-page> -->
 
 
 </web-app>

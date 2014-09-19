@@ -9,7 +9,7 @@
 	<title>JSF Tutorial!</title>
 </h:head>
 <h:body>
-	<ui:composition template="resources/phd/common.xhtml">
+	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
 			<h2>Formular</h2>
 			<h:form>
@@ -17,11 +17,27 @@
 				<h:inputText id="firstname" value="">
 					<f:validateLength minimum="2" maximum="10" />
 				</h:inputText>
+				<br />
 				birth:
 				<h:inputText id="birth" value="">
 					<f:validateLongRange minimum="2" maximum="10" />
 				</h:inputText>
-				<h:commandButton action="formular_1" value="senden" />
+				<br />
+				gender:
+				<h:selectOneRadio>
+					<f:selectItem itemValue="male" itemLabel="Male" />
+					<f:selectItem itemValue="female" itemLabel="Female" />
+				</h:selectOneRadio>
+				<br />
+				bla:
+				<h:selectManyCheckbox>
+					<f:selectItem itemValue="1" itemLabel="Item 1" />
+					<f:selectItem itemValue="2" itemLabel="Item 2" />
+					<f:selectItem itemValue="3" itemLabel="Item 3" />
+				</h:selectManyCheckbox>
+				<br />
+				<h:commandButton action="/formular_1" value="senden" />
+				<br />
 			</h:form>
 		</ui:define>
 	</ui:composition>
