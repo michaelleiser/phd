@@ -10,22 +10,16 @@
 		<h:outputStylesheet library="css" name="styles.css" />
 		<div id="headerlanguages">
 			<h:form>
-				<h:commandLink class="headerlanguage" action="#{languagecontroller.bla}" value="englisch">
-					<f:param name="lang" value="en" />
-				</h:commandLink>
-				<h:commandLink class="headerlanguage" action="#{languagecontroller.bla}" value="deutsch">
-					<f:param name="lang" value="de" />
-				</h:commandLink>
-				<h:commandLink class="headerlanguage" action="#{languagecontroller.bla}" value="francais">
-					<f:param name="lang" value="fr" />
-				</h:commandLink>
+				<ui:repeat value="#{languagecontrollertest.getCountries().keySet().toArray()}" var="var">
+					<h:commandLink class="headerlanguage" actionListener="#{languagecontrollertest.changeLanguageEvent}" value="#{var}" />
+				</ui:repeat>
 			</h:form>
 		</div>
 		<h:form>
-		<h:commandLink action="/home">
-		<h:graphicImage height="100" value="/images/logo.png" />
-		<h:graphicImage height="100" value="/images/logotext.png" />
-		</h:commandLink>
+			<h:commandLink action="#{navigation.redirectToHome}">
+				<h:graphicImage height="100" value="/images/logo.png" />
+				<h:graphicImage height="100" value="/images/logotext.png" />
+			</h:commandLink>
 		</h:form>
 		<hr />
 	</ui:composition>

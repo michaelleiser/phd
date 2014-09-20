@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 @ManagedBean(name = "loginController", eager = true)
@@ -15,6 +16,9 @@ public class LoginController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private static boolean loggedin = false;
+	
+//	@ManagedProperty(value="#{navigation}")
+//	private Navigation navigation;
 	
 	public String login(String name, String password) {
 		Boolean loggedIn = Boolean.FALSE;
@@ -75,7 +79,7 @@ public class LoginController implements Serializable {
 	}
 	
 	public boolean getLoggedin(){
-		return loggedin;
+		return this.loggedin;
 	}
 	
 	public void setLoggedin(boolean loggedin){
@@ -131,4 +135,12 @@ public class LoginController implements Serializable {
 		}
 		return "home";
 	}
+	
+//	public void setNavigation(Navigation navigation){
+//		this.navigation = navigation;
+//	}
+//	
+//	public Navigation getNavigation(){
+//		return this.navigation;
+//	}
 }

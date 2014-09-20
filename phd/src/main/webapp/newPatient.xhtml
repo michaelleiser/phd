@@ -39,8 +39,7 @@
 		<h:inputText id="birth" value="#{patient.birth}">
 			<f:validateLength minimum="10" maximum="10"/>
 		</h:inputText>
-		<h:commandButton value="newPatient" action="#{patient.addNewPatient}"
-		/>
+		<h:commandButton action="#{patient.addNewPatient}" value="newPatient" />
 	</h:form>
 </h:body>
 </html>

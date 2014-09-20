@@ -10,9 +10,7 @@
 You are logged in as : 
 #{userData.name}
 	<h:form>
-		<h:commandLink action="/home?faces-redirect=true"
-			value="back to home">
-		</h:commandLink>
+		<h:commandLink action="#{navigation.redirectToHome}" value="back to home" />
 	</h:form>
 </h:body>
 </html>

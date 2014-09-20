@@ -7,7 +7,7 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 
 @ManagedBean(name = "userData", eager = true)
-@RequestScoped							// evtl nur RequestScoped
+@SessionScoped							// evtl nur RequestScoped
 public class UserData implements Serializable {
 
 	private static final long serialVersionUID = 1L;

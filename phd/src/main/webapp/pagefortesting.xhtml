@@ -15,9 +15,7 @@
 			#{helloWorld.message}
 
 			<h:form>
-				<h:commandLink action="#{navigation.showPage}" value="toDatabase with Java navigation">
-					<f:param name="pageId" value="1" />
-				</h:commandLink>
+				<h:commandLink action="#{navigation.toPage2}" value="toDatabase with Java navigation" />
 			</h:form>
 
 			<h:form>
@@ -59,7 +57,7 @@
 					rendered="#{loginController.loggedin}" />
 			</h:form>
 			<h:form>
-				<h:commandButton value="Registernew" action="/registernew" />
+				<h:commandButton value="Registernew" action="#{navigation.toRegisterNew}" />
 			</h:form>
 
 		</ui:define>

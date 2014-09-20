@@ -8,14 +8,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
+import javax.faces.event.ActionEvent;
 
-@ManagedBean(name = "languagecontroller", eager = true)
-@RequestScoped							// Session oder Request Scoped
+@ManagedBean(name = "languagecontrollertest", eager = true)
+@SessionScoped							// Session oder Request Scoped
 public class LanguageController {
 
-	private static String locale;
 	private static Map<String, Object> countries;
 
 	static {
@@ -24,44 +24,23 @@ public class LanguageController {
 		countries.put("Deutsch", Locale.GERMAN);
 		countries.put("Français", Locale.FRENCH);
 	}
-
-	public String getLocale() {
-		return this.locale;
-	}
-
-	public void setLocale(String locale) {
-		this.locale = locale;
-	}
-
+	
 	public Map<String, Object> getCountries() {
-		return countries;
-	}
-
-	public void localeChanged(ValueChangeEvent e) {
-		String newLocaleValue = e.getNewValue().toString();
-		if(countries.containsValue(new Locale(newLocaleValue))){
-			FacesContext.getCurrentInstance().getViewRoot()
-			.setLocale(new Locale(newLocaleValue));
-		}
+		return this.countries;
 	}
 	
-	@ManagedProperty(value = "#{param.lang}")
-	private static String language;
+	public void setCountries(Map<String, Object> countries) {
+		this.countries = countries;
+	}
 	
-	public String getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(String language) {
-		this.language = language;
-	}
-
-	public String bla(){
-		if(countries.containsValue(new Locale(language))){
-			FacesContext.getCurrentInstance().getViewRoot().setLocale(new Locale(language));
+	public String changeLanguageEvent(ActionEvent evt){
+		UIComponent comp = evt.getComponent();
+		String value = (String) comp.getAttributes().get("value");
+		Locale l = (Locale)countries.get(value);
+		if(this.countries.containsValue(l)){
+			FacesContext.getCurrentInstance().getViewRoot().setLocale(l);
 		}
 		return "";
 	}
 
-	
 }
