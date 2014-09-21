@@ -35,6 +35,10 @@
 		<h:inputText id="zip" value="#{patient.zip}">
 			<f:validateLength minimum="2" maximum="10"/>
 		</h:inputText>
+		sex (f / m) :
+		<h:inputText id="sex" value="#{patient.sex}">
+			<f:validateLength minimum="1" maximum="1"/>
+		</h:inputText>
 		birth (dd.mm.yyyy) :
 		<h:inputText id="birth" value="#{patient.birth}">
 			<f:validateLength minimum="10" maximum="10"/>
