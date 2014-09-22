@@ -15,35 +15,49 @@
 		<h:inputText id="firstname" value="#{patient.firstname}">
 			<f:validateLength minimum="2" maximum="10"/>
 		</h:inputText>
+		<br/>
 		lastname:
 		<h:inputText id="lastname" value="#{patient.lastname}">
 			<f:validateLength minimum="2" maximum="10"/>
 		</h:inputText>
+		<br/>
 		street
 		<h:inputText id="street" value="#{patient.street}">
 			<f:validateLength minimum="2" maximum="20"/>
 		</h:inputText>
+		<br/>
 		nr:
 		<h:inputText id="nr" value="#{patient.nr}">
 			<f:validateLength minimum="1" maximum="20"/>
-		</h:inputText>		
+		</h:inputText>
+		<br/>	
 		city:
 		<h:inputText id="city" value="#{patient.city}">
 			<f:validateLength minimum="1" maximum="20"/>
 		</h:inputText>
+		<br/>
 		zip:
 		<h:inputText id="zip" value="#{patient.zip}">
 			<f:validateLength minimum="2" maximum="10"/>
 		</h:inputText>
-		sex (f / m) :
-		<h:inputText id="sex" value="#{patient.sex}">
-			<f:validateLength minimum="1" maximum="1"/>
+		<br/>
+		zip:
+		<h:inputText id="telnumber" value="#{patient.telnumber}">
+			<f:validateLength minimum="10" maximum="10"/>
 		</h:inputText>
+		<br/>
+		gender:
+		<h:selectOneRadio value="#{patient.gender}">
+			<f:selectItem itemLabel="Male" itemValue="male" />
+			<f:selectItem itemLabel="Female" itemValue="female" />
+		</h:selectOneRadio>
+		<br/>
 		birth (dd.mm.yyyy) :
 		<h:inputText id="birth" value="#{patient.birth}">
 			<f:validateLength minimum="10" maximum="10"/>
 		</h:inputText>
-		<h:commandButton action="#{patient.addNewPatient}" value="newPatient" />
+		<br/>
+		<h:commandButton action="#{patient.addNewPatient}" value="addNewPatient" />
 	</h:form>
 </h:body>
 </html>
