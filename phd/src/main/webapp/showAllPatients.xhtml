@@ -9,8 +9,8 @@
 	<title>JSF Tutorial!</title>
 </h:head>
 <h:body>
-<!--  	<h2><h:outputText value="#{msg['newPatient']}" /></h2>
-	<h:form>
+  	<h2>Search Patient</h2>
+<!--	<h:form>
 		Search:
 		<br/>
 		firstname:
@@ -30,9 +30,11 @@
 		<br/>
 		
 		<h:commandButton action="#{patient.search}" value="search" />
-	</h:form>-->
+	</h:form> -->
 	
-	<ui:composition template="resources/phd/common.xhtml">
+	
+
+<ui:composition template="resources/phd/common.xhtml">
 		<ui:define name="content">
 			<h2>DATABASE TEST MYSQL</h2>
 			<h:dataTable value="#{patient.getPatients()}" var="patients">
@@ -47,6 +49,6 @@
 				</h:column>
 			</h:dataTable>			
 		</ui:define>
-	</ui:composition>
+	</ui:composition> -->	
 </h:body>
 </html>

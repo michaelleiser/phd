@@ -25,6 +25,7 @@ public class Patient implements Serializable {
 	private String zip = "";
 	private int telnumber = 0;
 	private String birth;
+//	private List<Patient> patientList = new ArrayList<Patient>();
 
 	public Patient() {
 
@@ -205,4 +206,60 @@ public class Patient implements Serializable {
 		}
 		return patients;
 	}
+	
+//	public String search(){
+//		Connection con = MyConnection.getConnection();
+//		PreparedStatement pst = null;
+//		ResultSet rs = null;
+//		firstname += "%";
+//		lastname += "%";
+//		city += "%";
+//		
+//		String stm = "SELECT * FROM testdb.patient WHERE firstname='"+firstname+"' AND lastname='"+lastname+"' AND city='"+ city + "';";
+//		try {
+//			pst = con.prepareStatement(stm);
+//			pst.execute();
+//			rs = pst.getResultSet();
+//
+//			while (rs.next()) {
+//				Patient p = new Patient();
+//				p.setId(Integer.parseInt(rs.getString("patient_id")));
+//				p.setFirstname(rs.getString("firstname"));
+//				p.setLastname(rs.getString("lastname"));
+//				patientList.add(p);
+//			}
+//			rs.close();
+//			pst.close();
+//			con.close();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			if (rs != null) {
+//				try {
+//					rs.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//			if (pst != null) {
+//				try {
+//					pst.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//			if (con != null) {
+//				try {
+//					con.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//		return "HOME";
+//	}
+	
+//	public List<Patient> getPatientList(){
+//		return patientList;
+//	}
 }
