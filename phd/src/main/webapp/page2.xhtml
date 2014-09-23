@@ -11,12 +11,27 @@
 			<h2>DATABASE TEST MYSQL</h2>
 			<h:dataTable value="#{patient.getPatients()}" var="patients">
 				<h:column>
+					<f:facet name="header">ID</f:facet>#{patients.patientid}
+				</h:column>
+				<h:column>
 					<f:facet name="header">Firstname</f:facet>#{patients.firstname}
 				</h:column>
 				<h:column>
 					<f:facet name="header">Lastname</f:facet>#{patients.lastname}
 				</h:column>
-			</h:dataTable>			
+			</h:dataTable>
+			
+			<h:form>
+				<h:inputText id="patid" value="#{patient.patientid}"></h:inputText>
+				<h:commandButton value="Search">
+					<f:ajax execute="patid" render="outputMessage" />
+				</h:commandButton>
+				<h2>
+					<h:outputText id="outputMessage"
+						value="#{patient.patient !=null ? patient.patient : ''}" />
+				</h2>
+			</h:form>
+
 		</ui:define>
 	</ui:composition>
 

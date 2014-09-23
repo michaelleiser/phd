@@ -46,5 +46,5 @@ public class UserData implements Serializable {
 	public String registernew(){
 		return new LoginController().registernew(this.name, this.password);
 	}
-	
+
 }

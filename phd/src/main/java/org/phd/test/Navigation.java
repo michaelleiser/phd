@@ -41,12 +41,6 @@ public class Navigation implements Serializable {
 	public String redirectToNewpatient(){
 		return "/newPatient?faces-redirect=true";
 	}
-	public String toPage1(){
-		return "/page1";
-	}
-	public String redirectToPage1(){
-		return "/page1?faces-redirect=true";
-	}
 	public String toPage2(){
 		return "/page2";
 	}

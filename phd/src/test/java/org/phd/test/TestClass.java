@@ -13,15 +13,15 @@ public class TestClass extends TestCase {
 		assertEquals("ABC", p.getFirstname());
 	}
 
-//	@Test
-//	public void testmethoddb() {
-//		List<Patient> patients = Patient.getPatients();
-//		for (Patient p : patients) {
-//			System.out.println(p.getFirstname() + p.getLastname());
-//		}
-//		assertNotNull(patients.size());
-//	}
-//	
+	@Test
+	public void testmethoddb() {
+		List<Patient> patients = Patient.getPatients();
+		for (Patient p : patients) {
+			System.out.println(p.getFirstname() + p.getLastname());
+		}
+		assertNotNull(patients.size());
+	}
+	
 //	@Test
 //	public void testlogin() {
 //		UserData ud = new UserData();
@@ -39,4 +39,11 @@ public class TestClass extends TestCase {
 //		assertEquals("home", ud.registernew());
 //	}
 
+	@Test
+	public void testSearch() {
+		Patient p = Patient.getpatientfromid(1);
+		System.out.println(p.getPatientid());
+		System.out.println(p.getFirstname());
+		System.out.println(p.getLastname());
+	}
 }

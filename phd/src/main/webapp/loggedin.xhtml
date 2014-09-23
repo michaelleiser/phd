@@ -2,15 +2,46 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
 	<title>JSF Tutorial!</title>
 </h:head>
 <h:body>
-You are logged in as : 
-#{userData.name}
-	<h:form>
-		<h:commandLink action="#{navigation.redirectToHome}" value="back to home" />
-	</h:form>
+	<ui:composition template="resources/phd/common.xhtml">
+		<ui:define name="content">
+			<h:form>
+				<h:panelGrid columns="2" rendered="#{!loginController.loggedin}">
+					<h:outputLabel for="name">Username</h:outputLabel>
+					<h:inputText id="name" value="#{userData.name}" />
+					<h:outputLabel for="password">Password</h:outputLabel>
+					<h:inputSecret id="password" value="#{userData.password}" />
+				</h:panelGrid>
+				<h:commandButton action="#{userData.login}" rendered="#{!loginController.loggedin}" value="Login" />
+				<h:outputLabel rendered="#{loginController.loggedin}">You are logged in as #{userData.name}</h:outputLabel>
+				<h:commandButton action="#{userData.logout}" rendered="#{loginController.loggedin}" value="Logout" />
+			</h:form>
+			
+			<h:form>
+				<h:commandLink action="#{navigation.redirectToFormular_1}" value="Formular" />
+			</h:form>
+
+			<h:form>
+				<h:commandLink action="#{navigation.redirectToPage2}" value="Patient Database" />
+			</h:form>
+			
+			<h:form>
+				<h:commandLink action="#{navigation.redirectToPublic}" value="public page"/>
+			</h:form>
+			<h:form rendered="#{loginController.loggedin}">
+				<h:commandLink action="#{navigation.redirectToRestricted}" value="restricted!!!" />
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+
+this is not displayed	
+
 </h:body>
 </html>
