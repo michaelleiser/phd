@@ -14,6 +14,15 @@ public class UserData implements Serializable {
 
 	private String name;
 	private String password;
+	private String role;
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 	public UserData() {
 
@@ -44,7 +53,7 @@ public class UserData implements Serializable {
 	}
 
 	public String registernew(){
-		return new LoginController().registernew(this.name, this.password);
+		return new LoginController().registernew(this.name, this.password, this.role);
 	}
 
 }

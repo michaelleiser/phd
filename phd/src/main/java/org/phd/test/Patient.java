@@ -20,7 +20,6 @@ public class Patient implements Serializable {
 	private int patientid;
 	private String firstname;
 	private String lastname;
-	private int id = 0;
 	private String gender = "";
 	private String street = "";
 	private int nr = 1;
@@ -115,6 +114,7 @@ public class Patient implements Serializable {
 	}
 
 
+	// move to entytimanager
 	public String addNewPatient(){
 		String stm1 = "SELECT * FROM testdb.patient WHERE firstname='"+firstname+"' AND lastname='"+lastname+"' AND birthday='"+ birth + "' AND zip='"+zip+"';";
 		String stm2 = "INSERT INTO testdb.patient (firstname, lastname, birthday, street, nr, city, zip, telnumber, gender) VALUES('"+firstname+"','"+lastname+"','"+birth+"','"+street+"','"+nr+"','"+city+"','"+zip+"','"+telnumber+"','"+gender+"');";
@@ -161,109 +161,9 @@ public class Patient implements Serializable {
 		return "home";
 	}
 	
-	public static List<Patient> getPatients() {
-		List<Patient> patients = new ArrayList<Patient>();
-		Connection con = MyConnection.getConnection();
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		String stm = "SELECT * FROM patient;";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.execute();
-			rs = pst.getResultSet();
-
-			while (rs.next()) {
-				Patient p = new Patient();
-				p.setPatientid(rs.getInt("patient_id"));
-				p.setFirstname(rs.getString("firstname"));
-				p.setLastname(rs.getString("lastname"));
-				patients.add(p);
-			}
-			rs.close();
-			pst.close();
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (pst != null) {
-				try {
-					pst.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return patients;
-	}
-	
-	public static Patient getpatientfromid(int patientid) {
-		Patient p = null;
-		Connection con = MyConnection.getConnection();
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		String stm = "SELECT * FROM patient WHERE patient_id=?;";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setInt(1, patientid);
-			pst.execute();
-			rs = pst.getResultSet();
-			if (rs.next()) {
-				p = new Patient();
-				p.setPatientid(rs.getInt("patient_id"));
-				p.setFirstname(rs.getString("firstname"));
-				p.setLastname(rs.getString("lastname"));
-			}
-			rs.close();
-			pst.close();
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (pst != null) {
-				try {
-					pst.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return p;
-	}
-
-	public String getPatient(){
-		Patient p = getpatientfromid(this.patientid);
-		if(p != null){
-			return "Hello id " + p.getPatientid() + " " + p.getFirstname() + " " + p.getLastname();
-		}
-		return "";
+	@Override
+	public String toString(){
+		return firstname + " : " + lastname;
 	}
 	
 }

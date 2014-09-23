@@ -1,0 +1,162 @@
+package org.phd.test;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class EntityManager {
+	
+	private List<Patient> patients;
+	private List<Staff> staff;
+	
+	private Connection con = null;
+	private PreparedStatement pst = null;
+	private ResultSet rs = null;
+	
+	public EntityManager(){
+		this.patients = new ArrayList<Patient>();
+		this.staff = new ArrayList<Staff>();;
+	}
+	
+	public Staff getStaff(String name, String password) {
+		Staff s = null;
+		String stm = "SELECT * FROM doctor WHERE name=? AND password=?;";
+		init();
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setString(1, name);
+			pst.setString(2, password);
+			pst.execute();
+			rs = pst.getResultSet();
+			if (rs.next()) {
+				s = new Staff();
+				s.setName(rs.getString("name"));
+				s.setPassword(rs.getString("password"));
+				s.setRole(rs.getString("role"));
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		return s;
+	}
+
+	public Patient getPatient(int patientid) {
+		Patient p = null;
+		init();
+		String stm = "SELECT * FROM patient WHERE patient_id=?;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setInt(1, patientid);
+			pst.execute();
+			rs = pst.getResultSet();
+			if (rs.next()) {
+				p = new Patient();
+				p.setPatientid(rs.getInt("patient_id"));
+				p.setFirstname(rs.getString("firstname"));
+				p.setLastname(rs.getString("lastname"));
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return p;
+	}
+	
+	public List<Patient> getPatients() {
+//		return patients;						// TODO
+		List<Patient> patients = new ArrayList<Patient>();
+		init();
+		String stm = "SELECT * FROM patient;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+				Patient p = new Patient();
+				p.setPatientid(rs.getInt("patient_id"));
+				p.setFirstname(rs.getString("firstname"));
+				p.setLastname(rs.getString("lastname"));
+				patients.add(p);
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return patients;
+	}
+
+	public List<Staff> getStaff() {
+		return staff;
+	}
+
+	public void registernew(String name, String password, String role) {
+		String stm1 = "SELECT * FROM doctor WHERE name=?;";
+		String stm2 = "INSERT INTO testdb.doctor(name, password, role) VALUES(?, ?, ?);";
+		init();
+		try {
+			pst = con.prepareStatement(stm1);
+			pst.setString(1, name);
+			pst.execute();
+			rs = pst.getResultSet();
+			if(rs.next()) {
+				return;
+			} else {
+				pst = con.prepareStatement(stm2);
+				pst.setString(1, name);
+				pst.setString(2, password);
+				pst.setString(3, role);
+				pst.execute();
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return;
+	}
+
+	private void init() {
+		con = MyConnection.getConnection();
+	}
+	
+	private void close() {
+		try {
+			rs.close();
+			pst.close();
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (pst != null) {
+				try {
+					pst.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+}

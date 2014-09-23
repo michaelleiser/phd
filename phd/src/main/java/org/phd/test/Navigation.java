@@ -71,5 +71,24 @@ public class Navigation implements Serializable {
 	public String redirectToRestricted(){
 		return "/restricted/restricted?faces-redirect=true";
 	}
+	public String toRestrictedForDoctor(){
+		return "/restrictedfordoctor/restrictedfordoctor";
+	}
+	public String redirectToRestrictedForDoctor(){
+		return "/restrictedfordoctor/restrictedfordoctor?faces-redirect=true";
+	}
+	public String toRestrictedForStatistician(){
+		return "/restrictedforstatistician/restrictedforstatistician";
+	}
+	public String redirectToRestrictedForStatistician(){
+		return "/restrictedforstatistician/restrictedforstatistician?faces-redirect=true";
+	}
 
+	
+	public String toNewPatient(){
+		return "/newPatient";
+	}
+	public String redirectToNewPatient(){
+		return "/newPatient?faces-redirect=true";
+	}
 }

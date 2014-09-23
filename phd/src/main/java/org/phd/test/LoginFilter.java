@@ -34,8 +34,9 @@ public class LoginFilter implements Filter {
 		if (lc == null || !lc.getLoggedin()) {
 			String contextPath = ((HttpServletRequest) request).getContextPath();
 			((HttpServletResponse) response).sendRedirect(contextPath + "/home.xhtml");
+		} else {
+			chain.doFilter(request, response);
 		}
-		chain.doFilter(request, response);
 	}
 
 	public void init(FilterConfig config) throws ServletException {

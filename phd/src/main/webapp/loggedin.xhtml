@@ -19,16 +19,28 @@
 					<h:inputSecret id="password" value="#{userData.password}" />
 				</h:panelGrid>
 				<h:commandButton action="#{userData.login}" rendered="#{!loginController.loggedin}" value="Login" />
-				<h:outputLabel rendered="#{loginController.loggedin}">You are logged in as #{userData.name}</h:outputLabel>
+				<h:outputLabel rendered="#{loginController.loggedin}">You are logged in as #{userData.name} as a #{loginController.role}</h:outputLabel>
 				<h:commandButton action="#{userData.logout}" rendered="#{loginController.loggedin}" value="Logout" />
 			</h:form>
 			
 			<h:form>
 				<h:commandLink action="#{navigation.redirectToFormular_1}" value="Formular" />
 			</h:form>
-
+			
 			<h:form>
-				<h:commandLink action="#{navigation.redirectToPage2}" value="Patient Database" />
+				<h:commandLink action="#{navigation.redirectToNewPatient}" value="Create a new Patient" />
+			</h:form>
+			
+			<h:form>
+				<h:commandLink action="#{navigation.redirectToPage2}" value="Search Patient and modify Patient Data" />
+			</h:form>
+			
+			<h:form>
+				<h:commandLink action="#{navigation.redirectToPage2}" value="Modify Groups" />
+			</h:form>
+						
+			<h:form>
+				<h:commandLink action="#{navigation.redirectToPage2}" value="Search Patient Data for Statistics" />
 			</h:form>
 			
 			<h:form>
@@ -36,6 +48,12 @@
 			</h:form>
 			<h:form rendered="#{loginController.loggedin}">
 				<h:commandLink action="#{navigation.redirectToRestricted}" value="restricted!!!" />
+			</h:form>
+			<h:form rendered="#{loginController.loggedin and loginController.role=='doctor'}">
+				<h:commandLink action="#{navigation.redirectToRestrictedForDoctor}" value="restricted for doctor!!!" />
+			</h:form>
+			<h:form rendered="#{loginController.loggedin and loginController.role=='statistician'}">
+				<h:commandLink action="#{navigation.redirectToRestrictedForStatistician}" value="restricted for statistician!!!" />
 			</h:form>
 
 		</ui:define>
