@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>JSF Tutorial!</title>
+</h:head>
+<h:body>
+  	<h2>Search Patient</h2>
+<!--	<h:form>
+		Search:
+		<br/>
+		firstname:
+		<h:inputText id="firstname" value="#{patient.firstname}">
+			<f:validateLength minimum="2" maximum="10"/>
+		</h:inputText>
+		
+		lastname:
+		<h:inputText id="lastname" value="#{patient.lastname}">
+			<f:validateLength minimum="2" maximum="10"/>
+		</h:inputText>
+	
+		city:
+		<h:inputText id="city" value="#{patient.city}">
+			<f:validateLength minimum="1" maximum="20"/>
+		</h:inputText>
+		<br/>
+		
+		<h:commandButton action="#{patient.search}" value="search" />
+	</h:form> -->
+	
+	
+
+<ui:composition template="resources/phd/common.xhtml">
+		<ui:define name="content">
+			<h2>DATABASE TEST MYSQL</h2>
+			<h:dataTable value="#{patient.getPatients()}" var="patients">
+				<h:column>
+					<f:facet name="header">ID</f:facet>#{patients.id}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Firstname</f:facet>#{patients.firstname}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Lastname</f:facet>#{patients.lastname}
+				</h:column>
+			</h:dataTable>			
+		</ui:define>
+	</ui:composition> -->	
+</h:body>
+</html>
