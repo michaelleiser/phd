@@ -11,7 +11,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LoginFilter implements Filter {
+public class LoginFilterInaccessible implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		LoginController lc = (LoginController) ((HttpServletRequest) request).getSession().getAttribute("loginController");
@@ -19,12 +19,13 @@ public class LoginFilter implements Filter {
 			String contextPath = ((HttpServletRequest) request).getContextPath();
 			((HttpServletResponse) response).sendRedirect(contextPath + "/home.xhtml");
 		} else {
-			chain.doFilter(request, response);
+			String contextPath = ((HttpServletRequest) request).getContextPath();
+			((HttpServletResponse) response).sendRedirect(contextPath + "/loggedin.xhtml");
 		}
 	}
 
 	public void init(FilterConfig config) throws ServletException {
-		
+
 	}
 
 	public void destroy() {

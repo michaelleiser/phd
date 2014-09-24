@@ -13,7 +13,7 @@ public class LoginController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private static boolean loggedin = false;
-	private static String role = "default";
+	private static int role = 0;
 	
 	private int patientid;
 
@@ -49,16 +49,16 @@ public class LoginController implements Serializable {
 		this.loggedin = loggedin;
 	}
 
-	public String registernew(String name, String password, String role) {
-		em.registernew(name, password, role);
+	public String registernew(String name, String password, int i) {
+		em.registernew(name, password, i);
 		return "home";
 	}
 
-	public String getRole() {
+	public int getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(int role) {
 		this.role = role;
 	}
 	

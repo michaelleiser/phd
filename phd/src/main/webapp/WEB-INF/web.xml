@@ -72,23 +72,42 @@
 	<location>/error.xhtml</location>
 </error-page>
 
- <!-- Login filter -->
+
+<!-- Filter for users which are not logged in -->
     <filter>
         <filter-name>LoginFilter</filter-name>
         <filter-class>org.phd.test.LoginFilter</filter-class>
     </filter>
-    <!-- Set the login filter to secure all the pages in the /secured/* path of the application  -->
     <filter-mapping>
         <filter-name>LoginFilter</filter-name>
         <url-pattern>/restricted/*</url-pattern>
     </filter-mapping>
+<!-- Filter for doctors which are not logged in -->
+    <filter>
+        <filter-name>LoginFilterDoctor</filter-name>
+        <filter-class>org.phd.test.LoginFilterDoctor</filter-class>
+    </filter>
     <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
+        <filter-name>LoginFilterDoctor</filter-name>
         <url-pattern>/restrictedfordoctor/*</url-pattern>
     </filter-mapping>
+<!-- Filter for statisticians which are not logged in -->
+    <filter>
+        <filter-name>LoginFilterStatistician</filter-name>
+        <filter-class>org.phd.test.LoginFilterStatistician</filter-class>
+    </filter>
     <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
+        <filter-name>LoginFilterStatistician</filter-name>
         <url-pattern>/restrictedforstatistician/*</url-pattern>
+    </filter-mapping>
+<!-- Filter for everything which should not be accessible by anyone -->    
+    <filter>
+        <filter-name>LoginFilterInaccessible</filter-name>
+        <filter-class>org.phd.test.LoginFilterInaccessible</filter-class>
+    </filter>    
+    <filter-mapping>
+        <filter-name>LoginFilterInaccessible</filter-name>
+        <url-pattern>*.properties</url-pattern>
     </filter-mapping>
 
 </web-app>

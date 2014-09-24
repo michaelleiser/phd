@@ -14,15 +14,7 @@ public class UserData implements Serializable {
 
 	private String name;
 	private String password;
-	private String role;
-
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
+	private int role;
 
 	public UserData() {
 
@@ -43,11 +35,19 @@ public class UserData implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public int getRole() {
+		return role;
+	}
+
+	public void setRole(int role) {
+		this.role = role;
+	}
 	
 	public String login() {	
 		return new LoginController().login(this.name, this.password);
 	}
-	
+
 	public String logout(){
 		return new LoginController().logout();
 	}

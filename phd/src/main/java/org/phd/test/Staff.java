@@ -4,13 +4,13 @@ public class Staff {
 	
 	private String name;
 	private String password;
-	private String role;
+	private int role;
 	
 	public Staff(){
 		
 	}
 	
-	public Staff(String name, String password, String role){
+	public Staff(String name, String password, int role){
 		this.name = name;
 		this.password = password;
 		this.role = role;
@@ -32,17 +32,17 @@ public class Staff {
 		this.password = password;
 	}
 
-	public String getRole() {
+	public int getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(int role) {
 		this.role = role;
 	}
 	
 	@Override
 	public String toString(){
-		return name + " : " + password + " : " + role;
+		return name + " : " + role;
 	}
 	
 }

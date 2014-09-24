@@ -40,7 +40,7 @@ public class TestClass extends TestCase {
 		LoginController l = new LoginController();
 		l.login(username, password);
 		assertFalse(l.getLoggedin());
-		l.registernew(username, password, "doctor");
+		l.registernew(username, password, 1);
 		l.login(username, password);
 		assertTrue(l.getLoggedin());
 	}

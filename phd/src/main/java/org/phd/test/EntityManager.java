@@ -35,13 +35,19 @@ public class EntityManager {
 				s = new Staff();
 				s.setName(rs.getString("name"));
 				s.setPassword(rs.getString("password"));
-				s.setRole(rs.getString("role"));
+				s.setRole(rs.getInt("role_role_id"));
 			}
 			close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} 
+		} finally {
+			close();
+		}
 		return s;
+	}
+
+	public List<Staff> getStaff() {
+		return staff;
 	}
 
 	public Patient getPatient(int patientid) {
@@ -93,13 +99,9 @@ public class EntityManager {
 		return patients;
 	}
 
-	public List<Staff> getStaff() {
-		return staff;
-	}
-
-	public void registernew(String name, String password, String role) {
+	public void registernew(String name, String password, int i) {
 		String stm1 = "SELECT * FROM doctor WHERE name=?;";
-		String stm2 = "INSERT INTO testdb.doctor(name, password, role) VALUES(?, ?, ?);";
+		String stm2 = "INSERT INTO testdb.doctor(name, password, role_role_id) VALUES(?, ?, ?);";
 		init();
 		try {
 			pst = con.prepareStatement(stm1);
@@ -112,7 +114,7 @@ public class EntityManager {
 				pst = con.prepareStatement(stm2);
 				pst.setString(1, name);
 				pst.setString(2, password);
-				pst.setString(3, role);
+				pst.setInt(3, i);
 				pst.execute();
 			}
 			close();
