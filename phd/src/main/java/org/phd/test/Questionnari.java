@@ -2,6 +2,7 @@ package org.phd.test;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import javax.faces.bean.ManagedBean;
@@ -19,6 +20,7 @@ public class Questionnari implements Serializable {
 	private int q3;
 	private int q4;
 	private int q5;
+	private int id;
 
 	public int getQ1() {
 		return q1;
@@ -59,6 +61,14 @@ public class Questionnari implements Serializable {
 	public void setQ5(int q5) {
 		this.q5 = q5;
 	}
+	
+	public void setId(int id){
+		this.id = id;
+	}
+	
+	public int getId(){
+		return this.id;
+	}
 		
 	public String setQuestion(){
 		Random r = new Random();
@@ -68,8 +78,8 @@ public class Questionnari implements Serializable {
 		return "";
 	}
 	
-	public void getQuestionnaris(int i){
-		ArrayList<Questionnari> q = (ArrayList<Questionnari>) em.getQuestionnaris(i);
+	public List<Questionnari> getQuestionnaris(){
+		return em.getQuestionnaris(id);
 	}
 	
 }
