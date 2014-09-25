@@ -125,25 +125,75 @@ public class EntityManager {
 		}
 		return;
 	}
+
+	public List<Questionnari> getQuestionnaris(int i) {
+		ArrayList<Questionnari> ids = new ArrayList<Questionnari>(); 
+		String stm1 = "SELECT * FROM testdb.question WHERE q5 = " + i + ";" ;
+		init();
+		try {
+			pst = con.prepareStatement(stm1);
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+					Questionnari q = new Questionnari();
+					q.setQ1(rs.getInt("q1"));
+					q.setQ2(rs.getInt("q2"));
+					q.setQ3(rs.getInt("q3"));
+					q.setQ4(rs.getInt("q4"));
+					q.setQ5(rs.getInt("q5"));
+					ids.add(q);
+				}
+				close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close();
+			}
+			return ids;
+	}
 	
 	public void addFilledQuestionnaire(String answer) {
-		String stm2 = "INSERT INTO testdb.question(q1, q2, q3, q4) VALUES("+answer+");";
+		String stm2 = "INSERT INTO testdb.question(q1, q2, q3, q4, q5) VALUES("+answer+");";
 		init();
 		try {
 			pst = con.prepareStatement(stm2);
-			pst.setString(1, stm2);
 			pst.execute();
-			close();
+			
+			closeWhithoutRs();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			close();
+			closeWhithoutRs();
 		}
 		return;
 	}
 
 	private void init() {
 		con = MyConnection.getConnection();
+	}
+	
+	private void closeWhithoutRs() {
+		try {
+			pst.close();
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (pst != null) {
+				try {
+					pst.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	private void close() {
