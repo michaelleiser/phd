@@ -6,22 +6,10 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <h:head>
-	<title>JSF Tutorial!</title>
 </h:head>
 <h:body>
 	<ui:composition template="resources/phd/common.xhtml">
 		<ui:define name="content">
-			<h:form>
-				<h:panelGrid columns="2" rendered="#{!loginController.loggedin}">
-					<h:outputLabel for="name">Username</h:outputLabel>
-					<h:inputText id="name" value="#{userData.name}" />
-					<h:outputLabel for="password">Password</h:outputLabel>
-					<h:inputSecret id="password" value="#{userData.password}" />
-				</h:panelGrid>
-				<h:commandButton action="#{userData.login}" rendered="#{!loginController.loggedin}" value="Login" />
-				<h:outputLabel rendered="#{loginController.loggedin}">You are logged in as #{userData.name} as a #{loginController.role}</h:outputLabel>
-				<h:commandButton action="#{userData.logout}" rendered="#{loginController.loggedin}" value="Logout" />
-			</h:form>
 			
 			<h:form>
 				<h:commandLink action="#{navigation.redirectToFormular_1}" value="Formular" />

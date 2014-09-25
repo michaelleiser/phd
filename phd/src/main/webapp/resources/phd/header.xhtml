@@ -16,25 +16,32 @@
 				</ui:repeat>
 			</h:form>
 		</div>
+		
+		<div id="loggedinbox">
+			<h:form>
+				<h:outputLabel rendered="#{loginController.loggedin}">You are logged in as #{userData.name}</h:outputLabel><br />
+				<h:outputLabel rendered="#{loginController.loggedin}"> as a #{loginController.role}</h:outputLabel><br />
+				<h:commandButton action="#{userData.logout}" rendered="#{loginController.loggedin}" value="Logout" />
+			</h:form>
+		</div>
+		
 		<div id="logo">
 			<c:if test="#{loginController.loggedin}">
-			<h:form>
-			<h:commandLink action="#{navigation.redirectToLoggedin}">
-			<h:graphicImage height="100" value="/images/logo.png" />
-			<h:graphicImage height="100" value="/images/logotext.png" />
-			</h:commandLink>
-			</h:form>
+				<h:form>
+					<h:commandLink action="#{navigation.redirectToLoggedin}">
+						<h:graphicImage height="100" value="/images/logo.png" />
+						<h:graphicImage height="100" value="/images/logotext.png" />
+					</h:commandLink>
+				</h:form>
 			</c:if>
-			
 			<c:if test="#{!loginController.loggedin}">
-			<h:form>
-			<h:commandLink action="#{navigation.redirectToHome}">
-			<h:graphicImage height="100" value="/images/logo.png" />
-			<h:graphicImage height="100" value="/images/logotext.png" />
-			</h:commandLink>
-			</h:form>
+				<h:form>
+					<h:commandLink action="#{navigation.redirectToHome}">
+						<h:graphicImage height="100" value="/images/logo.png" />
+						<h:graphicImage height="100" value="/images/logotext.png" />
+					</h:commandLink>
+				</h:form>
 			</c:if>
-			
 		</div>
 		<hr />
 	</ui:composition>

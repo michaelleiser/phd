@@ -75,7 +75,6 @@ public class EntityManager {
 	}
 	
 	public List<Patient> getPatients() {
-//		return patients;						// TODO
 		List<Patient> patients = new ArrayList<Patient>();
 		init();
 		String stm = "SELECT * FROM patient;";
@@ -160,5 +159,55 @@ public class EntityManager {
 				}
 			}
 		}
+	}
+
+	public List<PatientData> getPatientData(int patientid) {
+		List<PatientData> data = new ArrayList<PatientData>();
+		init();
+		String stm = "SELECT * FROM patientdata WHERE patient_patient_id=?;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setInt(1, patientid);
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+				PatientData d = new PatientData();
+				d.setPatientdata_id(rs.getInt("patientdata_id"));
+				d.setFirstdata(rs.getString("firstdata"));
+				d.setSeconddata(rs.getString("seconddata"));
+				data.add(d);
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return data;
+	}
+
+	public List<PatientData> getPatientDatabla(int patientdataid) {
+		List<PatientData> list = new ArrayList<PatientData>();
+		init();
+		String stm = "SELECT * FROM patientdata WHERE patientdata_id=?;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setInt(1, patientdataid);
+			pst.execute();
+			rs = pst.getResultSet();
+			if (rs.next()) {
+				PatientData p = new PatientData();
+				p.setPatientdata_id(rs.getInt("patientdata_id"));
+				p.setFirstdata(rs.getString("firstdata"));
+				p.setSeconddata(rs.getString("seconddata"));
+				list.add(p);
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return list;
 	}
 }

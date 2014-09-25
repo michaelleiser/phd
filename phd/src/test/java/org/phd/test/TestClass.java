@@ -65,7 +65,17 @@ public class TestClass extends TestCase {
 	
 	@Test
 	public void testSearchPatientData(){
-		// TODO		
+		LoginController l = new LoginController();
+		l.setPatientid(1);
+		List<PatientData> list = l.getPatientData();
+		for(PatientData pd : list){
+			System.out.println(pd);
+		}
+		l.setPatientdataid(3);
+		List<PatientData> list2 = l.getPatientDatabla();
+		for(PatientData pd : list2){
+			System.out.println(pd);
+		}
 	}
 	
 	@Test

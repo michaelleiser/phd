@@ -9,12 +9,6 @@ public class Staff {
 	public Staff(){
 		
 	}
-	
-	public Staff(String name, String password, int role){
-		this.name = name;
-		this.password = password;
-		this.role = role;
-	}
 
 	public String getName() {
 		return name;

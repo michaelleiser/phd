@@ -5,21 +5,28 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+</h:head>
 <h:body>
 	<ui:composition template="resources/phd/common.xhtml">
 		<ui:define name="content">
 			<h2>DATABASE TEST MYSQL</h2>
-			<h:dataTable value="#{loginController.getPatients()}" var="patients">
-				<h:column>
-					<f:facet name="header">ID</f:facet>#{patients.patientid}
-				</h:column>
-				<h:column>
-					<f:facet name="header">Firstname</f:facet>#{patients.firstname}
-				</h:column>
-				<h:column>
-					<f:facet name="header">Lastname</f:facet>#{patients.lastname}
-				</h:column>
-			</h:dataTable>
+			<h:form>
+				<h:dataTable value="#{loginController.getPatients()}" var="patients">
+					<h:column>
+						<f:facet name="header">ID</f:facet>#{patients.patientid}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Firstname</f:facet>#{patients.firstname}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Lastname</f:facet>#{patients.lastname}
+					</h:column>
+					<h:column>
+						<h:commandButton action="#{loginController.getPatientAndModify(patients.patientid)}" value="Select Patient Data" />
+					</h:column>
+				</h:dataTable>
+			</h:form>
 
 			<h:form>
 				<h:inputText id="patid" value="#{loginController.patientid}"></h:inputText>
@@ -35,6 +42,9 @@
 				</h:column>
 					<h:column>
 						<f:facet name="header">Lastname</f:facet>#{patients.lastname}
+				</h:column>
+				<h:column>
+					<h:commandButton action="#{loginController.getPatientAndModify(patients.patientid)}" value="Select Patient Data" />
 				</h:column>
 				</h:dataTable>
 			</h:form>

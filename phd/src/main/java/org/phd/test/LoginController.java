@@ -6,6 +6,10 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 
 @ManagedBean(name = "loginController", eager = true)
 @SessionScoped
@@ -75,12 +79,41 @@ public class LoginController implements Serializable {
 		l.add(em.getPatient(patientid));
 		return l;
 	}
-	
+
 	public List<Patient> getPatients(){
 		List<Patient> l = em.getPatients();
 		return l;
 	}
 	
+	public String getPatientAndModify(int id){
+		patientid = id;
+		return "selectedpatient";
+	}
+	
+	public String getPatientDataWithId(int id){
+		patientdataid = id;
+		return "selecteddata";
+	}
+	
+	public List<PatientData> getPatientData() {
+		List<PatientData> l = em.getPatientData(patientid);
+		return l;
+	}
+	
+	private int patientdataid;
+	
+	public List<PatientData> getPatientDatabla(){
+		List<PatientData> l = em.getPatientDatabla(patientdataid);
+		return l;
+	}
+
+	public int getPatientdataid() {
+		return patientdataid;
+	}
+
+	public void setPatientdataid(int patientdataid) {
+		this.patientdataid = patientdataid;
+	}
 	
 //	public void setNavigation(Navigation navigation){
 //		this.navigation = navigation;

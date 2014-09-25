@@ -13,7 +13,11 @@ div#headerlanguages {
 	padding: 10px 10px 10px 10px;
 }
 
-
+div#loggedinbox {
+	float: right;
+	padding: 10px 10px 10px 10px
+/* 	width: 200px; */
+}
 
 
 
