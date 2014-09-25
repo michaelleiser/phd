@@ -9,20 +9,20 @@
 	<ui:composition template="resources/phd/common.xhtml">
 		<ui:define name="content">
 			<h:form>
-				<h:inputText id="patid" value="#{loginController.patientid}"></h:inputText>
+				<h:inputText id="patid" value="#{fragebogen.id}"></h:inputText>
 				<h:commandButton value="Search">
 					<f:ajax execute="patid" render="outputMessage" />
 				</h:commandButton>
-				<h:dataTable id="outputMessage" value="#{questionnaire.getQuestionnaris}" var="questionnari">
+				<h:dataTable id="outputMessage" value="#{fragebogen.getQuestionnaris()}" var="output">
 					<h:column>
-						<f:facet name="header">ID</f:facet>#{questionnari.id}
+						<f:facet name="header">ID</f:facet>#{output.id}
 				</h:column>
-		<!-- 	<h:column>
-						<f:facet name="header">Firstname</f:facet>#{patients.firstname}
+			 	<h:column>
+						<f:facet name="header">Firstname</f:facet>#{output.q1}
 				</h:column>
 					<h:column>
-						<f:facet name="header">Lastname</f:facet>#{patients.lastname}
-				</h:column> -->
+						<f:facet name="header">Lastname</f:facet>#{output.q2}
+				</h:column>
 				</h:dataTable>
 			</h:form>
 		</ui:define>

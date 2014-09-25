@@ -140,6 +140,7 @@ public class EntityManager {
 					q.setQ3(rs.getInt("q3"));
 					q.setQ4(rs.getInt("q4"));
 					q.setQ5(rs.getInt("q5"));
+					q.setId(rs.getInt("id"));
 					ids.add(q);
 				}
 				close();
