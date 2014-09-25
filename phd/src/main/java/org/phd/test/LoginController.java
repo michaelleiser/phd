@@ -3,11 +3,14 @@ package org.phd.test;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
@@ -20,6 +23,7 @@ public class LoginController implements Serializable {
 	private static int role = 0;
 	
 	private int patientid;
+	private int patientdataid;
 
 	private EntityManager em;
 	
@@ -87,23 +91,22 @@ public class LoginController implements Serializable {
 	
 	public String getPatientAndModify(int id){
 		patientid = id;
-		return "selectedpatient";
+		return "";
 	}
 	
 	public String getPatientDataWithId(int id){
 		patientdataid = id;
-		return "selecteddata";
+		return "";
 	}
 	
-	public List<PatientData> getPatientData() {
-		List<PatientData> l = em.getPatientData(patientid);
+	public List<PatientData> getPatientDatas() {
+		List<PatientData> l = em.getPatientDatas(patientid);
 		return l;
 	}
+
 	
-	private int patientdataid;
-	
-	public List<PatientData> getPatientDatabla(){
-		List<PatientData> l = em.getPatientDatabla(patientdataid);
+	public List<PatientData> getPatientData(){
+		List<PatientData> l = em.getPatientData(patientdataid);
 		return l;
 	}
 
@@ -114,6 +117,24 @@ public class LoginController implements Serializable {
 	public void setPatientdataid(int patientdataid) {
 		this.patientdataid = patientdataid;
 	}
+	
+	
+	public void updatePatient(Patient p){
+		
+		System.out.println(p);
+		
+		int id = patientid;
+		String firstname = "First" + new Random().nextInt();
+		String lastname = "Last" + new Random().nextInt();
+		
+		em.updatePatient(id, firstname, lastname);
+	}
+	
+	public void updatePatientData(PatientData pd){
+		System.out.println(pd);
+		// TODO
+	}
+	
 	
 //	public void setNavigation(Navigation navigation){
 //		this.navigation = navigation;

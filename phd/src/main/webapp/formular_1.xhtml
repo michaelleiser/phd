@@ -11,6 +11,14 @@
 	<ui:composition template="resources/phd/common.xhtml">
 		<ui:define name="content">
 			<h2>Formular</h2>
+			
+			<h:form>
+				<h:selectOneMenu value="Dropdown">
+					<f:selectItems value="#{quest.quests}" onchange="submit()"
+							valueChangeListener="#{quest.questchanged}"/>
+				</h:selectOneMenu>
+			</h:form>
+			
 			<h:form>
 				firstname:
 				<h:inputText id="firstname" value="">

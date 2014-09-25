@@ -7,10 +7,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
+@ManagedBean(name = "entityManager", eager = true)
+@SessionScoped
 public class EntityManager {
 	
 	private List<Patient> patients;
 	private List<Staff> staff;
+	private List<PatientData> patientdatas;
 	
 	private Connection con = null;
 	private PreparedStatement pst = null;
@@ -227,7 +233,7 @@ public class EntityManager {
 		}
 	}
 
-	public List<PatientData> getPatientData(int patientid) {
+	public List<PatientData> getPatientDatas(int patientid) {
 		List<PatientData> data = new ArrayList<PatientData>();
 		init();
 		String stm = "SELECT * FROM patientdata WHERE patient_patient_id=?;";
@@ -252,7 +258,7 @@ public class EntityManager {
 		return data;
 	}
 
-	public List<PatientData> getPatientDatabla(int patientdataid) {
+	public List<PatientData> getPatientData(int patientdataid) {
 		List<PatientData> list = new ArrayList<PatientData>();
 		init();
 		String stm = "SELECT * FROM patientdata WHERE patientdata_id=?;";
@@ -275,5 +281,37 @@ public class EntityManager {
 			close();
 		}
 		return list;
+	}
+
+	public void updatePatient(int id, String newfirstname, String newlastname) {
+		init();
+		String stm = "UPDATE patient SET firstname=?, lastname=? WHERE patient_id=?";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setString(1, newfirstname);
+			pst.setString(2, newlastname);
+			pst.setInt(3, id);
+			pst.execute();
+//			rs = pst.getResultSet();
+//			if (rs.next()) {
+//				PatientData p = new PatientData();
+//				p.setPatientdata_id(rs.getInt("patientdata_id"));
+//				p.setFirstdata(rs.getString("firstdata"));
+//				p.setSeconddata(rs.getString("seconddata"));
+//			}
+			closeWhithoutRs();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeWhithoutRs();
+		}
+	}
+
+	public List<PatientData> getPatientdatas() {
+		return patientdatas;
+	}
+
+	public void setPatientdatas(List<PatientData> patientdatas) {
+		this.patientdatas = patientdatas;
 	}
 }
