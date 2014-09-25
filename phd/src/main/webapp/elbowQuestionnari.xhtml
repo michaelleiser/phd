@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:body>
+	<ui:composition template="resources/phd/common.xhtml">
+		<ui:define name="content">
+			
+			<h2> Fragebogen Ellbogen</h2>
+				<h:form>
+				Wohlbefinden des Patienten nach der Operation:
+				<h:selectOneRadio id="q1" value="#{fragebogen.q1}" layout="pageDirection">
+					<f:selectItem itemLabel="Schlechterer Zustand nach der Operation als vorher." itemValue="1" />
+					<f:selectItem itemLabel="Gleich wie vor der Operation" itemValue="2" />
+					<f:selectItem itemLabel="Besser als vor der Operation" itemValue="3" />
+					<f:selectItem itemLabel="Ohne beschwerden" itemValue="4"/>
+				</h:selectOneRadio><br />
+				Zu behandelndes Arm?
+				<h:selectOneRadio id="q2" value="#{fragebogen.q2}" layout="pageDirection">
+					<f:selectItem itemLabel="rechts" itemValue="1" />
+					<f:selectItem itemLabel="links" itemValue="2" />
+				</h:selectOneRadio><br />
+				Art der Behandlung:
+				<h:selectOneRadio id="q3" value="#{fragebogen.q3}" layout="pageDirection">
+					<f:selectItem itemLabel="Operation" itemValue="1" />
+					<f:selectItem itemLabel="Medikamentös" itemValue="2" />
+					<f:selectItem itemLabel="Therapie" itemValue="3" />
+				</h:selectOneRadio><br />
+				Welcher Art war die Operation:
+				<h:selectOneRadio id="q4" value="#{fragebogen.q4}" layout="pageDirection">
+					<f:selectItem itemLabel="Oberarmbruch" itemValue="1" />
+					<f:selectItem itemLabel="Unterarmbruch" itemValue="2" />
+					<f:selectItem itemLabel="Ellenbogen" itemValue="3" />
+					<f:selectItem itemLabel="Handgelenk" itemValue="4"/>
+				</h:selectOneRadio><br />
+				<h:commandButton action="#{fragebogen.setQuestion}" value="Submit" />
+				</h:form>
+			
+					
+		</ui:define>
+	</ui:composition>
+
+this is not displayed
+
+   </h:body>
+</html>
