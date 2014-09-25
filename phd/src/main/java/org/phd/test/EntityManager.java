@@ -125,6 +125,22 @@ public class EntityManager {
 		}
 		return;
 	}
+	
+	public void addFilledQuestionnaire(String answer) {
+		String stm2 = "INSERT INTO testdb.question(q1, q2, q3, q4) VALUES("+answer+");";
+		init();
+		try {
+			pst = con.prepareStatement(stm2);
+			pst.setString(1, stm2);
+			pst.execute();
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return;
+	}
 
 	private void init() {
 		con = MyConnection.getConnection();
