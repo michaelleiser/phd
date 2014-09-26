@@ -79,33 +79,39 @@ public class LoginController implements Serializable {
 	}
 	
 	public List<Patient> getPatient(){	// TODO return List wegen JSF Darstellung
+		System.out.println("GetPatient " + patientid);
 		List<Patient> l = new ArrayList<Patient>();
 		l.add(em.getPatient(patientid));
 		return l;
 	}
 
 	public List<Patient> getPatients(){
+		System.out.println("GetPatients");
 		List<Patient> l = em.getPatients();
 		return l;
 	}
 	
 	public String getPatientAndModify(int id){
+		System.out.println("GetPatientAndModify " + id);
 		patientid = id;
 		return "";
 	}
 	
 	public String getPatientDataWithId(int id){
+		System.out.println("GetPatientDataWithid " + id);
 		patientdataid = id;
 		return "";
 	}
 	
 	public List<PatientData> getPatientDatas() {
+		System.out.println("GetPatientDatas " + patientid);
 		List<PatientData> l = em.getPatientDatas(patientid);
 		return l;
 	}
 
 	
 	public List<PatientData> getPatientData(){
+		System.out.println("GetPatientData " + patientdataid);
 		List<PatientData> l = em.getPatientData(patientdataid);
 		return l;
 	}
@@ -119,9 +125,9 @@ public class LoginController implements Serializable {
 	}
 	
 	
-	public void updatePatient(Patient p){
+	public void updatePatient(Patient p){				// TODO
 		
-		System.out.println(p);
+		System.out.println("update pateint..." + p);
 		
 		int id = patientid;
 		String firstname = "First" + new Random().nextInt();
@@ -130,11 +136,25 @@ public class LoginController implements Serializable {
 		em.updatePatient(id, firstname, lastname);
 	}
 	
-	public void updatePatientData(PatientData pd){
-		System.out.println(pd);
-		// TODO
+	public void updatePatientData(PatientData pd){		// TODO
+		
+		
+		System.out.println("update pateint data..." + pd);
+//		em.updatePatientData(id, firstdata, seconddata);
 	}
 	
+	
+	public List<PatientData> searchPatientData(String op){		// TODO
+		System.out.println("SEARCHING Patient Data..." + op);
+		List<PatientData> l = em.searchPatientData(op);
+		return l;
+	}
+
+	public List<Patient> searchPatient(String firstname) {		// TODO
+		System.out.println("SEARCHING Patient..." + firstname);
+		List<Patient> l = em.searchPatient(firstname);
+		return l;
+	}
 	
 //	public void setNavigation(Navigation navigation){
 //		this.navigation = navigation;

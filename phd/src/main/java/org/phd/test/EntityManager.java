@@ -339,4 +339,57 @@ public class EntityManager {
 			}
 			return questionnaris;
 	}
+	
+	//TODO firstname lastname
+	public List<Patient> searchPatient(String firstname) {
+		List<Patient> list = new ArrayList<Patient>();
+		init();
+		String stm = "SELECT * FROM patient WHERE firstname LIKE ?;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setString(1, "%" + firstname + "%");
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+				Patient p = new Patient();
+				p.setPatientid(rs.getInt("patient_id"));
+				p.setFirstname(rs.getString("firstname"));
+				p.setLastname(rs.getString("lastname"));
+				list.add(p);
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return list;
+	}
+	
+	//TODO from - to
+	public List<PatientData> searchPatientData(String operation) {
+		List<PatientData> list = new ArrayList<PatientData>();
+		init();
+		String stm = "SELECT * FROM patientdata WHERE firstdata=?;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setString(1, operation);
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+				PatientData p = new PatientData();
+				p.setPatientdata_id(rs.getInt("patientdata_id"));
+				p.setFirstdata(rs.getString("firstdata"));
+				p.setSeconddata(rs.getString("seconddata"));
+				list.add(p);
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return list;
+	}
+
 }

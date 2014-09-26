@@ -63,20 +63,20 @@ public class TestClass extends TestCase {
 //		// TODO
 //	}
 //	
-//	@Test
-//	public void testSearchPatientData(){
-//		LoginController l = new LoginController();
-//		l.setPatientid(1);
-//		List<PatientData> list = l.getPatientData();
-//		for(PatientData pd : list){
-//			System.out.println(pd);
-//		}
-//		l.setPatientdataid(3);
-//		List<PatientData> list2 = l.getPatientDatabla();
-//		for(PatientData pd : list2){
-//			System.out.println(pd);
-//		}
-//	}
+	@Test
+	public void testGetPatientData(){
+		LoginController l = new LoginController();
+		l.setPatientid(1);
+		List<PatientData> list = l.getPatientDatas();
+		for(PatientData pd : list){
+			System.out.println("gpds " + pd);
+		}
+		l.setPatientdataid(3);
+		List<PatientData> list2 = l.getPatientData();
+		for(PatientData pd : list2){
+			System.out.println("gpd " + pd);
+		}
+	}
 //	
 //	@Test
 //	public void testEditPatientData(){
@@ -89,6 +89,24 @@ public class TestClass extends TestCase {
 //		EntityManager em = new EntityManager();
 //		em.updatePatient(1, "hallo", "test");
 //	}
+	
+	@Test
+	public void testSearchPatientData(){
+		LoginController l = new LoginController();
+		List<PatientData> list = l.searchPatientData("elbow");
+		for(PatientData pd : list){
+			System.out.println("spd " + pd);
+		}
+	}
+	
+	@Test
+	public void testSearchPatient(){
+		LoginController l = new LoginController();
+		List<Patient> list = l.searchPatient("First");
+		for(Patient pd : list){
+			System.out.println("sp " + pd);
+		}
+	}
 	
 	@Test
 	public void testCreateGroup(){

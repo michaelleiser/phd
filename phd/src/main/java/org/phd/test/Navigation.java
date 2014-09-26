@@ -47,6 +47,12 @@ public class Navigation implements Serializable {
 	public String redirectToPage2(){
 		return "/page2?faces-redirect=true";
 	}
+	public String toPage3(){
+		return "/page3";
+	}
+	public String redirectToPage3(){
+		return "/page3?faces-redirect=true";
+	}
 	public String toPagefortesting(){
 		return "/pagefortesting";
 	}
