@@ -16,17 +16,13 @@
 				<h:dataTable id="outputMessage" value="#{fragebogen.getListOfQuestionnaris()}" var="output">
 				<h:column>
 						<f:facet name="header">ID</f:facet>
-						<h:commandLink value="#{output.id}" action="page2.xhtml?#{output.id}"></h:commandLink>
+						<h:commandLink value="#{output.id}" action="#{test.outcome}"><f:setPropertyActionListener target="#{test.i}" value="#{output.id}" /></h:commandLink>
 				</h:column>
 			 	<h:column>
 						<f:facet name="header">OP:</f:facet>#{output.op}
 				</h:column>
 					<h:column>
 						<f:facet name="header">Datum:</f:facet>#{output.date}
-				</h:column>
-				<h:column>
-						<h:commandLink value="test" action="page2.xhtml"></h:commandLink>
-						<h:commandButton action="#{fragebogen.showQuestionnari}" value="Show Questionnari" />
 				</h:column>
 				</h:dataTable>
 			</h:form>
