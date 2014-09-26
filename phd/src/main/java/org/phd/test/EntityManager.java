@@ -315,4 +315,28 @@ public class EntityManager {
 	public void setPatientdatas(List<PatientData> patientdatas) {
 		this.patientdatas = patientdatas;
 	}
+
+	public List<Questionnari> searchQuestionnaris(int id) {
+		init();
+		ArrayList<Questionnari> questionnaris = new ArrayList<Questionnari>(); 
+		String stm1 = "SELECT * FROM testdb.quest LEFT JOIN testdb.op ON testdb.quest.op_id = testdb.op.id WHERE patient_id=" + id + ";" ;
+		try {
+			pst = con.prepareStatement(stm1);
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+					Questionnari q = new Questionnari();
+					q.setDate(rs.getDate("date"));
+					q.setOp(rs.getString("opart"));
+					q.setId(rs.getInt("quest_id"));
+					questionnaris.add(q);
+				}
+				close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close();
+			}
+			return questionnaris;
+	}
 }

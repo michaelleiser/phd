@@ -1,6 +1,7 @@
 package org.phd.test;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -21,6 +22,9 @@ public class Questionnari implements Serializable {
 	private int q4;
 	private int q5;
 	private int id;
+	private Date date;
+	private String op;
+	private int patient;
 
 	public int getQ1() {
 		return q1;
@@ -70,17 +74,42 @@ public class Questionnari implements Serializable {
 		return this.id;
 	}
 		
-	public String setQuestion(){
-		Random r = new Random();
-		this.q5 = r.nextInt(10);
+	public void setQuestion(){
 		String answer ="'" + q1 + "','" + q2 + "','" + q3 + "','" + q4 + "','" + q5 + "'";
 		em.addFilledQuestionnaire(answer);
-		return "";
 	}
 	
 	public List<Questionnari> getQuestionnaris(){
 		return em.getQuestionnaris(id);
 	}
 	
+	public List<Questionnari> getListOfQuestionnaris(){
+		return em.searchQuestionnaris(patient);
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public String getOp() {
+		return op;
+	}
+
+	public void setOp(String op) {
+		this.op = op;
+	}
+
+	public int getPatient() {
+		return patient;
+	}
+
+	public void setPatient(int patient) {
+		this.patient = patient;
+	}
+		
 }
 

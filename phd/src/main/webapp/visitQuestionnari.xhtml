@@ -9,19 +9,24 @@
 	<ui:composition template="resources/phd/common.xhtml">
 		<ui:define name="content">
 			<h:form>
-				<h:inputText id="patid" value="#{fragebogen.id}"></h:inputText>
+				<h:inputText id="patid" value="#{fragebogen.patient}"></h:inputText>
 				<h:commandButton value="Search">
 					<f:ajax execute="patid" render="outputMessage" />
 				</h:commandButton>
-				<h:dataTable id="outputMessage" value="#{fragebogen.getQuestionnaris()}" var="output">
-					<h:column>
-						<f:facet name="header">ID</f:facet>#{output.id}
+				<h:dataTable id="outputMessage" value="#{fragebogen.getListOfQuestionnaris()}" var="output">
+				<h:column>
+						<f:facet name="header">ID</f:facet>
+						<h:commandLink value="#{output.id}" action="page2.xhtml?#{output.id}"></h:commandLink>
 				</h:column>
 			 	<h:column>
-						<f:facet name="header">Firstname</f:facet>#{output.q1}
+						<f:facet name="header">OP:</f:facet>#{output.op}
 				</h:column>
 					<h:column>
-						<f:facet name="header">Lastname</f:facet>#{output.q2}
+						<f:facet name="header">Datum:</f:facet>#{output.date}
+				</h:column>
+				<h:column>
+						<h:commandLink value="test" action="page2.xhtml"></h:commandLink>
+						<h:commandButton action="#{fragebogen.showQuestionnari}" value="Show Questionnari" />
 				</h:column>
 				</h:dataTable>
 			</h:form>
