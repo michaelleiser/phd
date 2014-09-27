@@ -11,6 +11,7 @@
 	<ui:composition template="resources/phd/common.xhtml">
 		<ui:define name="content">
 
+
 			<h:form>
 				<h:inputText id="patid" binding="#{input1}"></h:inputText>
 				<h:commandButton value="Filter Patient for Firstname">
@@ -21,10 +22,10 @@
 						<f:facet name="header">ID</f:facet>#{patients.patientid}
 					</h:column>
 					<h:column>
-						<f:facet name="header">Firstname</f:facet><h:inputText id="firstname" value="#{patients.firstname}"></h:inputText>
+						<f:facet name="header">Firstname</f:facet>#{patients.firstname}
 					</h:column>
 					<h:column>
-						<f:facet name="header">Lastname</f:facet><h:inputText id="lastname" value="#{patients.lastname}"></h:inputText>
+						<f:facet name="header">Lastname</f:facet>#{patients.lastname}
 					</h:column>
 					<h:column>
 						<h:commandButton action="#{loginController.updatePatient(patients)}" value="Update Patient" />
@@ -32,25 +33,31 @@
 					<h:column>
 						<h:commandButton action="#{loginController.setPatientid(patients.patientid)}" value="Get Patient Datas" />
 					</h:column>
-				</h:dataTable>
+				</h:dataTable>	
+			</h:form>			
+			
+			<hr />
 				
+			<h:form>
+				<h:commandButton action="visitQuestionnari" value="insert a new entry"/>
 				<h:dataTable id="outputMessage123" value="#{loginController.getPatientDatas()}" var="patientdatas">
 					<h:column>
 						<f:facet name="header">ID</f:facet>#{patientdatas.patientdata_id}
 					</h:column>
 					<h:column>
-						<f:facet name="header">first</f:facet><h:inputText id="firstdata" value="#{patientdatas.firstdata}"></h:inputText>
+						<f:facet name="header">first</f:facet>#{patientdatas.firstdata}
 					</h:column>
 					<h:column>
-						<f:facet name="header">second</f:facet><h:inputText id="seconddata" value="#{patientdatas.seconddata}"></h:inputText>
+						<f:facet name="header">second</f:facet>#{patientdatas.seconddata}
 					</h:column>
 					<h:column>
 						<h:commandButton action="#{loginController.updatePatientData(patientdatas)}" value="Update Patient Data" />
 					</h:column>
 				</h:dataTable>
 			</h:form>
-
-
+			
+			<hr />
+			
 		</ui:define>
 	</ui:composition>
 

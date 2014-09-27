@@ -27,6 +27,7 @@ public class EntityManager {
 		this.staff = new ArrayList<Staff>();;
 	}
 	
+	// parameter sollte warscheinlich STAFF sein
 	public Staff getStaff(String name, String password) {
 		Staff s = null;
 		String stm = "SELECT * FROM doctor WHERE name=? AND password=?;";
@@ -104,6 +105,7 @@ public class EntityManager {
 		return patients;
 	}
 
+	// Parameter sollte warscheinlich STAFF sein
 	public void registernew(String name, String password, int i) {
 		String stm1 = "SELECT * FROM doctor WHERE name=?;";
 		String stm2 = "INSERT INTO testdb.doctor(name, password, role_role_id) VALUES(?, ?, ?);";
@@ -165,11 +167,11 @@ public class EntityManager {
 			pst = con.prepareStatement(stm2);
 			pst.execute();
 			
-			closeWhithoutRs();
+			closeWithoutRs();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			closeWhithoutRs();
+			closeWithoutRs();
 		}
 		return;
 	}
@@ -178,7 +180,7 @@ public class EntityManager {
 		con = MyConnection.getConnection();
 	}
 	
-	private void closeWhithoutRs() {
+	private void closeWithoutRs() {
 		try {
 			pst.close();
 			con.close();
@@ -284,14 +286,14 @@ public class EntityManager {
 		return list;
 	}
 
-	public void updatePatient(int id, String newfirstname, String newlastname) {
+	public void updatePatient(Patient p) {
 		init();
 		String stm = "UPDATE patient SET firstname=?, lastname=? WHERE patient_id=?";
 		try {
 			pst = con.prepareStatement(stm);
-			pst.setString(1, newfirstname);
-			pst.setString(2, newlastname);
-			pst.setInt(3, id);
+			pst.setString(1, p.getFirstname());
+			pst.setString(2, p.getLastname());
+			pst.setInt(3, p.getPatientid());
 			pst.execute();
 //			rs = pst.getResultSet();
 //			if (rs.next()) {
@@ -300,11 +302,35 @@ public class EntityManager {
 //				p.setFirstdata(rs.getString("firstdata"));
 //				p.setSeconddata(rs.getString("seconddata"));
 //			}
-			closeWhithoutRs();
+			closeWithoutRs();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			closeWhithoutRs();
+			closeWithoutRs();
+		}
+	}
+	
+	public void updatePatientData(PatientData pd) {
+		init();
+		String stm = "UPDATE patientdata SET firstdata=?, seconddata=? WHERE patientdata_id=?";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setString(1, pd.getFirstdata());
+			pst.setString(2, pd.getSeconddata());
+			pst.setInt(3, pd.getPatientdata_id());
+			pst.execute();
+//			rs = pst.getResultSet();
+//			if (rs.next()) {
+//				PatientData p = new PatientData();
+//				p.setPatientdata_id(rs.getInt("patientdata_id"));
+//				p.setFirstdata(rs.getString("firstdata"));
+//				p.setSeconddata(rs.getString("seconddata"));
+//			}
+			closeWithoutRs();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeWithoutRs();
 		}
 	}
 
@@ -390,6 +416,49 @@ public class EntityManager {
 			close();
 		}
 		return list;
+	}
+
+	public void createPatient(Patient p) {
+		String stm = "INSERT INTO testdb.patient(firstname, lastname) VALUES(?, ?);";
+		init();
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setString(1, p.getFirstname());
+			pst.setString(2, p.getLastname());
+			pst.execute();
+//			rs = pst.getResultSet();
+//			if(rs.next()) {
+//				return;
+//			}
+			closeWithoutRs();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeWithoutRs();
+		}
+		return;
+	}
+
+	public void createPatientData(PatientData pd, Patient p) {
+		String stm = "INSERT INTO testdb.patientdata(patient_patient_id, firstdata, seconddata) VALUES(?, ?, ?);";
+		init();
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setInt(1, p.getPatientid());
+			pst.setString(2, pd.getFirstdata());
+			pst.setString(3, pd.getSeconddata());
+			pst.execute();
+//			rs = pst.getResultSet();
+//			if(rs.next()) {
+//				return;
+//			}
+			closeWithoutRs();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeWithoutRs();
+		}
+		return;
 	}
 
 }

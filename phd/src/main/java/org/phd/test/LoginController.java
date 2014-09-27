@@ -126,21 +126,13 @@ public class LoginController implements Serializable {
 	
 	
 	public void updatePatient(Patient p){				// TODO
-		
 		System.out.println("update pateint..." + p);
-		
-		int id = patientid;
-		String firstname = "First" + new Random().nextInt();
-		String lastname = "Last" + new Random().nextInt();
-		
-		em.updatePatient(id, firstname, lastname);
+		em.updatePatient(p);
 	}
 	
 	public void updatePatientData(PatientData pd){		// TODO
-		
-		
 		System.out.println("update pateint data..." + pd);
-//		em.updatePatientData(id, firstdata, seconddata);
+		em.updatePatientData(pd);
 	}
 	
 	
@@ -154,6 +146,14 @@ public class LoginController implements Serializable {
 		System.out.println("SEARCHING Patient..." + firstname);
 		List<Patient> l = em.searchPatient(firstname);
 		return l;
+	}
+
+	public void createPatient(Patient p) {
+		em.createPatient(p);
+	}
+
+	public void createPatientData(PatientData pd, Patient p) {
+		em.createPatientData(pd, p);
 	}
 	
 //	public void setNavigation(Navigation navigation){

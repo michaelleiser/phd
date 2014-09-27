@@ -14,52 +14,53 @@
 				<h:outputText value="#{msg['newPatient']}" />
 			</h2>
 			<h:form>
-				firstname:
-				<h:inputText id="firstname" value="#{patient.firstname}">
-					<f:validateLength minimum="2" maximum="10" />
-				</h:inputText>
-				<br />
-				lastname:
-				<h:inputText id="lastname" value="#{patient.lastname}">
-					<f:validateLength minimum="2" maximum="10" />
-				</h:inputText>
-				<br />
-				street
-				<h:inputText id="street" value="#{patient.street}">
-					<f:validateLength minimum="2" maximum="20" />
-				</h:inputText>
-				<br />
-				nr:
-				<h:inputText id="nr" value="#{patient.nr}">
-					<f:validateLength minimum="1" maximum="20" />
-				</h:inputText>
-				<br />	
-				city:
-				<h:inputText id="city" value="#{patient.city}">
-					<f:validateLength minimum="1" maximum="20" />
-				</h:inputText>
-				<br />
-				zip:
-				<h:inputText id="zip" value="#{patient.zip}">
-					<f:validateLength minimum="2" maximum="10" />
-				</h:inputText>
-				<br />
-				zip:
-				<h:inputText id="telnumber" value="#{patient.telnumber}">
-					<f:validateLength minimum="10" maximum="10" />
-				</h:inputText>
-				<br />
-				gender:
-				<h:selectOneRadio value="#{patient.gender}">
-					<f:selectItem itemLabel="Male" itemValue="male" />
-					<f:selectItem itemLabel="Female" itemValue="female" />
-				</h:selectOneRadio>
-				<br />
-				birth (dd.mm.yyyy) :
-				<h:inputText id="birth" value="#{patient.birth}">
-					<f:validateLength minimum="10" maximum="10" />
-				</h:inputText>
-				<br />
+				<h:panelGrid columns="2">
+					<h:outputLabel>Firstname:</h:outputLabel>
+					<h:inputText id="firstname" value="#{patient.firstname}">
+						<f:validateLength minimum="2" maximum="10" />
+					</h:inputText>			
+
+					<h:outputLabel>Lastname:</h:outputLabel>
+					<h:inputText id="lastname" value="#{patient.lastname}">
+						<f:validateLength minimum="2" maximum="10" />
+					</h:inputText>			
+			
+					<h:outputLabel>Street:</h:outputLabel>
+					<h:inputText id="street" value="#{patient.street}">
+						<f:validateLength minimum="2" maximum="20" />
+					</h:inputText>
+
+					<h:outputLabel>Nr:</h:outputLabel>
+					<h:inputText id="nr" value="#{patient.nr}">
+						<f:validateLength minimum="1" maximum="20" />
+					</h:inputText>
+
+					<h:outputLabel>City:</h:outputLabel>
+					<h:inputText id="city" value="#{patient.city}">
+						<f:validateLength minimum="1" maximum="20" />
+					</h:inputText>
+
+					<h:outputLabel>Zip:</h:outputLabel>
+					<h:inputText id="zip" value="#{patient.zip}">
+						<f:validateLength minimum="2" maximum="10" />
+					</h:inputText>
+
+					<h:outputLabel>Telnumber:</h:outputLabel>
+					<h:inputText id="telnumber" value="#{patient.telnumber}">
+						<f:validateLength minimum="10" maximum="10" />
+					</h:inputText>
+
+					<h:outputLabel>Gender:</h:outputLabel>
+					<h:selectOneRadio value="#{patient.gender}">
+						<f:selectItem itemLabel="Male" itemValue="male" />
+						<f:selectItem itemLabel="Female" itemValue="female" />
+					</h:selectOneRadio>
+
+					<h:outputLabel>birth (dd.mm.yyyy):</h:outputLabel>
+					<h:inputText id="birth" value="#{patient.birth}">
+						<f:validateLength minimum="10" maximum="10" />
+					</h:inputText>
+				</h:panelGrid>
 				<h:commandButton action="#{patient.addNewPatient}" value="addNewPatient" />
 			</h:form>
 		</ui:define>
