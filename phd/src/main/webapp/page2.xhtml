@@ -28,7 +28,7 @@
 						<f:facet name="header">Lastname</f:facet>#{patients.lastname}
 					</h:column>
 					<h:column>
-						<h:commandButton action="#{loginController.updatePatient(patients)}" value="Update Patient" />
+						<h:commandButton action="#{navigation.redirectToEditPatient}" value="Goto Edit Patient" />
 					</h:column>
 					<h:column>
 						<h:commandButton action="#{loginController.setPatientid(patients.patientid)}" value="Get Patient Datas" />
@@ -51,7 +51,7 @@
 						<f:facet name="header">second</f:facet>#{patientdatas.seconddata}
 					</h:column>
 					<h:column>
-						<h:commandButton action="#{loginController.updatePatientData(patientdatas)}" value="Update Patient Data" />
+						<h:commandButton action="#{navigation.redirectToFormular}" value="Goto Edit Patient Data" />
 					</h:column>
 				</h:dataTable>
 			</h:form>

@@ -95,4 +95,18 @@ public class Navigation implements Serializable {
 	public String redirectToNewPatient(){
 		return "/newPatient?faces-redirect=true";
 	}
+	
+	public String toEditPatient(){
+		return "/editPatient";
+	}
+	public String redirectToEditPatient(){
+		return "/editPatient?faces-redirect=true";
+	}
+	
+	public String toFormular(){
+		return "/formular_1";
+	}
+	public String redirectToFormular(){
+		return "/formular_1?faces-redirect=true";
+	}
 }

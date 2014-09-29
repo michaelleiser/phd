@@ -13,15 +13,11 @@
 			<h:form>
 				<h:panelGrid columns="2" rendered="#{!loginController.loggedin}">
 					<h:outputLabel for="name">Username</h:outputLabel>
-					<h:inputText id="name" value="#{userData.name}" />
+					<h:inputText id="name" value="#{userData.name}" required="true" />
 					<h:outputLabel for="password">Password</h:outputLabel>
-					<h:inputSecret id="password" value="#{userData.password}" />
-<!--					<h:outputLabel for="firstname">Firstname</h:outputLabel> -->
-<!-- 					<h:inputText id="firstname" value="" /> -->
-<!-- 					<h:outputLabel for="lastname">Lastname</h:outputLabel> -->
-<!-- 					<h:inputText id="lastname" value="" /> -->
-					Role:
-					<h:selectOneRadio id="role" value="#{userData.role}">
+					<h:inputSecret id="password" value="#{userData.password}" required="true" />
+					<h:outputLabel for="role">Role</h:outputLabel>
+					<h:selectOneRadio id="role" value="#{userData.role}" required="true">
 						<f:selectItem itemLabel="Doctor" itemValue="1" />
 						<f:selectItem itemLabel="Statistician" itemValue="2" />
 					</h:selectOneRadio>

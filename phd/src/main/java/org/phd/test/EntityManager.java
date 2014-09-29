@@ -461,4 +461,75 @@ public class EntityManager {
 		return;
 	}
 
+	
+	
+	
+	
+	
+	
+	public Knee getKneeQuestion() {
+		Knee k = new Knee();
+		init();
+		String stm = "SELECT * FROM knee;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+				Question q = new QuestionString();
+				String t = rs.getString("type");
+				String s = rs.getString("question");
+				q.setType(t);
+				q.setQuestion(s);
+				k.addQuestion(q);
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return k;
+	}
+	
+	public Knee getKneeAnswer() {
+		Knee k = new Knee();
+		List<Question> questions = k.getQuestions();
+		init();
+		String stm = "SELECT * FROM knee_answer;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.execute();
+			rs = pst.getResultSet();
+			int i = 1;
+			while (rs.next()) {
+				Answer a = null;
+				String type = questions.get(i-1).getType();		// !!!!!!!
+				System.out.println("type " + type);
+				if(type.equals("String")){
+					String s = rs.getString(i);
+					a = new AnswerString();
+					a.setAnswer(s);
+				} else if(type.equals("RadioButton")){
+					String s = rs.getString(i);
+					a = new AnswerString();
+					a.setAnswer(s);
+				} else if(type.equals("Checkbox")){
+					String s = rs.getString(i);
+					a = new AnswerString();
+					a.setAnswer(s);
+				} else {
+					
+				}
+				k.addAnswer(a);
+				i++;
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return k;
+	}
 }

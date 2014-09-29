@@ -11,18 +11,18 @@
 	<ui:composition template="resources/phd/common.xhtml">
 		<ui:define name="content">
 			<h2>
-				<h:outputText value="#{msg['newPatient']}" />
+				<h:outputText value="#{msg['editPatient']}" />
 			</h2>
 			<h:form>
 				<h:panelGrid columns="2">
 					<h:outputLabel>Firstname:</h:outputLabel>
 					<h:inputText id="firstname" value="#{patient.firstname}" required="true">
-						<f:validateLength minimum="2" maximum="20" />
+						<f:validateLength minimum="2" maximum="10" />
 					</h:inputText>			
 
 					<h:outputLabel>Lastname:</h:outputLabel>
 					<h:inputText id="lastname" value="#{patient.lastname}" required="true">
-						<f:validateLength minimum="2" maximum="20" />
+						<f:validateLength minimum="2" maximum="10" />
 					</h:inputText>			
 			
 					<h:outputLabel>Street:</h:outputLabel>
@@ -61,7 +61,9 @@
 						<f:validateLength minimum="10" maximum="10" />
 					</h:inputText>
 				</h:panelGrid>
-				<h:commandButton action="#{patient.addNewPatient}" value="addNewPatient" />
+				<h:column>
+					<h:commandButton action="#{loginController.updatePatient(patients)}" value="Update Patient" />
+				</h:column>
 			</h:form>
 		</ui:define>
 	</ui:composition>
