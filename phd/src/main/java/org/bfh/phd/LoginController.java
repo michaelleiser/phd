@@ -1,4 +1,4 @@
-package org.phd.test;
+package org.bfh.phd;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -152,8 +152,8 @@ public class LoginController implements Serializable {
 		em.createPatient(p);
 	}
 
-	public void createPatientData(PatientData pd, Patient p) {
-		em.createPatientData(pd, p);
+	public void createPatientData(Patient p, PatientData pd) {
+		em.createPatientData(p, pd);
 	}
 	
 //	public void setNavigation(Navigation navigation){

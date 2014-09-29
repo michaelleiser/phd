@@ -1,21 +1,23 @@
-package org.phd.test;
+package org.bfh.phd;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Random;
 
+import org.bfh.phd.questionary.*;
 import org.junit.Test;
 
 import junit.framework.TestCase;
 
 public class TestClass extends TestCase {
 
-//	@Test
-//	public void testExample() {
-//		Patient p = new Patient();
-//		p.setFirstname("ABC");
-//		assertEquals("ABC", p.getFirstname());
-//	}
-//	
+	@Test
+	public void testExample() {
+		Patient p = new Patient();
+		p.setFirstname("ABC");
+		assertEquals("ABC", p.getFirstname());
+	}
+	
 //	@Test
 //	public void testLogin(){
 //		LoginController lc = new LoginController();
@@ -123,7 +125,7 @@ public class TestClass extends TestCase {
 //		pd.setSeconddata("Dummy" + r.nextInt());
 //		List<Patient> list = lc.getPatient();
 //		Patient p = list.get(0);
-//		lc.createPatientData(pd, p);
+//		lc.createPatientData(p, pd);
 //		List<PatientData> listAfter = lc.getPatientDatas();
 //		assertTrue(listBefore.size() + 1 == listAfter.size());
 //	}
@@ -175,19 +177,48 @@ public class TestClass extends TestCase {
 //	public void testEditGroup(){
 //		// TODO
 //	}
-	
+//	
 	@Test
-	public void testKnee(){
-		Knee k1 = new EntityManager().getKneeQuestion();
-		Knee k2 = new EntityManager().getKneeAnswer();
-		for(Question q : k1.getQuestions()){
-			System.out.println(q);
+	public void test1(){
+		List<Question> questions = new EntityManager().getQuestions("knee");
+		List<Answer> answers = new EntityManager().getAnswer("knee", 1);
+		Knee k = new Knee();
+		k.setQuestions(questions);
+		k.setAnswers(answers);
+		for(Question q : k.getQuestions()){
+			System.out.println("Frage " + q);
 		}
 		
-		for(Answer a : k2.getAnswers()){
-			System.out.println(a);
+		for(Answer a : k.getAnswers()){
+			System.out.println("Antwort " + a);
 		}
 	}
 	
+	
+	@Test
+	public void test2() {
+		Knee k = new Knee();
+		Answer a = new AnswerString();
+		a.addAnswer("ans_s1");
+		Answer b = new AnswerString();
+		b.addAnswer("ans_s2");
+		Answer c = new AnswerRadioButton();
+		c.addAnswer("ans_rb1");
+		c.addAnswer("ans_rb2");
+		Answer d = new AnswerCheckbox();
+		d.addAnswer("ans_cb1");
+		d.addAnswer("ans_cb2");
+		Answer e = new AnswerCheckbox();
+		e.addAnswer("ans_cb3");
+		
+		k.addAnswer(a);
+		k.addAnswer(b);
+		k.addAnswer(c);
+		k.addAnswer(d);
+		k.addAnswer(e);
+		
+		new EntityManager().addAnswer("knee", k.getAnswers());
+	}
+
 
 }

@@ -1,4 +1,4 @@
-package org.phd.test;
+package org.bfh.phd;
 
 import javax.faces.bean.ManagedBean;
 

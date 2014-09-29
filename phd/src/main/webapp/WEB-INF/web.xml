@@ -76,7 +76,7 @@
 <!-- Filter for users which are not logged in -->
     <filter>
         <filter-name>LoginFilter</filter-name>
-        <filter-class>org.phd.test.LoginFilter</filter-class>
+        <filter-class>org.bfh.phd.filter.LoginFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>LoginFilter</filter-name>
@@ -85,7 +85,7 @@
 <!-- Filter for doctors which are not logged in -->
     <filter>
         <filter-name>LoginFilterDoctor</filter-name>
-        <filter-class>org.phd.test.LoginFilterDoctor</filter-class>
+        <filter-class>org.bfh.phd.filter.LoginFilterDoctor</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>LoginFilterDoctor</filter-name>
@@ -94,7 +94,7 @@
 <!-- Filter for statisticians which are not logged in -->
     <filter>
         <filter-name>LoginFilterStatistician</filter-name>
-        <filter-class>org.phd.test.LoginFilterStatistician</filter-class>
+        <filter-class>org.bfh.phd.filter.LoginFilterStatistician</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>LoginFilterStatistician</filter-name>
@@ -103,7 +103,7 @@
 <!-- Filter for everything which should not be accessible by anyone -->    
     <filter>
         <filter-name>LoginFilterInaccessible</filter-name>
-        <filter-class>org.phd.test.LoginFilterInaccessible</filter-class>
+        <filter-class>org.bfh.phd.filter.LoginFilterInaccessible</filter-class>
     </filter>    
     <filter-mapping>
         <filter-name>LoginFilterInaccessible</filter-name>

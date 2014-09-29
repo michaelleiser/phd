@@ -1,4 +1,4 @@
-package org.phd.test;
+package org.bfh.phd.filter;
 
 import java.io.IOException;
 
@@ -11,18 +11,18 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LoginFilterDoctor implements Filter {
+import org.bfh.phd.LoginController;
+
+public class LoginFilterInaccessible implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		LoginController lc = (LoginController) ((HttpServletRequest) request).getSession().getAttribute("loginController");
 		if ((lc == null) || !lc.getLoggedin()) {
 			String contextPath = ((HttpServletRequest) request).getContextPath();
 			((HttpServletResponse) response).sendRedirect(contextPath + "/home.xhtml");
-		} else if (lc.getRole() != 1) {
+		} else {
 			String contextPath = ((HttpServletRequest) request).getContextPath();
 			((HttpServletResponse) response).sendRedirect(contextPath + "/loggedin.xhtml");
-		} else {
-			chain.doFilter(request, response);			
 		}
 	}
 

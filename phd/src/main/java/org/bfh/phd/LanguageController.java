@@ -1,4 +1,4 @@
-package org.phd.test;
+package org.bfh.phd;
 
 import java.util.LinkedHashMap;
 import java.util.Locale;

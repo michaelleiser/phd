@@ -1,5 +1,6 @@
-package org.phd.test;
+package org.bfh.phd;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +10,13 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+
+import org.bfh.phd.questionary.Answer;
+import org.bfh.phd.questionary.AnswerCheckbox;
+import org.bfh.phd.questionary.AnswerRadioButton;
+import org.bfh.phd.questionary.AnswerString;
+import org.bfh.phd.questionary.Question;
+import org.bfh.phd.questionary.QuestionString;
 
 @ManagedBean(name = "entityManager", eager = true)
 @SessionScoped
@@ -439,7 +447,7 @@ public class EntityManager {
 		return;
 	}
 
-	public void createPatientData(PatientData pd, Patient p) {
+	public void createPatientData(Patient p, PatientData pd) {
 		String stm = "INSERT INTO testdb.patientdata(patient_patient_id, firstdata, seconddata) VALUES(?, ?, ?);";
 		init();
 		try {
@@ -467,12 +475,13 @@ public class EntityManager {
 	
 	
 	
-	public Knee getKneeQuestion() {
-		Knee k = new Knee();
+	public List<Question> getQuestions(String quest) {
+		List<Question> questions = new ArrayList<Question>();
 		init();
-		String stm = "SELECT * FROM knee;";
+		String stm = "SELECT * FROM " + quest + ";";
 		try {
 			pst = con.prepareStatement(stm);
+//			pst.setString(1, quest);		// don't know why does not work
 			pst.execute();
 			rs = pst.getResultSet();
 			while (rs.next()) {
@@ -481,7 +490,7 @@ public class EntityManager {
 				String s = rs.getString("question");
 				q.setType(t);
 				q.setQuestion(s);
-				k.addQuestion(q);
+				questions.add(q);
 			}
 			close();
 		} catch (SQLException e) {
@@ -489,40 +498,40 @@ public class EntityManager {
 		} finally {
 			close();
 		}
-		return k;
+		return questions;
 	}
 	
-	public Knee getKneeAnswer() {
-		Knee k = new Knee();
-		List<Question> questions = k.getQuestions();
+	public List<Answer> getAnswer(String quest, int id) {
+		List<Answer> answers = new ArrayList<Answer>();;
+		List<Question> questions = new EntityManager().getQuestions("knee");
 		init();
-		String stm = "SELECT * FROM knee_answer;";
+		String stm = "SELECT * FROM " + quest + "_answer WHERE " + quest + "_answer_id=?;";
 		try {
 			pst = con.prepareStatement(stm);
+			pst.setInt(1, id);
 			pst.execute();
 			rs = pst.getResultSet();
-			int i = 1;
-			while (rs.next()) {
-				Answer a = null;
-				String type = questions.get(i-1).getType();		// !!!!!!!
-				System.out.println("type " + type);
-				if(type.equals("String")){
-					String s = rs.getString(i);
-					a = new AnswerString();
-					a.setAnswer(s);
-				} else if(type.equals("RadioButton")){
-					String s = rs.getString(i);
-					a = new AnswerString();
-					a.setAnswer(s);
-				} else if(type.equals("Checkbox")){
-					String s = rs.getString(i);
-					a = new AnswerString();
-					a.setAnswer(s);
-				} else {
+			if (rs.next()) {
+				for(int i = 0; i < questions.size(); i++){
+					Answer a = null;
+					String type = questions.get(i).getType();
+					if(type.equals("String")){
+						String s = rs.getString(i+2);
+						a = new AnswerString();
+						a.setAnswer(s);
+					} else if(type.equals("RadioButton")){
+						String s = rs.getString(i+2);
+						a = new AnswerRadioButton();
+						a.addAnswer(s);
+					} else if(type.equals("Checkbox")){
+						String s = rs.getString(i+2);
+						a = new AnswerCheckbox();
+						a.addAnswer(s);
+					} else {
 					
+					}
+					answers.add(a);
 				}
-				k.addAnswer(a);
-				i++;
 			}
 			close();
 		} catch (SQLException e) {
@@ -530,6 +539,38 @@ public class EntityManager {
 		} finally {
 			close();
 		}
-		return k;
+		return answers;
+	}
+
+	public void addAnswer(String quest, List<Answer> a) {
+		int size = a.size();
+		String stm = "INSERT INTO " + quest + "_answer(answer1";
+		for(int i = 2 ; i <= size ; i++){
+			stm = stm + ", answer" + i;
+		}
+		stm = stm + ") VALUES(?";
+		for(int i = 2 ; i <= size ; i++){
+			stm = stm + ",?";
+		}
+		stm = stm + ");";
+		init();
+		try {
+			pst = con.prepareStatement(stm);
+			
+			for(int i = 0 ; i < size ; i++){
+				pst.setString(i+1, a.get(i).toString());			
+			}
+			pst.execute();
+//			rs = pst.getResultSet();
+//			if(rs.next()) {
+//				return;
+//			}
+			closeWithoutRs();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeWithoutRs();
+		}
+		return;
 	}
 }

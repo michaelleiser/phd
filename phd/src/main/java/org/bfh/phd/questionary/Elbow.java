@@ -1,4 +1,4 @@
-package org.phd.test;
+package org.bfh.phd.questionary;
 
 public class Elbow {
 
