@@ -389,6 +389,7 @@ public class EntityManager {
 				p.setPatientid(rs.getInt("patient_id"));
 				p.setFirstname(rs.getString("firstname"));
 				p.setLastname(rs.getString("lastname"));
+				p.setBirth(rs.getString("birthday"));
 				list.add(p);
 			}
 			close();
