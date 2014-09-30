@@ -16,6 +16,8 @@ import org.bfh.phd.questionary.AnswerCheckbox;
 import org.bfh.phd.questionary.AnswerRadioButton;
 import org.bfh.phd.questionary.AnswerString;
 import org.bfh.phd.questionary.Question;
+import org.bfh.phd.questionary.QuestionCheckbox;
+import org.bfh.phd.questionary.QuestionRadioButton;
 import org.bfh.phd.questionary.QuestionString;
 
 @ManagedBean(name = "entityManager", eager = true)
@@ -485,12 +487,29 @@ public class EntityManager {
 			pst.execute();
 			rs = pst.getResultSet();
 			while (rs.next()) {
-				Question q = new QuestionString();
+				Question question = null;
 				String t = rs.getString("type");
-				String s = rs.getString("question");
-				q.setType(t);
-				q.setQuestion(s);
-				questions.add(q);
+				String q = rs.getString("question");
+				if(t.equals("String")){
+					question = new QuestionString();
+					question.setType(t);
+					question.setQuestion(q);
+				} else if(t.equals("RadioButton")){
+					question = new QuestionRadioButton();
+					question.setType(t);
+					question.setQuestion(q);
+					List<String> list = this.getPossibilities(1);	
+					question.setAnswerPossibilities(list);
+				} else if(t.equals("Checkbox")) {
+					question = new QuestionCheckbox();
+					question.setType(t);
+					question.setQuestion(q);
+					List<String> list = this.getPossibilities(1);	
+					question.setAnswerPossibilities(list);
+				} else {
+					
+				}
+				questions.add(question);
 			}
 			close();
 		} catch (SQLException e) {
@@ -501,9 +520,41 @@ public class EntityManager {
 		return questions;
 	}
 	
-	public List<Answer> getAnswer(String quest, int id) {
+	
+	
+	
+	public List<String> getPossibilities(int id) {
+
+		List<String> possibilities = new ArrayList<String>();
+//		init();
+		String stm = "SELECT * FROM knee_possibilities WHERE knee_possibilities_id=?;";
+		try {
+			PreparedStatement pst = con.prepareStatement(stm);
+			pst.setInt(1, id);
+			pst.execute();
+			ResultSet rs = pst.getResultSet();
+			if (rs.next()) {
+				for(int i = 0 ; i < 3 ; i++){
+					String s = rs.getString(i+2);
+					possibilities.add(s);
+				}
+			}
+			rs.close();
+			pst.close();
+//			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+//			close();
+		}
+		return possibilities;
+	}
+	
+	
+	
+	public List<Answer> getAnswers(String quest, int id) {
 		List<Answer> answers = new ArrayList<Answer>();;
-		List<Question> questions = new EntityManager().getQuestions("knee");
+		List<Question> questions = this.getQuestions("knee");
 		init();
 		String stm = "SELECT * FROM " + quest + "_answer WHERE " + quest + "_answer_id=?;";
 		try {

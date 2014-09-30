@@ -1,5 +1,7 @@
 package org.bfh.phd.questionary;
 
+import java.util.List;
+
 public interface Question <A, B> {
 
 	public String getType();
@@ -9,5 +11,11 @@ public interface Question <A, B> {
 	public String getQuestion();
 	
 	public void setQuestion(B o);
+	
+	public void addAnswerPossibility(String o);
+	
+	public List<String> getAnswerPossibilities();
+	
+	public void setAnswerPossibilities(List<String> o);
 
 }

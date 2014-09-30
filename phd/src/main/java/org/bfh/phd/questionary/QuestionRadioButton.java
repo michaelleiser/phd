@@ -1,12 +1,14 @@
 package org.bfh.phd.questionary;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class QuestionString implements Question <String, String> {
+public class QuestionRadioButton implements Question <String, String> {
 	
 	private String type;
 	private String question;
+	private List<String> possibilities = new ArrayList<String>();
 
 	@Override
 	public String getType() {
@@ -35,20 +37,17 @@ public class QuestionString implements Question <String, String> {
 
 	@Override
 	public void addAnswerPossibility(String o) {
-		// TODO Auto-generated method stub
-		
+		possibilities.add(o);
 	}
 
 	@Override
 	public List<String> getAnswerPossibilities() {
-		// TODO Auto-generated method stub
-		return null;
+		return possibilities;
 	}
 
 	@Override
 	public void setAnswerPossibilities(List<String> o) {
-		// TODO Auto-generated method stub
-		
+		possibilities = o;
 	}
 
 }

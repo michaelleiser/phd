@@ -11,13 +11,13 @@ import junit.framework.TestCase;
 
 public class TestClass extends TestCase {
 
-	@Test
-	public void testExample() {
-		Patient p = new Patient();
-		p.setFirstname("ABC");
-		assertEquals("ABC", p.getFirstname());
-	}
-	
+//	@Test
+//	public void testExample() {
+//		Patient p = new Patient();
+//		p.setFirstname("ABC");
+//		assertEquals("ABC", p.getFirstname());
+//	}
+//	
 //	@Test
 //	public void testLogin(){
 //		LoginController lc = new LoginController();
@@ -177,16 +177,22 @@ public class TestClass extends TestCase {
 //	public void testEditGroup(){
 //		// TODO
 //	}
-//	
+	
 	@Test
 	public void test1(){
 		List<Question> questions = new EntityManager().getQuestions("knee");
-		List<Answer> answers = new EntityManager().getAnswer("knee", 1);
+		List<Answer> answers = new EntityManager().getAnswers("knee", 1);
 		Knee k = new Knee();
 		k.setQuestions(questions);
 		k.setAnswers(answers);
 		for(Question q : k.getQuestions()){
-			System.out.println("Frage " + q);
+			System.out.println("Frage " + q + q.getAnswerPossibilities());
+			List<String> pos = q.getAnswerPossibilities();
+			if(pos != null){
+				for(String s : pos){
+					System.out.println("-> " + s);
+				}			
+			}
 		}
 		
 		for(Answer a : k.getAnswers()){
@@ -195,30 +201,30 @@ public class TestClass extends TestCase {
 	}
 	
 	
-	@Test
-	public void test2() {
-		Knee k = new Knee();
-		Answer a = new AnswerString();
-		a.addAnswer("ans_s1");
-		Answer b = new AnswerString();
-		b.addAnswer("ans_s2");
-		Answer c = new AnswerRadioButton();
-		c.addAnswer("ans_rb1");
-		c.addAnswer("ans_rb2");
-		Answer d = new AnswerCheckbox();
-		d.addAnswer("ans_cb1");
-		d.addAnswer("ans_cb2");
-		Answer e = new AnswerCheckbox();
-		e.addAnswer("ans_cb3");
-		
-		k.addAnswer(a);
-		k.addAnswer(b);
-		k.addAnswer(c);
-		k.addAnswer(d);
-		k.addAnswer(e);
-		
-		new EntityManager().addAnswer("knee", k.getAnswers());
-	}
+//	@Test
+//	public void test2() {
+//		Knee k = new Knee();
+//		Answer a = new AnswerString();
+//		a.addAnswer("ans_s1");
+//		Answer b = new AnswerString();
+//		b.addAnswer("ans_s2");
+//		Answer c = new AnswerRadioButton();
+//		c.addAnswer("ans_rb1");
+//		c.addAnswer("ans_rb2");
+//		Answer d = new AnswerCheckbox();
+//		d.addAnswer("ans_cb1");
+//		d.addAnswer("ans_cb2");
+//		Answer e = new AnswerCheckbox();
+//		e.addAnswer("ans_cb3");
+//		
+//		k.addAnswer(a);
+//		k.addAnswer(b);
+//		k.addAnswer(c);
+//		k.addAnswer(d);
+//		k.addAnswer(e);
+//		
+//		new EntityManager().addAnswer("knee", k.getAnswers());
+//	}
 
 
 }
