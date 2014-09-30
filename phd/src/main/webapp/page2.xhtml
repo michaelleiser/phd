@@ -28,7 +28,10 @@
 						<f:facet name="header">Lastname</f:facet>#{patients.lastname}
 					</h:column>
 					<h:column>
-						<h:commandButton action="#{navigation.redirectToEditPatient}" value="Goto Edit Patient" />
+						<f:facet name="header">Birthday</f:facet>#{patients.birth}
+					</h:column>
+					<h:column>
+						<h:commandButton action="#{navigation.redirectToEditPatient}" value="Goto Edit Patient"></h:commandButton>
 					</h:column>
 					<h:column>
 						<h:commandButton action="#{loginController.setPatientid(patients.patientid)}" value="Get Patient Datas" />

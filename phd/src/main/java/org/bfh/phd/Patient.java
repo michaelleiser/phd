@@ -158,7 +158,7 @@ public class Patient implements Serializable {
 				}
 			}
 		}
-		return "home";
+		return "loggedin";
 	}
 	
 	@Override
