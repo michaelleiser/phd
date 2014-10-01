@@ -14,6 +14,9 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import org.bfh.phd.questionary.Answer;
+import org.bfh.phd.questionary.Question;
+
 @ManagedBean(name = "loginController", eager = true)
 @SessionScoped
 public class LoginController implements Serializable {
@@ -156,6 +159,22 @@ public class LoginController implements Serializable {
 		em.createPatientData(p, pd);
 	}
 	
+	public void getQuest(String s) {
+		em.getQuestions(s);
+	}
+
+	public List<Question> getQuestions(String s) {
+		return em.getQuestions(s);
+	}
+
+	public List<Answer> getAnswers(String s, int i) {
+		return em.getAnswers(s, i);
+	}
+	
+	public void safe(ActionEvent evt){
+		System.out.println("->"+evt );
+	}
+	
 //	public void setNavigation(Navigation navigation){
 //		this.navigation = navigation;
 //	}
@@ -163,4 +182,53 @@ public class LoginController implements Serializable {
 //	public Navigation getNavigation(){
 //		return this.navigation;
 //	}
+	
+	
+	
+	private int first1 = 0;
+	private int first2 = 0;
+	
+	public String forward1(){
+		first1 = first1 + 10;
+		return null;
+	}
+	
+	public String backward1(){
+		first1 = first1 - 10;
+		if(first1 < 0){
+			first1 = 0;
+		}
+		return null;
+	}	
+	
+	public int getFirst1() {
+		return first1;
+	}
+
+	public void setFirst1(int first1) {
+		this.first1 = first1;
+	}
+	
+	public String forward2(){
+		first2 = first2 + 10;
+		return null;
+	}
+	
+	public String backward2(){
+		first2 = first2 - 10;
+		if(first2 < 0){
+			first2 = 0;
+		}
+		return null;
+	}
+	
+	public int getFirst2() {
+		return first2;
+	}
+
+	public void setFirst2(int first2) {
+		this.first2 = first2;
+	}
+
+
 }

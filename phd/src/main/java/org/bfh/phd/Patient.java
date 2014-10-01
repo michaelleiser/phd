@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 
 @ManagedBean(name = "patient", eager = true)
-@SessionScoped
+@RequestScoped
 public class Patient implements Serializable {
 
 	private int patientid;

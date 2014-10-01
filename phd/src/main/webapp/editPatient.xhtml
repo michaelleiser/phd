@@ -11,19 +11,18 @@
 	<ui:composition template="resources/phd/common.xhtml">
 		<ui:define name="content">
 			<h2>
-			
-				
 				<h:outputText value="#{msg['editPatient']}" />
 			</h2>
-			<h:form>
-				<h:panelGrid columns="2">
+			
+			<h:form >
+				<h:panelGrid columns="2" value="#{loginController.getPatient()}" var="pat">
 					<h:outputLabel>Firstname:</h:outputLabel>
-					<h:inputText id="firstname" value="#{patient.firstname}" required="true">
+					<h:inputText id="firstname" value="#{pat.firstname}" required="true">
 						<f:validateLength minimum="2" maximum="10" />
 					</h:inputText>			
 
 					<h:outputLabel>Lastname:</h:outputLabel>
-					<h:inputText id="lastname" value="#{patient.lastname}" required="true">
+					<h:inputText id="lastname" value="#{pat.lastname}" required="true">
 						<f:validateLength minimum="2" maximum="10" />
 					</h:inputText>			
 			
@@ -67,6 +66,46 @@
 					<h:commandButton action="#{loginController.updatePatient(patients)}" value="Update Patient" />
 				</h:column>
 			</h:form>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<h:outputLabel>#{loginController.patientid}</h:outputLabel>
+			
+			
+			<h:form>
+				<h:dataTable id="outputMessage" value="#{loginController.getPatient()}" var="patients">
+					<h:column>
+						<f:facet name="header">ID</f:facet>#{patients.patientid}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Firstname</f:facet>#{patients.firstname}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Lastname</f:facet>#{patients.lastname}
+					</h:column>
+					<h:column>
+						<f:facet name="header">Birthday</f:facet>#{patients.birth}
+					</h:column>
+				</h:dataTable>	
+			</h:form>	
+			
+			
+			
+			
+			
+			
+			
 		</ui:define>
 	</ui:composition>
 

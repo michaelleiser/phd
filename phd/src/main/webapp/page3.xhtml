@@ -14,7 +14,7 @@
 			<h2>Search Patient Data for Statistics</h2>
 
 			<h:form>
-				<h:selectOneMenu value="#{quest.questselected}" require="true">
+				<h:selectOneMenu value="#{quest.questselected}" required="true">
 					<f:selectItems itemLabel="Select" itemValue="" noSelectionOption="true"/>
 					<f:selectItems value="#{quest.quests}" />
 				</h:selectOneMenu>		
@@ -24,13 +24,13 @@
 				<h:dataTable rendered="#{quest.questselected!=null}" value="#{loginController.searchPatientData(quest.questselected)}" var="patientdatas">
 					<h:column>
 						<f:facet name="header">ID</f:facet>#{patientdatas.patientdata_id}
-				</h:column>
+					</h:column>
 					<h:column>
 						<f:facet name="header">first</f:facet>#{patientdatas.firstdata}
-				</h:column>
+					</h:column>
 					<h:column>
 						<f:facet name="header">second</f:facet>#{patientdatas.seconddata}
-				</h:column>
+					</h:column>
 				</h:dataTable>
 			</h:form>	
 

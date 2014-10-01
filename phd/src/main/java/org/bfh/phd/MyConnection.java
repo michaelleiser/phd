@@ -36,7 +36,7 @@ public class MyConnection {
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, user, password);
-			System.out.println("Connection completed");
+//			System.out.println("Connection completed");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

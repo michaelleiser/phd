@@ -499,13 +499,13 @@ public class EntityManager {
 					question = new QuestionRadioButton();
 					question.setType(t);
 					question.setQuestion(q);
-					List<String> list = this.getPossibilities(1);	
+					List<String> list = this.getPossibilities(rs.getInt("knee_possibilities_knee_possibilities_id"));	
 					question.setAnswerPossibilities(list);
 				} else if(t.equals("Checkbox")) {
 					question = new QuestionCheckbox();
 					question.setType(t);
 					question.setQuestion(q);
-					List<String> list = this.getPossibilities(1);	
+					List<String> list = this.getPossibilities(rs.getInt("knee_possibilities_knee_possibilities_id"));	
 					question.setAnswerPossibilities(list);
 				} else {
 					

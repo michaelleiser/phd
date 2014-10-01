@@ -1,10 +1,11 @@
 package org.bfh.phd;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 
 @ManagedBean(name = "patientdata", eager = true)
-@SessionScoped
+@RequestScoped
 public class PatientData {
 	
 	private int patientdata_id;

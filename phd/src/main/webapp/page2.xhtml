@@ -13,11 +13,11 @@
 
 
 			<h:form>
-				<h:inputText id="patid" binding="#{input1}"></h:inputText>
+				<h:inputText binding="#{input1}" id="patid"></h:inputText>
 				<h:commandButton value="Filter Patient for Firstname">
 					<f:ajax execute="patid" render="outputMessage" />
 				</h:commandButton>
-				<h:dataTable id="outputMessage" value="#{loginController.searchPatient(input1.value)}" var="patients">
+				<h:dataTable first="#{loginController.first1}" id="outputMessage" rows="10" value="#{loginController.searchPatient(input1.value)}" var="patients">
 					<h:column>
 						<f:facet name="header">ID</f:facet>#{patients.patientid}
 					</h:column>
@@ -36,6 +36,13 @@
 					<h:column>
 						<h:commandButton action="#{loginController.setPatientid(patients.patientid)}" value="Get Patient Datas" />
 					</h:column>
+					
+					<f:facet name="footer">
+						<h:panelGroup>
+							<h:commandButton action="#{loginController.backward1}" value="backward" />
+							<h:commandButton action="#{loginController.forward1}" value="forward" />
+						</h:panelGroup>
+					</f:facet>
 				</h:dataTable>	
 			</h:form>			
 			
@@ -43,7 +50,7 @@
 				
 			<h:form>
 				<h:commandButton action="visitQuestionnari" value="insert a new entry"/>
-				<h:dataTable id="outputMessage123" value="#{loginController.getPatientDatas()}" var="patientdatas">
+				<h:dataTable first="#{loginController.first2}" id="outputMessage123" rows="10" value="#{loginController.getPatientDatas()}" var="patientdatas">
 					<h:column>
 						<f:facet name="header">ID</f:facet>#{patientdatas.patientdata_id}
 					</h:column>
@@ -56,6 +63,12 @@
 					<h:column>
 						<h:commandButton action="#{navigation.redirectToFormular}" value="Goto Edit Patient Data" />
 					</h:column>
+					<f:facet name="footer">
+						<h:panelGroup>
+							<h:commandButton action="#{loginController.backward2}" value="backward" />
+							<h:commandButton action="#{loginController.forward2}" value="forward" />
+						</h:panelGroup>
+					</f:facet>
 				</h:dataTable>
 			</h:form>
 			

@@ -11,12 +11,12 @@ import junit.framework.TestCase;
 
 public class TestClass extends TestCase {
 
-//	@Test
-//	public void testExample() {
-//		Patient p = new Patient();
-//		p.setFirstname("ABC");
-//		assertEquals("ABC", p.getFirstname());
-//	}
+	@Test
+	public void testExample() {
+		Patient p = new Patient();
+		p.setFirstname("ABC");
+		assertEquals("ABC", p.getFirstname());
+	}
 //	
 //	@Test
 //	public void testLogin(){
@@ -180,13 +180,14 @@ public class TestClass extends TestCase {
 	
 	@Test
 	public void test1(){
-		List<Question> questions = new EntityManager().getQuestions("knee");
-		List<Answer> answers = new EntityManager().getAnswers("knee", 1);
+		LoginController l = new LoginController();
+		List<Question> questions = l.getQuestions("knee");
+		List<Answer> answers = l.getAnswers("knee", 1);
 		Knee k = new Knee();
 		k.setQuestions(questions);
 		k.setAnswers(answers);
 		for(Question q : k.getQuestions()){
-			System.out.println("Frage " + q + q.getAnswerPossibilities());
+			System.out.println("Frage " + q);
 			List<String> pos = q.getAnswerPossibilities();
 			if(pos != null){
 				for(String s : pos){

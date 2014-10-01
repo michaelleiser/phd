@@ -8,7 +8,7 @@ public class QuestionCheckbox implements Question <String, String> {
 	
 	private String type;
 	private String question;
-	private List<String> possibilities = new ArrayList<String>();
+	private List<String> answerPossibilities = new ArrayList<String>();
 
 	@Override
 	public String getType() {
@@ -37,17 +37,17 @@ public class QuestionCheckbox implements Question <String, String> {
 
 	@Override
 	public void addAnswerPossibility(String o) {
-		possibilities.add(o);
+		answerPossibilities.add(o);
 	}
 
 	@Override
 	public List<String> getAnswerPossibilities() {
-		return possibilities;
+		return answerPossibilities;
 	}
 
 	@Override
 	public void setAnswerPossibilities(List<String> o) {
-		possibilities = o;
+		answerPossibilities = o;
 	}
 
 }

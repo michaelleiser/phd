@@ -3,6 +3,13 @@ package org.bfh.phd.questionary;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
+
+@ManagedBean(name = "knee", eager = true)
+@RequestScoped
 public class Knee {
 	
 	private int id;
@@ -43,6 +50,17 @@ public class Knee {
 	
 	public void setAnswers(List<Answer> answers) {
 		this.answers = answers;
+	}
+	
+	public void safe(){
+		System.out.println("save" + questions + answers);
+	}
+	
+	
+	
+	public void add(final AjaxBehaviorEvent event){
+		FacesContext context = FacesContext.getCurrentInstance();
+		System.out.println("->"+event + event.getComponent().getAttributes());
 	}
 
 }
