@@ -107,9 +107,12 @@ public class LoginController implements Serializable {
 	}
 	
 	public List<PatientData> getPatientDatas() {
-		System.out.println("GetPatientDatas " + patientid);
-		List<PatientData> l = em.getPatientDatas(patientid);
-		return l;
+		if(activePatient != null){
+			System.out.println("GetPatientDatas " + activePatient.getPatientid());
+			List<PatientData> l = em.getPatientDatas(activePatient.getPatientid());
+			return l;
+		}
+		return null;
 	}
 
 	
@@ -132,7 +135,7 @@ public class LoginController implements Serializable {
 		System.out.println("update pateint..." + p);
 		em.updatePatient(p);
 	}
-	
+
 	public void updatePatientData(PatientData pd){		// TODO
 		System.out.println("update pateint data..." + pd);
 		em.updatePatientData(pd);
@@ -231,4 +234,25 @@ public class LoginController implements Serializable {
 	}
 
 
+	
+	private Patient activePatient;
+
+	public Patient getActivePatient() {
+		return activePatient;
+	}
+
+	public void setActivePatient(Patient activePatient) {
+		this.activePatient = activePatient;
+	}
+	
+	
+	private PatientData activePatientData;
+
+	public PatientData getActivePatientData() {
+		return activePatientData;
+	}
+
+	public void setActivePatientData(PatientData activePatientData) {
+		this.activePatientData = activePatientData;
+	}
 }

@@ -34,7 +34,7 @@
 						<h:commandButton action="#{navigation.redirectToEditPatient}" value="Goto Edit Patient"></h:commandButton>
 					</h:column>
 					<h:column>
-						<h:commandButton action="#{loginController.setPatientid(patients.patientid)}" value="Get Patient Datas" />
+						<h:commandButton action="#{loginController.setActivePatient(patients)}" value="Get Patient Datas" />
 					</h:column>
 					
 					<f:facet name="footer">
