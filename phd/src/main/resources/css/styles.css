@@ -15,11 +15,24 @@ div#headerlanguages {
 
 div#loggedinbox {
 	float: right;
-	padding: 10px 10px 10px 10px
+	padding: 10px 10px 10px 10px;
 /* 	width: 200px; */
 }
 
+.table-header {
+/* 	background-color: #BBBBFF; */
+	padding: 10px 10px 10px 10px;
+}
 
+.table-odd-row {
+	background-color: #BBBBBB;
+	padding: 10px 10px 10px 10px;
+}
+
+.table-even-row {
+	background-color: #DDDDDD;
+	padding: 10px 10px 10px 10px;
+}
 
 /* div#page { */
 /*     font-family: Arial; */

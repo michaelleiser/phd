@@ -1,17 +1,12 @@
 package org.bfh.phd;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIViewRoot;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 import org.bfh.phd.questionary.Answer;
@@ -142,9 +137,15 @@ public class LoginController implements Serializable {
 	}
 	
 	
+//	public List<PatientData> searchPatientData(String op){		// TODO
+//		System.out.println("SEARCHING Patient Data..." + op + from + to);
+//		List<PatientData> l = em.searchPatientData(op);
+//		return l;
+//	}
+	
 	public List<PatientData> searchPatientData(String op){		// TODO
-		System.out.println("SEARCHING Patient Data..." + op);
-		List<PatientData> l = em.searchPatientData(op);
+		System.out.println("SEARCHING Patient Data..." + op + from + "--" + to);
+		List<PatientData> l = em.searchPatientData(op, from , to);
 		return l;
 	}
 
@@ -255,4 +256,23 @@ public class LoginController implements Serializable {
 	public void setActivePatientData(PatientData activePatientData) {
 		this.activePatientData = activePatientData;
 	}
+	
+	private Date from;
+	public Date getFrom() {
+		return from;
+	}
+
+	public void setFrom(Date from) {
+		this.from = from;
+	}
+
+	public Date getTo() {
+		return to;
+	}
+
+	public void setTo(Date to) {
+		this.to = to;
+	}
+
+	private Date to;
 }

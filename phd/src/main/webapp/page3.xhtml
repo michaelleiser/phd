@@ -14,14 +14,22 @@
 			<h2>Search Patient Data for Statistics</h2>
 
 			<h:form>
-				<h:selectOneMenu value="#{quest.questselected}" required="true">
-					<f:selectItems itemLabel="Select" itemValue="" noSelectionOption="true"/>
-					<f:selectItems value="#{quest.quests}" />
-				</h:selectOneMenu>		
-			
+				<h:panelGrid columns="2">
+					<h:outputLabel value="Operation" />
+					<h:selectOneMenu value="#{quest.questselected}" required="true">
+						<f:selectItems itemLabel="Select" itemValue="" noSelectionOption="true"/>
+						<f:selectItems value="#{quest.quests}" />
+					</h:selectOneMenu>
+				
+					<h:outputLabel for="from" value="From" />
+					<h:inputText value="#{loginController.from}" id="from"><f:convertDateTime pattern="yyyy-MM-dd" /></h:inputText>
+					<h:outputLabel for="to" value="to" />
+					<h:inputText value="#{loginController.to}" id="to"><f:convertDateTime pattern="yyyy-MM-dd" /></h:inputText>
+				</h:panelGrid>
+				
 				<h:commandButton value="Search Patient Data"></h:commandButton>
 				
-				<h:dataTable rendered="#{quest.questselected!=null}" value="#{loginController.searchPatientData(quest.questselected)}" var="patientdatas">
+				<h:dataTable rendered="#{quest.questselected!=null}" value="#{loginController.searchPatientData(quest.questselected)}" var="patientdatas" headerClass="table-header" rowClasses="table-odd-row,table-even-row">
 					<h:column>
 						<f:facet name="header">ID</f:facet>#{patientdatas.patientdata_id}
 					</h:column>
@@ -30,6 +38,9 @@
 					</h:column>
 					<h:column>
 						<f:facet name="header">second</f:facet>#{patientdatas.seconddata}
+					</h:column>
+					<h:column>
+						<f:facet name="header">timestamp</f:facet>#{patientdatas.inserttime}
 					</h:column>
 				</h:dataTable>
 			</h:form>	

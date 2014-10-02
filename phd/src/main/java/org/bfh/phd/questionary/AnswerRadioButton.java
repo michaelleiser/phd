@@ -1,38 +1,31 @@
 package org.bfh.phd.questionary;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class AnswerRadioButton implements Answer<List<String>, String> {
+public class AnswerRadioButton implements Answer<String, String> {
 	
-	private List<String> answer = new ArrayList<String>();
+	private String answer = "";
 	
 	public AnswerRadioButton(){
 		
 	}
 	
 	@Override
-	public List<String> getAnswer() {
+	public String getAnswer() {
 		return answer;
 	}
 	
 	@Override
-	public void setAnswer(List<String> l) {
-		answer = l;
+	public void setAnswer(String s) {
+		answer = s;
 	}
 
 	@Override
 	public void addAnswer(String s){
-		answer.add(s);
+		answer = s;
 	}
 	
 	@Override
 	public String toString(){
-		String ret = "";
-		for(String s : answer){
-			ret = ret + " " + s;
-		}
-		return "RB: " + ret;
+		return "RB: " + answer;
 	}
 
 }

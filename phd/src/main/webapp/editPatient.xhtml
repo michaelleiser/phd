@@ -16,6 +16,8 @@
 			
 			<h:form >
 				<h:panelGrid columns="2">
+					<h:outputLabel>ID</h:outputLabel>
+					<h:outputLabel>#{loginController.activePatient.patientid}</h:outputLabel>
 					<h:outputLabel>Firstname:</h:outputLabel>
 					<h:inputText id="firstname" value="#{loginController.activePatient.firstname}" required="true">
 						<f:validateLength minimum="2" maximum="10" />

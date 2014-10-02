@@ -1,8 +1,9 @@
 package org.bfh.phd;
 
+import java.util.Date;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
 
 @ManagedBean(name = "patientdata", eager = true)
 @RequestScoped
@@ -11,6 +12,7 @@ public class PatientData {
 	private int patientdata_id;
 	private String firstdata;
 	private String seconddata;
+	private Date inserttime;
 
 	public PatientData() {
 		
@@ -43,6 +45,14 @@ public class PatientData {
 	@Override
 	public String toString() {
 		return patientdata_id + " : " + firstdata + " : " + seconddata;
+	}
+
+	public Date getInserttime() {
+		return inserttime;
+	}
+
+	public void setInserttime(Date inserttime) {
+		this.inserttime = inserttime;
 	}
 	
 }

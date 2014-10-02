@@ -14,6 +14,7 @@
 			<h2>Formular</h2>
 			
 			<h:form>
+				<h:outputLabel>Operation</h:outputLabel><br />
 				<h:selectOneMenu value="Dropdown">
 					<f:selectItems onchange="submit()" value="#{quest.quests}" valueChangeListener="#{quest.questchanged}"/>
 				</h:selectOneMenu>	
@@ -21,12 +22,15 @@
 
 				<c:forEach items="#{loginController.getQuestions('knee')}" var="q">
 					<c:if test="#{q.type eq 'String'}">
-						<h:outputLabel>#{q.question}</h:outputLabel>
-						<h:inputText><f:ajax event="change" execute="@this" listener="#{knee.add}"/></h:inputText>
+						<h:outputLabel>#{q.question}</h:outputLabel><br />
+						<h:inputText value="#{knee.answerString}">
+							<f:ajax event="change" execute="@this" listener="#{knee.addString}" />
+						</h:inputText>
 					</c:if>
 					<c:if test="#{q.type eq 'RadioButton'}">
 						<h:outputLabel>#{q.question}</h:outputLabel>
-						<h:selectOneRadio>
+						<h:selectOneRadio value="#{knee.answerRadioButton}">
+							<f:ajax event="change" execute="@this" listener="#{knee.addRadioButton}" />
 							<c:forEach items="#{q.answerPossibilities}" var="p">
 								<f:selectItem itemLabel="#{p}" itemValue="#{p}" />
 							</c:forEach>
@@ -34,7 +38,8 @@
 					</c:if>
 					<c:if test="#{q.type eq 'Checkbox'}">
 						<h:outputLabel>#{q.question}</h:outputLabel>
-						<h:selectManyCheckbox>
+						<h:selectManyCheckbox value="#{knee.answerCheckbox}">
+							<f:ajax event="change" execute="@this" listener="#{knee.addCheckbox}" />
 							<c:forEach items="#{q.answerPossibilities}" var="p">
 								<f:selectItem itemLabel="#{p}" itemValue="#{p}" />
 							</c:forEach>
