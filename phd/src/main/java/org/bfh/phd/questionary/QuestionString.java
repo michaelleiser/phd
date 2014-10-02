@@ -30,7 +30,7 @@ public class QuestionString implements Question <String, String> {
 
 	@Override
 	public String toString(){
-		return type + " " + question;
+		return id + " " + type + " " + question;
 	}
 
 	@Override
@@ -51,4 +51,18 @@ public class QuestionString implements Question <String, String> {
 		
 	}
 
+	
+	private int id;
+
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return id;
+	}
+
+	@Override
+	public void setId(int id) {
+		// TODO Auto-generated method stub
+		this.id = id;
+	}
 }

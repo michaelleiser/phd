@@ -182,28 +182,28 @@ public class TestClass extends TestCase {
 //		// TODO
 //	}
 //	
-//	@Test
-//	public void test1(){
-//		LoginController l = new LoginController();
-//		List<Question> questions = l.getQuestions("knee");
-//		List<Answer> answers = l.getAnswers("knee", 1);
-//		Knee k = new Knee();
-//		k.setQuestions(questions);
-//		k.setAnswers(answers);
-//		for(Question q : k.getQuestions()){
-//			System.out.println("Frage " + q);
-//			List<String> pos = q.getAnswerPossibilities();
-//			if(pos != null){
-//				for(String s : pos){
-//					System.out.println("-> " + s);
-//				}			
-//			}
-//		}
-//		
-//		for(Answer a : k.getAnswers()){
-//			System.out.println("Antwort " + a);
-//		}
-//	}
+	@Test
+	public void test1(){
+		LoginController l = new LoginController();
+		List<Question> questions = l.getQuestions("knee");
+		List<Answer> answers = l.getAnswers("knee", 1);
+		Knee k = new Knee();
+		k.setQuestions(questions);
+		k.setAnswers(answers);
+		for(Question q : k.getQuestions()){
+			System.out.println("Frage " + q);
+			List<String> pos = q.getAnswerPossibilities();
+			if(pos != null){
+				for(String s : pos){
+					System.out.println("-> " + s);
+				}			
+			}
+		}
+		
+		for(Answer a : k.getAnswers()){
+			System.out.println("Antwort " + a);
+		}
+	}
 //	
 //	
 //	@Test

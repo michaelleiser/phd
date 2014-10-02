@@ -15,6 +15,8 @@ import org.bfh.phd.questionary.Answer;
 import org.bfh.phd.questionary.AnswerCheckbox;
 import org.bfh.phd.questionary.AnswerRadioButton;
 import org.bfh.phd.questionary.AnswerString;
+import org.bfh.phd.questionary.Elbow;
+import org.bfh.phd.questionary.Knee;
 import org.bfh.phd.questionary.Question;
 import org.bfh.phd.questionary.QuestionCheckbox;
 import org.bfh.phd.questionary.QuestionRadioButton;
@@ -552,6 +554,18 @@ public class EntityManager {
 	
 	
 	public List<Question> getQuestions(String quest) {
+//		String quest = "knee";
+//		if(o instanceof Knee){
+//			quest = "knee";
+//			System.out.println("EM: knee");
+//		} else if (o instanceof Elbow){
+//			quest = "elbow";
+//			System.out.println("EM: elbow");
+//		} else {
+//			
+//		}
+		
+		
 		List<Question> questions = new ArrayList<Question>();
 		init();
 		String stm = "SELECT * FROM " + quest + ";";
@@ -562,23 +576,27 @@ public class EntityManager {
 			rs = pst.getResultSet();
 			while (rs.next()) {
 				Question question = null;
+				int id = rs.getInt(quest + "_id");
 				String t = rs.getString("type");
 				String q = rs.getString("question");
 				if(t.equals("String")){
 					question = new QuestionString();
+					question.setId(id);
 					question.setType(t);
 					question.setQuestion(q);
 				} else if(t.equals("RadioButton")){
 					question = new QuestionRadioButton();
+					question.setId(id);
 					question.setType(t);
 					question.setQuestion(q);
-					List<String> list = this.getPossibilities(rs.getInt("knee_possibilities_knee_possibilities_id"));	
+					List<String> list = this.getPossibilities(quest, rs.getInt(quest + "_possibilities_" + quest + "_possibilities_id"));	
 					question.setAnswerPossibilities(list);
 				} else if(t.equals("Checkbox")) {
 					question = new QuestionCheckbox();
+					question.setId(id);
 					question.setType(t);
 					question.setQuestion(q);
-					List<String> list = this.getPossibilities(rs.getInt("knee_possibilities_knee_possibilities_id"));	
+					List<String> list = this.getPossibilities(quest, rs.getInt(quest + "_possibilities_" + quest + "_possibilities_id"));	
 					question.setAnswerPossibilities(list);
 				} else {
 					
@@ -597,11 +615,11 @@ public class EntityManager {
 	
 	
 	
-	public List<String> getPossibilities(int id) {
+	public List<String> getPossibilities(String quest, int id) {
 
 		List<String> possibilities = new ArrayList<String>();
 //		init();
-		String stm = "SELECT * FROM knee_possibilities WHERE knee_possibilities_id=?;";
+		String stm = "SELECT * FROM " + quest + "_possibilities WHERE " + quest + "_possibilities_id=?;";
 		try {
 			PreparedStatement pst = con.prepareStatement(stm);
 			pst.setInt(1, id);
@@ -628,7 +646,7 @@ public class EntityManager {
 	
 	public List<Answer> getAnswers(String quest, int id) {
 		List<Answer> answers = new ArrayList<Answer>();;
-		List<Question> questions = this.getQuestions("knee");
+		List<Question> questions = this.getQuestions(quest);
 		init();
 		String stm = "SELECT * FROM " + quest + "_answer WHERE " + quest + "_answer_id=?;";
 		try {

@@ -25,7 +25,7 @@ public class AnswerRadioButton implements Answer<String, String> {
 	
 	@Override
 	public String toString(){
-		return "RB: " + answer;
+		return answer;
 	}
 
 }

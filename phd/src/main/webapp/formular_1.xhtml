@@ -11,25 +11,26 @@
 <h:body>
 	<ui:composition template="resources/phd/common.xhtml">
 		<ui:define name="content">
-			<h2>Formular</h2>
+			<h2>Formular new Patient data</h2>
 			
 			<h:form>
 				<h:outputLabel>Operation</h:outputLabel><br />
-				<h:selectOneMenu value="Dropdown">
-					<f:selectItems onchange="submit()" value="#{quest.quests}" valueChangeListener="#{quest.questchanged}"/>
-				</h:selectOneMenu>	
+				<h:selectOneMenu onchange="submit()" value="#{quest.questselected}" valueChangeListener="#{quest.questChanged}">
+					<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
+					<f:selectItems value="#{quest.quests}" />
+				</h:selectOneMenu>		
 				<br />
 
-				<c:forEach items="#{loginController.getQuestions('knee')}" var="q">
+				<c:forEach items="#{loginController.getQuestions(quest.questselected)}" var="q">
 					<c:if test="#{q.type eq 'String'}">
 						<h:outputLabel>#{q.question}</h:outputLabel><br />
-						<h:inputText value="#{knee.answerString}">
+						<h:inputText id="j_idt#{q.id}" value="#{knee.answerString}">
 							<f:ajax event="change" execute="@this" listener="#{knee.addString}" />
 						</h:inputText>
 					</c:if>
 					<c:if test="#{q.type eq 'RadioButton'}">
 						<h:outputLabel>#{q.question}</h:outputLabel>
-						<h:selectOneRadio value="#{knee.answerRadioButton}">
+						<h:selectOneRadio id="j_idt#{q.id}" value="#{knee.answerRadioButton}">
 							<f:ajax event="change" execute="@this" listener="#{knee.addRadioButton}" />
 							<c:forEach items="#{q.answerPossibilities}" var="p">
 								<f:selectItem itemLabel="#{p}" itemValue="#{p}" />
@@ -38,7 +39,7 @@
 					</c:if>
 					<c:if test="#{q.type eq 'Checkbox'}">
 						<h:outputLabel>#{q.question}</h:outputLabel>
-						<h:selectManyCheckbox value="#{knee.answerCheckbox}">
+						<h:selectManyCheckbox id="j_idt#{q.id}" value="#{knee.answerCheckbox}">
 							<f:ajax event="change" execute="@this" listener="#{knee.addCheckbox}" />
 							<c:forEach items="#{q.answerPossibilities}" var="p">
 								<f:selectItem itemLabel="#{p}" itemValue="#{p}" />
@@ -50,6 +51,11 @@
 				<h:commandButton actionListener="#{knee.safe}" value="Safe"></h:commandButton>
 
 			</h:form>
+			
+			
+			
+	
+			
 			
 			
 		</ui:define>

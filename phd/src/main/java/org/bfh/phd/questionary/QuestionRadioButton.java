@@ -32,7 +32,7 @@ public class QuestionRadioButton implements Question <String, String> {
 
 	@Override
 	public String toString(){
-		return type + " " + question;
+		return id + " " + type + " " + question;
 	}
 
 	@Override
@@ -48,6 +48,20 @@ public class QuestionRadioButton implements Question <String, String> {
 	@Override
 	public void setAnswerPossibilities(List<String> o) {
 		answerPossibilities = o;
+	}
+	
+	private int id;
+
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return id;
+	}
+
+	@Override
+	public void setId(int id) {
+		// TODO Auto-generated method stub
+		this.id = id;
 	}
 
 }

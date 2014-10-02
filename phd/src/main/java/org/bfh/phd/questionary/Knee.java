@@ -7,6 +7,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
+import org.bfh.phd.EntityManager;
+
 @ManagedBean(name = "knee", eager = true)
 @ViewScoped
 public class Knee {
@@ -16,7 +18,11 @@ public class Knee {
 	private List<Answer> answers = new ArrayList<Answer>();
 	
 	public Knee(){
-		
+		answers.add(new AnswerString());
+		answers.add(new AnswerString());
+		answers.add(new AnswerRadioButton());
+		answers.add(new AnswerCheckbox());
+		answers.add(new AnswerCheckbox());
 	}
 	
 	public int getId() {
@@ -52,34 +58,40 @@ public class Knee {
 	}
 	
 	public void safe(){
-		System.out.println("save" + questions + answers);
+		EntityManager em = new EntityManager();
+		em.addAnswer("knee", answers);
 		for(Answer a : answers){
-			System.out.println("save..." + a);
+			System.out.println("->>" + a);
 		}
 	}
 	
 	
 	
 	public void addString(final AjaxBehaviorEvent event){
-		
-		System.out.println("->" + answerString);
+		String i1 = event.getComponent().getId();
+		int i2 = Integer.parseInt(i1.substring(5));
 		Answer a = new AnswerString();
 		a.setAnswer(answerString);
-		this.addAnswer(a);
+		answers.set(i2-1, a);
+		System.out.println("->" + answerString);
 	}
 	
 	public void addRadioButton(final AjaxBehaviorEvent event){
-		System.out.println("->" + answerRadioButton);
+		String i1 = event.getComponent().getId();
+		int i2 = Integer.parseInt(i1.substring(5));
 		Answer a = new AnswerRadioButton();
 		a.setAnswer(answerRadioButton);
-		this.addAnswer(a);
+		answers.set(i2-1, a);
+		System.out.println("->" + answerRadioButton);
 	}
 	
 	public void addCheckbox(final AjaxBehaviorEvent event){
-		System.out.println("->" + answerCheckbox);
+		String i1 = event.getComponent().getId();
+		int i2 = Integer.parseInt(i1.substring(5));
 		Answer a = new AnswerCheckbox();
 		a.setAnswer(answerCheckbox);
-		this.addAnswer(a);
+		answers.set(i2-1, a);
+		System.out.println("->" + answerCheckbox);
 	}
 	
 

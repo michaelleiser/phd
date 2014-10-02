@@ -27,12 +27,8 @@ public class AnswerCheckbox implements Answer <List<String>, String> {
 	}
 	
 	@Override
-	public String toString(){
-		String ret = "";
-		for(String s : answer){
-			ret = ret + " " + s;
-		}
-		return "CB: " + ret;
+	public String toString(){;
+		return answer.toString();
 	}
 	
 }

@@ -31,7 +31,7 @@
 				<h:outputText value="#{msg['greeting']}" />
 				<h:panelGrid columns="2">
 				Language:
-				<h:selectOneMenu value="#languagecontroller.locale"
+				<h:selectOneMenu value="#{languagecontroller.locale}"
 						onchange="submit()"
 						valueChangeListener="#{languagecontroller.localeChanged}">
 						<f:selectItems value="#{languagecontroller.countries}" />

@@ -3,6 +3,10 @@ package org.bfh.phd.questionary;
 import java.util.List;
 
 public interface Question <A, B> {
+	
+	public int getId();
+	
+	public void setId(int i);
 
 	public String getType();
 	

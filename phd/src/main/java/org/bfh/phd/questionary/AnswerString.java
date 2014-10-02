@@ -25,7 +25,7 @@ public class AnswerString implements Answer<String, String> {
 
 	@Override
 	public String toString(){
-		return "S: " + answer;
+		return answer;
 	}
 
 }
