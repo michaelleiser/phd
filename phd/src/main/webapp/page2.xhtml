@@ -31,7 +31,7 @@
 						<f:facet name="header">Birthday</f:facet>#{patients.birth}
 					</h:column>
 					<h:column>
-						<h:commandButton action="#{navigation.redirectToEditPatient}" value="Goto Edit Patient"></h:commandButton>
+						<h:commandButton action="#{navigation.redirectToEditPatient}" value="Goto Edit Patient"></f:setPropertyActionListener><f:setPropertyActionListener target="#{loginController.activePatient}" value="#{patients}"></f:setPropertyActionListener></h:commandButton>
 					</h:column>
 					<h:column>
 						<h:commandButton action="#{loginController.setActivePatient(patients)}" value="Get Patient Datas" />
