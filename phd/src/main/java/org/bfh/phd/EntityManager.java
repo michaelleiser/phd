@@ -26,8 +26,8 @@ import org.bfh.phd.questionary.QuestionString;
 @SessionScoped
 public class EntityManager {
 	
+	private List<Staff> staff;	
 	private List<Patient> patients;
-	private List<Staff> staff;
 	private List<PatientData> patientdatas;
 	
 	private Connection con = null;
@@ -35,11 +35,10 @@ public class EntityManager {
 	private ResultSet rs = null;
 	
 	public EntityManager(){
-		this.patients = new ArrayList<Patient>();
 		this.staff = new ArrayList<Staff>();;
+		this.patients = new ArrayList<Patient>();
 	}
 	
-	// parameter sollte warscheinlich STAFF sein
 	public Staff getStaff(String name, String password) {
 		Staff s = null;
 		String stm = "SELECT * FROM doctor WHERE name=? AND password=?;";
@@ -691,11 +690,11 @@ public class EntityManager {
 		for(int i = 2 ; i <= size ; i++){
 			stm = stm + ", answer" + i;
 		}
-		stm = stm + ") VALUES(?";
+		stm = stm + ", patient_patient_id) VALUES(?";		// TODO
 		for(int i = 2 ; i <= size ; i++){
 			stm = stm + ",?";
 		}
-		stm = stm + ");";
+		stm = stm + ", 1);";								// TODO
 		init();
 		try {
 			pst = con.prepareStatement(stm);
@@ -715,5 +714,86 @@ public class EntityManager {
 			closeWithoutRs();
 		}
 		return;
+	}
+
+	public List<Elbow> searchPatientData2(String op) {
+		List<Elbow> elbowlist = new ArrayList<Elbow>();
+		init();
+		String stm = "SELECT * FROM elbow_answer;";
+		try {
+			pst = con.prepareStatement(stm);
+//			pst.setString(1, operation);
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+				List<Answer> answerlist = new ArrayList<Answer>();
+				Elbow e = new Elbow();
+				Answer a1 = new AnswerString();
+				a1.addAnswer(rs.getString("answer1"));
+				Answer a2 = new AnswerString();
+				a2.addAnswer(rs.getString("answer2"));
+				Answer a3 = new AnswerString();
+				a3.addAnswer(rs.getString("answer3"));
+				Answer a4 = new AnswerString();
+				a4.addAnswer(rs.getString("answer4"));
+
+				answerlist.add(a1);
+				answerlist.add(a2);
+				answerlist.add(a3);
+				answerlist.add(a4);
+				e.setAnswers(answerlist);
+				System.out.println("->" + e.getAnswers());
+				
+				elbowlist.add(e);
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return elbowlist;
+	}
+
+	public List<Knee> searchPatientData3(String op) {
+		List<Knee> kneelist = new ArrayList<Knee>();
+		init();
+		String stm = "SELECT * FROM knee_answer;";
+		try {
+			pst = con.prepareStatement(stm);
+//			pst.setString(1, operation);
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+				List<Answer> answerlist = new ArrayList<Answer>();
+				Knee e = new Knee();
+				Answer a1 = new AnswerString();
+				a1.addAnswer(rs.getString("answer1"));
+				Answer a2 = new AnswerString();
+				a2.addAnswer(rs.getString("answer2"));
+				Answer a3 = new AnswerString();
+				a3.addAnswer(rs.getString("answer3"));
+				Answer a4 = new AnswerString();
+				a4.addAnswer(rs.getString("answer4"));
+				Answer a5 = new AnswerString();
+				a5.addAnswer(rs.getString("answer5"));
+
+				answerlist.add(a1);
+				answerlist.add(a2);
+				answerlist.add(a3);
+				answerlist.add(a4);
+				answerlist.add(a5);
+				e.setAnswers(answerlist);
+				System.out.println("->" + e.getAnswers());
+				
+				kneelist.add(e);
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return kneelist;
 	}
 }

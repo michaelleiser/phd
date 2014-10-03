@@ -11,16 +11,47 @@
 <h:body>
 	<ui:composition template="resources/phd/common.xhtml">
 		<ui:define name="content">
-			<h2>Formular new Patient data</h2>
+			<h2>Formular new Patient data #{loginController.activePatient}</h2>
 			
 			<h:form>
 				<h:outputLabel>Operation</h:outputLabel><br />
-				<h:selectOneMenu onchange="submit()" value="#{quest.questselected}" valueChangeListener="#{quest.questChanged}">
+				<h:selectOneMenu onchange="submit()" value="#{quest.questselected}" actionListener="#{quest.questChanged}">
 					<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
 					<f:selectItems value="#{quest.quests}" />
 				</h:selectOneMenu>		
 				<br />
-
+				
+				<c:if test="#{quest.questselected eq 'elbow'}">
+				<c:forEach items="#{loginController.getQuestions(quest.questselected)}" var="q">
+					<c:if test="#{q.type eq 'String'}">
+						<h:outputLabel>#{q.question}</h:outputLabel><br />
+						<h:inputText id="j_idt#{q.id}" value="#{elbow.answerString}">
+							<f:ajax event="change" execute="@this" listener="#{elbow.addString}" />
+						</h:inputText>
+					</c:if>
+					<c:if test="#{q.type eq 'RadioButton'}">
+						<h:outputLabel>#{q.question}</h:outputLabel>
+						<h:selectOneRadio id="j_idt#{q.id}" value="#{elbow.answerRadioButton}">
+							<f:ajax event="change" execute="@this" listener="#{elbow.addRadioButton}" />
+							<c:forEach items="#{q.answerPossibilities}" var="p">
+								<f:selectItem itemLabel="#{p}" itemValue="#{p}" />
+							</c:forEach>
+						</h:selectOneRadio>
+					</c:if>
+					<c:if test="#{q.type eq 'Checkbox'}">
+						<h:outputLabel>#{q.question}</h:outputLabel>
+						<h:selectManyCheckbox id="j_idt#{q.id}" value="#{elbow.answerCheckbox}">
+							<f:ajax event="change" execute="@this" listener="#{elbow.addCheckbox}" />
+							<c:forEach items="#{q.answerPossibilities}" var="p">
+								<f:selectItem itemLabel="#{p}" itemValue="#{p}" />
+							</c:forEach>
+						</h:selectManyCheckbox>
+					</c:if><br />
+				</c:forEach>					
+				<h:commandButton actionListener="#{elbow.safe}" value="Safe"></h:commandButton>
+				</c:if>
+				
+				<c:if test="#{quest.questselected eq 'knee'}">
 				<c:forEach items="#{loginController.getQuestions(quest.questselected)}" var="q">
 					<c:if test="#{q.type eq 'String'}">
 						<h:outputLabel>#{q.question}</h:outputLabel><br />
@@ -46,10 +77,11 @@
 							</c:forEach>
 						</h:selectManyCheckbox>
 					</c:if><br />
-				</c:forEach>
-									
+				</c:forEach>					
 				<h:commandButton actionListener="#{knee.safe}" value="Safe"></h:commandButton>
-
+				</c:if>
+				
+				
 			</h:form>
 			
 			

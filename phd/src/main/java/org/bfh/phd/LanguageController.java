@@ -11,7 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 @ManagedBean(name = "languagecontrollertest", eager = true)
-@SessionScoped							// Session oder Request Scoped
+@SessionScoped
 public class LanguageController {
 
 	private static Map<String, Object> countries;

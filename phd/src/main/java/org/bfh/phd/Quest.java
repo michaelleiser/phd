@@ -3,23 +3,17 @@ package org.bfh.phd;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-
-import org.bfh.phd.questionary.Elbow;
-import org.bfh.phd.questionary.Knee;
 
 @ManagedBean(name = "quest", eager = true)
 @RequestScoped
 public class Quest implements Serializable {
 	
 	private static List<String> quests;
-	private String questselected = "";
+	private static String questselected = "";
 	
 	static{
 		quests = new ArrayList<String>();

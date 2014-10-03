@@ -13,15 +13,17 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class Patient implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	private int patientid;
 	private String firstname;
 	private String lastname;
-	private String gender = "";
-	private String street = "";
-	private int nr = 1;
-	private String city = "";
-	private String zip = "";
-	private int telnumber = 0;
+	private String gender;
+	private String street;
+	private int nr;
+	private String city;
+	private String zip;
+	private int telnumber;
 	private String birth;
 //	private List<Patient> patientList = new ArrayList<Patient>();
 

@@ -10,6 +10,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 
 import org.bfh.phd.questionary.Answer;
+import org.bfh.phd.questionary.Elbow;
+import org.bfh.phd.questionary.Knee;
 import org.bfh.phd.questionary.Question;
 
 @ManagedBean(name = "loginController", eager = true)
@@ -32,11 +34,20 @@ public class LoginController implements Serializable {
 //	@ManagedProperty(value="#{navigation}")
 //	private Navigation navigation;
 	
+	private Staff staff;
+	
+	public void setStaff(Staff s){
+		staff = s;
+	}
+	public Staff getStaff(){
+		return this.staff;
+	}
+	
 	public String login(String name, String password) {
-		Staff s = em.getStaff(name, password);
-		if(s != null){
+		staff = em.getStaff(name, password);
+		if(staff != null){
 			setLoggedin(true);
-			setRole(s.getRole());
+			setRole(staff.getRole());
 			return "loggedin";
 		}
 		return "home";
@@ -275,4 +286,15 @@ public class LoginController implements Serializable {
 	}
 
 	private Date to;
+
+	public List<Elbow> searchPatientData2(String op) {
+		System.out.println("SEARCHING Patient Data..." + op + from + "--" + to);
+		List<Elbow> l = em.searchPatientData2(op);
+		return l;
+	}
+	public List<Knee> searchPatientData3(String op) {
+		System.out.println("SEARCHING Patient Data..." + op + from + "--" + to);
+		List<Knee> l = em.searchPatientData3(op);
+		return l;
+	}
 }

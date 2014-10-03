@@ -3,11 +3,10 @@ package org.bfh.phd;
 import java.io.Serializable;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 
 @ManagedBean(name = "userData", eager = true)
-@SessionScoped							// evtl nur RequestScoped
+@SessionScoped
 public class UserData implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -37,7 +36,7 @@ public class UserData implements Serializable {
 	}
 
 	public int getRole() {
-		return role;
+		return this.role;
 	}
 
 	public void setRole(int role) {
@@ -46,10 +45,6 @@ public class UserData implements Serializable {
 	
 	public String login() {	
 		return new LoginController().login(this.name, this.password);
-	}
-
-	public String logout(){
-		return new LoginController().logout();
 	}
 
 	public String registernew(){
