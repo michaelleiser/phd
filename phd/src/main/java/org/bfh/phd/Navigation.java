@@ -18,10 +18,10 @@ public class Navigation implements Serializable {
 		return "/error?faces-redirect=true";
 	}
 	public String toFormular_1(){
-		return "/formular_1";
+		return "/restricted/formular_1";
 	}
 	public String redirectToFormular_1(){
-		return "/formular_1?faces-redirect=true";
+		return "/restricted/formular_1?faces-redirect=true";
 	}
 	public String toHome(){
 		return "/home";
@@ -35,23 +35,18 @@ public class Navigation implements Serializable {
 	public String redirectToLoggedin(){
 		return "/loggedin?faces-redirect=true";
 	}
-	public String toNewpatient(){
-		return "/newPatient";
+
+	public String toSearchPatient(){
+		return "/restrictedfordoctor/searchPatient";
 	}
-	public String redirectToNewpatient(){
-		return "/newPatient?faces-redirect=true";
+	public String redirectToSearchPatient(){
+		return "/restrictedfordoctor/searchPatient?faces-redirect=true";
 	}
-	public String toPage2(){
-		return "/page2";
+	public String toSearchPatientData(){
+		return "/restricted/searchPatientData";
 	}
-	public String redirectToPage2(){
-		return "/page2?faces-redirect=true";
-	}
-	public String toPage3(){
-		return "/page3";
-	}
-	public String redirectToPage3(){
-		return "/page3?faces-redirect=true";
+	public String redirectToSearchPatientData(){
+		return "/restricted/searchPatientData?faces-redirect=true";
 	}
 	public String toPagefortesting(){
 		return "/pagefortesting";
@@ -90,23 +85,23 @@ public class Navigation implements Serializable {
 		return "/restrictedforstatistician/restrictedforstatistician?faces-redirect=true";
 	}
 	public String toNewPatient(){
-		return "/newPatient";
+		return "/restrictedfordoctor/newPatient";
 	}
 	public String redirectToNewPatient(){
-		return "/newPatient?faces-redirect=true";
+		return "/restrictedfordoctor/newPatient?faces-redirect=true";
 	}
 	
 	public String toEditPatient(){
-		return "/editPatient";
+		return "/restrictedfordoctor/editPatient";
 	}
 	public String redirectToEditPatient(){
-		return "/editPatient?faces-redirect=true";
+		return "/restrictedfordoctor/editPatient?faces-redirect=true";
 	}
 	
 	public String toFormular(){
-		return "/formular_1";
+		return "/restricted/formular_1";
 	}
 	public String redirectToFormular(){
-		return "/formular_1?faces-redirect=true";
+		return "/restricted/formular_1?faces-redirect=true";
 	}
 }

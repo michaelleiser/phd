@@ -18,10 +18,7 @@ public class Elbow {
 	private List<Answer> answers = new ArrayList<Answer>();
 	
 	public Elbow(){
-		answers.add(new AnswerString());
-		answers.add(new AnswerString());
-		answers.add(new AnswerRadioButton());
-		answers.add(new AnswerCheckbox());
+
 	}
 	
 	public int getId() {
@@ -57,6 +54,7 @@ public class Elbow {
 	}
 	
 	public void safe(){
+		System.out.println("******");
 		EntityManager em = new EntityManager();
 		em.addAnswer("elbow", answers);
 		for(Answer a : answers){
@@ -71,6 +69,9 @@ public class Elbow {
 		int i2 = Integer.parseInt(i1.substring(5));
 		Answer a = new AnswerString();
 		a.setAnswer(answerString);
+		while(answers.size() < i2){
+			answers.add(null);
+		}
 		answers.set(i2-1, a);
 		System.out.println("->" + answerString);
 	}
@@ -80,6 +81,9 @@ public class Elbow {
 		int i2 = Integer.parseInt(i1.substring(5));
 		Answer a = new AnswerRadioButton();
 		a.setAnswer(answerRadioButton);
+		while(answers.size() < i2){
+			answers.add(null);
+		}
 		answers.set(i2-1, a);
 		System.out.println("->" + answerRadioButton);
 	}
@@ -89,6 +93,9 @@ public class Elbow {
 		int i2 = Integer.parseInt(i1.substring(5));
 		Answer a = new AnswerCheckbox();
 		a.setAnswer(answerCheckbox);
+		while(answers.size() < i2){
+			answers.add(null);
+		}
 		answers.set(i2-1, a);
 		System.out.println("->" + answerCheckbox);
 	}

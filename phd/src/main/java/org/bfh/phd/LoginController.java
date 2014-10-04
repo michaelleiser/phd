@@ -24,6 +24,9 @@ public class LoginController implements Serializable {
 	
 	private int patientid;
 	private int patientdataid;
+	
+	private Patient activePatient;
+	private PatientData activePatientData;
 
 	private EntityManager em;
 	
@@ -34,17 +37,17 @@ public class LoginController implements Serializable {
 //	@ManagedProperty(value="#{navigation}")
 //	private Navigation navigation;
 	
-	private Staff staff;
-	
-	public void setStaff(Staff s){
-		staff = s;
-	}
-	public Staff getStaff(){
-		return this.staff;
-	}
+//	private Staff staff;
+//	
+//	public void setStaff(Staff s){
+//		staff = s;
+//	}
+//	public Staff getStaff(){
+//		return this.staff;
+//	}
 	
 	public String login(String name, String password) {
-		staff = em.getStaff(name, password);
+		Staff staff = em.getStaff(name, password);
 		if(staff != null){
 			setLoggedin(true);
 			setRole(staff.getRole());
@@ -116,6 +119,9 @@ public class LoginController implements Serializable {
 		if(activePatient != null){
 			System.out.println("GetPatientDatas " + activePatient.getPatientid());
 			List<PatientData> l = em.getPatientDatas(activePatient.getPatientid());
+			
+			first2size = l.size();
+			
 			return l;
 		}
 		return null;
@@ -163,6 +169,9 @@ public class LoginController implements Serializable {
 	public List<Patient> searchPatient(String firstname) {		// TODO
 		System.out.println("SEARCHING Patient..." + firstname);
 		List<Patient> l = em.searchPatient(firstname);
+
+		first1size = l.size();
+		
 		return l;
 	}
 
@@ -199,56 +208,11 @@ public class LoginController implements Serializable {
 //	}
 	
 	
-	
-	private int first1 = 0;
-	private int first2 = 0;
-	
-	public String forward1(){
-		first1 = first1 + 10;
-		return null;
-	}
-	
-	public String backward1(){
-		first1 = first1 - 10;
-		if(first1 < 0){
-			first1 = 0;
-		}
-		return null;
-	}	
-	
-	public int getFirst1() {
-		return first1;
-	}
-
-	public void setFirst1(int first1) {
-		this.first1 = first1;
-	}
-	
-	public String forward2(){
-		first2 = first2 + 10;
-		return null;
-	}
-	
-	public String backward2(){
-		first2 = first2 - 10;
-		if(first2 < 0){
-			first2 = 0;
-		}
-		return null;
-	}
-	
-	public int getFirst2() {
-		return first2;
-	}
-
-	public void setFirst2(int first2) {
-		this.first2 = first2;
-	}
-
 
 	
-	private Patient activePatient;
-
+	
+	
+	
 	public Patient getActivePatient() {
 		return activePatient;
 	}
@@ -257,8 +221,7 @@ public class LoginController implements Serializable {
 		this.activePatient = activePatient;
 	}
 	
-	
-	private PatientData activePatientData;
+
 
 	public PatientData getActivePatientData() {
 		return activePatientData;
@@ -297,4 +260,112 @@ public class LoginController implements Serializable {
 		List<Knee> l = em.searchPatientData3(op);
 		return l;
 	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private int pagesize = 10;
+	
+	public int getPagesize() {
+		return pagesize;
+	}
+
+	public void setPagesize(int pagesize) {
+		this.pagesize = pagesize;
+	}
+
+	private int pagenr1 = 1;
+	public int getPagenr1() {
+		return pagenr1;
+	}
+	public void setPagenr1(int pagenr1) {
+		this.pagenr1 = pagenr1;
+	}
+	
+	private int pagenr2 = 1;
+	public int getPagenr2() {
+		return pagenr2;
+	}
+	public void setPagenr2(int pagenr2) {
+		this.pagenr2 = pagenr2;
+	}
+
+	
+	private int first1 = 0;
+	private int first1size = 0;
+	public String forward1(){
+		first1 = first1 + pagesize;
+		pagenr1++;
+		return null;
+	}
+	public String backward1(){
+		first1 = first1 - pagesize;
+		if(first1 < 0){
+			first1 = 0;
+		}
+		pagenr1--;
+		return null;
+	}	
+	public int getFirst1() {
+		return first1;
+	}
+	public void setFirst1(int first1) {
+		this.first1 = first1;
+	}
+	
+	private int first2 = 0;
+	private int first2size = 0;
+	public String forward2(){
+		first2 = first2 + pagesize;
+		pagenr2++;
+		return null;
+	}
+	public String backward2(){
+		first2 = first2 - pagesize;
+		if(first2 < 0){
+			first2 = 0;
+		}
+		pagenr2--;
+		return null;
+	}
+	public int getFirst2() {
+		return first2;
+	}
+	public void setFirst2(int first2) {
+		this.first2 = first2;
+	}
+	public int getFirst1size() {
+		return first1size;
+	}
+
+	public void setFirst1size(int first1size) {
+		this.first1size = first1size;
+	}
+
+	public int getFirst2size() {
+		return first2size;
+	}
+
+	public void setFirst2size(int first2size) {
+		this.first2size = first2size;
+	}
+	public boolean hasPrevious1(){
+		return first1 > 0;
+	}
+	public boolean hasNext1(){
+		return ((first1size - first1) - pagesize) > 0;
+	}
+	public boolean hasPrevious2(){
+		return first2 > 0;
+	}
+	public boolean hasNext2(){
+		return ((first2size - first2) - pagesize) > 0;
+	}
+
 }

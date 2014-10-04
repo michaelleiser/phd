@@ -13,7 +13,7 @@ import javax.faces.event.ActionEvent;
 public class Quest implements Serializable {
 	
 	private static List<String> quests;
-	private static String questselected = "";
+	private static String questselected;
 	
 	static{
 		quests = new ArrayList<String>();
