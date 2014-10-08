@@ -11,14 +11,16 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
-
-
+			<h2>
+				<h:outputText value="#{msg['searchPatient']}" />
+			</h2>
+			
 			<h:form>
 				<h:inputText binding="#{input1}" id="patid"></h:inputText>
-				<h:commandButton value="Filter Patient for Firstname">
+				<h:commandButton value="Filter Patient (firstname)">
 					<f:ajax execute="patid" render="outputMessage" />
 				</h:commandButton>
-				<h:dataTable first="#{loginController.first1}" id="outputMessage" rows="#{loginController.pagesize}" value="#{loginController.searchPatient(input1.value)}" var="patients" headerClass="table-header" rowClasses="table-odd-row,table-even-row">
+				<h:dataTable first="#{entityManager.getP1().first}" id="outputMessage" rows="#{entityManager.getP1().pagesize}" value="#{loginController.searchPatient(input1.value)}" var="patients" headerClass="table-header" rowClasses="table-odd-row,table-even-row" columnClasses="table-column-id,table-column-firstname,table-column-lastname,table-column-birthday,table-column-button,table-column-button,table-column-button">
 					<h:column>
 						<f:facet name="header">ID</f:facet>#{patients.patientid}
 					</h:column>
@@ -32,30 +34,36 @@
 						<f:facet name="header">Birthday</f:facet>#{patients.birth}
 					</h:column>
 					<h:column>
-						<h:commandButton action="#{navigation.redirectToEditPatient}" value="Goto Edit Patient">
+						<h:commandButton rendered="#{loginController.isOwner(patients)}" action="#{navigation.redirectToEditPatient}" value="Goto Edit Patient">
 							<f:setPropertyActionListener target="#{loginController.activePatient}" value="#{patients}">
 							</f:setPropertyActionListener>
 						</h:commandButton>
 					</h:column>
 					<h:column>
-						<h:commandButton action="#{loginController.setActivePatient(patients)}" value="Get Patient Datas" />
+						<h:commandButton rendered="#{loginController.isOwner(patients)}" action="#{loginController.setActivePatient(patients)}" value="Get Patient Datas" />
+					</h:column>
+					<h:column>
+						<h:commandButton rendered="#{loginController.isOwner(patients)}" action="#{navigation.redirectToModifyGroup}" value="Goto Modify Group">
+							<f:setPropertyActionListener target="#{loginController.activePatient}" value="#{patients}">
+							</f:setPropertyActionListener>
+						</h:commandButton>
 					</h:column>
 					
 					<f:facet name="footer">
 						<h:panelGroup>							
-							<h:commandButton rendered="#{loginController.hasPrevious1()}" action="#{loginController.backward1}" value="&lt;&lt; Page #{loginController.pagenr1 - 1}" />
-							<h:outputLabel value="Page #{loginController.pagenr1}" />
-							<h:commandButton rendered="#{loginController.hasNext1()}" action="#{loginController.forward1}" value="Page #{loginController.pagenr1 + 1} &gt;&gt;" />
+							<h:commandButton rendered="#{entityManager.getP1().hasPrevious()}" action="#{entityManager.getP1().backward}" value="&lt;&lt; Page #{entityManager.getP1().pagenr - 1}" />
+							<h:outputLabel value="Page #{entityManager.getP1().pagenr}" />
+							<h:commandButton rendered="#{entityManager.getP1().hasNext()}" action="#{entityManager.getP1().forward}" value="Page #{entityManager.getP1().pagenr + 1} &gt;&gt;" />
 						</h:panelGroup>
 					</f:facet>
 				</h:dataTable>	
 			</h:form>			
 			
-			<hr />
+		<hr />
 				
 			<h:form>
 				<h:commandButton action="#{navigation.redirectToFormular}" value="insert a new entry"/>
-				<h:dataTable first="#{loginController.first2}" id="outputMessage123" rows="#{loginController.pagesize}" value="#{loginController.getPatientDatas()}" var="patientdatas" headerClass="table-header" rowClasses="table-odd-row,table-even-row">
+				<h:dataTable first="#{entityManager.getP2().first}" id="outputMessage123" rows="#{entityManager.getP2().pagesize}" value="#{loginController.getPatientDatas()}" var="patientdatas" headerClass="table-header" rowClasses="table-odd-row,table-even-row" columnClasses="table-column-id,table-column-first,table-column-second,table-column-button">
 					<h:column>
 						<f:facet name="header">ID</f:facet>#{patientdatas.patientdata_id}
 					</h:column>
@@ -70,15 +78,13 @@
 					</h:column>
 					<f:facet name="footer">
 						<h:panelGroup>							
-							<h:commandButton rendered="#{loginController.hasPrevious2()}" action="#{loginController.backward2}" value="&lt;&lt; Page #{loginController.pagenr2 - 1}" />
-							<h:outputLabel value="Page #{loginController.pagenr2}" />
-							<h:commandButton rendered="#{loginController.hasNext2()}" action="#{loginController.forward2}" value="Page #{loginController.pagenr2 + 1} &gt;&gt;" />
+							<h:commandButton rendered="#{entityManager.getP2().hasPrevious()}" action="#{entityManager.getP2().backward}" value="&lt;&lt; Page #{entityManager.getP2().pagenr - 1}" />
+							<h:outputLabel value="Page #{entityManager.getP2().pagenr}" />
+							<h:commandButton rendered="#{entityManager.getP2().hasNext()}" action="#{entityManager.getP2().forward}" value="Page #{entityManager.getP2().pagenr + 1} &gt;&gt;" />
 						</h:panelGroup>
 					</f:facet>
 				</h:dataTable>
 			</h:form>
-			
-			<hr />
 			
 		</ui:define>
 	</ui:composition>

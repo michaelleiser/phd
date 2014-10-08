@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -25,7 +27,7 @@ public class Patient implements Serializable {
 	private String zip;
 	private int telnumber;
 	private String birth;
-//	private List<Patient> patientList = new ArrayList<Patient>();
+	private List<PatientData> patientData = new ArrayList<PatientData>();
 
 	public Patient() {
 
@@ -113,55 +115,69 @@ public class Patient implements Serializable {
 
 
 	// move to entytimanager
-	public String addNewPatient(){
-		String stm1 = "SELECT * FROM testdb.patient WHERE firstname='"+firstname+"' AND lastname='"+lastname+"' AND birthday='"+ birth + "' AND zip='"+zip+"';";
-		String stm2 = "INSERT INTO testdb.patient (firstname, lastname, birthday, street, nr, city, zip, telnumber, gender) VALUES('"+firstname+"','"+lastname+"','"+birth+"','"+street+"','"+nr+"','"+city+"','"+zip+"','"+telnumber+"','"+gender+"');";
-		Connection con = MyConnection.getConnection();
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		try {
-			pst = con.prepareStatement(stm1);
-			pst.execute();
-			rs = pst.getResultSet();
-			if(rs.next()) {
-				return "newPatient";
-			}
-			pst.close();
-			pst = con.prepareStatement(stm2);
-			pst.execute();
-			pst.close();
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (pst != null) {
-				try {
-					pst.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return "loggedin";
-	}
+//	public String addNewPatient(){
+//		String stm1 = "SELECT * FROM testdb.patient WHERE firstname='"+firstname+"' AND lastname='"+lastname+"' AND birthday='"+ birth + "' AND zip='"+zip+"';";
+//		String stm2 = "INSERT INTO testdb.patient (firstname, lastname, birthday, street, nr, city, zip, telnumber, gender) VALUES('"+firstname+"','"+lastname+"','"+birth+"','"+street+"','"+nr+"','"+city+"','"+zip+"','"+telnumber+"','"+gender+"');";
+//		Connection con = MyConnection.getConnection();
+//		PreparedStatement pst = null;
+//		ResultSet rs = null;
+//		try {
+//			pst = con.prepareStatement(stm1);
+//			pst.execute();
+//			rs = pst.getResultSet();
+//			if(rs.next()) {
+//				return "newPatient";
+//			}
+//			pst.close();
+//			pst = con.prepareStatement(stm2);
+//			pst.execute();
+//			pst.close();
+//			con.close();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			if (rs != null) {
+//				try {
+//					rs.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//			if (pst != null) {
+//				try {
+//					pst.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//			if (con != null) {
+//				try {
+//					con.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//		LoginController lc = new LoginController();
+//		lc.createPatient(this);
+//		return "loggedin";
+//	}
 	
 	@Override
 	public String toString(){
 		return firstname + " : " + lastname;
+	}
+
+	public List<PatientData> getPatientData() {
+		return patientData;
+	}
+
+	public void setPatientData(List<PatientData> patientData) {
+		this.patientData = patientData;
+	}
+	
+	public void addPatientData(PatientData patientData){
+		this.patientData.add(patientData);
 	}
 	
 }

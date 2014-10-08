@@ -2,6 +2,7 @@ package org.bfh.phd;
 
 public class Staff {
 	
+	private int id;
 	private String name;
 	private String password;
 	private int role;
@@ -37,6 +38,14 @@ public class Staff {
 	@Override
 	public String toString(){
 		return name + " : " + role;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 }

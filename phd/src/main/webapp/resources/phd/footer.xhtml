@@ -40,10 +40,10 @@
 		<h:form rendered="#{loginController.loggedin}">
 			<h:commandLink action="#{navigation.redirectToRestricted}" value="restricted!!!" />
 		</h:form>
-		<h:form rendered="#{loginController.loggedin and loginController.role=='1'}">
+		<h:form rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}">
 			<h:commandLink action="#{navigation.redirectToRestrictedForDoctor}" value="restricted for doctor!!!" />
 		</h:form>
-		<h:form rendered="#{loginController.loggedin and loginController.role=='2'}">
+		<h:form rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='2'}">
 			<h:commandLink action="#{navigation.redirectToRestrictedForStatistician}" value="restricted for statistician!!!" />
 		</h:form>
 		

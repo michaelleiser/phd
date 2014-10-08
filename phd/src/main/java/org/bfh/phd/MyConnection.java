@@ -12,8 +12,7 @@ public class MyConnection {
 		
 //		FacesContext fc = FacesContext.getCurrentInstance();
 //		String driver = fc.getExternalContext().getInitParameter("JDBC-DRIVER");
-		
-		
+			
 		Properties prop = new Properties();
 		String propFile = "config.properties";
 		InputStream input = Patient.class.getClassLoader().getResourceAsStream(propFile);
@@ -26,8 +25,7 @@ public class MyConnection {
 		String user = prop.getProperty("USER");
 		String password = prop.getProperty("PASSWORD");
 		String driver = prop.getProperty("JDBC-DRIVER");
-		
-		
+			
 		Connection con = null;
 //		String url = "jdbc:mysql://localhost:3306/testdb";
 //		String user = "user";

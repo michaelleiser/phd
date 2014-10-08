@@ -61,7 +61,7 @@
 						<f:validateLength minimum="10" maximum="10" />
 					</h:inputText>
 				</h:panelGrid>
-				<h:commandButton action="#{patient.addNewPatient}" value="addNewPatient" />
+				<h:commandButton action="#{loginController.createPatient(patient)}" value="addNewPatient" />
 			</h:form>
 		</ui:define>
 	</ui:composition>

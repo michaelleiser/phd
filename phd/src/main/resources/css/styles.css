@@ -34,6 +34,17 @@ div#loggedinbox {
 	padding: 10px 10px 10px 10px;
 }
 
+.table-column-id {
+	background-color: #9094bc;
+	padding: 5px 5px 5px 5px;
+}
+
+.table-column-button {
+	background-color: #EEEEEE;
+	padding: 5px 5px 5px 5px;
+}
+
+
 /* div#page { */
 /*     font-family: Arial; */
 /*     text-shadow: 5px 5px 5px #999; */

@@ -19,7 +19,7 @@
 				</h:panelGrid>
 				<h:commandButton action="#{userData.login}" rendered="#{!loginController.loggedin}" value="Login" />
 				<h:outputLabel rendered="#{loginController.loggedin}">You are logged in as #{userData.name}</h:outputLabel>
-				<h:commandButton action="#{userData.logout}" rendered="#{loginController.loggedin}" value="Logout" />
+				<h:commandButton action="#{loginController.logout}" rendered="#{loginController.loggedin}" value="Logout" />
 			</h:form>
 			<h:form>
 				<h:commandButton action="#{navigation.redirectToRegisternew}" value="Registernew" />

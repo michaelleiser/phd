@@ -20,7 +20,7 @@ public class LoginFilterDoctor implements Filter {
 		if ((lc == null) || !lc.getLoggedin()) {
 			String contextPath = ((HttpServletRequest) request).getContextPath();
 			((HttpServletResponse) response).sendRedirect(contextPath + "/home.xhtml");
-		} else if (lc.getRole() != 1) {
+		} else if (lc.getStaff().getRole() != 1) {
 			String contextPath = ((HttpServletRequest) request).getContextPath();
 			((HttpServletResponse) response).sendRedirect(contextPath + "/loggedin.xhtml");
 		} else {

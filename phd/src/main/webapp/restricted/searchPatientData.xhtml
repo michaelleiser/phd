@@ -29,7 +29,7 @@
 				
 				<h:commandButton value="Search Patient Data"></h:commandButton>
 				
-				<h:dataTable first="#{loginController.first2}" rows="10" rendered="#{quest.questselected!=null}" value="#{loginController.searchPatientData(quest.questselected)}" var="patientdatas" headerClass="table-header" rowClasses="table-odd-row,table-even-row">
+				<h:dataTable first="#{entityManager.getP2().first}" rows="#{entityManager.getP2().pagesize}" rendered="#{quest.questselected!=null}" value="#{loginController.searchPatientData(quest.questselected)}" var="patientdatas" headerClass="table-header" rowClasses="table-odd-row,table-even-row" columnClasses="table-column-id,table-column-first,table-column-second,table-column-timestamp">
 					<h:column>
 						<f:facet name="header">ID</f:facet>#{patientdatas.patientdata_id}
 					</h:column>
@@ -44,9 +44,10 @@
 					</h:column>
 					
 					<f:facet name="footer">
-						<h:panelGroup>
-							<h:commandButton action="#{loginController.backward2}" value="backward" />
-							<h:commandButton action="#{loginController.forward2}" value="forward" />
+						<h:panelGroup>							
+							<h:commandButton rendered="#{entityManager.getP2().hasPrevious()}" action="#{entityManager.getP2().backward}" value="&lt;&lt; Page #{entityManager.getP2().pagenr - 1}" />
+							<h:outputLabel value="Page #{entityManager.getP2().pagenr}" />
+							<h:commandButton rendered="#{entityManager.getP2().hasNext()}" action="#{entityManager.getP2().forward}" value="Page #{entityManager.getP2().pagenr + 1} &gt;&gt;" />
 						</h:panelGroup>
 					</f:facet>
 				</h:dataTable>

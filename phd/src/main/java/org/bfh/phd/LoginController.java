@@ -20,11 +20,11 @@ public class LoginController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private static boolean loggedin = false;
-	private static int role = 0;
 	
-	private int patientid;
-	private int patientdataid;
+//	private int patientid;			// TODO remove this
+	private int patientdataid;		// TODO remove this
 	
+	private static Staff activeUser;
 	private Patient activePatient;
 	private PatientData activePatientData;
 
@@ -34,23 +34,35 @@ public class LoginController implements Serializable {
 		em = new EntityManager();
 	}
 	
-//	@ManagedProperty(value="#{navigation}")
-//	private Navigation navigation;
+////	@ManagedProperty(value="#{navigation}")
+////	private Navigation navigation;
 	
-//	private Staff staff;
-//	
-//	public void setStaff(Staff s){
-//		staff = s;
-//	}
-//	public Staff getStaff(){
-//		return this.staff;
-//	}
+	
+	public void setStaff(Staff s){
+		activeUser = s;
+	}
+	public Staff getStaff(){
+		return this.activeUser;
+	}
+	
+	public List<Staff> getStaffs(){
+		return em.getStaff();
+	}
+	public List<Staff> getStaffs(String name){
+		return em.getStaffs(name);
+	}
+
+	public void addStaffToGroup(Staff staff){
+		em.addStaffToGroup(staff, activePatient);
+	}
+	public void removeStaffFromGroup(Staff staff){
+		em.removeStaffFromGroup(staff, activePatient);
+	}
 	
 	public String login(String name, String password) {
-		Staff staff = em.getStaff(name, password);
-		if(staff != null){
+		activeUser = em.getStaff(name, password);
+		if(activeUser != null){
 			setLoggedin(true);
-			setRole(staff.getRole());
 			return "loggedin";
 		}
 		return "home";
@@ -74,40 +86,42 @@ public class LoginController implements Serializable {
 		return "home";
 	}
 
-	public int getRole() {
-		return role;
+//	public int getPatientid() {
+//		return patientid;
+//	}
+//	public void setPatientid(int patientid) {
+//		this.patientid = patientid;
+//	}
+	public int getPatientdataid() {
+		return patientdataid;
 	}
-
-	public void setRole(int role) {
-		this.role = role;
-	}
-	
-	public int getPatientid() {
-		return patientid;
-	}
-
-	public void setPatientid(int patientid) {
-		this.patientid = patientid;
+	public void setPatientdataid(int patientdataid) {
+		this.patientdataid = patientdataid;
 	}
 	
-	public List<Patient> getPatient(){	// TODO return List wegen JSF Darstellung
+	
+	public Patient getPatient(int patientid){
 		System.out.println("GetPatient " + patientid);
-		List<Patient> l = new ArrayList<Patient>();
-		l.add(em.getPatient(patientid));
-		return l;
+		return em.getPatient(patientid);
 	}
 
 	public List<Patient> getPatients(){
 		System.out.println("GetPatients");
-		List<Patient> l = em.getPatients();
+		List<Patient> l = em.getPatient();
 		return l;
 	}
 	
-	public String getPatientAndModify(int id){
-		System.out.println("GetPatientAndModify " + id);
-		patientid = id;
-		return "";
+	public List<Patient> getPatientsWithRestrictions() {
+		System.out.println("GetPatients");
+		List<Patient> l = em.getPatientsWithRestrictions(activeUser);
+		return l;
 	}
+	
+//	public String getPatientAndModify(int id){
+//		System.out.println("GetPatientAndModify " + id);
+//		patientid = id;
+//		return "";
+//	}
 	
 	public String getPatientDataWithId(int id){
 		System.out.println("GetPatientDataWithid " + id);
@@ -119,9 +133,6 @@ public class LoginController implements Serializable {
 		if(activePatient != null){
 			System.out.println("GetPatientDatas " + activePatient.getPatientid());
 			List<PatientData> l = em.getPatientDatas(activePatient.getPatientid());
-			
-			first2size = l.size();
-			
 			return l;
 		}
 		return null;
@@ -133,22 +144,13 @@ public class LoginController implements Serializable {
 		List<PatientData> l = em.getPatientData(patientdataid);
 		return l;
 	}
-
-	public int getPatientdataid() {
-		return patientdataid;
-	}
-
-	public void setPatientdataid(int patientdataid) {
-		this.patientdataid = patientdataid;
-	}
 	
-	
-	public void updatePatient(Patient p){				// TODO
+	public void updatePatient(Patient p){
 		System.out.println("update pateint..." + p);
 		em.updatePatient(p);
 	}
 
-	public void updatePatientData(PatientData pd){		// TODO
+	public void updatePatientData(PatientData pd){
 		System.out.println("update pateint data..." + pd);
 		em.updatePatientData(pd);
 	}
@@ -166,17 +168,21 @@ public class LoginController implements Serializable {
 		return l;
 	}
 
-	public List<Patient> searchPatient(String firstname) {		// TODO
-		System.out.println("SEARCHING Patient..." + firstname);
-		List<Patient> l = em.searchPatient(firstname);
-
-		first1size = l.size();
-		
+	public List<Patient> searchPatient(String name) {		// TODO
+		System.out.println("SEARCHING Patient..." + name);
+		List<Patient> l = em.searchPatient(name);
+		return l;
+	}
+	public List<Patient> searchPatientWithRestrictions(String name) {		// TODO
+		System.out.println("SEARCHING Patient..." + name);
+		List<Patient> l = em.searchPatientWithRestrictions(name, activeUser);
 		return l;
 	}
 
 	public void createPatient(Patient p) {
-		em.createPatient(p);
+		System.out.println(">> " + p);
+		System.out.println(">> " + activeUser);
+		em.createPatient(p, activeUser);
 	}
 
 	public void createPatientData(Patient p, PatientData pd) {
@@ -209,7 +215,9 @@ public class LoginController implements Serializable {
 	
 	
 
-	
+	public List<Group> getGroups(){
+		return em.getGroups(activeUser, activePatient);
+	}
 	
 	
 	
@@ -263,109 +271,19 @@ public class LoginController implements Serializable {
 
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	private int pagesize = 10;
-	
-	public int getPagesize() {
-		return pagesize;
-	}
-
-	public void setPagesize(int pagesize) {
-		this.pagesize = pagesize;
-	}
-
-	private int pagenr1 = 1;
-	public int getPagenr1() {
-		return pagenr1;
-	}
-	public void setPagenr1(int pagenr1) {
-		this.pagenr1 = pagenr1;
-	}
-	
-	private int pagenr2 = 1;
-	public int getPagenr2() {
-		return pagenr2;
-	}
-	public void setPagenr2(int pagenr2) {
-		this.pagenr2 = pagenr2;
+	public boolean isOwner(Patient p){
+		return em.isOwner(activeUser, p);
 	}
 
 	
-	private int first1 = 0;
-	private int first1size = 0;
-	public String forward1(){
-		first1 = first1 + pagesize;
-		pagenr1++;
-		return null;
-	}
-	public String backward1(){
-		first1 = first1 - pagesize;
-		if(first1 < 0){
-			first1 = 0;
-		}
-		pagenr1--;
-		return null;
-	}	
-	public int getFirst1() {
-		return first1;
-	}
-	public void setFirst1(int first1) {
-		this.first1 = first1;
-	}
-	
-	private int first2 = 0;
-	private int first2size = 0;
-	public String forward2(){
-		first2 = first2 + pagesize;
-		pagenr2++;
-		return null;
-	}
-	public String backward2(){
-		first2 = first2 - pagesize;
-		if(first2 < 0){
-			first2 = 0;
-		}
-		pagenr2--;
-		return null;
-	}
-	public int getFirst2() {
-		return first2;
-	}
-	public void setFirst2(int first2) {
-		this.first2 = first2;
-	}
-	public int getFirst1size() {
-		return first1size;
+
+
+	public void addAnswer(String string, Knee k) {
+		em.addAnswer("knee", k.getAnswers());
 	}
 
-	public void setFirst1size(int first1size) {
-		this.first1size = first1size;
-	}
-
-	public int getFirst2size() {
-		return first2size;
-	}
-
-	public void setFirst2size(int first2size) {
-		this.first2size = first2size;
-	}
-	public boolean hasPrevious1(){
-		return first1 > 0;
-	}
-	public boolean hasNext1(){
-		return ((first1size - first1) - pagesize) > 0;
-	}
-	public boolean hasPrevious2(){
-		return first2 > 0;
-	}
-	public boolean hasNext2(){
-		return ((first2size - first2) - pagesize) > 0;
+	public List<Knee> getAnswers(String string) {
+		return em.getAnswers(string);
 	}
 
 }

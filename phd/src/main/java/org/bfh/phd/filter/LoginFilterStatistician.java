@@ -20,7 +20,7 @@ public class LoginFilterStatistician implements Filter {
 		if ((lc == null) || !lc.getLoggedin()) {
 			String contextPath = ((HttpServletRequest) request).getContextPath();
 			((HttpServletResponse) response).sendRedirect(contextPath + "/home.xhtml");
-		} else if (lc.getRole() != 2) {
+		} else if (lc.getStaff().getRole() != 2) {
 			String contextPath = ((HttpServletRequest) request).getContextPath();
 			((HttpServletResponse) response).sendRedirect(contextPath + "/loggedin.xhtml");
 		} else {
