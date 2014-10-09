@@ -42,6 +42,9 @@ public class EntityManager {
 	private Paginator p2 = new Paginator(10);
 	private Paginator p3 = new Paginator(10);
 	
+	//Testvariablen
+	private String sss = "elbow"; 
+	
 	public EntityManager(){
 		initStaff();
 		initPatient();
@@ -302,6 +305,47 @@ public class EntityManager {
 			return ids;
 	}
 	
+	public List<Question> getQuestionnaris2(int id) {
+		String quest = "knee";
+		List<Question> questions = this.getQuestions(quest);
+		init();
+		String stm = "SELECT * FROM " + quest + "_answer WHERE " + quest + "_answer_id=?;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setInt(1, id);
+			System.err.println(pst);
+			pst.execute();
+			rs = pst.getResultSet();
+			
+			if (rs.next()) {
+				for(int i = 0; i < questions.size(); i++){
+					questions.get(i).addAnswerPossibility(rs.getString(i+2));
+//					if(type.equals("String")){
+//						String s = rs.getString(i+2);
+//						a = new AnswerString();
+//						a.setAnswer(s);
+//					} else if(type.equals("RadioButton")){
+//						String s = rs.getString(i+2);
+//						a = new AnswerRadioButton();
+//						a.addAnswer(s);
+//					} else if(type.equals("Checkbox")){
+//						String s = rs.getString(i+2);
+//						a = new AnswerCheckbox();
+//						a.addAnswer(s);
+//					} else {
+//					
+//					}
+				}
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return questions;
+	}
+	
 	public void addFilledQuestionnaire(String answer) {
 		String stm2 = "INSERT INTO question(q1, q2, q3, q4, q5) VALUES("+answer+");";
 		init();
@@ -318,6 +362,43 @@ public class EntityManager {
 		return;
 	}
 
+	public List<Tools> getFilledQuestion(int id){
+		List<Question> q = getQuestions(sss);
+		List<Answer> a = getAnswers(sss, id);
+		List<Tools> list = new ArrayList<Tools>();
+		if(q.size()==a.size()){
+			for(int i = 0; i < a.size(); i++){
+				String s = q.get(i).getType();
+				Tools t = new Tools();
+				if(s.equals("Checkbox")){
+				Tools to = new Tools();
+				to.setString(q.get(i).getQuestion());
+				list.add(to);
+				List<String> b =  (List<String>) a.get(i).getAnswer();
+				for(int c = 0; c < b.size(); c++){
+				t = new Tools();
+
+				t.setString(b.get(c));
+				list.add(t);
+				}
+				}else if(s.equals("RadioButton")){
+					Tools to = new Tools();
+					to.setString(q.get(i).getQuestion());
+					list.add(to);
+					t.setString((String) a.get(i).getAnswer());
+					list.add(t);
+				}else if(s.equals("String")) {
+					Tools to = new Tools();
+					to.setString(q.get(i).getQuestion());
+					list.add(to);
+					t.setString((String) a.get(i).getAnswer());
+					list.add(t);
+				}else{}
+			}
+		}
+		return list;
+		}
+	
 	public List<PatientData> getPatientDatas(int patientid) {
 		List<PatientData> data = new ArrayList<PatientData>();
 		init();
@@ -590,23 +671,23 @@ public class EntityManager {
 		}
 	}
 
-	public void createPatientData(Patient p, PatientData pd) {
-		String stm = "INSERT INTO patientdata(patient_patient_id, firstdata, seconddata) VALUES(?, ?, ?);";
-		init();
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setInt(1, p.getPatientid());
-			pst.setString(2, pd.getFirstdata());
-			pst.setString(3, pd.getSeconddata());
-			pst.executeUpdate();
-			closeWithoutRs();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			closeWithoutRs();
-		}
-		return;
-	}
+//	public void createPatientData(Patient p, PatientData pd) {
+//		String stm = "INSERT INTO patientdata(patient_patient_id, firstdata, seconddata) VALUES(?, ?, ?);";
+//		init();
+//		try {
+//			pst = con.prepareStatement(stm);
+//			pst.setInt(1, p.getPatientid());
+//			pst.setString(2, pd.getFirstdata());
+//			pst.setString(3, pd.getSeconddata());
+//			pst.executeUpdate();
+//			closeWithoutRs();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			closeWithoutRs();
+//		}
+//		return;
+//	}
 
 	
 	
@@ -729,7 +810,7 @@ public class EntityManager {
 					} else if(type.equals("Checkbox")){
 						String s = rs.getString(i+2);
 						a = new AnswerCheckbox();
-						a.addAnswer(s);
+						a.setAnswer(toArray(s));
 					} else {
 					
 					}
@@ -745,6 +826,17 @@ public class EntityManager {
 		return answers;
 	}
 
+	private ArrayList<String> toArray(String s) {
+		String b = "";
+		s = s.replace("[", "");
+		s = s.replace("]", "");
+		String[] a = s.split(",", 10 );
+		ArrayList<String> c = new ArrayList<String>();
+		for (int i = 0; i < a.length; i++){
+		c.add(a[i]);
+		}
+		return c;
+	}
 	public void addAnswer(String quest, List<Answer> a) {
 		int size = a.size();
 		String stm = "INSERT INTO " + quest + "_answer(answer1";
@@ -1197,9 +1289,6 @@ public class EntityManager {
 		this.p3 = p;
 	}
 
-
-
-
 	public List<Patient> getPatientsWithRWAccess(Staff activeUser) {
 		List<Patient> list = new ArrayList<Patient>();
 		
@@ -1213,9 +1302,25 @@ public class EntityManager {
 		return list;
 	}
 
-
-
-
-
-
+	public List<ListOfQuestionnari> searchData(int id){
+		List<ListOfQuestionnari> quest = new ArrayList<ListOfQuestionnari>();
+		String stm = "SELECT t.typ, answer_id, date FROM questionnaire q INNER JOIN typ t ON q.typ = t.id WHERE patient_patient_id = ?;";
+		init();
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setInt(1, id);
+			pst.execute();
+			rs = pst.getResultSet();
+			while(rs.next()){
+				ListOfQuestionnari list = new ListOfQuestionnari();
+				list.setDate(rs.getDate("date"));
+				list.setQuestId(rs.getInt("answer_id"));
+				list.setTypOfQuest(rs.getString("typ"));
+				quest.add(list);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return quest;
+	}
 }

@@ -12,10 +12,10 @@ public class AnswerRadioButton implements Answer<String, String> {
 	public String getAnswer() {
 		return answer;
 	}
-	
+
 	@Override
-	public void setAnswer(String s) {
-		answer = s;
+	public void setAnswer(String l) {
+		answer = l;
 	}
 
 	@Override
@@ -24,8 +24,7 @@ public class AnswerRadioButton implements Answer<String, String> {
 	}
 	
 	@Override
-	public String toString(){
-		return answer;
+	public String toString(){;
+		return answer.toString();
 	}
-
 }

@@ -21,5 +21,4 @@ public interface Question <A, B> {
 	public List<String> getAnswerPossibilities();
 	
 	public void setAnswerPossibilities(List<String> o);
-
 }

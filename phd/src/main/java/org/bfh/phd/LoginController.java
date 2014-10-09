@@ -27,6 +27,8 @@ public class LoginController implements Serializable {
 	private static Staff activeUser;
 	private Patient activePatient;
 	private PatientData activePatientData;
+	private int patientenid;
+	private String s = "knee";
 
 	private EntityManager em;
 	
@@ -233,20 +235,20 @@ public class LoginController implements Serializable {
 	}
 
 	public void createPatientData(Patient p, PatientData pd) {
-		if(this.loggedin == true && activeUser.getRole() == 1){
-			em.createPatientData(p, pd);
-		}
+//		if(this.loggedin == true && activeUser.getRole() == 1){
+//			em.createPatientData(p, pd);
+//		}
 	}
 	
-	public void getQuest(String s) {
-		em.getQuestions(s);
+	public List<Tools> getFilledQuestion(){
+		return em.getFilledQuestion(patientenid);
 	}
 
-	public List<Question> getQuestions(String s) {
+	public List<Question> getQuestions() {
 		return em.getQuestions(s);
 	}
 
-	public List<Answer> getAnswers(String s, int i) {
+	public List<Answer> getAnswers(int i) {
 		return em.getAnswers(s, i);
 	}
 	

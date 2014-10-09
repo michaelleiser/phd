@@ -7,6 +7,7 @@ public class QuestionString implements Question <String, String> {
 	
 	private String type;
 	private String question;
+	private String answer;
 
 	@Override
 	public String getType() {
@@ -35,23 +36,19 @@ public class QuestionString implements Question <String, String> {
 
 	@Override
 	public void addAnswerPossibility(String o) {
-		// TODO Auto-generated method stub
-		
+		this.answer = o;		
 	}
 
 	@Override
 	public List<String> getAnswerPossibilities() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void setAnswerPossibilities(List<String> o) {
-		// TODO Auto-generated method stub
-		
+	public void setAnswerPossibilities(List <String> o) {
+		// TODO Auto-generated method stub	
 	}
 
-	
 	private int id;
 
 	@Override
