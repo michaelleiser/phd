@@ -11,6 +11,9 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
+			<h1>
+				<h:outputText value="#{msg['formular']}" />
+			</h1>
 			<h2>Formular new Patient data #{loginController.activePatient}</h2>
 			
 			<h:form>

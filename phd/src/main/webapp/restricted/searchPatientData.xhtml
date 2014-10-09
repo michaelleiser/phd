@@ -10,9 +10,9 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
-
-			<h2>Search Patient Data for Statistics</h2>
-
+			<h1>
+				<h:outputText value="#{msg['searchpatientdata']}" />
+			</h1>
 			<h:form>
 				<h:panelGrid columns="2">
 					<h:outputLabel value="Operation" />

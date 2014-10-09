@@ -10,61 +10,61 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
-			<h2>
+			<h1>
 				<h:outputText value="#{msg['editPatient']}" />
-			</h2>
+			</h1>
 			<h:form >
 				<h:panelGrid columns="2">
 					<h:outputLabel>ID</h:outputLabel>
 					<h:outputLabel>#{loginController.activePatient.patientid}</h:outputLabel>
 					<h:outputLabel>Firstname:</h:outputLabel>
-					<h:inputText id="firstname" value="#{loginController.activePatient.firstname}" required="true">
+					<h:inputText id="firstname" readonly="#{!(loginController.isRWAccess(loginController.activePatient))}" value="#{loginController.activePatient.firstname}" required="true">
 						<f:validateLength minimum="2" maximum="10" />
 					</h:inputText>			
 
 					<h:outputLabel>Lastname:</h:outputLabel>
-					<h:inputText id="lastname" value="#{loginController.activePatient.lastname}" required="true">
+					<h:inputText id="lastname" readonly="#{!(loginController.isRWAccess(loginController.activePatient))}" value="#{loginController.activePatient.lastname}" required="true">
 						<f:validateLength minimum="2" maximum="10" />
 					</h:inputText>			
 			
 					<h:outputLabel>Street:</h:outputLabel>
-					<h:inputText id="street" value="#{loginController.activePatient.street}" required="true">
+					<h:inputText id="street" readonly="#{!(loginController.isRWAccess(loginController.activePatient))}" value="#{loginController.activePatient.street}" required="true">
 						<f:validateLength minimum="2" maximum="20" />
 					</h:inputText>
 
 					<h:outputLabel>Nr:</h:outputLabel>
-					<h:inputText id="nr" value="#{loginController.activePatient.nr}" required="true">
+					<h:inputText id="nr" readonly="#{!(loginController.isRWAccess(loginController.activePatient))}" value="#{loginController.activePatient.nr}" required="true">
 						<f:validateLength minimum="1" maximum="20" />
 					</h:inputText>
 
 					<h:outputLabel>City:</h:outputLabel>
-					<h:inputText id="city" value="#{loginController.activePatient.city}" required="true">
+					<h:inputText id="city" readonly="#{!(loginController.isRWAccess(loginController.activePatient))}" value="#{loginController.activePatient.city}" required="true">
 						<f:validateLength minimum="1" maximum="20" />
 					</h:inputText>
 
 					<h:outputLabel>Zip:</h:outputLabel>
-					<h:inputText id="zip" value="#{loginController.activePatient.zip}" required="true">
+					<h:inputText id="zip" readonly="#{!(loginController.isRWAccess(loginController.activePatient))}" value="#{loginController.activePatient.zip}" required="true">
 						<f:validateLength minimum="2" maximum="10" />
 					</h:inputText>
 
 					<h:outputLabel>Telnumber:</h:outputLabel>
-					<h:inputText id="telnumber" value="#{loginController.activePatient.telnumber}" required="true">
+					<h:inputText id="telnumber" readonly="#{!(loginController.isRWAccess(loginController.activePatient))}" value="#{loginController.activePatient.telnumber}" required="true">
 						<f:validateLength minimum="10" maximum="10" />
 					</h:inputText>
 
 					<h:outputLabel>Gender:</h:outputLabel>
-					<h:selectOneRadio value="#{loginController.activePatient.gender}" required="true">
+					<h:selectOneRadio readonly="#{!(loginController.isRWAccess(loginController.activePatient))}" value="#{loginController.activePatient.gender}" required="true">
 						<f:selectItem itemLabel="Male" itemValue="male" />
 						<f:selectItem itemLabel="Female" itemValue="female" />
 					</h:selectOneRadio>
 
 					<h:outputLabel>birth (dd.mm.yyyy):</h:outputLabel>
-					<h:inputText id="birth" value="#{loginController.activePatient.birth}" required="true">
+					<h:inputText id="birth" readonly="#{!(loginController.isRWAccess(loginController.activePatient))}" value="#{loginController.activePatient.birth}" required="true">
 						<f:validateLength minimum="10" maximum="10" />
 					</h:inputText>
 				</h:panelGrid>
 				<h:column>
-					<h:commandButton action="#{loginController.updatePatient(loginController.activePatient)}" value="Update Patient" />
+					<h:commandButton action="#{loginController.updatePatient(loginController.activePatient)}" rendered="#{(loginController.isRWAccess(loginController.activePatient))}" value="Update Patient" />
 				</h:column>
 			</h:form>	
 			

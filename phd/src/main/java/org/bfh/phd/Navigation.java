@@ -42,11 +42,11 @@ public class Navigation implements Serializable {
 	public String redirectToSearchPatient(){
 		return "/restrictedfordoctor/searchPatient?faces-redirect=true";
 	}
-	public String toModifyGroup(){
-		return "/restrictedfordoctor/modifyGroup";
+	public String toEditGroup(){
+		return "/restrictedfordoctor/editGroup";
 	}
-	public String redirectToModifyGroup(){
-		return "/restrictedfordoctor/modifyGroup?faces-redirect=true";
+	public String redirectToEditGroup(){
+		return "/restrictedfordoctor/editGroup?faces-redirect=true";
 	}
 	public String toSearchPatientData(){
 		return "/restricted/searchPatientData";

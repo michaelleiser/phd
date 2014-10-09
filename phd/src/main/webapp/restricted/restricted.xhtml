@@ -10,7 +10,10 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
-			<h1>This is a restricted page and should only visible by logged in users</h1>
+			<h1>
+				<h:outputText value="#{msg['restricted']}" />
+			</h1>
+			<h2>This is a restricted page and should only visible by logged in users</h2>
 		</ui:define>
 	</ui:composition>
 

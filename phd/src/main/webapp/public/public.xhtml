@@ -10,7 +10,10 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
-			<h1>This is a test public page maybe visible to anybody</h1>
+			<h1>
+				<h:outputText value="#{msg['public']}" />
+			</h1>
+			<h2>This is a test public page maybe visible to anybody</h2>
 		</ui:define>
 	</ui:composition>
 

@@ -55,6 +55,7 @@ public class TestClass extends TestCase {
 //	@Test
 //	public void testGetPatient() {
 //		LoginController lc = new LoginController();
+//		lc.login(doctorname, password);
 //		Patient p = lc.getPatient(1);
 //		assertTrue(p != null);
 //	}
@@ -76,6 +77,7 @@ public class TestClass extends TestCase {
 //	@Test
 //	public void testSearchPatient(){
 //		LoginController lc = new LoginController();
+//		lc.login(doctorname, password);
 //		List<Patient> listnull = lc.searchPatient("DummyWhichDoesNotExist");
 //		assertTrue(listnull.size() == 0);
 //		
@@ -91,6 +93,7 @@ public class TestClass extends TestCase {
 //		Random r = new Random();
 //		String firstname = "UPDATE" + r.nextInt();
 //		LoginController lc = new LoginController();
+//		lc.login(doctorname, password);
 //		Patient p = lc.getPatient(1);
 //		p.setFirstname(firstname);
 //		lc.updatePatient(p);
@@ -105,6 +108,7 @@ public class TestClass extends TestCase {
 //	@Test
 //	public void testGetPatientData(){
 //		LoginController lc = new LoginController();
+//		lc.login(doctorname, password);
 //		lc.setActivePatient(lc.getPatient(1));
 //		List<PatientData> list = lc.getPatientDatas();
 //		for(PatientData pd : list){
@@ -123,6 +127,7 @@ public class TestClass extends TestCase {
 //	public void testCreatePatientData(){
 //		Random r = new Random();
 //		LoginController lc = new LoginController();
+//		lc.login(doctorname, password);
 //		lc.setActivePatient(lc.getPatient(1));
 //		List<PatientData> listBefore = lc.getPatientDatas();
 //		PatientData pd = new PatientData();
@@ -137,6 +142,7 @@ public class TestClass extends TestCase {
 //	@Test
 //	public void testSearchPatientData(){
 //		LoginController lc = new LoginController();
+//		lc.login(doctorname, password);
 //		List<PatientData> listElbow = lc.searchPatientData("elbow");
 //		for(PatientData pd : listElbow){
 //			System.out.println("spd " + pd);
@@ -153,6 +159,7 @@ public class TestClass extends TestCase {
 //	@Test
 //	public void testSearchPatientData2(){
 //		LoginController lc = new LoginController();
+//		lc.login(doctorname, password);
 //		List<Elbow> listElbow = lc.searchPatientData2("elbow");
 //		for(Elbow pd : listElbow){
 //			System.out.println("spd " + pd.getAnswers());
@@ -172,6 +179,7 @@ public class TestClass extends TestCase {
 //		Random r = new Random();
 //		String seconddata = "UPDATE" + r.nextInt();
 //		LoginController lc = new LoginController();
+//		lc.login(doctorname, password);
 //		lc.setPatientdataid(1);
 ////		lc.setActivePatient(lc.getPatient().get(0));
 //		List<PatientData> l = lc.getPatientData();
@@ -315,6 +323,36 @@ public class TestClass extends TestCase {
 //			System.out.println(">>>>"+p.getPatientid() + p+lc.isOwner(p));
 //		}
 //	}
+//	
+//	
+//	
+//	@Test
+//	public void testGetOnlyRWAccessPatients(){
+//		LoginController lc = new LoginController();
+//		lc.login(doctorname, password);
+//		List<Patient> list = lc.getPatientsWithRWAccess();
+//		for(Patient p : list){
+//			System.out.println(">>>>"+p.getPatientid() + p+lc.isOwner(p));
+//		}
+//	}
+	
+	@Test
+	public void testGetStaffsNotInGroup(){
+		LoginController lc = new LoginController();
+		lc.login(doctorname, password);
+		lc.setActivePatient(lc.getPatient(1));
+
+		List<Staff> staffs = lc.getStaffsNotInGroup("");
+		for(Staff s : staffs){
+			System.out.println("-->"+s);
+		}
+		List<Staff> li = lc.getStaffs();
+		for(Staff s : li){
+			System.out.println(">>" + s);
+		}
+		System.out.println(li.get(0));
+//		lc.addStaffToGroup(lc.getStaffs().get(7));
+	}
 	
 	
 }

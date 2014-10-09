@@ -46,44 +46,60 @@ public class LoginController implements Serializable {
 	}
 	
 	public List<Staff> getStaffs(){
-		return em.getStaff();
+		if(this.loggedin == true){
+			return em.getStaff();
+		}
+		return null;
 	}
 	public List<Staff> getStaffs(String name){
-		return em.getStaffs(name);
+		if(this.loggedin == true){
+			return em.getStaffs(name);
+		}
+		return null;
+	}
+	public List<Staff> getStaffsNotInGroup(String name){
+		if(this.loggedin == true){
+			return em.getStaffsNotInGroup(activeUser, activePatient, name);
+		}
+		return null;
 	}
 
 	public void addStaffToGroup(Staff staff){
-		em.addStaffToGroup(staff, activePatient);
+		if(this.loggedin == true && this.isRWAccess(activePatient)){
+			em.addStaffToGroup(staff, activePatient);
+		}
 	}
 	public void removeStaffFromGroup(Staff staff){
-		em.removeStaffFromGroup(staff, activePatient);
+		if(this.loggedin == true && this.isRWAccess(activePatient)){
+			em.removeStaffFromGroup(staff, activePatient);
+		}
 	}
 	
 	public String login(String name, String password) {
 		activeUser = em.getStaff(name, password);
 		if(activeUser != null){
 			setLoggedin(true);
-			return "loggedin";
+			return "/loggedin";
 		}
-		return "home";
+		return "/home";
 	}
 	
 	public String logout(){	
 		setLoggedin(false);
-		return "home";
+		return "/home";
 	}
 	
 	public boolean getLoggedin(){
 		return this.loggedin;
 	}
 	
-	public void setLoggedin(boolean loggedin){
+	private void setLoggedin(boolean loggedin){
 		this.loggedin = loggedin;
 	}
 
 	public String registernew(String name, String password, int i) {
 		em.registernew(name, password, i);
-		return "home";
+		return "/home";
 	}
 
 //	public int getPatientid() {
@@ -102,19 +118,28 @@ public class LoginController implements Serializable {
 	
 	public Patient getPatient(int patientid){
 		System.out.println("GetPatient " + patientid);
-		return em.getPatient(patientid);
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			return em.getPatient(patientid);
+		}
+		return null;
 	}
 
 	public List<Patient> getPatients(){
 		System.out.println("GetPatients");
-		List<Patient> l = em.getPatient();
-		return l;
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			List<Patient> l = em.getPatient();
+			return l;
+		}
+		return null;
 	}
 	
 	public List<Patient> getPatientsWithRestrictions() {
 		System.out.println("GetPatients");
-		List<Patient> l = em.getPatientsWithRestrictions(activeUser);
-		return l;
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			List<Patient> l = em.getPatientsWithRestrictions(activeUser);
+			return l;
+		}
+		return null;
 	}
 	
 //	public String getPatientAndModify(int id){
@@ -123,14 +148,16 @@ public class LoginController implements Serializable {
 //		return "";
 //	}
 	
-	public String getPatientDataWithId(int id){
+	// TODO if possible remove this method
+	public String getPatientDataWithId(int id){		
 		System.out.println("GetPatientDataWithid " + id);
+		
 		patientdataid = id;
 		return "";
 	}
 	
 	public List<PatientData> getPatientDatas() {
-		if(activePatient != null){
+		if(this.loggedin == true && activePatient != null){
 			System.out.println("GetPatientDatas " + activePatient.getPatientid());
 			List<PatientData> l = em.getPatientDatas(activePatient.getPatientid());
 			return l;
@@ -141,18 +168,25 @@ public class LoginController implements Serializable {
 	
 	public List<PatientData> getPatientData(){
 		System.out.println("GetPatientData " + patientdataid);
-		List<PatientData> l = em.getPatientData(patientdataid);
-		return l;
+		if(this.loggedin == true){
+			List<PatientData> l = em.getPatientData(patientdataid);
+			return l;
+		}
+		return null;
 	}
 	
 	public void updatePatient(Patient p){
 		System.out.println("update pateint..." + p);
-		em.updatePatient(p);
+		if(this.loggedin == true){		// TODO rW access
+			em.updatePatient(p);
+		}
 	}
 
 	public void updatePatientData(PatientData pd){
 		System.out.println("update pateint data..." + pd);
-		em.updatePatientData(pd);
+		if(this.loggedin == true){		// TODO rW access
+			em.updatePatientData(pd);
+		}
 	}
 	
 	
@@ -164,29 +198,44 @@ public class LoginController implements Serializable {
 	
 	public List<PatientData> searchPatientData(String op){		// TODO
 		System.out.println("SEARCHING Patient Data..." + op + from + "--" + to);
-		List<PatientData> l = em.searchPatientData(op, from , to);
-		return l;
+		if(this.loggedin == true){
+			List<PatientData> l = em.searchPatientData(op, from , to);
+			return l;
+		}
+		return null;
 	}
 
 	public List<Patient> searchPatient(String name) {		// TODO
 		System.out.println("SEARCHING Patient..." + name);
-		List<Patient> l = em.searchPatient(name);
-		return l;
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			List<Patient> l = em.searchPatient(name);
+			return l;
+		}
+		return null;
 	}
 	public List<Patient> searchPatientWithRestrictions(String name) {		// TODO
-		System.out.println("SEARCHING Patient..." + name);
-		List<Patient> l = em.searchPatientWithRestrictions(name, activeUser);
-		return l;
+		System.out.println("SEARCHING Patient..." + name);	
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			List<Patient> l = em.searchPatientWithRestrictions(name, activeUser);
+			return l;
+		}
+		return null;
 	}
 
-	public void createPatient(Patient p) {
+	public String createPatient(Patient p) {
 		System.out.println(">> " + p);
 		System.out.println(">> " + activeUser);
-		em.createPatient(p, activeUser);
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			em.createPatient(p, activeUser);
+			return "/loggedin";
+		}
+		return null;
 	}
 
 	public void createPatientData(Patient p, PatientData pd) {
-		em.createPatientData(p, pd);
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			em.createPatientData(p, pd);
+		}
 	}
 	
 	public void getQuest(String s) {
@@ -216,27 +265,40 @@ public class LoginController implements Serializable {
 	
 
 	public List<Group> getGroups(){
-		return em.getGroups(activeUser, activePatient);
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			return em.getGroups(activeUser, activePatient);
+		}
+		return null;
 	}
 	
 	
 	
 	public Patient getActivePatient() {
-		return activePatient;
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			return activePatient;
+		}
+		return null;
 	}
 
 	public void setActivePatient(Patient activePatient) {
-		this.activePatient = activePatient;
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			this.activePatient = activePatient;
+		}
 	}
 	
 
 
 	public PatientData getActivePatientData() {
-		return activePatientData;
+		if(this.loggedin == true){
+			return activePatientData;
+		}
+		return null;
 	}
 
 	public void setActivePatientData(PatientData activePatientData) {
-		this.activePatientData = activePatientData;
+		if(this.loggedin == true){
+			this.activePatientData = activePatientData;
+		}
 	}
 	
 	private Date from;
@@ -272,18 +334,38 @@ public class LoginController implements Serializable {
 	
 	
 	public boolean isOwner(Patient p){
-		return em.isOwner(activeUser, p);
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			return em.isOwner(activeUser, p);
+		}
+		return false;
 	}
-
+	public boolean isRWAccess(Patient p){
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			return em.rwAccess(activeUser, p);
+		}
+		return false;
+	}
 	
 
 
 	public void addAnswer(String string, Knee k) {
-		em.addAnswer("knee", k.getAnswers());
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			em.addAnswer("knee", k.getAnswers());
+		}
 	}
 
 	public List<Knee> getAnswers(String string) {
-		return em.getAnswers(string);
+		if(this.loggedin == true){
+			return em.getAnswers(string);
+		}
+		return null;
+	}
+
+	public List<Patient> getPatientsWithRWAccess() {
+		if(this.loggedin == true){			// TODO rw access
+			return em.getPatientsWithRWAccess(activeUser);
+		}
+		return null;
 	}
 
 }

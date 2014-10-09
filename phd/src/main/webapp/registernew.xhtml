@@ -10,6 +10,9 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
+			<h1>
+				<h:outputText value="#{msg['registernew']}" />
+			</h1>
 			<h:form>
 				<h:panelGrid columns="2" rendered="#{!loginController.loggedin}">
 					<h:outputLabel for="name">Username</h:outputLabel>

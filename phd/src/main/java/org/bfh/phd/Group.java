@@ -5,6 +5,7 @@ public class Group {
 	private Staff staff;
 	private Patient patient;
 	private boolean owner;
+	private boolean rwaccess;
 	
 	public Staff getStaff() {
 		return staff;
@@ -30,9 +31,17 @@ public class Group {
 		this.owner = owner;
 	}
 	
+	public boolean getRwaccess() {
+		return rwaccess;
+	}
+
+	public void setRwaccess(boolean rwaccess) {
+		this.rwaccess = rwaccess;
+	}
+	
 	@Override
 	public String toString(){
-		return staff + ":" + patient + ":" + owner;
+		return staff + ":" + patient + ":" + owner + ":" + rwaccess;
 	}
 	
 }

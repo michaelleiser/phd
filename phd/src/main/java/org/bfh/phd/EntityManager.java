@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -82,10 +83,29 @@ public class EntityManager {
 		}
 		return staff;
 	}
+	public List<Staff> getStaffsNotInGroup(Staff activeUser, Patient activePatient, String name) { // TODO
+		List<Staff> staff1 = this.getStaff();
+
+		List<Staff> staff = new ArrayList<Staff>();
+		for(Staff s : staff1){
+			staff.add(s);
+		}
+		List<Group> groups = this.getGroups(activeUser, activePatient);
+		
+		for(Iterator<Staff> i = staff.iterator() ; i.hasNext(); ){
+			Staff s = i.next();
+			for(Group g : groups){
+				if(g.getStaff().getId() == s.getId()){
+					i.remove();
+				}
+			}
+		}
+		return staff;
+	}
 	
 	public void addStaffToGroup(Staff staff, Patient activePatient) {
 		System.out.println("addtogr: " + staff + activePatient);
-		String stm = "INSERT INTO staff_has_patient(staff_staff_id, patient_patient_id, owner, rwaccess) VALUES(?, ?, 'false', '');";
+		String stm = "INSERT INTO staff_has_patient(staff_staff_id, patient_patient_id, owner, rwaccess) VALUES(?, ?, 'false', 'true');";
 		init();
 		try {
 			pst = con.prepareStatement(stm);
@@ -554,7 +574,7 @@ public class EntityManager {
 				rs = pst.getGeneratedKeys();
 				if(rs.next()){
 					long patient_id = rs.getLong(1);
-					stm2 = "INSERT INTO staff_has_patient(staff_staff_id, patient_patient_id, owner, rwaccess) VALUES(?,?,'true','rw')";
+					stm2 = "INSERT INTO staff_has_patient(staff_staff_id, patient_patient_id, owner, rwaccess) VALUES(?,?,'true','true')";
 					pst = con.prepareStatement(stm2);
 					pst.setLong(1, activeUser.getId());
 					pst.setLong(2, patient_id);
@@ -1057,6 +1077,7 @@ public class EntityManager {
 				g.setStaff(this.getStaff(staffid));
 				g.setPatient(this.getPatient(patientid));
 				g.setOwner(rs.getBoolean("owner"));
+				g.setRwaccess(rs.getBoolean("rwaccess"));
 				this.group.add(g);
 			}
 			close();
@@ -1079,7 +1100,15 @@ public class EntityManager {
 		}
 		return false;
 	}
-	
+	public boolean rwAccess(Staff activeUser, Patient p) {
+		for(Group g : this.group){
+			if((activeUser.getId() == g.getStaff().getId()) &&
+					(p.getPatientid() == g.getPatient().getPatientid())){
+				return g.getRwaccess();
+			}
+		}
+		return false;
+	}
 	
 	
 	
@@ -1167,5 +1196,26 @@ public class EntityManager {
 	public void setP3(Paginator p) {
 		this.p3 = p;
 	}
+
+
+
+
+	public List<Patient> getPatientsWithRWAccess(Staff activeUser) {
+		List<Patient> list = new ArrayList<Patient>();
+		
+		for(Group g : this.group){
+			if((g.getStaff().getId() == activeUser.getId()) && g.getRwaccess()){
+				Patient p = this.getPatient(g.getPatient().getPatientid());
+				list.add(p);
+			}
+		}
+		
+		return list;
+	}
+
+
+
+
+
 
 }

@@ -11,10 +11,9 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
-			<h2>
-				<h:outputText value="#{msg['searchPatient']}" />
-			</h2>
-			
+			<h1>
+				<h:outputText value="#{msg['searchpatient']}" />
+			</h1>
 			<h:form>
 				<h:inputText binding="#{input1}" id="patid"></h:inputText>
 				<h:commandButton value="Filter Patient (firstname)">
@@ -34,19 +33,31 @@
 						<f:facet name="header">Birthday</f:facet>#{patients.birth}
 					</h:column>
 					<h:column>
-						<h:commandButton rendered="#{loginController.isOwner(patients)}" action="#{navigation.redirectToEditPatient}" value="Goto Edit Patient">
+
+						<h:commandButton action="#{navigation.redirectToEditPatient}" rendered="#{(loginController.isRWAccess(patients))}" value="Edit Patient">
 							<f:setPropertyActionListener target="#{loginController.activePatient}" value="#{patients}">
 							</f:setPropertyActionListener>
 						</h:commandButton>
-					</h:column>
-					<h:column>
-						<h:commandButton rendered="#{loginController.isOwner(patients)}" action="#{loginController.setActivePatient(patients)}" value="Get Patient Datas" />
-					</h:column>
-					<h:column>
-						<h:commandButton rendered="#{loginController.isOwner(patients)}" action="#{navigation.redirectToModifyGroup}" value="Goto Modify Group">
+						<h:commandButton action="#{navigation.redirectToEditPatient}" rendered="#{!(loginController.isRWAccess(patients))}" value="Show Patient">
 							<f:setPropertyActionListener target="#{loginController.activePatient}" value="#{patients}">
 							</f:setPropertyActionListener>
 						</h:commandButton>
+
+					</h:column>
+					<h:column>
+						<h:commandButton action="#{loginController.setActivePatient(patients)}" value="Patient Datas" />
+					</h:column>
+					<h:column>
+					
+						<h:commandButton action="#{navigation.redirectToEditGroup}" rendered="#{(loginController.isRWAccess(patients))}" value="Edit Group">
+							<f:setPropertyActionListener target="#{loginController.activePatient}" value="#{patients}">
+							</f:setPropertyActionListener>
+						</h:commandButton>
+						<h:commandButton action="#{navigation.redirectToEditGroup}" rendered="#{!(loginController.isRWAccess(patients))}" value="Show Group">
+							<f:setPropertyActionListener target="#{loginController.activePatient}" value="#{patients}">
+							</f:setPropertyActionListener>
+						</h:commandButton>
+						
 					</h:column>
 					
 					<f:facet name="footer">
@@ -74,7 +85,7 @@
 						<f:facet name="header">second</f:facet>#{patientdatas.seconddata}
 					</h:column>
 					<h:column>
-						<h:commandButton action="#{navigation.redirectToFormular}" value="Goto Edit Patient Data" />
+						<h:commandButton action="#{navigation.redirectToFormular}" value="Edit Patient Data" />
 					</h:column>
 					<f:facet name="footer">
 						<h:panelGroup>							

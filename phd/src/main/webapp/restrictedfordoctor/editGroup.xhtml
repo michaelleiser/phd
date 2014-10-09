@@ -11,13 +11,15 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
+			<h1>
+				<h:outputText value="#{msg['editgroup']}" />
+			</h1>
 			<h2>
-				<h:outputText value="#{msg['modifyGroup']}" />
 				#{loginController.activePatient}
 			</h2>
 			
 			<h:form>			
-				<h:dataTable id="outputMessage123" value="#{loginController.getGroups()}" var="groups" headerClass="table-header" rowClasses="table-odd-row,table-even-row" columnClasses="table-column-id,table-column-name,table-column-owner,table-column-button">
+				<h:dataTable id="outputMessage123" value="#{loginController.getGroups()}" var="groups" headerClass="table-header" rowClasses="table-odd-row,table-even-row" columnClasses="table-column-id,table-column-name,table-column-owner,table-column-rwaccess,table-column-button">
 					<h:column>
 						<f:facet name="header">id</f:facet>#{groups.staff.getId()}
 					</h:column>
@@ -28,6 +30,9 @@
 						<f:facet name="header">Owner</f:facet>#{groups.owner}
 					</h:column>
 					<h:column>
+						<f:facet name="header">RW Access</f:facet>#{groups.rwaccess}
+					</h:column>
+					<h:column>
 						<h:commandButton rendered="#{!groups.owner eq 'true'}" action="#{loginController.removeStaffFromGroup(groups.staff)}" value="Remove Staff" />
 					</h:column>
 				</h:dataTable>
@@ -35,10 +40,10 @@
 	
 		<hr />
 			
-			<h:form>
+			<h:form rendered="#{(loginController.isRWAccess(loginController.activePatient))}" >
 				<h:inputText binding="#{input1}" id="staffid"></h:inputText>
 				<h:commandButton value="Filter Staff"></h:commandButton>
-				<h:dataTable first="#{entityManager.getP3().first}" rows="#{entityManager.getP3().pagesize}" id="outputMessage" value="#{loginController.getStaffs(input1.value)}" var="staffs" headerClass="table-header" rowClasses="table-odd-row,table-even-row" columnClasses="table-column-id,table-column-name,table-column-button">
+				<h:dataTable first="#{entityManager.getP3().first}" rows="#{entityManager.getP3().pagesize}" id="outputMessage" value="#{loginController.getStaffsNotInGroup(input1.value)}" var="staffs" headerClass="table-header" rowClasses="table-odd-row,table-even-row" columnClasses="table-column-id,table-column-name,table-column-button">
 					<h:column>
 						<f:facet name="header">id</f:facet>#{staffs.id}
 					</h:column>
