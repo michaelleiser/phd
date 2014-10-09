@@ -827,6 +827,7 @@ public class EntityManager {
 	}
 
 	private ArrayList<String> toArray(String s) {
+		if(s == null){return new ArrayList<String>();}
 		String b = "";
 		s = s.replace("[", "");
 		s = s.replace("]", "");
@@ -1303,6 +1304,7 @@ public class EntityManager {
 	}
 
 	public List<ListOfQuestionnari> searchData(int id){
+		System.err.println(id);
 		List<ListOfQuestionnari> quest = new ArrayList<ListOfQuestionnari>();
 		String stm = "SELECT t.typ, answer_id, date FROM questionnaire q INNER JOIN typ t ON q.typ = t.id WHERE patient_patient_id = ?;";
 		init();

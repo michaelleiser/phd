@@ -117,6 +117,17 @@ public class LoginController implements Serializable {
 		this.patientdataid = patientdataid;
 	}
 	
+//	public List<ListOfQuestionnari> getPatientData(){
+//		if(activePatient != null){
+//		System.out.println("GetPatientData " + patientdataid);
+//		List<ListOfQuestionnari> l = em.searchData(activePatient.getPatientid());
+//		
+//		first2size = l.size();
+//		
+//		return l;
+//		}
+//		return null;
+//	}
 	
 	public Patient getPatient(int patientid){
 		System.out.println("GetPatient " + patientid);
@@ -159,23 +170,30 @@ public class LoginController implements Serializable {
 	}
 	
 	public List<PatientData> getPatientDatas() {
-		if(this.loggedin == true && activePatient != null){
-			System.out.println("GetPatientDatas " + activePatient.getPatientid());
-			List<PatientData> l = em.getPatientDatas(activePatient.getPatientid());
-			return l;
-		}
+//		if(this.loggedin == true && activePatient != null){
+//			System.out.println("GetPatientDatas " + activePatient.getPatientid());
+//			List<PatientData> l = em.getPatientDatas(activePatient.getPatientid());
+//			return l;
+//		}
 		return null;
 	}
 
-	
-	public List<PatientData> getPatientData(){
-		System.out.println("GetPatientData " + patientdataid);
-		if(this.loggedin == true){
-			List<PatientData> l = em.getPatientData(patientdataid);
-			return l;
+	public List<ListOfQuestionnari> getPatientData(){
+		if(activePatient != null){
+		List<ListOfQuestionnari> l = em.searchData(activePatient.getPatientid());
+		return l;
 		}
 		return null;
 	}
+	
+//	public List<PatientData> getPatientData(){
+//		System.out.println("GetPatientData " + patientdataid);
+//		if(this.loggedin == true){
+//			List<PatientData> l = em.getPatientData(patientdataid);
+//			return l;
+//		}
+//		return null;
+//	}
 	
 	public void updatePatient(Patient p){
 		System.out.println("update pateint..." + p);
@@ -369,5 +387,12 @@ public class LoginController implements Serializable {
 		}
 		return null;
 	}
+	
+	public void setPatientid(int i){
+		this.patientenid = i;
+	}
 
+	public int getPatientid(){
+		return this.patientenid;
+	}
 }

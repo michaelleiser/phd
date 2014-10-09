@@ -13,10 +13,11 @@ public class PatientData {
 	private String firstdata;
 	private String seconddata;
 	private Date inserttime;
-
+//
 	public PatientData() {
 		
 	}
+
 	
 	public int getPatientdata_id() {
 		return patientdata_id;

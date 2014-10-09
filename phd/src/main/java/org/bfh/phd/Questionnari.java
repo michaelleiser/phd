@@ -10,12 +10,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 
-@ManagedBean(name = "fragebogen", eager = true)
+@ManagedBean(name = "questionnaridata", eager = true)
 @SessionScoped
 public class Questionnari implements Serializable {
 	
 	private EntityManager em = new EntityManager();
 	
+	private int quest;
 	private int q1;
 	private int q2;
 	private int q3;
@@ -79,9 +80,9 @@ public class Questionnari implements Serializable {
 		em.addFilledQuestionnaire(answer);
 	}
 	
-	public List<Questionnari> getQuestionnaris(){
-		return em.getQuestionnaris(id);
-	}
+//	public List<Questionnari> getQuestionnaris(){
+//		return em.getQuestionnaris(id);
+//	}
 	
 	public List<Questionnari> getListOfQuestionnaris(){
 		return em.searchQuestionnaris(patient);
@@ -110,6 +111,13 @@ public class Questionnari implements Serializable {
 	public void setPatient(int patient) {
 		this.patient = patient;
 	}
+
+	public int getQuest() {
+		return quest;
+	}
+
+	public void setQuest(int quest) {
+		this.quest = quest;
+	}
 		
 }
-
