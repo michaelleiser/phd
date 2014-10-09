@@ -342,15 +342,10 @@ public class TestClass extends TestCase {
 		lc.login(doctorname, password);
 		lc.setActivePatient(lc.getPatient(1));
 
-		List<Staff> staffs = lc.getStaffsNotInGroup("");
+		List<Staff> staffs = lc.getStaffsNotInGroup("um");
 		for(Staff s : staffs){
 			System.out.println("-->"+s);
 		}
-		List<Staff> li = lc.getStaffs();
-		for(Staff s : li){
-			System.out.println(">>" + s);
-		}
-		System.out.println(li.get(0));
 //		lc.addStaffToGroup(lc.getStaffs().get(7));
 	}
 	

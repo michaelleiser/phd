@@ -87,17 +87,15 @@ public class EntityManager {
 		return staff;
 	}
 	public List<Staff> getStaffsNotInGroup(Staff activeUser, Patient activePatient, String name) { // TODO
-		List<Staff> staff1 = this.getStaff();
-
-		List<Staff> staff = new ArrayList<Staff>();
-		for(Staff s : staff1){
-			staff.add(s);
-		}
+		List<Staff> staff = new ArrayList<Staff>(this.getStaff());
 		List<Group> groups = this.getGroups(activeUser, activePatient);
-		
 		for(Iterator<Staff> i = staff.iterator() ; i.hasNext(); ){
 			Staff s = i.next();
 			for(Group g : groups){
+				if(!s.getName().contains(name)){
+					i.remove();
+					break;
+				}
 				if(g.getStaff().getId() == s.getId()){
 					i.remove();
 				}
