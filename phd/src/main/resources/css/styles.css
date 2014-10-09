@@ -4,6 +4,7 @@ body {
     margin-right: auto;
     width: 1024px;
     font-family: Helvetica;
+    text-shadow: 5px 5px 5px #999;
 }
 
 div#headerlanguages {
@@ -12,6 +13,7 @@ div#headerlanguages {
 }
 .headerlanguage {
 	padding: 10px 10px 10px 10px;
+	text-decoration: none;
 }
 
 div#loggedinbox {
@@ -19,6 +21,19 @@ div#loggedinbox {
 	padding: 10px 10px 10px 10px;
 /* 	width: 200px; */
 }
+
+div#loginbox {
+	border-color: #bbbbbb;
+	border-style: solid;
+	border-width: 1px;
+	width: 256px;
+	height: auto;
+	padding: 50px 100px 50px 100px;
+	border-radius: 5px;
+/* 	box-shadow: 5px 5px 5px #666; */
+}
+
+
 
 .table-header {
 /* 	background-color: #BBBBFF; */
@@ -46,29 +61,8 @@ div#loggedinbox {
 }
 
 
-/* div#page { */
-/*     font-family: Arial; */
-/*     text-shadow: 5px 5px 5px #999; */
-/* } */
-/* div#header { */
-/*     background-color: #AACCFF; */
-/*     border-radius: 5px; */
-/*     box-shadow: 5px 5px 5px #666; */
-/* } */
-/* div#headerlanguages { */
-/*     padding: 10px 10px 10px 10px; */
-/*     text-align: right; */
-/* } */
-/* .headerlanguage { */
-/*     color: #000000; */
-/*     font-size: large; */
-/*     font-variant: small-caps; */
-/*     margin-right: 10px; */
-/*     text-decoration: none; */
-/* } */
-/* .headerlanguage:hover { */
-/*     background-color: #8888FF; */
-/* } */
+
+
 /* div#headermenu { */
 /*     background-color: #000000; */
 /*     border-radius: 5px; */
@@ -83,27 +77,6 @@ div#loggedinbox {
 /*     margin-left: 10px; */
 /*     margin-right: 20px; */
 /*     text-decoration: none; */
-/* } */
-/* .headermenuitem:hover { */
-/*     background-color: #444444; */
-/*     font-weight: bolder; */
-/* } */
-/* div#search { */
-/*     color: #FFFFFF; */
-/*     float: right; */
-/*     font-family: cursive; */
-/*     font-size: large; */
-/*     font-variant: small-caps; */
-/*     font-weight: 900; */
-/*     margin-left: 10px; */
-/*     margin-right: 20px; */
-/*     text-align: right; */
-/* } */
-/* a.marked { */
-/*     background-color: #00FF00; */
-/* } */
-/* div#body { */
-/*     margin: 10px 0 10px 0; */
 /* } */
 /* div#menuleft { */
 /*     float: left; */
@@ -171,10 +144,7 @@ div#loggedinbox {
 /*     border-radius: 5px; */
 /*     font-weight: 900; */
 /* } */
-/* div#menuright { */
-/*     float: right; */
-/*     width: 200px; */
-/* } */
+
 /* div#loginbox { */
 /*     background-color: #0088FF; */
 /*     border-radius: 5px; */
@@ -188,30 +158,6 @@ div#loggedinbox {
 /* } */
 /* a#user { */
 /*     font-size: small; */
-/*     font-weight: bold; */
-/* } */
-/* div#cartbox { */
-/*     background-color: #0088FF; */
-/*     border-radius: 5px; */
-/*     box-shadow: 5px 5px 5px #666; */
-/*     height: auto; */
-/*     margin: 10px 0 10px 0; */
-/*     padding: 10px 10px 10px 10px; */
-/* } */
-/* table#tablecartbox { */
-/*     text-align: center; */
-/* } */
-/* table#tablecartbox th { */
-/*     background-color: #0066FF; */
-/* } */
-/* a#cartboxtitle { */
-/*     font-size: large; */
-/*     font-weight: bold; */
-/* } */
-/* div#cartboxtotal { */
-/*     font-weight: bold; */
-/* } */
-/* div#carttotal { */
 /*     font-weight: bold; */
 /* } */
 /* div#content { */
@@ -236,42 +182,6 @@ div#loggedinbox {
 /*     margin-right: 10px; */
 /*     text-decoration: none; */
 /* } */
-/* .footermenuitem:hover { */
-/*     background-color: #8888FF; */
-/* } */
-
-
-
-/* div#article { */
-
-/* } */
-/* div#articlebuy { */
-/*     float: right; */
-/* } */
-/* div#articleproperties { */
-
-/* } */
-/* table#tablecart { */
-/*     text-align: center; */
-/* } */
-/* table#tablecart th { */
-/*     background-color: #A0A0A0; */
-/* } */
-/* table#tablearticlesadmin th { */
-/*     background-color: #A0A0A0; */
-/* } */
-/* table#tableordersadmin th { */
-/*     background-color: #A0A0A0; */
-/* } */
-/* table#tableusersadmin th { */
-/*     background-color: #A0A0A0; */
-/* } */
-/* table#tablemyorders th { */
-/*     background-color: #A0A0A0; */
-/* } */
-/* table#tablemyorders tr { */
-/*     text-align: center; */
-/* } */
 /* .wallpaper { */
 /*     border-radius: 20px; */
 /*     box-shadow: 5px 5px 5px #666; */
@@ -281,6 +191,4 @@ div#loggedinbox {
 /*     box-shadow: 5px 5px 5px #666; */
 /*     margin-top: 10px; */
 /* } */
-/* p.paragraph { */
-/*     text-align: justify; */
-/* } */
+/

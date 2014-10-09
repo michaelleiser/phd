@@ -60,8 +60,9 @@
 					<h:inputText id="birth" value="#{patient.birth}" required="true">
 						<f:validateLength minimum="10" maximum="10" />
 					</h:inputText>
+					<h:outputLabel />
+					<h:commandButton action="#{loginController.createPatient(patient)}" value="addNewPatient" />
 				</h:panelGrid>
-				<h:commandButton action="#{loginController.createPatient(patient)}" value="addNewPatient" />
 			</h:form>
 		</ui:define>
 	</ui:composition>

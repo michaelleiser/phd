@@ -102,6 +102,12 @@ public class Navigation implements Serializable {
 	public String redirectToEditPatient(){
 		return "/restrictedfordoctor/editPatient?faces-redirect=true";
 	}
+	public String toEditStaff(){
+		return "/restricted/editStaff";
+	}
+	public String redirectToEditStaff(){
+		return "/restricted/editStaff?faces-redirect=true";
+	}
 	public String toFormular(){
 		return "/restricted/formular_1";
 	}

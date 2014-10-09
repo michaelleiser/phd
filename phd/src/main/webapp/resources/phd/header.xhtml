@@ -9,39 +9,42 @@
 <body>
 	<ui:composition>
 		<h:outputStylesheet library="css" name="styles.css" />
-		<div id="headerlanguages">
-			<h:form>
-				<ui:repeat value="#{languagecontrollertest.getCountries().keySet().toArray()}" var="var">
-					<h:commandLink class="headerlanguage" actionListener="#{languagecontrollertest.changeLanguageEvent}" value="#{var}" />
-				</ui:repeat>
-			</h:form>
-		</div>
-		
-		<div id="loggedinbox">
-			<h:form>
-				<h:outputLabel rendered="#{loginController.loggedin}">You are logged in as #{userData.name}</h:outputLabel><br />
-				<h:outputLabel rendered="#{loginController.loggedin}"> as a #{(loginController.getStaff()).getRole()}</h:outputLabel><br />
-				<h:commandButton action="#{loginController.logout}" rendered="#{loginController.loggedin}" value="Logout" />
-			</h:form>
-		</div>
-		
-		<div id="logo">
-			<c:if test="#{loginController.loggedin}">
+		<div id="header">
+			<div id="headerlanguages">
 				<h:form>
-					<h:commandLink action="#{navigation.redirectToLoggedin}">
-						<h:graphicImage height="100" value="/images/logo.png" />
-						<h:graphicImage height="100" value="/images/logotext.png" />
-					</h:commandLink>
+					<ui:repeat value="#{languagecontrollertest.getCountries().keySet().toArray()}" var="var">
+						<h:commandLink class="headerlanguage" actionListener="#{languagecontrollertest.changeLanguageEvent}" value="#{var}" />
+					</ui:repeat>
 				</h:form>
-			</c:if>
-			<c:if test="#{!loginController.loggedin}">
+			</div>
+		
+			<div id="loggedinbox">
 				<h:form>
-					<h:commandLink action="#{navigation.redirectToHome}">
-						<h:graphicImage height="100" value="/images/logo.png" />
-						<h:graphicImage height="100" value="/images/logotext.png" />
-					</h:commandLink>
+					<h:outputLabel rendered="#{loginController.loggedin}">You are logged in as</h:outputLabel>
+					<h:commandLink rendered="#{loginController.loggedin}" action="#{navigation.redirectToEditStaff}" value="#{userData.name}" /><br />
+					<h:outputLabel rendered="#{loginController.loggedin}"> as a #{(loginController.getStaff()).getRole()}</h:outputLabel><br />
+					<h:commandButton action="#{loginController.logout}" rendered="#{loginController.loggedin}" value="Logout" />
 				</h:form>
-			</c:if>
+			</div>
+		
+			<div id="logo">
+				<c:if test="#{loginController.loggedin}">
+					<h:form>
+						<h:commandLink action="#{navigation.redirectToLoggedin}">
+							<h:graphicImage height="100" value="/images/logo.png" />
+							<h:graphicImage height="100" value="/images/logotext.png" />
+						</h:commandLink>
+					</h:form>
+				</c:if>
+				<c:if test="#{!loginController.loggedin}">
+					<h:form>
+						<h:commandLink action="#{navigation.redirectToHome}">
+							<h:graphicImage height="100" value="/images/logo.png" />
+							<h:graphicImage height="100" value="/images/logotext.png" />
+						</h:commandLink>
+					</h:form>
+				</c:if>
+			</div>
 		</div>
 		<hr />
 	</ui:composition>

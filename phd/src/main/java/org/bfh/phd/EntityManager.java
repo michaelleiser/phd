@@ -38,9 +38,9 @@ public class EntityManager {
 	private PreparedStatement pst = null;
 	private ResultSet rs = null;
 	
-	private Paginator p1 = new Paginator(10);
-	private Paginator p2 = new Paginator(10);
-	private Paginator p3 = new Paginator(10);
+	private PaginatorPatient paginatorPatient = new PaginatorPatient();
+	private PaginatorPatientData paginatorPatientData = new PaginatorPatientData();
+	private PaginatorGroup paginatorGroup = new PaginatorGroup();
 	
 	//Testvariablen
 	private String sss = "elbow"; 
@@ -91,16 +91,22 @@ public class EntityManager {
 		List<Group> groups = this.getGroups(activeUser, activePatient);
 		for(Iterator<Staff> i = staff.iterator() ; i.hasNext(); ){
 			Staff s = i.next();
+			if(s.getRole() != 1){
+				i.remove();
+				continue;
+			}
+			
 			for(Group g : groups){
-				if(!s.getName().contains(name)){
+				if(!s.getName().contains(name)){		// Name filtering
 					i.remove();
 					break;
 				}
-				if(g.getStaff().getId() == s.getId()){
+				if(g.getStaff().getId() == s.getId()){	// If Staff is in group
 					i.remove();
 				}
 			}
 		}
+		paginatorGroup.setSize(staff.size());
 		return staff;
 	}
 	
@@ -420,6 +426,7 @@ public class EntityManager {
 		} finally {
 			close();
 		}
+		paginatorPatientData.setSize(data.size());
 		return data;
 	}
 
@@ -559,6 +566,7 @@ public class EntityManager {
 				patient.add(p);
 			}
 		}
+		paginatorPatient.setSize(patient.size());
 		return patient;
 	}
 	
@@ -586,6 +594,7 @@ public class EntityManager {
 		} finally {
 			close();
 		}
+		paginatorPatientData.setSize(list.size());
 		return list;
 	}
 	//TODO from - to
@@ -1088,7 +1097,7 @@ public class EntityManager {
 		} finally {
 			close();
 		}
-		p3.setSize(staff.size());
+//		p3.setSize(staff.size());
 	}
 	
 	private void initPatient() {
@@ -1119,7 +1128,7 @@ public class EntityManager {
 		} finally {
 			close();
 		}
-		p1.setSize(patient.size());
+//		p1.setSize(patient.size());
 	}	
 	
 
@@ -1147,7 +1156,7 @@ public class EntityManager {
 		} finally {
 			close();
 		}
-		p2.setSize(patientdata.size());
+//		p2.setSize(patientdata.size());
 	}
 	
 
@@ -1264,28 +1273,28 @@ public class EntityManager {
 	}
 	
 	
-	public Paginator getP1() {
-		return p1;
+	public PaginatorPatient getPaginatorPatient() {
+		return paginatorPatient;
 	}
 
-	public void setP1(Paginator p) {
-		this.p1 = p;
+	public void setPaginatorPatient(PaginatorPatient p) {
+		this.paginatorPatient = p;
 	}
 
-	public Paginator getP2() {
-		return p2;
+	public PaginatorPatientData getPaginatorPatientData() {
+		return paginatorPatientData;
 	}
 
-	public void setP2(Paginator p) {
-		this.p2 = p;
+	public void setPaginatorPatientData(PaginatorPatientData p) {
+		this.paginatorPatientData = p;
 	}
 	
-	public Paginator getP3() {
-		return p3;
+	public PaginatorGroup getPaginatorGroup() {
+		return paginatorGroup;
 	}
 
-	public void setP3(Paginator p) {
-		this.p3 = p;
+	public void setPaginatorGroup(PaginatorGroup p) {
+		this.paginatorGroup = p;
 	}
 
 	public List<Patient> getPatientsWithRWAccess(Staff activeUser) {

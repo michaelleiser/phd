@@ -7,46 +7,50 @@
 <body>
 	<ui:composition>
 		<hr />
-		<h:graphicImage height="50" value="/images/BFH_Logo.png" />
-		<h:outputText value="#{msg['footer']}" />
-		<h:form>
-			<h:commandLink action="#{navigation.redirectToPagefortesting}" value="page for testing" />
-		</h:form>
+		<div id="footer">
+			<h:graphicImage height="50" value="/images/BFH_Logo.png" />
+			<h:outputText value="#{msg['footer']}" />
+			<h:form>
+				<h:commandLink action="#{navigation.redirectToPagefortesting}" value="page for testing" />
+			</h:form>
 		
 		
-		<h:form>
-			<h:commandLink action="#{navigation.redirectToFormular_1}" value="Formular" />
-		</h:form>
+			<h:form>
+				<h:commandLink action="#{navigation.redirectToFormular_1}" value="Formular" />
+			</h:form>
 			
-		<h:form>
-			<h:commandLink action="#{navigation.redirectToNewPatient}" value="Create a new Patient" />
-		</h:form>
+			<h:form>
+				<h:commandLink action="#{navigation.redirectToNewPatient}" value="Create a new Patient" />
+			</h:form>
 			
-		<h:form>
-			<h:commandLink action="#{navigation.redirectToSearchPatient}" value="Search Patient and modify Patient Data" />
-		</h:form>
+			<h:form>
+				<h:commandLink action="#{navigation.redirectToSearchPatient}" value="Search Patient and modify Patient Data" />
+			</h:form>
 			
-		<h:form>
-			<h:commandLink action="#{navigation.redirectToEditGroup}" value="Modify Groups" />
-		</h:form>
+			<h:form>
+				<h:commandLink action="#{navigation.redirectToEditGroup}" value="Modify Groups" />
+			</h:form>
 						
-		<h:form>
-			<h:commandLink action="#{navigation.redirectToSearchPatientData}" value="Search Patient Data for Statistics" />
-		</h:form>
+			<h:form>
+				<h:commandLink action="#{navigation.redirectToSearchPatientData}" value="Search Patient Data for Statistics" />
+			</h:form>
+			<h:form>
+				<h:commandLink action="#{navigation.redirectToEditStaff}" value="Edit Staff" />
+			</h:form>
 			
-		<h:form>
-			<h:commandLink action="#{navigation.redirectToPublic}" value="public page"/>
-		</h:form>
-		<h:form rendered="#{loginController.loggedin}">
-			<h:commandLink action="#{navigation.redirectToRestricted}" value="restricted!!!" />
-		</h:form>
-		<h:form rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}">
-			<h:commandLink action="#{navigation.redirectToRestrictedForDoctor}" value="restricted for doctor!!!" />
-		</h:form>
-		<h:form rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='2'}">
-			<h:commandLink action="#{navigation.redirectToRestrictedForStatistician}" value="restricted for statistician!!!" />
-		</h:form>
-		
+			<h:form>
+				<h:commandLink action="#{navigation.redirectToPublic}" value="public page"/>
+			</h:form>
+			<h:form rendered="#{loginController.loggedin}">
+				<h:commandLink action="#{navigation.redirectToRestricted}" value="restricted!!!" />
+			</h:form>
+			<h:form rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}">
+				<h:commandLink action="#{navigation.redirectToRestrictedForDoctor}" value="restricted for doctor!!!" />
+			</h:form>
+			<h:form rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='2'}">
+				<h:commandLink action="#{navigation.redirectToRestrictedForStatistician}" value="restricted for statistician!!!" />
+			</h:form>
+		</div>
 	</ui:composition>
 </body>
 </html>
