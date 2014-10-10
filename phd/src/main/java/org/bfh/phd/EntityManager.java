@@ -52,8 +52,7 @@ public class EntityManager {
 		initGroup();
 	}
 
-
-
+//---- Methods -----
 
 	public List<Staff> getStaff() {
 		return this.staff;
@@ -86,6 +85,7 @@ public class EntityManager {
 		}
 		return staff;
 	}
+	
 	public List<Staff> getStaffsNotInGroup(Staff activeUser, Patient activePatient, String name) { // TODO
 		List<Staff> staff = new ArrayList<Staff>(this.getStaff());
 		List<Group> groups = this.getGroups(activeUser, activePatient);
@@ -127,6 +127,7 @@ public class EntityManager {
 		}
 		initGroup();
 	}
+	
 	public void removeStaffFromGroup(Staff staff, Patient activePatient) {
 		System.out.println("Remfromgr: " + staff + activePatient);
 		String stm = "DELETE FROM staff_has_patient WHERE staff_staff_id=? AND patient_patient_id=?";
@@ -145,42 +146,11 @@ public class EntityManager {
 		initGroup();
 	}
 
-	
 	public List<Patient> getPatient(){
 		return this.patient;
 	}
-	
-	
 
 	public Patient getPatient(int patientid) {
-//		Patient p = null;
-//		init();
-//		String stm = "SELECT * FROM patient WHERE patient_id=?;";
-//		try {
-//			pst = con.prepareStatement(stm);
-//			pst.setInt(1, patientid);
-//			pst.execute();
-//			rs = pst.getResultSet();
-//			if (rs.next()) {
-//				p = new Patient();
-//				p.setPatientid(rs.getInt("patient_id"));
-//				p.setFirstname(rs.getString("firstname"));
-//				p.setLastname(rs.getString("lastname"));
-//				p.setBirth(rs.getString("birthday"));
-//				p.setStreet(rs.getString("street"));
-//				p.setNr(rs.getInt("nr"));
-//				p.setCity(rs.getString("city"));
-//				p.setZip(rs.getString("zip"));
-//				p.setTelnumber(rs.getInt("telnumber"));
-//				p.setGender(rs.getString("gender"));
-//			}
-//			close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			close();
-//		}
-//		return p;
 		for(Patient p : this.patient){
 			if(p.getPatientid() == patientid){
 				return p;
@@ -189,41 +159,9 @@ public class EntityManager {
 		return null;
 	}
 	
-//	public List<Patient> getPatients() {
-//		List<Patient> patients = new ArrayList<Patient>();
-//		init();
-//		String stm = "SELECT * FROM patient;";
-//		try {
-//			pst = con.prepareStatement(stm);
-//			pst.execute();
-//			rs = pst.getResultSet();
-//			while (rs.next()) {
-//				Patient p = new Patient();
-//				p.setPatientid(rs.getInt("patient_id"));
-//				p.setFirstname(rs.getString("firstname"));
-//				p.setLastname(rs.getString("lastname"));
-//				p.setBirth(rs.getString("birthday"));
-//				p.setStreet(rs.getString("street"));
-//				p.setNr(rs.getInt("nr"));
-//				p.setCity(rs.getString("city"));
-//				p.setZip(rs.getString("zip"));
-//				p.setTelnumber(rs.getInt("telnumber"));
-//				p.setGender(rs.getString("gender"));
-//				patients.add(p);
-//			}
-//			close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			close();
-//		}
-//		return patients;
-//	}
-	
 	public List<Patient> getPatientsWithRestrictions(Staff activeUser) {
 		List<Patient> patients = new ArrayList<Patient>();
 		init();
-//		String stm = "SELECT * FROM patient";// WHERE staff_staff_id=?;";
 		String stm = "SELECT * FROM staff_has_patient INNER JOIN patient ON staff_has_patient.patient_patient_id=patient.patient_id WHERE staff_has_patient.staff_staff_id=?";
 		try {
 			pst = con.prepareStatement(stm);
@@ -292,11 +230,11 @@ public class EntityManager {
 			rs = pst.getResultSet();
 			while (rs.next()) {
 					Questionnari q = new Questionnari();
-					q.setQ1(rs.getInt("q1"));
-					q.setQ2(rs.getInt("q2"));
-					q.setQ3(rs.getInt("q3"));
-					q.setQ4(rs.getInt("q4"));
-					q.setQ5(rs.getInt("q5"));
+//					q.setQ1(rs.getInt("q1"));
+//					q.setQ2(rs.getInt("q2"));
+//					q.setQ3(rs.getInt("q3"));
+//					q.setQ4(rs.getInt("q4"));
+//					q.setQ5(rs.getInt("q5"));
 					q.setId(rs.getInt("id"));
 					ids.add(q);
 				}
@@ -365,6 +303,44 @@ public class EntityManager {
 		}
 		return;
 	}
+	
+	public List<Question> getFilledQuestion2(int id){
+		List<Question> q = getQuestions(sss);
+		List<Answer> a = getAnswers(sss, id);
+		System.err.println(id);
+		System.err.println(a);
+		System.err.println(a.size());
+		System.err.println(q.size());
+		if(q.size()==a.size()){
+			for(int i = 0; i < a.size(); i++){
+				String s = q.get(i).getType();
+				if(s.equals("Checkbox")){
+					List<String> list = q.get(i).getAnswerPossibilities();
+					int k = 0;
+					ArrayList<String> b = (ArrayList<String>) a.get(i).getAnswer();
+					for(int j = 0; j < list.size(); j++)	
+						if(list.get(j).equals(b.get(k))){
+							q.get(i).setAnswer("true");
+						}else{
+							q.get(i).setAnswer("false");
+						}
+				}else if(s.equals("RadioButton")){
+					List<String> list = q.get(i).getAnswerPossibilities();	
+					for(int j = 0; j < q.size(); j++){
+						if(list.get(j).equals(a.get(i).getAnswer())){
+							q.get(i).setAnswer("true");
+						}else{
+							q.get(i).setAnswer("false");
+						}
+					}
+				}else if(s.equals("String")) {
+					q.get(i).setAnswer((String)a.get(i).getAnswer());
+				}else{}
+			}
+		}
+		return q;
+	}
+	
 
 	public List<Tools> getFilledQuestion(int id){
 		List<Question> q = getQuestions(sss);
@@ -677,30 +653,6 @@ public class EntityManager {
 			initPatient();	// TODO da sonst nicht geupdated wird nach dem insert
 		}
 	}
-
-//	public void createPatientData(Patient p, PatientData pd) {
-//		String stm = "INSERT INTO patientdata(patient_patient_id, firstdata, seconddata) VALUES(?, ?, ?);";
-//		init();
-//		try {
-//			pst = con.prepareStatement(stm);
-//			pst.setInt(1, p.getPatientid());
-//			pst.setString(2, pd.getFirstdata());
-//			pst.setString(3, pd.getSeconddata());
-//			pst.executeUpdate();
-//			closeWithoutRs();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			closeWithoutRs();
-//		}
-//		return;
-//	}
-
-	
-	
-	
-	
-	
 	
 	public List<Question> getQuestions(String quest) {
 //		String quest = "knee";
@@ -761,9 +713,6 @@ public class EntityManager {
 		return questions;
 	}
 	
-	
-	
-	
 	public List<String> getPossibilities(String quest, int id) {
 		List<String> possibilities = new ArrayList<String>();
 //		init();
@@ -789,9 +738,7 @@ public class EntityManager {
 		}
 		return possibilities;
 	}
-	
-	
-	
+
 	public List<Answer> getAnswers(String quest, int id) {
 		List<Answer> answers = new ArrayList<Answer>();
 		List<Question> questions = this.getQuestions(quest);
@@ -845,6 +792,7 @@ public class EntityManager {
 		}
 		return c;
 	}
+	
 	public void addAnswer(String quest, List<Answer> a) {
 		int size = a.size();
 		String stm = "INSERT INTO " + quest + "_answer(answer1";
@@ -1071,9 +1019,6 @@ public class EntityManager {
 		}
 		return list;
 	}
-
-	
-	
 	
 	private void initStaff() {
 		staff = new ArrayList<Staff>();
@@ -1131,9 +1076,6 @@ public class EntityManager {
 //		p1.setSize(patient.size());
 	}	
 	
-
-
-
 	private void initPatientData() {
 		patientdata = new ArrayList<PatientData>();
 		init();
@@ -1272,7 +1214,6 @@ public class EntityManager {
 		}
 	}
 	
-	
 	public PaginatorPatient getPaginatorPatient() {
 		return paginatorPatient;
 	}
@@ -1296,7 +1237,7 @@ public class EntityManager {
 	public void setPaginatorGroup(PaginatorGroup p) {
 		this.paginatorGroup = p;
 	}
-
+	
 	public List<Patient> getPatientsWithRWAccess(Staff activeUser) {
 		List<Patient> list = new ArrayList<Patient>();
 		
@@ -1332,11 +1273,9 @@ public class EntityManager {
 		}
 		return quest;
 	}
-
-
-
-
-	public void updateQuestionnaire() {
+	
+	public void updateQuestionnaire(Questionnari q) {
 		// TODO Auto-generated method stub
+		
 	}
 }

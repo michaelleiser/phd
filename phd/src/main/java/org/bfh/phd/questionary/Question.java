@@ -2,7 +2,7 @@ package org.bfh.phd.questionary;
 
 import java.util.List;
 
-public interface Question <A, B> {
+public interface Question <A, B, C> {
 	
 	public int getId();
 	
@@ -21,4 +21,8 @@ public interface Question <A, B> {
 	public List<String> getAnswerPossibilities();
 	
 	public void setAnswerPossibilities(List<String> o);
+	
+	public void setAnswer(String s);
+	
+	public C getAnswer();
 }

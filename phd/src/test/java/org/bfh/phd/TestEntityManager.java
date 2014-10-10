@@ -19,12 +19,24 @@ public class TestEntityManager{
 		em = new EntityManager();
 	}
 	
+//	@Test
+//	public void getQuestionarris(){
+//		List<ListOfQuestionnari> list = em.searchData(1);
+//		System.err.println(list.get(0).getQuestId());
+//		System.err.println(list.get(0).getDate());
+//		System.err.println(list.get(0).getTypOfQuest());
+//	}
+	
 	@Test
-	public void getQuestionarris(){
-		List<ListOfQuestionnari> list = em.searchData(1);
-		System.err.println(list.get(0).getQuestId());
-		System.err.println(list.get(0).getDate());
-		System.err.println(list.get(0).getTypOfQuest());
+	public void getFilledQuestion2(){
+		System.err.println("Test 2 start");
+		List<Question> list = em.getFilledQuestion2(10);
+		System.err.println(list);
+		for(int i = 0; i < list.size(); i++){
+			System.err.println("Frage: " + list.get(i).getQuestion());
+			System.err.println("Mögliche Antworten:" + list.get(i).getAnswerPossibilities());
+			System.err.println("Gegebene Antwort:" + list.get(i).getAnswer());
+		}
 	}
 	
 //	@Test
@@ -67,13 +79,13 @@ public class TestEntityManager{
 //		}
 //	}
 	
-	@Test
-	public void testGetAnswer(){
-		List<Tools> list = em.getFilledQuestion(2);
-		System.err.println(list.size());
-		for(int i = 0; i < list.size(); i++){
-			System.err.println(list.get(i).getString());
-		}
-		
-	}
+//	@Test
+//	public void testGetAnswer(){
+//		List<Tools> list = em.getFilledQuestion(2);
+//		System.err.println(list.size());
+//		for(int i = 0; i < list.size(); i++){
+//			System.err.println(list.get(i).getString());
+//		}
+//		
+//	}
 }
