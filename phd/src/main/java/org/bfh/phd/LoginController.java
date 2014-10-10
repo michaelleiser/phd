@@ -27,7 +27,7 @@ public class LoginController implements Serializable {
 	private static Staff activeUser;
 	private Patient activePatient;
 	private PatientData activePatientData;
-	private int patientenid;
+	private int questionnaireId;
 	private String s = "knee";
 
 	private EntityManager em;
@@ -104,31 +104,13 @@ public class LoginController implements Serializable {
 		return "/home";
 	}
 
-//	public int getPatientid() {
-//		return patientid;
-//	}
-//	public void setPatientid(int patientid) {
-//		this.patientid = patientid;
-//	}
 	public int getPatientdataid() {
 		return patientdataid;
 	}
 	public void setPatientdataid(int patientdataid) {
 		this.patientdataid = patientdataid;
 	}
-	
-//	public List<ListOfQuestionnari> getPatientData(){
-//		if(activePatient != null){
-//		System.out.println("GetPatientData " + patientdataid);
-//		List<ListOfQuestionnari> l = em.searchData(activePatient.getPatientid());
-//		
-//		first2size = l.size();
-//		
-//		return l;
-//		}
-//		return null;
-//	}
-	
+		
 	public Patient getPatient(int patientid){
 		System.out.println("GetPatient " + patientid);
 		if(this.loggedin == true && activeUser.getRole() == 1){
@@ -154,12 +136,6 @@ public class LoginController implements Serializable {
 		}
 		return null;
 	}
-	
-//	public String getPatientAndModify(int id){
-//		System.out.println("GetPatientAndModify " + id);
-//		patientid = id;
-//		return "";
-//	}
 	
 	// TODO if possible remove this method
 	public String getPatientDataWithId(int id){		
@@ -202,6 +178,12 @@ public class LoginController implements Serializable {
 		}
 	}
 
+	public void updateQuestionnaire(){
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			em.updateQuestionnaire();
+		}
+	}
+	
 	public void updatePatientData(PatientData pd){
 		System.out.println("update pateint data..." + pd);
 		if(this.loggedin == true){		// TODO rW access
@@ -259,7 +241,7 @@ public class LoginController implements Serializable {
 	}
 	
 	public List<Tools> getFilledQuestion(){
-		return em.getFilledQuestion(patientenid);
+		return em.getFilledQuestion(questionnaireId);
 	}
 
 	public List<Question> getQuestions() {
@@ -389,10 +371,18 @@ public class LoginController implements Serializable {
 	}
 	
 	public void setPatientid(int i){
-		this.patientenid = i;
+		this.questionnaireId = i;
 	}
 
 	public int getPatientid(){
-		return this.patientenid;
+		return this.questionnaireId;
+	}
+
+	public int getQuestionnariId() {
+		return questionnaireId;
+	}
+
+	public void setQuestionnariId(int questionnariId) {
+		this.questionnaireId = questionnariId;
 	}
 }

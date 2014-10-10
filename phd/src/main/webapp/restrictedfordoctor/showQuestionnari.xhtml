@@ -10,6 +10,17 @@
 		<ui:define name="content">
 			<h1>Questionnari</h1>
 			
+			<h:panelGrid columns="2">
+					<h:outputLabel>ID</h:outputLabel>
+					<h:outputLabel>#{loginController.activePatient.patientid}</h:outputLabel>
+					<h:outputLabel>Firstname:</h:outputLabel>
+					<h:outputLabel>#{loginController.activePatient.firstname}</h:outputLabel>
+					<h:outputLabel>Lastname:</h:outputLabel>
+					<h:outputLabel>#{loginController.activePatient.lastname}</h:outputLabel>
+					<h:outputLabel>birth:</h:outputLabel>
+					<h:outputLabel>#{loginController.activePatient.birth}</h:outputLabel>
+				</h:panelGrid>
+			
 			
 			<h:dataTable value="#{loginController.getFilledQuestion()}" var="quests" headerClass="table-header" rowClasses="table-odd-row,table-even-row">
 			
@@ -17,7 +28,14 @@
 						<f:facet name="header">Date</f:facet>#{quests.string}
 					</h:column>
 					
-				</h:dataTable>		
+				</h:dataTable>
+				<h:form>
+				<h:panelGrid columns="1">
+				<h:column>
+					<h:commandButton action="#{navigation.toEditQuestionnari}" rendered="#{(loginController.isRWAccess(loginController.activePatient))}" value="Update Patient" />
+				</h:column>
+				</h:panelGrid>
+				</h:form>
 		</ui:define>
 	</ui:composition>
    </h:body>
