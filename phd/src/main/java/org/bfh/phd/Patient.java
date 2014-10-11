@@ -32,7 +32,8 @@ public class Patient implements Serializable {
 	private int owner;
 	private boolean readaccess;
 	private boolean writeaccess;
-	
+	private boolean insertaccess;
+
 	public Patient() {
 
 	}
@@ -208,6 +209,13 @@ public class Patient implements Serializable {
 		this.writeaccess = write;
 	}
 	
+	public boolean getInsertaccess() {
+		return insertaccess;
+	}
+
+	public void setInsertaccess(boolean insertaccess) {
+		this.insertaccess = insertaccess;
+	}
 }
 
 //	public String search(){

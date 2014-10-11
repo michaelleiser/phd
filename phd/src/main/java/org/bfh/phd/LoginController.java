@@ -125,21 +125,12 @@ public class LoginController implements Serializable {
 	}
 
 	public List<ListOfQuestionnari> getPatientData(){
-		if(activePatient != null){
+		if((this.loggedin == true) && (activePatient != null)){
 		List<ListOfQuestionnari> l = em.searchData(activePatient.getPatientid());
-		return l;
+			return l;
 		}
 		return null;
 	}
-	
-//	public List<PatientData> getPatientData(){
-//		System.out.println("GetPatientData " + patientdataid);
-//		if(this.loggedin == true){
-//			List<PatientData> l = em.getPatientData(patientdataid);
-//			return l;
-//		}
-//		return null;
-//	}
 	
 	public void updateStaff(Staff activeUser){
 		System.out.println("update staff..." + activeUser);
@@ -149,8 +140,8 @@ public class LoginController implements Serializable {
 	}
 	
 	public void updatePatient(Patient p){
-		System.out.println("update pateint..." + p);
-		if(this.loggedin == true){		// TODO rW access
+		System.out.println("update patient..." + p);
+		if(this.loggedin == true){
 			em.updatePatient(activeUser, p);
 		}
 	}
@@ -312,7 +303,12 @@ public class LoginController implements Serializable {
 		}
 		return false;
 	}
-
+	public boolean insertAccess(Patient p){
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			return em.insertaccess(activeUser, p);
+		}
+		return false;
+	}
 	
 	public void addAnswer(String string, Knee k) {
 		if(this.loggedin == true && activeUser.getRole() == 1){

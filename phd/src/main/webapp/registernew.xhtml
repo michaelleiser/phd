@@ -18,16 +18,19 @@
 					<h:form>
 						<h:panelGrid columns="2" rendered="#{!loginController.loggedin}">
 							<h:outputLabel for="name">Username</h:outputLabel>
-							<h:inputText id="name" value="#{userData.name}" required="true" />
+							<h:inputText id="name" required="true" value="#{userData.name}" />
 							<h:outputLabel for="password">Password</h:outputLabel>
-							<h:inputSecret id="password" value="#{userData.password}" required="true" />
+							<h:inputSecret id="password" value="#{userData.password}"
+								required="true" />
 							<h:outputLabel for="role">Role</h:outputLabel>
-							<h:selectOneRadio id="role" value="#{userData.role}" required="true">
+							<h:selectOneRadio id="role" required="true"
+								value="#{userData.role}">
 								<f:selectItem itemLabel="Doctor" itemValue="1" />
 								<f:selectItem itemLabel="Statistician" itemValue="2" />
 							</h:selectOneRadio>
 							<h:outputLabel></h:outputLabel>
-							<h:commandButton value="Registernew" action="#{userData.registernew}" />
+							<h:commandButton action="#{userData.registernew}"
+								value="Registernew" />
 						</h:panelGrid>
 					</h:form>
 				</div>

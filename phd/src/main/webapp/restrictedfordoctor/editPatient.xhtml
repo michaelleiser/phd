@@ -71,6 +71,9 @@
 							<h:outputLabel>Write Accessability</h:outputLabel>
 							<h:selectBooleanCheckbox readonly="#{!(loginController.writeAccess(loginController.activePatient))}" value="#{loginController.activePatient.writeaccess}" />
 							
+							<h:outputLabel>Insert Accessability</h:outputLabel>
+							<h:selectBooleanCheckbox readonly="#{!(loginController.writeAccess(loginController.activePatient))}" value="#{loginController.activePatient.insertaccess}" />
+													
 							<h:outputLabel></h:outputLabel>					
 							<h:column>
 								<h:commandButton action="#{loginController.updatePatient(loginController.activePatient)}" rendered="#{(loginController.writeAccess(loginController.activePatient))}" value="Update Patient" />

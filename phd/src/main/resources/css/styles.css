@@ -59,7 +59,19 @@ div#formular {
 	box-shadow: 10px 10px 25px #666;
 	height: auto;
 	padding: 20px 20px 20px 20px;	
-	width: 512px;
+	width: auto;
+}
+
+div#registernew{
+	background-color: #ffffff;
+	border-color: #bbbbbb;
+	border-radius: 5px;
+	border-style: solid;
+	border-width: 1px;
+	box-shadow: 10px 10px 25px #666;
+	height: auto;
+	padding: 20px 20px 20px 20px;	
+	width: auto;
 }
 
 div#patients {
@@ -70,7 +82,7 @@ div#patients {
 	box-shadow: 10px 10px 25px #666;
 	height: auto;
 	padding: 20px 20px 20px 20px;
-	width: 800px;
+	width: auto;
 }
 
 div#patientdatas {
@@ -79,13 +91,18 @@ div#patientdatas {
 	border-style: solid;
 	border-width: 1px;
 	box-shadow: 10px 10px 25px #666;
-	padding: 20px 20px 20px 20px;
 	height: auto;
-	width: 512px;
+	padding: 20px 20px 20px 20px;
+	width: auto;
 }
 div#filter{
 }
 
+
+
+div#table{
+	
+}
 .table-header {
 /* 	background-color: #BBBBFF; */
 	padding: 10px 10px 10px 10px;
@@ -99,7 +116,12 @@ div#filter{
 	padding: 10px 10px 10px 10px;
 }
 .table-column-id {
-	background-color: #9090b0;
+	background-color: #0090d0;
+	border-radius: 5px;
+	padding: 5px 5px 5px 5px;
+}
+.table-column-data {
+	border-radius: 5px;
 	padding: 5px 5px 5px 5px;
 }
 .table-column-button {

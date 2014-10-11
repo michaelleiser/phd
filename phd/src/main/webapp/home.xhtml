@@ -22,17 +22,19 @@
 							<h:outputLabel for="password">Password</h:outputLabel>
 							<h:inputSecret id="password" value="#{userData.password}" />
 							<h:outputLabel />
-							<h:commandButton action="#{userData.login}" rendered="#{!loginController.loggedin}" value="Login" />
+							<h:commandButton action="#{userData.login}"
+								rendered="#{!loginController.loggedin}" value="Login" />
 						</h:panelGrid>
 						<!-- could be deleted -->
 						<h:outputLabel rendered="#{loginController.loggedin}">You are logged in as #{userData.name}</h:outputLabel>
-						<h:commandButton action="#{loginController.logout}" rendered="#{loginController.loggedin}" value="Logout" />
-						
+						<h:commandButton action="#{loginController.logout}" id="button"
+							rendered="#{loginController.loggedin}" value="Logout" />
 					</h:form>
 				</div>
 				<div id="registernew">
 					<h:form>
-						<h:commandButton action="#{navigation.redirectToRegisternew}" value="Registernew" />
+						<h:commandButton action="#{navigation.redirectToRegisternew}"
+							value="Registernew" />
 					</h:form>
 				</div>
 			</div>

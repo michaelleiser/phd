@@ -95,40 +95,6 @@ public class EntityManager {
 		return list;
 	}
 
-	public void addStaffToGroup(Staff staff, Patient activePatient) {
-		System.out.println("addtogr: " + staff + activePatient);
-		String stm = "INSERT INTO staff_has_patient(staff_staff_id, patient_patient_id, owner, rwaccess) VALUES(?, ?, 'false', 'true');";
-		init();
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setInt(1, staff.getId());
-			pst.setInt(2, activePatient.getPatientid());
-			pst.executeUpdate();
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-	}
-	
-	public void removeStaffFromGroup(Staff staff, Patient activePatient) {
-		System.out.println("Remfromgr: " + staff + activePatient);
-		String stm = "DELETE FROM staff_has_patient WHERE staff_staff_id=? AND patient_patient_id=?";
-		init();
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setInt(1, staff.getId());
-			pst.setInt(2, activePatient.getPatientid());
-			pst.executeUpdate();
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-	}
-
 	public List<Patient> getPatient(){
 		return this.patient;
 	}
@@ -288,7 +254,7 @@ public class EntityManager {
 						}
 				}else if(s.equals("RadioButton")){
 					List<String> list = q.get(i).getAnswerPossibilities();	
-					for(int j = 0; j < q.size(); j++){
+					for(int j = 0; j < list.size(); j++){
 						if(list.get(j).equals(a.get(i).getAnswer())){
 							q.get(i).setAnswer("true");
 						}else{
@@ -413,7 +379,7 @@ public class EntityManager {
 	public void updatePatient(Staff activeUser, Patient p) {
 		if(this.writeaccess(activeUser, p)){
 			init();
-			String stm = "UPDATE patient SET firstname=?, lastname=?, birthday=?, street=?, nr=?, city=?, zip=?, telnumber=?, gender=?, readaccess=?, writeaccess=? WHERE patient_id=?";
+			String stm = "UPDATE patient SET firstname=?, lastname=?, birthday=?, street=?, nr=?, city=?, zip=?, telnumber=?, gender=?, readaccess=?, writeaccess=?, insertaccess=? WHERE patient_id=?";
 			try {
 				System.out.println("jfkdlsajf");
 				pst = con.prepareStatement(stm);
@@ -428,7 +394,8 @@ public class EntityManager {
 				pst.setString(9, p.getGender());
 				pst.setString(10, Boolean.toString(p.getReadaccess()));
 				pst.setString(11, Boolean.toString(p.getWriteaccess()));
-				pst.setInt(12, p.getPatientid());
+				pst.setString(12, Boolean.toString(p.getInsertaccess()));
+				pst.setInt(13, p.getPatientid());
 				pst.executeUpdate();
 				closeWithoutRs();
 			} catch (SQLException e) {
@@ -529,7 +496,7 @@ public class EntityManager {
 		paginatorPatientData.setSize(list.size());
 		return list;
 	}
-	//TODO from - to
+	
 	public List<PatientData> searchPatientData(String operation, Date from, Date to) {
 		List<PatientData> list = new ArrayList<PatientData>();
 		init();
@@ -563,13 +530,14 @@ public class EntityManager {
 		} finally {
 			close();
 		}
+		paginatorPatientData.setSize(list.size());
 		return list;
 	}
 
 	public void createPatient(Patient p, Staff activeUser) {
 		if((activeUser != null) && (activeUser.getRole() == 1)){
 			String stm1 = "SELECT * FROM patient WHERE firstname=? AND lastname=?;";
-			String stm2 = "INSERT INTO patient(firstname, lastname, birthday, street, nr, city, zip, telnumber, gender, readaccess, writeaccess, staff_staff_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			String stm2 = "INSERT INTO patient(firstname, lastname, birthday, street, nr, city, zip, telnumber, gender, readaccess, writeaccess, insertaccess, staff_staff_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 			init();
 			try {
 				pst = con.prepareStatement(stm1);
@@ -578,7 +546,7 @@ public class EntityManager {
 				pst.execute();
 				rs = pst.getResultSet();
 				if(rs.next()){
-					return;
+					return;		// Return if already a patient with this firstname and lastname exists
 				}
 				pst = con.prepareStatement(stm2);
 				pst.setString(1, p.getFirstname());
@@ -592,7 +560,8 @@ public class EntityManager {
 				pst.setString(9, p.getGender());
 				pst.setString(10, "false");
 				pst.setString(11, "false");
-				pst.setInt(12, activeUser.getId());
+				pst.setString(12, "false");
+				pst.setInt(13, activeUser.getId());
 				pst.executeUpdate();
 				closeWithoutRs();
 			} catch (SQLException e) {
@@ -731,14 +700,16 @@ public class EntityManager {
 	}
 
 	private ArrayList<String> toArray(String s) {
-		if(s == null){return new ArrayList<String>();}
+		if(s == null){
+			return new ArrayList<String>();
+			}
 		String b = "";
 		s = s.replace("[", "");
 		s = s.replace("]", "");
 		String[] a = s.split(",", 10 );
 		ArrayList<String> c = new ArrayList<String>();
 		for (int i = 0; i < a.length; i++){
-		c.add(a[i]);
+			c.add(a[i]);
 		}
 		return c;
 	}
@@ -924,7 +895,6 @@ public class EntityManager {
 		} finally {
 			close();
 		}
-//		p3.setSize(staff.size());
 	}
 	
 	private void initPatient() {
@@ -958,7 +928,6 @@ public class EntityManager {
 		} finally {
 			close();
 		}
-//		p1.setSize(patient.size());
 	}	
 	
 	private void initPatientData() {
@@ -983,7 +952,6 @@ public class EntityManager {
 		} finally {
 			close();
 		}
-//		p2.setSize(patientdata.size());
 	}
 
 
@@ -1004,6 +972,12 @@ public class EntityManager {
 			return true;
 		}
 		return p.getWriteaccess();
+	}
+	public boolean insertaccess(Staff activeUser, Patient p) {
+		if(isOwner(activeUser, p)){
+			return true;
+		}
+		return p.getInsertaccess();
 	}
 
 	
@@ -1107,6 +1081,7 @@ public class EntityManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		paginatorPatientData.setSize(quest.size());
 		return quest;
 	}
 	
