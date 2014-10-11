@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class QuestionCheckbox implements Question <String, String> {
+public class QuestionCheckbox implements Question <String, String, List<String>> {
 	
 	private String type;
 	private String question;
 	private List<String> answerPossibilities = new ArrayList<String>();
+	private List<String> answer = new ArrayList<String>();
 
 	@Override
 	public String getType() {
@@ -54,14 +55,22 @@ public class QuestionCheckbox implements Question <String, String> {
 
 	@Override
 	public int getId() {
-		// TODO Auto-generated method stub
 		return id;
 	}
 
 	@Override
 	public void setId(int id) {
-		// TODO Auto-generated method stub
 		this.id = id;
+	}
+
+	public List<String> getAnswer() {
+		return this.answer;
+	}
+
+	@Override
+	public void setAnswer(String s) {
+		this.answer.add(s);
+		
 	}
 
 }

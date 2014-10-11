@@ -3,7 +3,7 @@ package org.bfh.phd.questionary;
 import java.util.List;
 
 
-public class QuestionString implements Question <String, String> {
+public class QuestionString implements Question <String, String, String> {
 	
 	private String type;
 	private String question;
@@ -61,5 +61,14 @@ public class QuestionString implements Question <String, String> {
 	public void setId(int id) {
 		// TODO Auto-generated method stub
 		this.id = id;
+	}
+	
+	public String getAnswer(){
+		return this.answer;
+	}
+	
+	@Override
+	public void setAnswer(String s){
+		this.answer = s;
 	}
 }

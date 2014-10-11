@@ -35,7 +35,6 @@ public class Navigation implements Serializable {
 	public String redirectToLoggedin(){
 		return "/loggedin?faces-redirect=true";
 	}
-
 	public String toSearchPatient(){
 		return "/restrictedfordoctor/searchPatient";
 	}
@@ -116,5 +115,8 @@ public class Navigation implements Serializable {
 	}
 	public String toShowQuestionnari(){
 		return "/restrictedfordoctor/showQuestionnari";
+	}
+	public String toEditQuestionnari(){
+		return "/restrictedfordoctor/editQuestionnari";
 	}
 }
