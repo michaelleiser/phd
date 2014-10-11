@@ -1,14 +1,21 @@
 body {
     background-color: #eeeeee;
-    margin-left: auto;
-    margin-right: auto;
-    width: 1024px;
-    font-family: Helvetica;
+	font-family: Helvetica;
     text-shadow: 5px 5px 5px #999;
+	width: 1024px;
+}
+
+div#header{
+	padding: 20px 20px 20px 20px;
+}
+div#content{
+	padding: 20px 20px 20px 20px;
+}
+div#footer{
+	padding: 20px 20px 20px 20px;
 }
 
 div#headerlanguages {
-	padding: 10px 10px 10px 10px;
 	text-align: right;
 }
 .headerlanguage {
@@ -16,179 +23,86 @@ div#headerlanguages {
 	text-decoration: none;
 }
 
+div#menu {
+}
+div#menuitem {
+	color: #000000;
+	font-size: 25px;
+	padding: 20px 20px 20px 20px;
+	text-decoration: none;
+}
+.menuitem {
+	background-color: #ffffff;
+	border-radius: 5px;
+	box-shadow: 5px 5px 10px #666;
+	color: #000000;
+	font-size: 25px;
+	padding: 10px 10px 10px 10px;
+	text-decoration: none;
+}
+.menuitem:hover {
+    background-color: #ff0000;
+    border-radius: 5px;
+}
+
 div#loggedinbox {
 	float: right;
 	padding: 10px 10px 10px 10px;
-/* 	width: 200px; */
 }
 
-div#loginbox {
+div#formular {
+	background-color: #ffffff;
 	border-color: #bbbbbb;
+	border-radius: 5px;
 	border-style: solid;
 	border-width: 1px;
-	width: 256px;
+	box-shadow: 10px 10px 25px #666;
 	height: auto;
-	padding: 50px 100px 50px 100px;
-	border-radius: 5px;
-/* 	box-shadow: 5px 5px 5px #666; */
+	padding: 20px 20px 20px 20px;	
+	width: 512px;
 }
 
+div#patients {
+	border-color: #bbbbbb;
+	border-radius: 5px;
+	border-style: solid;
+	border-width: 1px;
+	box-shadow: 10px 10px 25px #666;
+	height: auto;
+	padding: 20px 20px 20px 20px;
+	width: 800px;
+}
 
+div#patientdatas {
+	border-color: #bbbbbb;
+	border-radius: 5px;
+	border-style: solid;
+	border-width: 1px;
+	box-shadow: 10px 10px 25px #666;
+	padding: 20px 20px 20px 20px;
+	height: auto;
+	width: 512px;
+}
+div#filter{
+}
 
 .table-header {
 /* 	background-color: #BBBBFF; */
 	padding: 10px 10px 10px 10px;
 }
-
 .table-odd-row {
 	background-color: #bbbbbb;
 	padding: 10px 10px 10px 10px;
 }
-
 .table-even-row {
 	background-color: #dddddd;
 	padding: 10px 10px 10px 10px;
 }
-
 .table-column-id {
 	background-color: #9090b0;
 	padding: 5px 5px 5px 5px;
 }
-
 .table-column-button {
 	background-color: #eeeeee;
 	padding: 5px 5px 5px 5px;
 }
-
-
-
-
-/* div#headermenu { */
-/*     background-color: #000000; */
-/*     border-radius: 5px; */
-/*     padding: 10px 10px 10px 10px; */
-/* } */
-/* .headermenuitem { */
-/*     color: #FFFFFF; */
-/*     font-family: cursive; */
-/*     font-size: large; */
-/*     font-variant: small-caps; */
-/*     font-weight: 900; */
-/*     margin-left: 10px; */
-/*     margin-right: 20px; */
-/*     text-decoration: none; */
-/* } */
-/* div#menuleft { */
-/*     float: left; */
-/*     margin: 0 0 10px 0; */
-/* } */
-/* div#navigation { */
-/*     background-color: #0088FF; */
-/*     border-radius: 5px; */
-/*     box-shadow: 5px 5px 5px #666; */
-/* 	width: 200px; */
-/* } */
-/* div#navigation a { */
-/* 	display: block; */
-/* } */
-/* .navigationmenugroup { */
-/*     border-bottom: 1px solid black; */
-/*     border-radius: 5px; */
-/*     color: #000000; */
-/*     font-size: large; */
-/*     font-weight: 600; */
-/*     padding: 10px 10px 10px 10px; */
-/*     text-decoration: none; */
-/* } */
-/* .navigationmenugroup:hover { */
-/*     background-color: #3366BB; */
-/*     border-radius: 5px; */
-/*     font-weight: 900; */
-/* } */
-/* .navigationmenuarticle { */
-/*     background-color: #88BBFF; */
-/*     border-bottom: 1px solid black; */
-/*     border-radius: 5px; */
-/*     color: #000000; */
-/*     font-size: large; */
-/*     font-weight: 300; */
-/*     padding: 10px 10px 10px 20px; */
-/*     text-decoration: none; */
-/* } */
-/* .navigationmenuarticle:hover { */
-/*     background-color: #4488AA; */
-/*     border-radius: 5px; */
-/*     font-weight: 600; */
-/* } */
-/* div#navigationadmin { */
-/*     background-color: #FF2222; */
-/*     border-radius: 5px; */
-/*     box-shadow: 5px 5px 5px #666; */
-/*     margin: 10px 0 0 0; */
-/* 	width: 200px; */
-/* } */
-/* div#navigationadmin a { */
-/* 	display: block; */
-/* } */
-/* .navigationadminmenu { */
-/*     border-bottom: 1px solid black; */
-/*     border-radius: 5px; */
-/*     color: #000000; */
-/*     font-size: large; */
-/*     font-weight: 600; */
-/*     padding: 10px 10px 10px 10px; */
-/*     text-decoration: none; */
-/* } */
-/* .navigationadminmenu:hover { */
-/*     background-color: #CC0000; */
-/*     border-radius: 5px; */
-/*     font-weight: 900; */
-/* } */
-
-/* div#loginbox { */
-/*     background-color: #0088FF; */
-/*     border-radius: 5px; */
-/*     box-shadow: 5px 5px 5px #666; */
-/*     height: auto; */
-/*     padding: 10px 10px 10px 10px; */
-/* } */
-/* a#loginboxtitle { */
-/*     font-size: large; */
-/*     font-weight: bold; */
-/* } */
-/* a#user { */
-/*     font-size: small; */
-/*     font-weight: bold; */
-/* } */
-/* div#content { */
-/*     height: auto; */
-/* 	margin: 0 0 0 200px; */
-/*     overflow: auto; */
-/*     padding: 20px 20px 20px 20px; */
-/* } */
-/* div#footer { */
-/*     background-color: #AACCFF; */
-/*     border-radius: 5px; */
-/*     box-shadow: 5px 5px 5px #666; */
-/*     clear: both; */
-/*     margin-top: 10px 0 0 0; */
-/*     padding: 10px 10px 10px 10px; */
-/* 	text-align: center; */
-/* } */
-/* .footermenuitem { */
-/*     color: #000000; */
-/*     font-size: large; */
-/*     font-variant: small-caps; */
-/*     margin-right: 10px; */
-/*     text-decoration: none; */
-/* } */
-/* .wallpaper { */
-/*     border-radius: 20px; */
-/*     box-shadow: 5px 5px 5px #666; */
-/* } */
-/* .button { */
-/*     border-radius: 5px; */
-/*     box-shadow: 5px 5px 5px #666; */
-/*     margin-top: 10px; */
-/* } */
-/

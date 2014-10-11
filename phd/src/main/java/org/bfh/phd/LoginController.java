@@ -59,23 +59,6 @@ public class LoginController implements Serializable {
 		}
 		return null;
 	}
-	public List<Staff> getStaffsNotInGroup(String name){
-		if(this.loggedin == true){
-			return em.getStaffsNotInGroup(activeUser, activePatient, name);
-		}
-		return null;
-	}
-
-	public void addStaffToGroup(Staff staff){
-		if(this.loggedin == true && this.isRWAccess(activePatient)){
-			em.addStaffToGroup(staff, activePatient);
-		}
-	}
-	public void removeStaffFromGroup(Staff staff){
-		if(this.loggedin == true && this.isRWAccess(activePatient)){
-			em.removeStaffFromGroup(staff, activePatient);
-		}
-	}
 	
 	public String login(String name, String password) {
 		activeUser = em.getStaff(name, password);
@@ -131,25 +114,16 @@ public class LoginController implements Serializable {
 	
 	public Patient getPatient(int patientid){
 		System.out.println("GetPatient " + patientid);
-		if(this.loggedin == true && activeUser.getRole() == 1){
-			return em.getPatient(patientid);
+		if((this.loggedin == true) && (activeUser.getRole() == 1)){
+			return em.getPatient(activeUser, patientid);
 		}
 		return null;
 	}
 
 	public List<Patient> getPatients(){
 		System.out.println("GetPatients");
-		if(this.loggedin == true && activeUser.getRole() == 1){
-			List<Patient> l = em.getPatient();
-			return l;
-		}
-		return null;
-	}
-	
-	public List<Patient> getPatientsWithRestrictions() {
-		System.out.println("GetPatients");
-		if(this.loggedin == true && activeUser.getRole() == 1){
-			List<Patient> l = em.getPatientsWithRestrictions(activeUser);
+		if((this.loggedin == true) && (activeUser.getRole() == 1)){
+			List<Patient> l = em.getPatient(activeUser);
 			return l;
 		}
 		return null;
@@ -195,10 +169,17 @@ public class LoginController implements Serializable {
 //		return null;
 //	}
 	
+	public void updateStaff(Staff activeUser){
+		System.out.println("update staff..." + activeUser);
+		if(this.loggedin == true){
+			em.updateStaff(activeUser);
+		}
+	}
+	
 	public void updatePatient(Patient p){
 		System.out.println("update pateint..." + p);
 		if(this.loggedin == true){		// TODO rW access
-			em.updatePatient(p);
+			em.updatePatient(activeUser, p);
 		}
 	}
 
@@ -228,15 +209,7 @@ public class LoginController implements Serializable {
 	public List<Patient> searchPatient(String name) {		// TODO
 		System.out.println("SEARCHING Patient..." + name);
 		if(this.loggedin == true && activeUser.getRole() == 1){
-			List<Patient> l = em.searchPatient(name);
-			return l;
-		}
-		return null;
-	}
-	public List<Patient> searchPatientWithRestrictions(String name) {		// TODO
-		System.out.println("SEARCHING Patient..." + name);	
-		if(this.loggedin == true && activeUser.getRole() == 1){
-			List<Patient> l = em.searchPatientWithRestrictions(name, activeUser);
+			List<Patient> l = em.searchPatient(activeUser, name);
 			return l;
 		}
 		return null;
@@ -245,7 +218,7 @@ public class LoginController implements Serializable {
 	public String createPatient(Patient p) {
 		System.out.println(">> " + p);
 		System.out.println(">> " + activeUser);
-		if(this.loggedin == true && activeUser.getRole() == 1){
+		if((this.loggedin == true) && (activeUser.getRole() == 1)){
 			em.createPatient(p, activeUser);
 			return "/loggedin";
 		}
@@ -281,17 +254,6 @@ public class LoginController implements Serializable {
 //	public Navigation getNavigation(){
 //		return this.navigation;
 //	}
-	
-	
-
-	public List<Group> getGroups(){
-		if(this.loggedin == true && activeUser.getRole() == 1){
-			return em.getGroups(activeUser, activePatient);
-		}
-		return null;
-	}
-	
-	
 	
 	public Patient getActivePatient() {
 		if(this.loggedin == true && activeUser.getRole() == 1){
@@ -359,12 +321,19 @@ public class LoginController implements Serializable {
 		}
 		return false;
 	}
-	public boolean isRWAccess(Patient p){
+	public boolean readAccess(Patient p){
 		if(this.loggedin == true && activeUser.getRole() == 1){
-			return em.rwAccess(activeUser, p);
+			return em.readaccess(activeUser, p);
 		}
 		return false;
 	}
+	public boolean writeAccess(Patient p){
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			return em.writeaccess(activeUser, p);
+		}
+		return false;
+	}
+
 	
 
 
@@ -377,13 +346,6 @@ public class LoginController implements Serializable {
 	public List<Knee> getAnswers(String string) {
 		if(this.loggedin == true){
 			return em.getAnswers(string);
-		}
-		return null;
-	}
-
-	public List<Patient> getPatientsWithRWAccess() {
-		if(this.loggedin == true){			// TODO rw access
-			return em.getPatientsWithRWAccess(activeUser);
 		}
 		return null;
 	}

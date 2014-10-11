@@ -10,11 +10,11 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
-			<div id="page">
+			<div id="content">
 				<h1>
 					<h:outputText value="#{msg['home']}" />
 				</h1>
-				<div id="loginbox">
+				<div id="formular">
 					<h:form>
 						<h:panelGrid columns="2" rendered="#{!loginController.loggedin}">
 							<h:outputLabel for="name">Username</h:outputLabel>

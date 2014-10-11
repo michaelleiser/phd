@@ -10,24 +10,27 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
-			<div id="page">
+			<div id="content">
 				<h1>
 					<h:outputText value="#{msg['registernew']}" />
 				</h1>
-				<h:form>
-					<h:panelGrid columns="2" rendered="#{!loginController.loggedin}">
-						<h:outputLabel for="name">Username</h:outputLabel>
-						<h:inputText id="name" value="#{userData.name}" required="true" />
-						<h:outputLabel for="password">Password</h:outputLabel>
-						<h:inputSecret id="password" value="#{userData.password}" required="true" />
-						<h:outputLabel for="role">Role</h:outputLabel>
-						<h:selectOneRadio id="role" value="#{userData.role}" required="true">
-							<f:selectItem itemLabel="Doctor" itemValue="1" />
-							<f:selectItem itemLabel="Statistician" itemValue="2" />
-						</h:selectOneRadio>
-					</h:panelGrid>
-					<h:commandButton value="Registernew" action="#{userData.registernew}" />
-				</h:form>
+				<div id="formular">
+					<h:form>
+						<h:panelGrid columns="2" rendered="#{!loginController.loggedin}">
+							<h:outputLabel for="name">Username</h:outputLabel>
+							<h:inputText id="name" value="#{userData.name}" required="true" />
+							<h:outputLabel for="password">Password</h:outputLabel>
+							<h:inputSecret id="password" value="#{userData.password}" required="true" />
+							<h:outputLabel for="role">Role</h:outputLabel>
+							<h:selectOneRadio id="role" value="#{userData.role}" required="true">
+								<f:selectItem itemLabel="Doctor" itemValue="1" />
+								<f:selectItem itemLabel="Statistician" itemValue="2" />
+							</h:selectOneRadio>
+							<h:outputLabel></h:outputLabel>
+							<h:commandButton value="Registernew" action="#{userData.registernew}" />
+						</h:panelGrid>
+					</h:form>
+				</div>
 			</div>
 		</ui:define>
 	</ui:composition>

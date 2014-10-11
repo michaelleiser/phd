@@ -29,6 +29,10 @@ public class Patient implements Serializable {
 	private String birth;
 	private List<PatientData> patientData = new ArrayList<PatientData>();
 
+	private int owner;
+	private boolean readaccess;
+	private boolean writeaccess;
+	
 	public Patient() {
 
 	}
@@ -178,6 +182,30 @@ public class Patient implements Serializable {
 	
 	public void addPatientData(PatientData patientData){
 		this.patientData.add(patientData);
+	}
+
+	public int getOwner() {
+		return owner;
+	}
+
+	public void setOwner(int owner) {
+		this.owner = owner;
+	}
+
+	public boolean getReadaccess() {
+		return readaccess;
+	}
+
+	public void setReadaccess(boolean read) {
+		this.readaccess = read;
+	}
+
+	public boolean getWriteaccess() {
+		return writeaccess;
+	}
+
+	public void setWriteaccess(boolean write) {
+		this.writeaccess = write;
 	}
 	
 }

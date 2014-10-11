@@ -24,6 +24,8 @@ import org.bfh.phd.questionary.QuestionCheckbox;
 import org.bfh.phd.questionary.QuestionRadioButton;
 import org.bfh.phd.questionary.QuestionString;
 
+import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
+
 
 @ManagedBean(name = "entityManager", eager = true)
 @SessionScoped
@@ -32,7 +34,6 @@ public class EntityManager {
 	private List<Staff> staff;	
 	private List<Patient> patient;
 	private List<PatientData> patientdata;
-	private List<Group> group;
 	
 	private Connection con = null;
 	private PreparedStatement pst = null;
@@ -40,7 +41,6 @@ public class EntityManager {
 	
 	private PaginatorPatient paginatorPatient = new PaginatorPatient();
 	private PaginatorPatientData paginatorPatientData = new PaginatorPatientData();
-	private PaginatorGroup paginatorGroup = new PaginatorGroup();
 	
 	//Testvariablen
 	private String sss = "elbow"; 
@@ -49,7 +49,6 @@ public class EntityManager {
 		initStaff();
 		initPatient();
 		initPatientData();
-		initGroup();
 	}
 
 
@@ -86,174 +85,29 @@ public class EntityManager {
 		}
 		return staff;
 	}
-	public List<Staff> getStaffsNotInGroup(Staff activeUser, Patient activePatient, String name) { // TODO
-		List<Staff> staff = new ArrayList<Staff>(this.getStaff());
-		List<Group> groups = this.getGroups(activeUser, activePatient);
-		for(Iterator<Staff> i = staff.iterator() ; i.hasNext(); ){
-			Staff s = i.next();
-			if(s.getRole() != 1){
-				i.remove();
-				continue;
-			}
-			
-			for(Group g : groups){
-				if(!s.getName().contains(name)){		// Name filtering
-					i.remove();
-					break;
-				}
-				if(g.getStaff().getId() == s.getId()){	// If Staff is in group
-					i.remove();
-				}
-			}
-		}
-		paginatorGroup.setSize(staff.size());
-		return staff;
-	}
 	
-	public void addStaffToGroup(Staff staff, Patient activePatient) {
-		System.out.println("addtogr: " + staff + activePatient);
-		String stm = "INSERT INTO staff_has_patient(staff_staff_id, patient_patient_id, owner, rwaccess) VALUES(?, ?, 'false', 'true');";
-		init();
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setInt(1, staff.getId());
-			pst.setInt(2, activePatient.getPatientid());
-			pst.executeUpdate();
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		initGroup();
-	}
-	public void removeStaffFromGroup(Staff staff, Patient activePatient) {
-		System.out.println("Remfromgr: " + staff + activePatient);
-		String stm = "DELETE FROM staff_has_patient WHERE staff_staff_id=? AND patient_patient_id=?";
-		init();
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setInt(1, staff.getId());
-			pst.setInt(2, activePatient.getPatientid());
-			pst.executeUpdate();
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		initGroup();
-	}
-
-	
-	public List<Patient> getPatient(){
-		return this.patient;
-	}
-	
-	
-
-	public Patient getPatient(int patientid) {
-//		Patient p = null;
-//		init();
-//		String stm = "SELECT * FROM patient WHERE patient_id=?;";
-//		try {
-//			pst = con.prepareStatement(stm);
-//			pst.setInt(1, patientid);
-//			pst.execute();
-//			rs = pst.getResultSet();
-//			if (rs.next()) {
-//				p = new Patient();
-//				p.setPatientid(rs.getInt("patient_id"));
-//				p.setFirstname(rs.getString("firstname"));
-//				p.setLastname(rs.getString("lastname"));
-//				p.setBirth(rs.getString("birthday"));
-//				p.setStreet(rs.getString("street"));
-//				p.setNr(rs.getInt("nr"));
-//				p.setCity(rs.getString("city"));
-//				p.setZip(rs.getString("zip"));
-//				p.setTelnumber(rs.getInt("telnumber"));
-//				p.setGender(rs.getString("gender"));
-//			}
-//			close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			close();
-//		}
-//		return p;
+	public List<Patient> getPatient(Staff activeUser){
+		List<Patient> list = new ArrayList<Patient>();
 		for(Patient p : this.patient){
-			if(p.getPatientid() == patientid){
-				return p;
+			if(p.getReadaccess() || (p.getOwner() == activeUser.getId())){
+				list.add(p);
+			}
+		}
+		return list;
+	}
+
+	public Patient getPatient(Staff activeUser, int patientid) {
+		for(Patient p : this.patient){
+			if((p.getPatientid() == patientid) && p.getReadaccess()){
+				if(p.getReadaccess() || (p.getOwner() == activeUser.getId())){
+					return p;
+				}
 			}
 		}
 		return null;
 	}
-	
-//	public List<Patient> getPatients() {
-//		List<Patient> patients = new ArrayList<Patient>();
-//		init();
-//		String stm = "SELECT * FROM patient;";
-//		try {
-//			pst = con.prepareStatement(stm);
-//			pst.execute();
-//			rs = pst.getResultSet();
-//			while (rs.next()) {
-//				Patient p = new Patient();
-//				p.setPatientid(rs.getInt("patient_id"));
-//				p.setFirstname(rs.getString("firstname"));
-//				p.setLastname(rs.getString("lastname"));
-//				p.setBirth(rs.getString("birthday"));
-//				p.setStreet(rs.getString("street"));
-//				p.setNr(rs.getInt("nr"));
-//				p.setCity(rs.getString("city"));
-//				p.setZip(rs.getString("zip"));
-//				p.setTelnumber(rs.getInt("telnumber"));
-//				p.setGender(rs.getString("gender"));
-//				patients.add(p);
-//			}
-//			close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			close();
-//		}
-//		return patients;
-//	}
-	
-	public List<Patient> getPatientsWithRestrictions(Staff activeUser) {
-		List<Patient> patients = new ArrayList<Patient>();
-		init();
-//		String stm = "SELECT * FROM patient";// WHERE staff_staff_id=?;";
-		String stm = "SELECT * FROM staff_has_patient INNER JOIN patient ON staff_has_patient.patient_patient_id=patient.patient_id WHERE staff_has_patient.staff_staff_id=?";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setInt(1, activeUser.getId());
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				Patient p = new Patient();
-				p.setPatientid(rs.getInt("patient_id"));
-				p.setFirstname(rs.getString("firstname"));
-				p.setLastname(rs.getString("lastname"));
-				p.setBirth(rs.getString("birthday"));
-				p.setStreet(rs.getString("street"));
-				p.setNr(rs.getInt("nr"));
-				p.setCity(rs.getString("city"));
-				p.setZip(rs.getString("zip"));
-				p.setTelnumber(rs.getInt("telnumber"));
-				p.setGender(rs.getString("gender"));
-				patients.add(p);
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		return patients;
-	}
 
-	// Parameter sollte warscheinlich STAFF sein
+	// Parameter sollte evtl STAFF sein
 	public void registernew(String name, String password, int i) {
 		String stm1 = "SELECT * FROM staff WHERE name=?;";
 		String stm2 = "INSERT INTO staff(name, password, role_role_id) VALUES(?, ?, ?);";
@@ -456,27 +310,48 @@ public class EntityManager {
 		return list;
 	}
 
-	public void updatePatient(Patient p) {
+	public void updateStaff(Staff activeUser) {
 		init();
-		String stm = "UPDATE patient SET firstname=?, lastname=?, birthday=?, street=?, nr=?, city=?, zip=?, telnumber=?, gender=? WHERE patient_id=?";
+		String stm = "UPDATE staff SET password=? WHERE staff_id=?";
 		try {
 			pst = con.prepareStatement(stm);
-			pst.setString(1, p.getFirstname());
-			pst.setString(2, p.getLastname());
-			pst.setString(3, p.getBirth());
-			pst.setString(4, p.getStreet());
-			pst.setInt(5, p.getNr());
-			pst.setString(6, p.getCity());
-			pst.setString(7, p.getZip());
-			pst.setInt(8, p.getTelnumber());
-			pst.setString(9, p.getGender());
-			pst.setInt(10, p.getPatientid());
+			pst.setString(1, activeUser.getPassword());
+			pst.setInt(2, activeUser.getId());
 			pst.executeUpdate();
 			closeWithoutRs();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			closeWithoutRs();
+		}
+	}
+	
+	public void updatePatient(Staff activeUser, Patient p) {
+		if(this.writeaccess(activeUser, p)){
+			init();
+			String stm = "UPDATE patient SET firstname=?, lastname=?, birthday=?, street=?, nr=?, city=?, zip=?, telnumber=?, gender=?, readaccess=?, writeaccess=? WHERE patient_id=?";
+			try {
+				System.out.println("jfkdlsajf");
+				pst = con.prepareStatement(stm);
+				pst.setString(1, p.getFirstname());
+				pst.setString(2, p.getLastname());
+				pst.setString(3, p.getBirth());
+				pst.setString(4, p.getStreet());
+				pst.setInt(5, p.getNr());
+				pst.setString(6, p.getCity());
+				pst.setString(7, p.getZip());
+				pst.setInt(8, p.getTelnumber());
+				pst.setString(9, p.getGender());
+				pst.setString(10, Boolean.toString(p.getReadaccess()));
+				pst.setString(11, Boolean.toString(p.getWriteaccess()));
+				pst.setInt(12, p.getPatientid());
+				pst.executeUpdate();
+				closeWithoutRs();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				closeWithoutRs();
+			}
 		}
 	}
 	
@@ -530,40 +405,13 @@ public class EntityManager {
 	}
 	
 	//TODO firstname lastname
-	public List<Patient> searchPatient(String name) {
-//		List<Patient> list = new ArrayList<Patient>();
-//		init();
-//		String stm = "SELECT * FROM patient WHERE firstname LIKE ?;";
-//		try {
-//			pst = con.prepareStatement(stm);
-//			pst.setString(1, "%" + firstname + "%");
-//			pst.execute();
-//			rs = pst.getResultSet();
-//			while (rs.next()) {
-//				Patient p = new Patient();
-//				p.setPatientid(rs.getInt("patient_id"));
-//				p.setFirstname(rs.getString("firstname"));
-//				p.setLastname(rs.getString("lastname"));
-//				p.setBirth(rs.getString("birthday"));
-//				p.setStreet(rs.getString("street"));
-//				p.setNr(rs.getInt("nr"));
-//				p.setCity(rs.getString("city"));
-//				p.setZip(rs.getString("zip"));
-//				p.setTelnumber(rs.getInt("telnumber"));
-//				p.setGender(rs.getString("gender"));
-//				list.add(p);
-//			}
-//			close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			close();
-//		}
-//		return list;
+	public List<Patient> searchPatient(Staff activeUser, String name) {
 		List<Patient> patient = new ArrayList<Patient>();
 		for(Patient p : this.patient){
-			if(name.equals("") || p.getFirstname().toUpperCase().contains(name.toUpperCase())){
-				patient.add(p);
+			if(p.getReadaccess() || (p.getOwner() == activeUser.getId())){
+				if(name.equals("") || p.getFirstname().toUpperCase().contains(name.toUpperCase()) || p.getLastname().toUpperCase().contains(name.toUpperCase())){
+					patient.add(p);
+				}			
 			}
 		}
 		paginatorPatient.setSize(patient.size());
@@ -637,7 +485,7 @@ public class EntityManager {
 	public void createPatient(Patient p, Staff activeUser) {
 		if((activeUser != null) && (activeUser.getRole() == 1)){
 			String stm1 = "SELECT * FROM patient WHERE firstname=? AND lastname=?;";
-			String stm2 = "INSERT INTO patient(firstname, lastname, birthday, street, nr, city, zip, telnumber, gender) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			String stm2 = "INSERT INTO patient(firstname, lastname, birthday, street, nr, city, zip, telnumber, gender, readaccess, writeaccess, staff_staff_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 			init();
 			try {
 				pst = con.prepareStatement(stm1);
@@ -648,7 +496,7 @@ public class EntityManager {
 				if(rs.next()){
 					return;
 				}
-				pst = con.prepareStatement(stm2, Statement.RETURN_GENERATED_KEYS);
+				pst = con.prepareStatement(stm2);
 				pst.setString(1, p.getFirstname());
 				pst.setString(2, p.getLastname());
 				pst.setString(3, p.getBirth());
@@ -658,16 +506,10 @@ public class EntityManager {
 				pst.setString(7, p.getZip());
 				pst.setInt(8, p.getTelnumber());
 				pst.setString(9, p.getGender());
+				pst.setString(10, "false");
+				pst.setString(11, "false");
+				pst.setInt(12, activeUser.getId());
 				pst.executeUpdate();
-				rs = pst.getGeneratedKeys();
-				if(rs.next()){
-					long patient_id = rs.getLong(1);
-					stm2 = "INSERT INTO staff_has_patient(staff_staff_id, patient_patient_id, owner, rwaccess) VALUES(?,?,'true','true')";
-					pst = con.prepareStatement(stm2);
-					pst.setLong(1, activeUser.getId());
-					pst.setLong(2, patient_id);
-					pst.executeUpdate();
-				}
 				closeWithoutRs();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -1002,78 +844,6 @@ public class EntityManager {
 		}
 		return knees;
 	}
-
-	public List<Patient> searchPatientWithRestrictions(String firstname, Staff activeUser) {
-		List<Patient> patients = new ArrayList<Patient>();
-		init();
-//		String stm = "SELECT * FROM patient";// WHERE staff_staff_id=?;";
-		String stm = "SELECT * FROM staff_has_patient INNER JOIN patient ON staff_has_patient.patient_patient_id=patient.patient_id WHERE staff_has_patient.staff_staff_id=? AND patient.firstname LIKE ?";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setInt(1, activeUser.getId());
-			pst.setString(2, "%" + firstname + "%");
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				Patient p = new Patient();
-				p.setPatientid(rs.getInt("patient_id"));
-				p.setFirstname(rs.getString("firstname"));
-				p.setLastname(rs.getString("lastname"));
-				p.setBirth(rs.getString("birthday"));
-				p.setStreet(rs.getString("street"));
-				p.setNr(rs.getInt("nr"));
-				p.setCity(rs.getString("city"));
-				p.setZip(rs.getString("zip"));
-				p.setTelnumber(rs.getInt("telnumber"));
-				p.setGender(rs.getString("gender"));
-				patients.add(p);
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		return patients;
-	}
-
-	public List<Group> getGroups(Staff activeUser, Patient activePatient) {
-//		List<Group> groups = new ArrayList<Group>();
-//		init();
-//		String stm = "SELECT * FROM staff_has_patient WHERE patient_patient_id=?;";
-//		try {
-//			pst = con.prepareStatement(stm);
-//			pst.setInt(1, activePatient.getPatientid());
-//			pst.execute();
-//			rs = pst.getResultSet();
-//			while (rs.next()) {
-//				Group g = new Group();
-//				int staffid = rs.getInt("staff_staff_id");
-//				int patientid = rs.getInt("patient_patient_id");
-//				g.setStaff(staffid);
-//				g.setPatient(patientid);
-//				g.setOwner(rs.getString("owner"));
-//				groups.add(g);
-//			}
-//			close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			close();
-//		}
-//		return groups;
-		
-		List<Group> list = new ArrayList<Group>();
-		for(Group g : this.group){
-			if(g.getPatient().getPatientid() == activePatient.getPatientid()){
-				list.add(g);
-			}
-		}
-		return list;
-	}
-
-	
-	
 	
 	private void initStaff() {
 		staff = new ArrayList<Staff>();
@@ -1120,6 +890,9 @@ public class EntityManager {
 				p.setZip(rs.getString("zip"));
 				p.setTelnumber(rs.getInt("telnumber"));
 				p.setGender(rs.getString("gender"));
+				p.setReadaccess(Boolean.parseBoolean(rs.getString("readaccess")));
+				p.setWriteaccess(Boolean.parseBoolean(rs.getString("writeaccess")));
+				p.setOwner(rs.getInt("staff_staff_id"));
 				patient.add(p);
 			}
 			close();
@@ -1158,57 +931,27 @@ public class EntityManager {
 		}
 //		p2.setSize(patientdata.size());
 	}
-	
-
-	private void initGroup() {
-		this.group = new ArrayList<Group>();
-		init();
-		String stm = "SELECT * FROM staff_has_patient;";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				Group g = new Group();
-				int staffid = rs.getInt("staff_staff_id");
-				int patientid = rs.getInt("patient_patient_id");
-//				g.setStaff(staffid);
-//				g.setPatient(patientid);
-				g.setStaff(this.getStaff(staffid));
-				g.setPatient(this.getPatient(patientid));
-				g.setOwner(rs.getBoolean("owner"));
-				g.setRwaccess(rs.getBoolean("rwaccess"));
-				this.group.add(g);
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-	}
 
 
-
-
-	public boolean isOwner(Staff activeUser, Patient p) {
-		for(Group g : this.group){
-			if((activeUser.getId() == g.getStaff().getId()) &&
-					(p.getPatientid() == g.getPatient().getPatientid())){
-				return g.getOwner();
-			}
+	public boolean isOwner(Staff activeUser, Patient patient) {
+		if(this.getStaff(patient.getOwner()).getId() == activeUser.getId()){
+			return true;
 		}
 		return false;
 	}
-	public boolean rwAccess(Staff activeUser, Patient p) {
-		for(Group g : this.group){
-			if((activeUser.getId() == g.getStaff().getId()) &&
-					(p.getPatientid() == g.getPatient().getPatientid())){
-				return g.getRwaccess();
-			}
+	public boolean readaccess(Staff activeUser, Patient p) {
+		if(isOwner(activeUser, p)){
+			return true;
 		}
-		return false;
+		return p.getReadaccess();
 	}
+	public boolean writeaccess(Staff activeUser, Patient p) {
+		if(isOwner(activeUser, p)){
+			return true;
+		}
+		return p.getWriteaccess();
+	}
+
 	
 	
 	
@@ -1287,27 +1030,6 @@ public class EntityManager {
 
 	public void setPaginatorPatientData(PaginatorPatientData p) {
 		this.paginatorPatientData = p;
-	}
-	
-	public PaginatorGroup getPaginatorGroup() {
-		return paginatorGroup;
-	}
-
-	public void setPaginatorGroup(PaginatorGroup p) {
-		this.paginatorGroup = p;
-	}
-
-	public List<Patient> getPatientsWithRWAccess(Staff activeUser) {
-		List<Patient> list = new ArrayList<Patient>();
-		
-		for(Group g : this.group){
-			if((g.getStaff().getId() == activeUser.getId()) && g.getRwaccess()){
-				Patient p = this.getPatient(g.getPatient().getPatientid());
-				list.add(p);
-			}
-		}
-		
-		return list;
 	}
 
 	public List<ListOfQuestionnari> searchData(int id){

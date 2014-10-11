@@ -20,7 +20,7 @@
 		
 			<div id="loggedinbox">
 				<h:form>
-					<h:outputLabel rendered="#{loginController.loggedin}">You are logged in as</h:outputLabel>
+					<h:outputLabel rendered="#{loginController.loggedin}">You are logged in</h:outputLabel><br />
 					<h:commandLink rendered="#{loginController.loggedin}" action="#{navigation.redirectToEditStaff}" value="#{userData.name}" /><br />
 					<h:outputLabel rendered="#{loginController.loggedin}"> as a #{(loginController.getStaff()).getRole()}</h:outputLabel><br />
 					<h:commandButton action="#{loginController.logout}" rendered="#{loginController.loggedin}" value="Logout" />
