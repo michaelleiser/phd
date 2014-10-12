@@ -60,6 +60,7 @@ public class LoginController implements Serializable, ILoginController{
 		return null;
 	}
 	
+	@Override
 	public String login(String name, String password) {
 		activeUser = em.getStaff(name, password);
 		if(activeUser != null){
@@ -69,6 +70,7 @@ public class LoginController implements Serializable, ILoginController{
 		return "/home";
 	}
 	
+	@Override
 	public String logout(){	
 		setLoggedin(false);
 		return "/home";

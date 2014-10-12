@@ -6,69 +6,74 @@ package org.bfh.phd.interfaces;
  */
 public interface IPaginator {
 	
-	static int pagesize = 10;
-	static int pagenr = 1;
-	static int first = 0;
-	static int size = 0;
-	
 	/**
 	 * @return
+	 * 			the number of entries displayed in one page
 	 */
 	public int getPagesize();
 
 	/**
 	 * @param pagesize
+	 * 			the number of entries displayed in one page
 	 */
 	public void setPagesize(int pagesize);
 
 	/**
 	 * @return
+	 * 			the currently displayed page number
 	 */
 	public int getPagenr();
 	
 	/**
 	 * @param pagenr
+	 * 			the currently displayed page number
 	 */
 	public void setPagenr(int pagenr);
 
 	/**
 	 * @return
+	 * 			the first displayed entry
 	 */
 	public int getFirst();
 	
 	/**
 	 * @param first
+	 * 			the first entry to display
 	 */
 	public void setFirst(int first);
 
 	/**
 	 * @return
+	 * 			the absolute number of entries
 	 */
 	public int getSize();
 
 	/**
 	 * @param size
+	 * 			the absolute  number of entries
 	 */
 	public void setSize(int size);
 	
 	/**
 	 * @return
+	 * 			true if the current page has a previous one
 	 */
 	public boolean hasPrevious();
 	
 	/**
 	 * @return
+	 * 			true if the current page has a next one
 	 */
 	public boolean hasNext();
 	
 	/**
-	 * @return
+	 * goes one page backward
 	 */
-	public String backward();
+	public void backward();
 	
 	/**
-	 * @return
+	 * goes one page forward
 	 */
-	public String forward();
+	public void forward();
 	
 }

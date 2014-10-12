@@ -57,10 +57,12 @@ public class EntityManager implements IEntityManager {
 
 //---- Methods -----
 
+	@Override
 	public List<Staff> getStaff() {
 		return this.staff;
 	}
 	
+	@Override
 	public Staff getStaff(int id) {
 		for(Staff s : this.staff){
 			if(s.getId() == id){
@@ -70,6 +72,7 @@ public class EntityManager implements IEntityManager {
 		return null;
 	}
 	
+	@Override
 	public Staff getStaff(String name, String password) {
 		for(Staff s : this.staff){
 			if(s.getName().equals(name) && s.getPassword().equals(password)){
@@ -79,6 +82,7 @@ public class EntityManager implements IEntityManager {
 		return null;
 	}
 	
+	@Override
 	public List<Staff> getStaffs(String name) {
 		List<Staff> staff = new ArrayList<Staff>();
 		for(Staff s : this.staff){
@@ -89,6 +93,7 @@ public class EntityManager implements IEntityManager {
 		return staff;
 	}
 
+	@Override
 	public List<Patient> getPatient(Staff activeUser){
 		List<Patient> list = new ArrayList<Patient>();
 		for(Patient p : this.patient){
@@ -99,6 +104,7 @@ public class EntityManager implements IEntityManager {
 		return list;
 	}
 
+	@Override
 	public List<Patient> getPatient(){
 		return this.patient;
 	}
@@ -112,6 +118,7 @@ public class EntityManager implements IEntityManager {
 //		return list;
 //	}
 
+	@Override
 	public Patient getPatient(Staff activeUser, int patientid) {
 		for(Patient p : this.patient){
 			if((p.getPatientid() == patientid) && p.getReadaccess()){
@@ -124,6 +131,7 @@ public class EntityManager implements IEntityManager {
 	}
 
 	// Parameter sollte evtl STAFF sein
+	@Override
 	public void registernew(String name, String password, int i) {
 		String stm1 = "SELECT * FROM staff WHERE name=?;";
 		String stm2 = "INSERT INTO staff(name, password, role_role_id) VALUES(?, ?, ?);";
@@ -364,6 +372,7 @@ public class EntityManager implements IEntityManager {
 		return list;
 	}
 
+	@Override
 	public void updateStaff(Staff activeUser) {
 		init();
 		String stm = "UPDATE staff SET password=? WHERE staff_id=?";
@@ -380,6 +389,7 @@ public class EntityManager implements IEntityManager {
 		}
 	}
 	
+	@Override
 	public void updatePatient(Staff activeUser, Patient p) {
 		if(this.writeaccess(activeUser, p)){
 			init();
@@ -460,6 +470,7 @@ public class EntityManager implements IEntityManager {
 	}
 	
 	//TODO firstname lastname
+	@Override
 	public List<Patient> searchPatient(Staff activeUser, String name) {
 		List<Patient> patient = new ArrayList<Patient>();
 		for(Patient p : this.patient){
@@ -538,6 +549,7 @@ public class EntityManager implements IEntityManager {
 		return list;
 	}
 
+	@Override
 	public void createPatient(Patient p, Staff activeUser) {
 		if((activeUser != null) && (activeUser.getRole() == 1)){
 			String stm1 = "SELECT * FROM patient WHERE firstname=? AND lastname=?;";

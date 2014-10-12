@@ -40,26 +40,32 @@ public class Patient implements Serializable, IPatient {
 
 	}
 
+	@Override
 	public int getPatientid() {
 		return this.patientid;
 	}
 	
+	@Override
 	public void setPatientid(int patientid)  {
 		this.patientid = patientid;
 	}
 
+	@Override
 	public String getFirstname() {
 		return this.firstname;
 	}
 	
+	@Override
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}
 	
+	@Override
 	public String getLastname() {
 		return this.lastname;
 	}
 
+	@Override
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
@@ -175,14 +181,17 @@ public class Patient implements Serializable, IPatient {
 		return firstname + " : " + lastname;
 	}
 
+	@Override
 	public List<PatientData> getPatientData() {
 		return patientData;
 	}
 
+	@Override
 	public void setPatientData(List<PatientData> patientData) {
 		this.patientData = patientData;
 	}
 	
+	@Override
 	public void addPatientData(PatientData patientData){
 		this.patientData.add(patientData);
 	}

@@ -64,20 +64,18 @@ public class PaginatorPatient implements IPaginator{
 	}
 	
 	@Override
-	public String backward(){
+	public void backward(){
 		this.first = this.first - this.pagesize;
 		if(this.first < 0){
 			this.first = 0;
 		}
 		this.pagenr--;
-		return null;
 	}
 	
 	@Override
-	public String forward(){
+	public void forward(){
 		this.first = this.first + this.pagesize;
 		this.pagenr++;
-		return null;
 	}
 	
 }

@@ -3,7 +3,7 @@ function validation(){
 		window.alert("Input a valid password!");
 		return;
 	}
-	if(document.getElementById("staffform:confpass") != document.getElementById("staffform:newpass")){
+	if(document.getElementById("staffform:confpass").value != document.getElementById("staffform:newpass").value){
 		window.alert("Password 1 and 2 are not equal");
 		return;
 	}

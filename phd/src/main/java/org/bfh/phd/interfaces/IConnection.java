@@ -10,6 +10,7 @@ public interface IConnection {
 	
 	/**
 	 * @return
+	 * 			a connection to a specific database
 	 */
 	public Connection getConnection();
 	
