@@ -15,15 +15,14 @@
 					<h:outputText value="#{msg['home']}" />
 				</h1>
 				<div id="formular">
-					<h:form>
+					<h:form id="loginform">
 						<h:panelGrid columns="2" rendered="#{!loginController.loggedin}">
 							<h:outputLabel for="name">Username</h:outputLabel>
 							<h:inputText id="name" value="#{userData.name}" />
 							<h:outputLabel for="password">Password</h:outputLabel>
 							<h:inputSecret id="password" value="#{userData.password}" />
 							<h:outputLabel />
-							<h:commandButton action="#{userData.login}"
-								rendered="#{!loginController.loggedin}" value="Login" />
+							<h:commandButton action="#{userData.login}" value="Login" />
 						</h:panelGrid>
 						<!-- could be deleted -->
 						<h:outputLabel rendered="#{loginController.loggedin}">You are logged in as #{userData.name}</h:outputLabel>

@@ -6,9 +6,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
 
-public class MyConnection {
+import org.bfh.phd.interfaces.IConnection;
 
-	public static Connection getConnection() {
+public class MyConnection implements IConnection {
+
+	@Override
+	public Connection getConnection() {
 		
 //		FacesContext fc = FacesContext.getCurrentInstance();
 //		String driver = fc.getExternalContext().getInitParameter("JDBC-DRIVER");

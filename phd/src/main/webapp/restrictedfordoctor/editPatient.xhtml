@@ -15,7 +15,8 @@
 					<h:outputText value="#{msg['editpatient']}" />
 				</h1>
 				<div id="formular">
-					<h:form>
+					<h:outputScript library="js" name="validate_patient.js" />
+					<h:form id="patientform">
 						<h:panelGrid columns="2">
 							<h:outputLabel>ID</h:outputLabel>
 							<h:outputLabel>#{loginController.activePatient.patientid}</h:outputLabel>
@@ -55,28 +56,28 @@
 							</h:inputText>
 
 							<h:outputLabel>Gender:</h:outputLabel>
-							<h:selectOneRadio readonly="#{!(loginController.writeAccess(loginController.activePatient))}" value="#{loginController.activePatient.gender}" required="true">
+							<h:selectOneRadio id="gender" readonly="#{!(loginController.writeAccess(loginController.activePatient))}" value="#{loginController.activePatient.gender}" required="true">
 								<f:selectItem itemLabel="Male" itemValue="male" />
 								<f:selectItem itemLabel="Female" itemValue="female" />
 							</h:selectOneRadio>
 
-							<h:outputLabel>birth (dd.mm.yyyy):</h:outputLabel>
+							<h:outputLabel>Birthday (dd.mm.yyyy):</h:outputLabel>
 							<h:inputText id="birth" readonly="#{!(loginController.writeAccess(loginController.activePatient))}" value="#{loginController.activePatient.birth}" required="true">
 								<f:validateLength minimum="10" maximum="10" />
 							</h:inputText>
 							
 							<h:outputLabel>Read Accessability</h:outputLabel>
-							<h:selectBooleanCheckbox readonly="#{!(loginController.writeAccess(loginController.activePatient))}" value="#{loginController.activePatient.readaccess}" />
+							<h:selectBooleanCheckbox id="readaccess" readonly="#{!(loginController.writeAccess(loginController.activePatient))}" value="#{loginController.activePatient.readaccess}" />
 
 							<h:outputLabel>Write Accessability</h:outputLabel>
-							<h:selectBooleanCheckbox readonly="#{!(loginController.writeAccess(loginController.activePatient))}" value="#{loginController.activePatient.writeaccess}" />
+							<h:selectBooleanCheckbox id="writeaccess" readonly="#{!(loginController.writeAccess(loginController.activePatient))}" value="#{loginController.activePatient.writeaccess}" />
 							
 							<h:outputLabel>Insert Accessability</h:outputLabel>
-							<h:selectBooleanCheckbox readonly="#{!(loginController.writeAccess(loginController.activePatient))}" value="#{loginController.activePatient.insertaccess}" />
+							<h:selectBooleanCheckbox id="insertaccess" readonly="#{!(loginController.writeAccess(loginController.activePatient))}" value="#{loginController.activePatient.insertaccess}" />
 													
 							<h:outputLabel></h:outputLabel>					
 							<h:column>
-								<h:commandButton action="#{loginController.updatePatient(loginController.activePatient)}" rendered="#{(loginController.writeAccess(loginController.activePatient))}" value="Update Patient" />
+								<h:commandButton action="#{loginController.updatePatient(loginController.activePatient)}" onclick="validation();" rendered="#{(loginController.writeAccess(loginController.activePatient))}" value="Update Patient" />
 							</h:column>
 						</h:panelGrid>
 					</h:form>

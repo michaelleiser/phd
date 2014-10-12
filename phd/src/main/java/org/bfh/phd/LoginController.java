@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 
+import org.bfh.phd.interfaces.ILoginController;
 import org.bfh.phd.questionary.Answer;
 import org.bfh.phd.questionary.Elbow;
 import org.bfh.phd.questionary.Knee;
@@ -16,7 +17,7 @@ import org.bfh.phd.questionary.Question;
 
 @ManagedBean(name = "loginController", eager = true)
 @SessionScoped
-public class LoginController implements Serializable {
+public class LoginController implements Serializable, ILoginController{
 
 	private static final long serialVersionUID = 1L;
 	private static boolean loggedin = false;

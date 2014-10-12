@@ -15,17 +15,18 @@
 					<h:outputText value="#{msg['newpatient']}" />
 				</h1>
 				<div id="formular">
-					<h:form>
+					<h:outputScript library="js" name="validate_patient.js" />
+					<h:form id="patientform">
 						<h:panelGrid columns="2">
 							<h:outputLabel>Firstname:</h:outputLabel>
 							<h:inputText id="firstname" value="#{patient.firstname}" required="true">
 								<f:validateLength minimum="2" maximum="20" />
-							</h:inputText>			
-		
+							</h:inputText>
+							
 							<h:outputLabel>Lastname:</h:outputLabel>
 							<h:inputText id="lastname" value="#{patient.lastname}" required="true">
 								<f:validateLength minimum="2" maximum="20" />
-							</h:inputText>			
+							</h:inputText>
 					
 							<h:outputLabel>Street:</h:outputLabel>
 							<h:inputText id="street" value="#{patient.street}" required="true">
@@ -53,17 +54,18 @@
 							</h:inputText>
 
 							<h:outputLabel>Gender:</h:outputLabel>
-							<h:selectOneRadio value="#{patient.gender}" required="true">
+							<h:selectOneRadio id="gender" value="#{patient.gender}" required="true">
 								<f:selectItem itemLabel="Male" itemValue="male" />
 								<f:selectItem itemLabel="Female" itemValue="female" />
 							</h:selectOneRadio>
 
-							<h:outputLabel>birth (dd.mm.yyyy):</h:outputLabel>
+							<h:outputLabel>Birthday (dd.mm.yyyy):</h:outputLabel>
 							<h:inputText id="birth" value="#{patient.birth}" required="true">
 								<f:validateLength minimum="10" maximum="10" />
 							</h:inputText>
+
 							<h:outputLabel />
-							<h:commandButton action="#{loginController.createPatient(patient)}" value="addNewPatient" />
+							<h:commandButton action="#{loginController.createPatient(patient)}" onclick="validation();" value="addNewPatient" />
 						</h:panelGrid>
 					</h:form>
 				</div>

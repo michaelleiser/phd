@@ -13,6 +13,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import org.bfh.phd.interfaces.IEntityManager;
 import org.bfh.phd.questionary.Answer;
 import org.bfh.phd.questionary.AnswerCheckbox;
 import org.bfh.phd.questionary.AnswerRadioButton;
@@ -29,11 +30,13 @@ import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 
 @ManagedBean(name = "entityManager", eager = true)
 @SessionScoped
-public class EntityManager {
+public class EntityManager implements IEntityManager {
 	
 	private List<Staff> staff;	
 	private List<Patient> patient;
 	private List<PatientData> patientdata;
+	
+	private MyConnection mycon = null;
 	
 	private Connection con = null;
 	private PreparedStatement pst = null;
@@ -46,6 +49,7 @@ public class EntityManager {
 	private String sss = "elbow"; 
 	
 	public EntityManager(){
+		mycon = new MyConnection();
 		initStaff();
 		initPatient();
 		initPatientData();
@@ -984,7 +988,7 @@ public class EntityManager {
 	
 	
 	private void init() {
-		con = MyConnection.getConnection();
+		con = mycon.getConnection();
 	}
 	
 	private void closeWithoutRs() {

@@ -11,9 +11,11 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import org.bfh.phd.interfaces.IPatient;
+
 @ManagedBean(name = "patient", eager = true)
 @RequestScoped
-public class Patient implements Serializable {
+public class Patient implements Serializable, IPatient {
 
 	private static final long serialVersionUID = 1L;
 

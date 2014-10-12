@@ -15,7 +15,8 @@
 					<h:outputText value="#{msg['editstaff']}" />
 				</h1>
 				<div id="formular">
-					<h:form >
+					<h:outputScript library="js" name="validate_staff.js" />
+					<h:form id="staffform">
 						<h:panelGrid columns="2">
 							<h:outputLabel>Staff id</h:outputLabel>
 							<h:outputLabel>#{loginController.getStaff().getId()}</h:outputLabel>
@@ -27,13 +28,13 @@
 								<f:validateLength minimum="2" maximum="10" />
 							</h:inputSecret>		
 							<h:outputLabel>Confirm Password:</h:outputLabel>
-							<h:inputSecret id="confpass" required="true" value="#{loginController.getStaff().password}">
+							<h:inputSecret id="confpass" required="true">
 								<f:validateLength minimum="2" maximum="10" />
 							</h:inputSecret>		
 		
 							</h:panelGrid>
 						<h:column>
-							<h:commandButton action="#{loginController.updateStaff(loginController.getStaff())}" value="Update Password" />
+							<h:commandButton action="#{loginController.updateStaff(loginController.getStaff())}" onclick="validation();" value="Update Password" />
 						</h:column>
 					</h:form>
 				</div>

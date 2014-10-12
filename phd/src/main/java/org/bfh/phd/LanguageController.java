@@ -10,9 +10,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import org.bfh.phd.interfaces.ILanguageController;
+
 @ManagedBean(name = "languagecontrollertest", eager = true)
 @SessionScoped
-public class LanguageController {
+public class LanguageController implements ILanguageController {
 
 	private static Map<String, Object> countries;
 
@@ -23,10 +25,12 @@ public class LanguageController {
 		countries.put("Français", Locale.FRENCH);
 	}
 	
+	@Override
 	public Map<String, Object> getCountries() {
 		return this.countries;
 	}
 	
+	@Override
 	public void setCountries(Map<String, Object> countries) {
 		this.countries = countries;
 	}
