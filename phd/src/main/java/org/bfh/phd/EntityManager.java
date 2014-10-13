@@ -1075,10 +1075,7 @@ public class EntityManager implements IEntityManager {
 		this.paginatorPatientData = p;
 	}
 	
-
-
 	public List<ListOfQuestionnari> searchData(int id){
-		System.err.println(id);
 		List<ListOfQuestionnari> quest = new ArrayList<ListOfQuestionnari>();
 		String stm = "SELECT t.typ, answer_id, date FROM questionnaire q INNER JOIN typ t ON q.typ = t.id WHERE patient_patient_id = ?;";
 		init();
@@ -1104,5 +1101,23 @@ public class EntityManager implements IEntityManager {
 	public void updateQuestionnaire(Questionnari q) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public ArrayList<String> getTyps() {
+		List<String> typ = new ArrayList<String>();
+		init();
+		String stm = "SELECT * FROM testdb.typ;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+				typ.add(rs.getString("typ"));				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return (ArrayList<String>)typ;
 	}
 }

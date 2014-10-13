@@ -37,7 +37,6 @@ public class Patient implements Serializable, IPatient {
 	private boolean insertaccess;
 
 	public Patient() {
-
 	}
 
 	@Override

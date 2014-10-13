@@ -3,7 +3,6 @@ package org.bfh.phd;
 import java.util.List;
 import java.util.Random;
 
-import org.bfh.phd.questionary.*;
 import org.junit.Test;
 
 import junit.framework.TestCase;

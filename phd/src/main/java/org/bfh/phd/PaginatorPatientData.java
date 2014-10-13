@@ -10,7 +10,6 @@ public class PaginatorPatientData implements IPaginator{
 	private static int size = 0;
 	
 	public PaginatorPatientData(){
-
 	}
 	
 	@Override
