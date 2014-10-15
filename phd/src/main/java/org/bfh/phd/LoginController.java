@@ -319,7 +319,7 @@ public class LoginController implements Serializable, ILoginController{
 	
 	public void addAnswer(String string, Knee k) {
 		if(this.loggedin == true && activeUser.getRole() == 1){
-			em.addAnswer("knee", k.getAnswers());
+			em.addAnswer("knee", k.getAnswers(), k.getId());
 		}
 	}
 

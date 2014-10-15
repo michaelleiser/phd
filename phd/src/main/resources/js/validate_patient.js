@@ -19,7 +19,7 @@ function validation(){
 		window.alert("Input a valid city!");
 		return;
 	}
-	if(!document.getElementById("patientform:zip").value.match(/^[A-Za-z]+$/)){
+	if(!document.getElementById("patientform:zip").value.match(/^[0-9]+$/)){
 		window.alert("Input a valid zip!");
 		return;
 	}

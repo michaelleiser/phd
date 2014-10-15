@@ -135,7 +135,7 @@ public class Questionnari implements Serializable {
 	public void safe(){
 		System.out.println("******");
 		EntityManager em = new EntityManager();
-		em.addAnswer("knee", a);
+		em.addAnswer("knee", a, patient);
 		for(Answer b : a){
 			System.out.println("->>" + b);
 		}

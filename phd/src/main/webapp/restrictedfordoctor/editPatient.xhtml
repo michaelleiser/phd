@@ -47,7 +47,7 @@
 		
 							<h:outputLabel>Zip:</h:outputLabel>
 							<h:inputText id="zip" readonly="#{!(loginController.writeAccess(loginController.activePatient))}" value="#{loginController.activePatient.zip}" required="true">
-								<f:validateLength minimum="2" maximum="10" />
+								<f:validateLongRange minimum="1000" maximum="9999"/>
 							</h:inputText>
 
 							<h:outputLabel>Telnumber:</h:outputLabel>

@@ -12,6 +12,8 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.swing.text.Position;
 
 import org.bfh.phd.interfaces.IEntityManager;
 import org.bfh.phd.questionary.Answer;
@@ -648,28 +650,22 @@ public class EntityManager implements IEntityManager {
 		return questions;
 	}
 	
+	// Datenbank io
 	public List<String> getPossibilities(String quest, int id) {
 		List<String> possibilities = new ArrayList<String>();
 //		init();
-		String stm = "SELECT * FROM " + quest + "_possibilities WHERE " + quest + "_possibilities_id=?;";
+		String stm = "SELECT * FROM testdb.posibilitis p INNER JOIN pos_answer a On p.pos_id = a.id WHERE p.id=?;";
 		try {
 			PreparedStatement pst = con.prepareStatement(stm);
 			pst.setInt(1, id);
 			pst.execute();
 			ResultSet rs = pst.getResultSet();
-			if (rs.next()) {
-				for(int i = 0 ; i < 3 ; i++){
-					String s = rs.getString(i+2);
-					possibilities.add(s);
-				}
+			while(rs.next()){
+				possibilities.add(rs.getString("answer"));
 			}
-			rs.close();
-			pst.close();
-//			close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-//			close();
 		}
 		return possibilities;
 	}
@@ -730,9 +726,14 @@ public class EntityManager implements IEntityManager {
 		return c;
 	}
 	
-	public void addAnswer(String quest, List<Answer> a) {
+	
+
+	
+	public void addAnswer(String quest, List<Answer> a, int id) {
+		long l = 0;
 		int size = a.size();
 		String stm = "INSERT INTO " + quest + "_answer(answer1";
+		String stm2 = "INSERT INTO questionnaire (`patient_patient_id`, `date`, `typ`, `answer_id`) VALUES(?,?,?,?);";
 		for(int i = 2 ; i <= size ; i++){
 			stm = stm + ", answer" + i;
 		}
@@ -740,19 +741,27 @@ public class EntityManager implements IEntityManager {
 		for(int i = 2 ; i <= size ; i++){
 			stm = stm + ",?";
 		}
-		stm = stm + ", 1);";								// TODO
+		stm = stm + ", '" + id + "');";								// TODO
 		init();
 		try {
-			pst = con.prepareStatement(stm);
-			
+			pst = con.prepareStatement(stm, Statement.RETURN_GENERATED_KEYS);
 			for(int i = 0 ; i < size ; i++){
 				pst.setString(i+1, a.get(i).toString());			
 			}
+			pst.executeUpdate();
+			rs = pst.getGeneratedKeys();
+			if(rs.next()){
+				l = rs.getLong(1);
+			}
+			
+			pst.close();
+			int i = getTyp(quest);
+			pst = con.prepareStatement(stm2);
+			pst.setInt(1, id);
+			pst.setDate(2, new java.sql.Date(new Date().getTime()));;
+			pst.setInt(3, i);
+			pst.setLong(4, l);
 			pst.execute();
-//			rs = pst.getResultSet();
-//			if(rs.next()) {
-//				return;
-//			}
 			closeWithoutRs();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -760,6 +769,17 @@ public class EntityManager implements IEntityManager {
 			closeWithoutRs();
 		}
 		return;
+	}
+
+	private int getTyp(String quest) throws SQLException {
+		String stm = "SELECT id FROM typ WHERE typ='"+quest+"';";
+		pst = con.prepareStatement(stm);
+		pst.execute();
+		rs = pst.getResultSet();
+		if(rs.next()){
+			return rs.getInt("id");
+		}
+		return rs.getInt("id");
 	}
 
 	public List<Elbow> searchPatientData2(String op) {
@@ -996,11 +1016,12 @@ public class EntityManager implements IEntityManager {
 		return p.getInsertaccess();
 	}
 
-	
-	
-	
-	private void init() {
+	public void init() {
 		con = mycon.getConnection();
+	}
+	
+	public void closed(){
+		close();
 	}
 	
 	private void closeWithoutRs() {
@@ -1103,7 +1124,7 @@ public class EntityManager implements IEntityManager {
 		
 	}
 
-	public ArrayList<String> getTyps() {
+	public List<String> getTyps() {
 		List<String> typ = new ArrayList<String>();
 		init();
 		String stm = "SELECT * FROM testdb.typ;";
@@ -1118,6 +1139,6 @@ public class EntityManager implements IEntityManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return (ArrayList<String>)typ;
+		return typ;
 	}
 }

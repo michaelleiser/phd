@@ -16,9 +16,9 @@ public class Quest implements Serializable {
 	private static String questselected;
 	
 	static{
+		EntityManager em = new EntityManager();
 		quests = new ArrayList<String>();
-		quests.add("elbow");
-		quests.add("knee");
+		quests = em.getTyps();
 	}
 	
 	public List<String> getQuests(){
