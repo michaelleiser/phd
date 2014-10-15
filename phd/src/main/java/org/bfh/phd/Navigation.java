@@ -30,10 +30,10 @@ public class Navigation implements Serializable {
 		return "/home?faces-redirect=true";
 	}
 	public String toLoggedin(){
-		return "/loggedin";
+		return "/restricted/loggedin";
 	}
 	public String redirectToLoggedin(){
-		return "/loggedin?faces-redirect=true";
+		return "/restricted/loggedin?faces-redirect=true";
 	}
 	public String toSearchPatient(){
 		return "/restrictedfordoctor/searchPatient";

@@ -8,4 +8,20 @@ function validation(){
 		return;
 	}
 	// role
+	
+	var pass = document.getElementById("registernewform:password").value;
+	var hash = CryptoJS.SHA1(pass);
+	document.getElementById("registernewform:password").value = hash;
+
+	
+	// generate public key, encrypted private key
+	
+	crypt = new JSEncrypt();
+	crypt.getKey();
+	
+	publicKey = crypt.getPublicKey();
+	privateKey = crypt.getPrivateKey();
+	
+	alert(publicKey);
+	alert(privateKey);
 }

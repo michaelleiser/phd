@@ -16,14 +16,22 @@ import org.bfh.phd.LoginController;
 public class LoginFilterStatistician implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		LoginController lc = (LoginController) ((HttpServletRequest) request).getSession().getAttribute("loginController");
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
+		
+		LoginController lc = (LoginController) req.getSession().getAttribute("loginController");
 		if ((lc == null) || !lc.getLoggedin()) {
-			String contextPath = ((HttpServletRequest) request).getContextPath();
-			((HttpServletResponse) response).sendRedirect(contextPath + "/home.xhtml");
+			String contextPath = req.getContextPath();
+			res.sendRedirect(contextPath + "/home.xhtml");
 		} else if (lc.getStaff().getRole() != 2) {
-			String contextPath = ((HttpServletRequest) request).getContextPath();
-			((HttpServletResponse) response).sendRedirect(contextPath + "/loggedin.xhtml");
+			String contextPath = req.getContextPath();
+			res.sendRedirect(contextPath + "/restricted/loggedin.xhtml");
 		} else {
+			
+            res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+            res.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+            res.setDateHeader("Expires", 0); // Proxies.
+			
 			chain.doFilter(request, response);			
 		}
 	}

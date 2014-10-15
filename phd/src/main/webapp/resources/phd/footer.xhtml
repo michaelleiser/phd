@@ -50,6 +50,10 @@
 			<h:form rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='2'}">
 				<h:commandLink action="#{navigation.redirectToRestrictedForStatistician}" value="restricted for statistician!!!" />
 			</h:form>
+			
+			<h:form>
+				<h:commandLink action="crypto" value="->> Crypto" />
+			</h:form>
 		</div>
 	</ui:composition>
 </body>

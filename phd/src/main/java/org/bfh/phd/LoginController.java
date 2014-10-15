@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 import org.bfh.phd.interfaces.ILoginController;
@@ -65,15 +66,18 @@ public class LoginController implements Serializable, ILoginController{
 		activeUser = em.getStaff(name, password);
 		if(activeUser != null){
 			setLoggedin(true);
-			return "/loggedin";
+			return "/restricted/loggedin?faces-redirect=true";
 		}
-		return "/home";
+		return "/home?faces-redirect=true";
 	}
 	
 	@Override
 	public String logout(){	
 		setLoggedin(false);
-		return "/home";
+		if(FacesContext.getCurrentInstance() != null){	// Just for JUnit
+			FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+		}
+		return "/home?faces-redirect=true";
 	}
 	
 	public boolean getLoggedin(){
@@ -86,7 +90,7 @@ public class LoginController implements Serializable, ILoginController{
 
 	public String registernew(String name, String password, int i) {
 		em.registernew(name, password, i);
-		return "/home";
+		return "/home?faces-redirect=true";
 	}
 
 	public int getPatientdataid() {

@@ -46,4 +46,36 @@ public interface IStaff {
 	 */
 	public void setRole(int role);
 
+
+	
+	/**
+	 * @return
+	 */
+	public String getPublicKey();
+
+	/**
+	 * @param publicKey
+	 */
+	public void setPublicKey(String publicKey);
+
+	/**
+	 * @return
+	 */
+	public String getPrivateKey();
+
+	/**
+	 * @param privateKey
+	 */
+	public void setPrivateKey(String privateKey);	
+	
+	/**
+	 * @return
+	 */
+	public String login();
+
+	/**
+	 * @return
+	 */
+	public String registernew();
+
 }

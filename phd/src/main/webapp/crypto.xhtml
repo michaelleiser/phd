@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:tp="http://java.sun.com/jsf/composite/phd">
+<h:head>
+</h:head>
+<h:body>
+
+	<ui:composition template="/resources/phd/common.xhtml">
+		<ui:define name="content">
+
+			<h2>Crypto</h2>
+			<h:outputScript library="js" name="CryptoJS/rollups/sha1.js" />
+			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
+			
+			<h:outputScript library="js" name="mycrypto.js" />
+			<h:form id="showmsgid">
+				<h:inputText id="textenc1" value="aaaa" />
+				<h:inputText id="textenc2" value="bbbb" />
+				<h:commandButton value="Showmessage" onclick="testcrypto();" />
+			</h:form>
+
+		</ui:define>
+	</ui:composition>
+
+this is not displayed
+
+   </h:body>
+</html>

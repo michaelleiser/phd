@@ -16,13 +16,16 @@ import org.bfh.phd.LoginController;
 public class LoginFilterInaccessible implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		LoginController lc = (LoginController) ((HttpServletRequest) request).getSession().getAttribute("loginController");
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpServletResponse res = (HttpServletResponse) response;
+		
+		LoginController lc = (LoginController) req.getSession().getAttribute("loginController");
 		if ((lc == null) || !lc.getLoggedin()) {
-			String contextPath = ((HttpServletRequest) request).getContextPath();
-			((HttpServletResponse) response).sendRedirect(contextPath + "/home.xhtml");
+			String contextPath = req.getContextPath();
+			res.sendRedirect(contextPath + "/home.xhtml");
 		} else {
-			String contextPath = ((HttpServletRequest) request).getContextPath();
-			((HttpServletResponse) response).sendRedirect(contextPath + "/loggedin.xhtml");
+			String contextPath = req.getContextPath();
+			res.sendRedirect(contextPath + "/restricted/loggedin.xhtml");
 		}
 	}
 

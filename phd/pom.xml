@@ -39,11 +39,16 @@
 		</dependency>
 		
 		<dependency>
-    <groupId>javax.servlet</groupId>
-        <artifactId>jstl</artifactId>
-        <version>1.2</version>
-</dependency>
+    		<groupId>javax.servlet</groupId>
+        	<artifactId>jstl</artifactId>
+        	<version>1.2</version>
+		</dependency>
 		
+		<dependency>
+			<groupId>org.bitbucket.b_c</groupId>
+			<artifactId>jose4j</artifactId>
+			<version>0.3.8</version>
+		</dependency>
 		
 	</dependencies>
 	<build>
