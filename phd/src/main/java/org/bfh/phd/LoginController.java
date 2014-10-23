@@ -10,7 +10,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
-import org.bfh.crypto.MYCRYPTO;
 import org.bfh.phd.interfaces.ILoginController;
 import org.bfh.phd.questionary.Answer;
 import org.bfh.phd.questionary.Elbow;
@@ -482,4 +481,8 @@ public class LoginController implements Serializable, ILoginController{
 ////		String plaintext = CopyOfRSA.decrypt(ciphertext, privateKey);
 ////		return null;
 ////	}
+	
+	public void addQuestionnaireTemplate(){
+		//em.addQuestionnaireTemplate(typ, question, nameOfTemplate, pos);
+	}
 }

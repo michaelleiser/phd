@@ -7,8 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -27,7 +29,7 @@ import org.bfh.phd.questionary.QuestionCheckbox;
 import org.bfh.phd.questionary.QuestionRadioButton;
 import org.bfh.phd.questionary.QuestionString;
 
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
+//import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 
 
 @ManagedBean(name = "entityManager", eager = true)
@@ -1314,5 +1316,115 @@ public class EntityManager implements IEntityManager {
 			}
 		}
 		return null;
+	}
+	
+	/** This Method create a new question to a new template
+	 * @param typ is the type of a question.
+	 * @param question the question
+	 * @param nameOfTemplate
+	 * @param pos they are the possible answer for this question by String a empty String.
+	 */
+	public void addQuestionnaireTemplate(String typ, String question, String nameOfTemplate, List<String> pos){
+		init();
+		long key = 0, templatenr = 0; 
+		String stm = "INSERT INTO question2 (pos_id, type_id, question) VALUES(?,?,?);";
+		String stm2 = "INSERT INTO q_template_name(name) VALUES (?);";
+		String stm3 = "INSERT INTO q_template (id, question_id) VALUES (?,?);";
+		String stm4 = "SELECT id FROM q_template_name WHERE name = ?;";
+		Map map = getQuestType();
+			try {
+				int i = setPosibilitis(pos);
+				int j = (Integer) map.get(typ);
+				pst = con.prepareStatement(stm, Statement.RETURN_GENERATED_KEYS);
+				pst.setInt(1, i);
+				pst.setInt(2, j);
+				pst.setString(3, question);
+				pst.executeUpdate();
+				rs = pst.getGeneratedKeys();
+				if(rs.next()){
+					key = rs.getLong(1);
+				}
+				pst = con.prepareStatement(stm4);
+				pst.setString(1, nameOfTemplate);
+				pst.execute();
+				rs = pst.getResultSet();
+				if(rs.next()){
+					templatenr = rs.getInt("id");
+				}else{
+				pst = con.prepareStatement(stm2, Statement.RETURN_GENERATED_KEYS);
+				pst.setString(1, nameOfTemplate);
+				pst.executeUpdate();
+				rs = pst.getGeneratedKeys();
+				if(rs.next()){
+					templatenr = rs.getLong(1);
+				}}	
+				pst = con.prepareStatement(stm3);
+				pst.setInt(1, (int) templatenr);
+				pst.setInt(2, (int) key);
+				pst.execute();
+				close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	}
+	
+	private int setPosibilitis(List<String> pos) throws SQLException{
+		int i=1;
+		int l=0;
+		String stm = "SELECT MAX(id) FROM posibilitis;";
+		String stm2 = "INSERT INTO pos_answer (answer) VALUES (?);";
+		String stm3 = "INSERT INTO posibilitis (id,pos_id) VALUES (?,?);";
+		pst = con.prepareStatement(stm);
+		pst.execute();
+		rs = pst.getResultSet();
+		if(rs.next()){
+			i += rs.getInt("MAX(id)");
+		}
+		for(int j = 0; j < pos.size(); j++){
+			pst = con.prepareStatement(stm2, Statement.RETURN_GENERATED_KEYS);
+			pst.setString(1, pos.get(j));
+			pst.executeUpdate();
+			rs = pst.getGeneratedKeys();
+			if(rs.next()){
+				l = (int) rs.getLong(1);
+			}
+			pst = con.prepareStatement(stm3);
+			pst.setInt(1, i);
+			pst.setInt(2, (int) l);
+			pst.execute();
+		}
+		return i;
+	}
+	
+	public List<String> getType(){
+		List<String> list = new ArrayList<String>();
+		String stm = "SELECT typ FROM q_typ;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.execute();
+			rs = pst.getResultSet();
+			while(rs.next()){
+				list.add(rs.getString(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	private HashMap getQuestType(){
+		HashMap map = new HashMap();
+		String stm = "SELECT * FROM q_typ;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.execute();
+			rs = pst.getResultSet();
+			while(rs.next()){
+				map.put(rs.getString("typ"), rs.getInt("id"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return map;
 	}
 }

@@ -119,4 +119,7 @@ public class Navigation implements Serializable {
 	public String redirectToModifyGroup(){
 		return "/restrictedfordoctor/modifyGroup?faces-redirect=true";
 	}
+	public String toNewQuestionnareTemplate(){
+		return "/restricted/newTemplate";
+	}
 }
