@@ -53,7 +53,7 @@ public class Knee {
 		this.answers = answers;
 	}
 	
-	public void safe(int id){
+	public void safe(){
 		System.out.println("******");
 		EntityManager em = new EntityManager();
 		em.addAnswer("knee", answers, id);

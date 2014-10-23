@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/resources/phd/common.xhtml">
+		<ui:define name="content">
+			<h1>
+				<h:outputText value="#{msg['formular']}" />
+			</h1>
+			
+			<h:form>
+				<c:if test="#{template.isEmpty()}">
+					<h:outputLabel>Fragebogentitel:</h:outputLabel><br />
+					<h:inputText id="name" value="#{template.name}"></h:inputText><br /><br />
+					<h:commandButton action="#{template.nameToTemp}" value=" neues Template erstellen "></h:commandButton>
+				</c:if>
+				<c:if test="#{template.notEmpty}">
+					<h:outputText value="#{template.name}"></h:outputText>
+				</c:if>
+			</h:form>	
+		
+			<h:dataTable
+			id="outputMessage"
+			value="#{template.question}"
+			var="questions" headerClass="table-header"
+			rowClasses="table-odd-row,table-even-row"
+			columnClasses="table-column-id,table-column-data,table-column-data,table-column-data,table-column-button,table-column-button,table-column-button">
+			<c:if test="#{template.templateEmpty}">
+				<h:column>
+					<f:facet name="header">Questionnumber</f:facet>#{questions.id}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Question</f:facet>#{questions.question}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Posibleanswer</f:facet><ui:repeat var="answer" value="#{questions.answer}">#{answer}<br /></ui:repeat>
+				</h:column>
+			</c:if>
+			</h:dataTable>
+			<br />	
+			
+			<h:form>			
+				<h:outputLabel>Fragetyp</h:outputLabel><br />
+				<h:selectOneMenu onchange="submit()" value="#{type.typeselected}" actionListener="#{type.typeChanged}">
+					<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
+					<f:selectItems value="#{type.types}" />
+				</h:selectOneMenu>		
+				<br /><br />
+				
+					<h:outputText value="#{type.typeselected}"></h:outputText>
+				<c:if test="#{type.typeselected eq 'String'}">
+					<h:outputLabel>Bitte geben sie die gewünschte Frage ein:</h:outputLabel><br />
+					<h:inputText value="#{template.questionString}"><f:ajax event="change" execute="@this" listener="#{template.addString}" /></h:inputText><br /><br />
+				</c:if>
+				<c:if test="#{type.typeselected eq 'RadioButton'}">
+					<h:outputLabel>Bitte geben sie die gewünschte Fragen ein:</h:outputLabel><br />
+					<h:inputText value="#{template.questionString}"><f:ajax event="change" execute="@this" listener="#{template.addQuestion}" /></h:inputText><br /><br />
+					<h:outputLabel>Anzahl Antworten:</h:outputLabel><br />
+							<h:selectOneMenu onchange="submit()" value="#{type.numberselected}" actionListener="#{type.numberChanged}">
+							<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="false" />
+							<f:selectItems value="#{type.i}" />
+							</h:selectOneMenu><br />
+						<c:set var="a" value="#{type.numberselected}"/>
+						<c:forEach begin="2" end="#{a}">
+						<h:inputText value="#{template.answerRadioButton}"><f:ajax event="change" execute="@this" listener="#{template.addAnswer}" /></h:inputText>	<br />
+						</c:forEach>
+						<h:inputText value="#{template.answerRadioButton}"><f:ajax event="change" execute="@this" listener="#{template.addRadioButton}" /></h:inputText><br />	
+				</c:if>
+				<c:if test="#{type.typeselected eq 'Checkbox'}">
+					<h:outputLabel>Bitte geben sie die gewünschte Frage ein:</h:outputLabel><br />
+					<h:inputText value="#{template.questionString}"><f:ajax event="change" execute="@this" listener="#{template.addQuestion}" /></h:inputText><br /><br />
+					<h:outputLabel>Anzahl Antworten:</h:outputLabel><br />
+							<h:selectOneMenu onchange="submit()" value="#{type.numberselected}" actionListener="#{type.numberChanged}">
+							<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="false" />
+							<f:selectItems value="#{type.i}" />
+							</h:selectOneMenu><br />
+						<c:set var="a" value="#{type.numberselected}"/>
+						<c:forEach begin="2" end="#{a}">
+						<h:inputText  value="#{template.answerCheckbox}"><f:ajax event="change" execute="@this" listener="#{template.addAnswer}" /></h:inputText><br />	
+						</c:forEach>
+						<h:inputText value="#{template.answerCheckbox}" ><f:ajax event="change" execute="@this" listener="#{template.addCheckbox}" /></h:inputText><br />	
+				</c:if>		
+
+				<br /><h:commandButton actionListener="#{template.add}" value=" add new Question "></h:commandButton>				
+				<br /><h:commandButton actionListener="#{template.safe}" action="#{navigation.redirectToLoggedin}" value="Safe Template"></h:commandButton>
+				
+			</h:form>
+		</ui:define>
+	</ui:composition>
+
+this is not displayed
+	
+</h:body>
+</html>

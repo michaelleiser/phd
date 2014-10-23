@@ -53,14 +53,17 @@ public class Elbow {
 		this.answers = answers;
 	}
 	
-	public void safe(int id){
+	public void safe(){
 		System.out.println("******");
 		EntityManager em = new EntityManager();
-		em.addAnswer("elbow", answers, id);
+		em.addAnswer("elbow", answers, 5);
+		// TODO ID
 		for(Answer a : answers){
 			System.out.println("->>" + a);
 		}
 	}
+	
+	
 	
 	public void addString(final AjaxBehaviorEvent event){
 		String i1 = event.getComponent().getId();

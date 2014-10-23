@@ -2,8 +2,10 @@ package org.bfh.phd;
 
 import static org.junit.Assert.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.sound.midi.SysexMessage;
 
@@ -51,6 +53,25 @@ public class TestEntityManager{
 		a.add(an);
 		em.addAnswer("knee", a , 3);
 	}
+	
+//	@Test
+//	public void getTyps(){
+//		List<String> list = em.getType();
+//		for(int i = 0; i < list.size(); i++){
+//			System.err.println(list.get(i));
+//		}
+//	}
+	
+	@Test
+	public void addNewQuestionTemplate() throws SQLException{
+		List<String> list = new ArrayList<String>();
+		list.add("1");
+		list.add("2");
+		list.add("3");
+//		em.addQuestionnaireTemplate("String", "geht es?", "testTemplate", list);
+	}
+	
+	
 //	@Test
 //	public void getQuestionarris(){
 //		List<ListOfQuestionnari> list = em.searchData(1);

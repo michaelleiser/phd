@@ -24,7 +24,6 @@
 				</h:selectOneMenu>		
 				<br />
 				
-				
 				<c:if test="#{quest.questselected eq 'elbow'}">
 				<c:forEach items="#{loginController.getQuestions(quest.questselected)}" var="q">
 					<c:if test="#{q.type eq 'String'}">
@@ -51,8 +50,8 @@
 							</c:forEach>
 						</h:selectManyCheckbox>
 					</c:if><br />
-				</c:forEach>				
-				<h:commandButton actionListener="#{elbow.safe(loginController.activePatient.patientid)}" value="Safe"></h:commandButton>
+				</c:forEach>					
+				<h:commandButton actionListener="#{elbow.safe}" value="Safe"></h:commandButton>
 				</c:if>
 				
 				<c:if test="#{quest.questselected eq 'knee'}">
@@ -81,19 +80,10 @@
 							</c:forEach>
 						</h:selectManyCheckbox>
 					</c:if><br />
-				</c:forEach>
-				<h:commandButton actionListener="#{knee.safe(loginController.activePatient.patientid)}" value="Safe"></h:commandButton>
+				</c:forEach>					
+				<h:commandButton actionListener="#{knee.safe}" value="Safe"></h:commandButton>
 				</c:if>
-				
-				
-			</h:form>
-			
-			
-			
-	
-			
-			
-			
+			</h:form>			
 		</ui:define>
 	</ui:composition>
 
