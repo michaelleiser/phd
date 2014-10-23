@@ -17,15 +17,13 @@ public class Template {
 	private static int i = 1;
 	private String templatename = "";
 	private String questionString;
-	private List<String> s = new ArrayList<String>();
+	private String answerString;
 	private List<Test> test = new ArrayList<Test>();
 	private List<String> answerRadioButton = new ArrayList<String>();
 	private List<String> answerCheckbox = new ArrayList<String>();
-	private List<String> posAnswer = new ArrayList<String>();
 	
 	
 	public Template(){
-
 	}
 	
 	public boolean isEmpty(){
@@ -45,8 +43,6 @@ public class Template {
 	}
 	
 	public void add(){
-		System.out.println("-------------------");
-		System.out.println("add");
 	}
 	
 	public void safe(){
@@ -55,8 +51,6 @@ public class Template {
 		for(Test t:test){
 		em.addQuestionnaireTemplate(t.getType(), t.getQuestion(),templatename, t.getAnswer());
 		}
-		System.out.println("Save");
-		System.out.println(templatename);
 	}
 	
 	public void addString(final AjaxBehaviorEvent event){
@@ -66,8 +60,7 @@ public class Template {
 		t.addPossibleAnswer("");
 		t.setId(i);
 		test.add(t);
-		i++;
-		System.out.println("String" + t.getAnswer());		
+		i++;		
 	}
 		
 	public void addRadioButton(final AjaxBehaviorEvent event){
@@ -82,8 +75,6 @@ public class Template {
 		t.setId(i);
 		test.add(t);
 		i++;
-		System.out.println(answerRadioButton);		
-		System.out.println("Radio Button" + t.getAnswer());
 	}
 			
 	public void addCheckbox(final AjaxBehaviorEvent event){
@@ -97,13 +88,9 @@ public class Template {
 		}
 		t.setId(i);
 		test.add(t);
-		System.out.println(answerCheckbox.size());
-		System.out.println("Check Box" + t.getAnswer());
 	}
 	
 	public void addName(final AjaxBehaviorEvent event) {
-		System.out.println("fragebogenname");
-		System.err.println(templatename);	
 	}
 	
 	public void addQuestion(final AjaxBehaviorEvent event){	
@@ -120,7 +107,6 @@ public class Template {
 		this.questionString = questionString;
 	}
 
-	private String answerString;
 	public String getAnswerString() {
 		return answerString;
 	}
@@ -171,7 +157,6 @@ public class Template {
 			private String question;
 			private String type;
 			private List<String> list = new ArrayList<String>();
-			//--- INNER CLASS  ----
 				
 			public void setId(int i){
 				id = i;
