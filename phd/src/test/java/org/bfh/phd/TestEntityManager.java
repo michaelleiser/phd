@@ -32,13 +32,13 @@ public class TestEntityManager{
 		em.closed();
 	}
 
-	@Test
-	public void testGetPossibleAnswer(){
-		List<String> s = em.getPossibilities("", 1);
-		assertEquals(s.get(0), "viel");
-		assertEquals(s.get(1), "mittel");
-		assertEquals(s.get(2), "wenig");
-	}
+//	@Test
+//	public void testGetPossibleAnswer(){
+//		List<String> s = em.getPossibilities("", 1);
+//		assertEquals(s.get(0), "viel");
+//		assertEquals(s.get(1), "mittel");
+//		assertEquals(s.get(2), "wenig");
+//	}
 	
 	@Test
 	public void testAddAnswer(){

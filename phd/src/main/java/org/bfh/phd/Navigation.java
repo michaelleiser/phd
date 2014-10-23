@@ -41,12 +41,6 @@ public class Navigation implements Serializable {
 	public String redirectToSearchPatient(){
 		return "/restrictedfordoctor/searchPatient?faces-redirect=true";
 	}
-	public String toEditGroup(){
-		return "/restrictedfordoctor/editGroup";
-	}
-	public String redirectToEditGroup(){
-		return "/restrictedfordoctor/editGroup?faces-redirect=true";
-	}
 	public String toSearchPatientData(){
 		return "/restricted/searchPatientData";
 	}
@@ -66,7 +60,7 @@ public class Navigation implements Serializable {
 		return "/registernew?faces-redirect=true";
 	}
 	public String toPublic(){
-		return "/puglic/public";
+		return "/public/public";
 	}
 	public String redirectToPublic(){
 		return "/public/public?faces-redirect=true";
@@ -118,5 +112,11 @@ public class Navigation implements Serializable {
 	}
 	public String toEditQuestionnari(){
 		return "/restrictedfordoctor/editQuestionnari";
+	}
+	public String toModifyGroup(){
+		return "/restrictedfordoctor/modifyGroup";
+	}
+	public String redirectToModifyGroup(){
+		return "/restrictedfordoctor/modifyGroup?faces-redirect=true";
 	}
 }

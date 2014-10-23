@@ -2,14 +2,15 @@ package org.bfh.phd;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import org.bfh.crypto.MYCRYPTO;
 import org.bfh.phd.interfaces.ILoginController;
 import org.bfh.phd.questionary.Answer;
 import org.bfh.phd.questionary.Elbow;
@@ -32,15 +33,14 @@ public class LoginController implements Serializable, ILoginController{
 	private Date to;
 	private EntityManager em;
 	
-	
 	//----- Methods----
 	
 	public LoginController() {
-		em = new EntityManager();
+		this.em = new EntityManager();
 	}
 		
 	public void setStaff(Staff s){
-		activeUser = s;
+		this.activeUser = s;
 	}
 	
 	public Staff getStaff(){
@@ -64,8 +64,13 @@ public class LoginController implements Serializable, ILoginController{
 	@Override
 	public String login(String name, String password) {
 		activeUser = em.getStaff(name, password);
-		if(activeUser != null){
-			setLoggedin(true);
+		if(activeUser != null && activeUser.getActivated()){
+			if(this.activeDepartment_Has_Staff.isMember(activeUser)){
+				System.out.println("isMEMBER");
+			}else{
+				System.out.println("isNOTaMEMBER");
+			}
+			setLoggedin(true);			
 			return "/restricted/loggedin?faces-redirect=true";
 		}
 		return "/home?faces-redirect=true";
@@ -88,8 +93,20 @@ public class LoginController implements Serializable, ILoginController{
 		this.loggedin = loggedin;
 	}
 
-	public String registernew(String name, String password, int i) {
-		em.registernew(name, password, i);
+	public String registernew(Staff s) {
+		System.out.println("lc reg new " + s + ":" + this.departmentselected);
+		boolean admin = false;
+		em.registernew(s, admin);
+		Staff ss = em.getStaff(s.getName(), s.getPassword());
+		em.addToDepartment(this.departmentselected, ss);
+		return "/home?faces-redirect=true";
+	}
+	public String registernew(Staff s, Department d) {
+		System.out.println("lc reg new with dep " + s +":"+ d + ":" + this.departmentselected);
+		boolean admin = true;
+		em.registernew(s, admin);
+		Staff ss = em.getStaff(s.getName(), s.getPassword());
+		em.createToDepartment(d, ss);
 		return "/home?faces-redirect=true";
 	}
 
@@ -132,8 +149,8 @@ public class LoginController implements Serializable, ILoginController{
 	}
 
 	public List<ListOfQuestionnari> getPatientData(){
-		if((this.loggedin == true) && (activePatient != null)){
-		List<ListOfQuestionnari> l = em.searchData(activePatient.getPatientid());
+		if((this.loggedin == true) && (this.activePatient != null)){
+		List<ListOfQuestionnari> l = em.searchData(this.activePatient.getPatientid());
 			return l;
 		}
 		return null;
@@ -191,8 +208,7 @@ public class LoginController implements Serializable, ILoginController{
 	}
 
 	public String createPatient(Patient p) {
-		System.out.println(">> " + p);
-		System.out.println(">> " + activeUser);
+		System.out.println("CREATE Patient..." + p);
 		if((this.loggedin == true) && (activeUser.getRole() == 1)){
 			em.createPatient(p, activeUser);
 			return "/loggedin";
@@ -345,4 +361,125 @@ public class LoginController implements Serializable, ILoginController{
 	public void setQuestionnariId(int questionnariId) {
 		this.questionnaireId = questionnariId;
 	}
+	
+	
+	
+	
+	
+
+	
+//	public String getEncryptedData(String s){
+//		MYCRYPTO aes = new MYCRYPTO();
+//		String encrypted = null;
+//		try {
+//			encrypted = aes.AESencode(s);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return encrypted;
+//	}
+//	public String getEncryptedData(){
+//		String message = "This is encrypted session key ;)";
+//		return this.getEncryptedData(message);
+//	}
+//	
+//	public String getDecryptedData(String s){
+//		MYCRYPTO aes = new MYCRYPTO();
+//		String decrypted = null;
+//		try {
+//			decrypted = aes.AESdecode(s);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return decrypted;
+//	}
+//	public void getDecryptedData(){
+//		if(in != null){
+//			getDecryptedData(in);
+//		}
+//	}
+//	
+//	public String getIn() {
+//		return in;
+//	}
+//
+//	public void setIn(String in) {
+//		this.in = in;
+//	}
+//
+//	private String in;
+	
+	
+	
+	// TODO wenns geht nicht static !!
+	private static String departmentselected;
+	
+	public List<Department> getDepartments(){
+		return new EntityManager().getDepartments();
+	}
+
+	public String getDepartmentselected() {
+		return this.departmentselected;
+	}
+
+	public void setDepartmentselected(String departmentselected) {
+		System.out.println("Dep before " + this.departmentselected);
+		this.departmentselected = departmentselected;
+		for(Department d : this.getDepartments()){
+			if(d.getName().equals(departmentselected)){
+				Department_Has_Staff dhs = em.getDepartment_Has_Staff(d);
+				this.setDepartment_Has_Staff(dhs);
+			}
+		}
+		System.out.println("Dep after " + this.departmentselected);
+	}
+	
+	// TODO wenns geht nicht static !!
+	private static Department_Has_Staff activeDepartment_Has_Staff;
+	public Department_Has_Staff getDepartment_Has_Staff(){
+		return this.activeDepartment_Has_Staff;
+	}
+	public void setDepartment_Has_Staff(Department_Has_Staff activeDepartment_Has_Staff){
+		this.activeDepartment_Has_Staff = activeDepartment_Has_Staff;
+	}
+	
+//	public Department getActiveDepartment() {
+//		return activeDepartment;
+//	}
+//
+//	public void setActiveDepartment(Department activeDepartment) {
+//		this.activeDepartment = activeDepartment;
+//	}
+//
+//	private Department activeDepartment;
+
+	public List<Staff> searchStaff(String name) {		// TODO
+		System.out.println("SEARCHING Staff..." + name);
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			List<Staff> l = em.searchStaff(activeUser, name);
+			return l;
+		}
+		return null;
+	}
+	
+	public void activateStaff(Staff s){
+		em.activateStaff(s);		// TODO add restrictions !!!
+	}
+	
+//	String pub = "-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSCF1HymTdYHQAoBcBmvt/dRbcevoqV1RlEIryp+R95pBhA3tqZv8Qv6w3AyFi0DPrquREc6bUywCZ7sJE7JstQOP3ETSDxSvqtvGTaogtll7icgxTexA+sLt28E7E4TIcvZqXweQ8XneW62yDDlk5yhcG9xTZT1289d66YbvH7wIDAQAB-----END PUBLIC KEY-----";
+//	String priv = "-----BEGIN RSA PRIVATE KEY-----MIICWwIBAAKBgQCSCF1HymTdYHQAoBcBmvt/dRbcevoqV1RlEIryp+R95pBhA3tqZv8Qv6w3AyFi0DPrquREc6bUywCZ7sJE7JstQOP3ETSDxSvqtvGTaogtll7icgxTexA+sLt28E7E4TIcvZqXweQ8XneW62yDDlk5yhcG9xTZT1289d66YbvH7wIDAQABAoGAPcTt9/TjT0SCLNWKhbJRmSsk3WPjN0+zMgCaVWOw4ZRKE88OQAaK80GwDaD0WUCqBZBGd7HXqoCno3T7lX3jcNBDPr4D88BwyDLpmQgkPk5qCQ3pgwQYOaXsEYnA9Apr6VZtdBqjO3u94oiuWGv1XYdEgfWF6BysEE0nDbD7/OkCQQDDFZDdYFZh+OQn97Wc2CmI3BaLWHikxXUJ/I093YQKZRO26opKW29ZQMDjvGaMitIoxSh6gCp2TfU23JyYgMM1AkEAv6HEW91lVoYuBZ5NmnDRQ51qk0dYf+qGlhkPOq4TeVET5tRNxxuy7D+6CK1bwQCjVkbgo1mcYc0DKUxk1r5/EwJAUTgoUNJsBGwP6UfrF7qzSCSBSlByIf+HY7n+v9P6xi0g0RXCr4Rzzk/0PpxQgZDGQG0dFitIAmsgfU/J7oAlRQJAKrhTX+9hMgLDq7j4r99Kp3omUiLrlcigrEF15az85mSuvRzDIgoIvyYNwPV0qPgNcaRnW8MUW7EqbUB8kmrxRQJAM1VdxBYVlZfKo/iAHaiziQcax27VA7p12N7+xp4lJLGInK5YYdGJrkNE04BBZiYtfWBSPseuFET95RMS56iWVQ==-----END RSA PRIVATE KEY-----";
+//	
+////	public String getEncryptedRSAData(String plaintext){
+////		PublicKey publicKey = pub;
+////		
+////	    byte[] cipherText = CopyOfRSA.encrypt(plaintext, publicKey);
+////		return null;
+////	}
+////
+////	public String getDecryptedRSAData(String ciphertext){
+////		PrivateKey privateKey = priv;
+////		
+////		String plaintext = CopyOfRSA.decrypt(ciphertext, privateKey);
+////		return null;
+////	}
 }

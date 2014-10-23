@@ -35,8 +35,26 @@
 							<h:commandLink class="menuitem" action="#{navigation.toCreateNewQuestionnaireTemplate}" value="Create new questionnaire template" />
 						</h:form>
 					</div>
+					<div id="menuitem">
+						<h:form>
+							<h:commandLink class="menuitem" action="#{navigation.redirectToModifyGroup}" rendered="#{loginController.loggedin and (loginController.getDepartment_Has_Staff().isOwner(loginController.getStaff()))}" value="Modify Group" />
+						</h:form>
+					</div>
 				</div>
 			</div>
+					
+					
+			<!-- automatically load public private key in session storage -->			
+			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
+			<h:outputScript library="js" name="sessionKeys.js" />
+			<h:form id="sessionkeysid">
+				<h:inputHidden id="private" value="#{loginController.getStaff().getPrivateKey()}" />
+				<h:inputHidden id="public" value="#{loginController.getStaff().getPublicKey()}" />
+			</h:form>
+			<h:outputScript type="text/javascript">
+			    sessionKeys();
+     		</h:outputScript>
+     		
 		</ui:define>
 	</ui:composition>
 

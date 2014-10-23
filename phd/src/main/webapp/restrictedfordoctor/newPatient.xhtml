@@ -15,8 +15,11 @@
 					<h:outputText value="#{msg['newpatient']}" />
 				</h1>
 				<div id="formular">
+				
+					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
+				
 					<h:outputScript library="js" name="validate_patient.js" />
-					<h:form id="patientform">
+					<h:form id="patientform" onsubmit="return validation();">
 						<h:panelGrid columns="2">
 							<h:outputLabel>Firstname:</h:outputLabel>
 							<h:inputText id="firstname" value="#{patient.firstname}" required="true">
@@ -65,8 +68,11 @@
 							</h:inputText>
 
 							<h:outputLabel />
-							<h:commandButton action="#{loginController.createPatient(patient)}" onclick="validation();" value="addNewPatient" />
+							<h:commandButton action="#{loginController.createPatient(patient)}" value="Add New Patient" />
 						</h:panelGrid>
+						
+						<h:inputText id="encryptedPersonalData" value="#{patient.personalData}" />
+						
 					</h:form>
 				</div>
 			</div>

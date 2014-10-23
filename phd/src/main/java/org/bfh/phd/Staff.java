@@ -13,6 +13,7 @@ public class Staff implements IStaff{
 	private String name;
 	private String password;
 	private int role;
+	private boolean isActivated;
 	
 	private String publicKey;
 	private String privateKey;
@@ -23,7 +24,7 @@ public class Staff implements IStaff{
 
 	@Override
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	@Override
@@ -33,7 +34,7 @@ public class Staff implements IStaff{
 
 	@Override
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	
 	@Override
@@ -43,7 +44,7 @@ public class Staff implements IStaff{
 
 	@Override
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	@Override
@@ -53,7 +54,7 @@ public class Staff implements IStaff{
 
 	@Override
 	public int getRole() {
-		return role;
+		return this.role;
 	}
 	
 	@Override
@@ -62,13 +63,23 @@ public class Staff implements IStaff{
 	}
 	
 	@Override
+	public boolean getActivated() {
+		return this.isActivated;
+	}
+	
+	@Override
+	public void setActivated(boolean isActivated) {
+		this.isActivated = isActivated;
+	}
+	
+	@Override
 	public String toString(){
-		return name + " : " + role;
+		return this.name + " : " + this.role;
 	}
 
 	@Override
 	public String getPublicKey() {
-		return publicKey;
+		return this.publicKey;
 	}
 
 	@Override
@@ -78,7 +89,7 @@ public class Staff implements IStaff{
 
 	@Override
 	public String getPrivateKey() {
-		return privateKey;
+		return this.privateKey;
 	}
 
 	@Override
@@ -91,8 +102,45 @@ public class Staff implements IStaff{
 		return new LoginController().login(this.name, this.password);
 	}
 
-	@Override
+//	@Override
 	public String registernew(){
-		return new LoginController().registernew(this.name, this.password, this.role);
+		return new LoginController().registernew(this);
 	}
+	
+	
+	
+	
+	public String registernewWithDepartment(Department d){
+		return new LoginController().registernew(this, d);
+	}
+
+	
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Staff other = (Staff) obj;
+		if (this.name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!this.name.equals(other.name))
+			return false;
+		return true;
+	}
+	
+	
 }

@@ -15,8 +15,11 @@
 					<h:outputText value="#{msg['editpatient']}" />
 				</h1>
 				<div id="formular">
+				
+					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
+				
 					<h:outputScript library="js" name="validate_patient.js" />
-					<h:form id="patientform">
+					<h:form id="patientform" onsubmit="return validation();">
 						<h:panelGrid columns="2">
 							<h:outputLabel>ID</h:outputLabel>
 							<h:outputLabel>#{loginController.activePatient.patientid}</h:outputLabel>
@@ -77,12 +80,30 @@
 													
 							<h:outputLabel></h:outputLabel>					
 							<h:column>
-								<h:commandButton action="#{loginController.updatePatient(loginController.activePatient)}" onclick="validation();" rendered="#{(loginController.writeAccess(loginController.activePatient))}" value="Update Patient" />
+								<h:commandButton action="#{loginController.updatePatient(loginController.activePatient)}" rendered="#{(loginController.writeAccess(loginController.activePatient))}" value="Update Patient" />
 							</h:column>
 						</h:panelGrid>
+						
+						<h:inputText id="encryptedPersonalData" value="#{loginController.activePatient.personalData}"/>
+						<h:outputLabel>Firstname1:</h:outputLabel>
+						<h:inputText id="firstname1" readonly="#{!(loginController.writeAccess(loginController.activePatient))}" required="true">
+							<f:validateLength minimum="2" maximum="10" />
+						</h:inputText>			
+		
+						<h:outputLabel>Lastname1:</h:outputLabel>
+						<h:inputText id="lastname1" readonly="#{!(loginController.writeAccess(loginController.activePatient))}" required="true">
+							<f:validateLength minimum="2" maximum="10" />
+						</h:inputText>
+
 					</h:form>
+
 				</div>
 			</div>
+
+			<h:outputScript type="text/javascript">
+			    personalData();
+     		</h:outputScript>
+			
 		</ui:define>
 	</ui:composition>
 

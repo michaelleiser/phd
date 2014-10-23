@@ -13,16 +13,43 @@
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
 
-			<h2>Crypto</h2>
+			<h1>Crypto</h1>
+			
 			<h:outputScript library="js" name="CryptoJS/rollups/sha1.js" />
 			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
+			<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
 			
+			<h2>AES</h2>
 			<h:outputScript library="js" name="mycrypto.js" />
-			<h:form id="showmsgid">
-				<h:inputText id="textenc1" value="aaaa" />
-				<h:inputText id="textenc2" value="bbbb" />
-				<h:commandButton value="Showmessage" onclick="testcrypto();" />
+			<h:form id="aesid">
+				<h:inputText id="testaesencrypt" />
+				<h:inputText id="testaesdecrypt" />
+				<h:commandButton value="testaesencrypt" onclick="testaesencrypt();" />
+				<h:commandButton value="testaesdecrypt" onclick="testaesdecrypt();" />
 			</h:form>
+			<h2>RSA</h2>
+			<h:form id="rsaid">
+				<h:inputText id="testrsaencrypt" />
+				<h:inputText id="testrsadecrypt" />
+				<h:commandButton value="testrsaencrypt" onclick="testrsaencrypt();" />
+				<h:commandButton value="testrsadecrypt" onclick="testrsadecrypt();" />
+			</h:form>
+			
+			<h:form id="receiveid" >
+				<h:commandButton onclick="receive();" type="button" value="receive" />
+				<h:inputText id="encrypteddata" value="#{loginController.getEncryptedData()}" />
+				<h:inputText id="decrypteddata" />
+			</h:form>
+			<h:form id="sendid" onsubmit="send();">
+				<h:commandButton id="button" value="send" />
+				<h:inputText id="plain" />
+				<h:inputText id="cipher" value="#{loginController.in}"/>				
+			</h:form>
+
+				<h:form id="testtest">
+				<h:commandButton action="#{loginController.getDecryptedData()}" id="button" value="send" />
+				</h:form>
+		
 
 		</ui:define>
 	</ui:composition>

@@ -70,14 +70,12 @@ public interface IEntityManager {
 	/**
 	 * registers a new staff
 	 * 
-	 * @param name
-	 * 			the name of the staff
-	 * @param password
-	 * 			the password of the staff
-	 * @param i
-	 * 			the role of the staff
+	 * @param staff
+	 * 			the staff to be registered
+	 * @param admin
+	 * 			if is admin
 	 */
-	public void registernew(String name, String password, int i);
+	public void registernew(Staff staff, boolean admin);
 
 	/**
 	 * updates the active user

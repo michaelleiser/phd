@@ -46,7 +46,15 @@ public interface IStaff {
 	 */
 	public void setRole(int role);
 
+	/**
+	 * @return
+	 */
+	public boolean getActivated();
 
+	/**
+	 * @param isActivated
+	 */
+	public void setActivated(boolean isActivated);
 	
 	/**
 	 * @return
@@ -73,9 +81,9 @@ public interface IStaff {
 	 */
 	public String login();
 
-	/**
-	 * @return
-	 */
-	public String registernew();
+//	/**
+//	 * @return
+//	 */
+//	public String registernew();
 
 }

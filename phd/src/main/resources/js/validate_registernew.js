@@ -1,27 +1,40 @@
 function validation(){
 	if(!document.getElementById("registernewform:name").value.match(/^[A-Za-z]+$/)){
 		window.alert("Input a valid name!");
-		return;
+		return false;
 	}
 	if(!document.getElementById("registernewform:password").value.match(/^[A-Za-z0-9]+$/)){
 		window.alert("Input a valid password!");
-		return;
+		return false;
 	}
-	// role
+	if(!(document.getElementById("registernewform:role:0").checked || document.getElementById("registernewform:role:1").checked)){
+		window.alert("Input a valid role");
+		return false;
+	}
+	if(document.getElementById("registernewform:department").value == ""){
+		window.alert("Input a valid department");
+		return false;
+	}
+	
+//    var key = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');
+//    var iv = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');
 	
 	var pass = document.getElementById("registernewform:password").value;
 	var hash = CryptoJS.SHA1(pass);
-	document.getElementById("registernewform:password").value = hash;
-
+	document.getElementById("registernewform:hashedpassword").value = hash;
 	
-	// generate public key, encrypted private key
-	
-	crypt = new JSEncrypt();
+	var crypt = new JSEncrypt();
 	crypt.getKey();
 	
-	publicKey = crypt.getPublicKey();
 	privateKey = crypt.getPrivateKey();
+	publicKey = crypt.getPublicKey();
 	
-	alert(publicKey);
-	alert(privateKey);
+//	var ciphertext = CryptoJS.AES.encrypt(privateKey, key, {iv:iv, mode:CryptoJS.mode.CBC});
+	var ciphertext = CryptoJS.AES.encrypt(privateKey, pass);
+	
+	document.getElementById("registernewform:privatekey").value = ciphertext;
+	document.getElementById("registernewform:publickey").value = publicKey;
+	
+	alert("finish");
+	return true;
 }

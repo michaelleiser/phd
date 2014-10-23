@@ -226,6 +226,18 @@ public class Patient implements Serializable, IPatient {
 	public void setInsertaccess(boolean insertaccess) {
 		this.insertaccess = insertaccess;
 	}
+	
+	
+	private String personalData;
+	public String getPersonalData(){
+		return this.personalData;
+	}
+	
+	public void setPersonalData(String personalData){
+		this.personalData = personalData;
+	}
+	
+	
 }
 
 //	public String search(){

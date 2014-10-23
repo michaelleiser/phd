@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/resources/phd/common.xhtml">
+		<ui:define name="content">
+			<div id="content">
+				<h1>
+					<h:outputText value="#{msg['modifygroup']}" />
+				</h1>
+				<div id="group">
+					<h:form>
+						<div id="filter">
+							<h:inputText binding="#{input1}" id="staffid"></h:inputText>
+							<h:commandButton value="Filter Staff">
+								<f:ajax execute="staffid" render="outputMessage" />
+							</h:commandButton>
+						</div>
+						<div id="table">
+						<h:dataTable first="#{entityManager.getPaginatorPatient().first}"
+							id="outputMessage"
+							rows="#{entityManager.getPaginatorPatient().pagesize}"
+							value="#{loginController.searchStaff(input1.value)}"
+							var="staffs" headerClass="table-header"
+							rowClasses="table-odd-row,table-even-row"
+							columnClasses="table-column-id,table-column-data,table-column-button">
+
+							<h:column>
+								<f:facet name="header">ID</f:facet>#{staffs.id}
+							</h:column>
+							<h:column>
+								<f:facet name="header">Name</f:facet>#{staffs.name}
+							</h:column>
+
+							<h:column>
+								<h:commandButton rendered="#{!staffs.getActivated()}"
+									value="Activate" action="#{loginController.activateStaff(staffs)}"></h:commandButton>
+							</h:column>
+
+							<f:facet name="footer">
+								<h:panelGroup>
+									<h:commandButton
+										rendered="#{entityManager.getPaginatorPatient().hasPrevious()}"
+										action="#{entityManager.getPaginatorPatient().backward}"
+										value="&lt;&lt; Page #{entityManager.getPaginatorPatient().pagenr - 1}" />
+									<h:outputLabel
+										value="Page #{entityManager.getPaginatorPatient().pagenr}" />
+									<h:commandButton
+										rendered="#{entityManager.getPaginatorPatient().hasNext()}"
+										action="#{entityManager.getPaginatorPatient().forward}"
+										value="Page #{entityManager.getPaginatorPatient().pagenr + 1} &gt;&gt;" />
+								</h:panelGroup>
+							</f:facet>
+						</h:dataTable>
+						</div>
+					</h:form>
+				</div>
+
+
+			</div>
+		</ui:define>
+	</ui:composition>
+
+this is not displayed
+
+   </h:body>
+</html>

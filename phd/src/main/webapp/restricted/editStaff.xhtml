@@ -15,16 +15,21 @@
 					<h:outputText value="#{msg['editstaff']}" />
 				</h1>
 				<div id="formular">
-					<h:outputScript library="js" name="validate_staff.js" />
-					<h:form id="staffform">
+				
+					<h:outputScript library="js" name="CryptoJS/rollups/sha1.js" />
+					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
+				
+					<h:outputScript library="js" name="validate_staff.js" />	
+					
+					<h:form id="staffform" onsubmit="return validation();">
 						<h:panelGrid columns="2">
 							<h:outputLabel>Staff id</h:outputLabel>
 							<h:outputLabel>#{loginController.getStaff().getId()}</h:outputLabel>
 							<h:outputLabel>Staff name</h:outputLabel>
-							<h:outputLabel>#{loginController.getStaff().getName()}</h:outputLabel>
+							<h:outputLabel>#{staff.getName()}</h:outputLabel>
 							
 							<h:outputLabel>New Password:</h:outputLabel>
-							<h:inputSecret id="newpass" required="true" value="#{loginController.getStaff().password}">
+							<h:inputSecret id="newpass" required="true">
 								<f:validateLength minimum="2" maximum="10" />
 							</h:inputSecret>		
 							<h:outputLabel>Confirm Password:</h:outputLabel>
@@ -34,8 +39,11 @@
 		
 							</h:panelGrid>
 						<h:column>
-							<h:commandButton action="#{loginController.updateStaff(loginController.getStaff())}" onclick="validation();" value="Update Password" />
+							<h:commandButton action="#{loginController.updateStaff(loginController.getStaff())}" value="Update Password" />
 						</h:column>
+						
+						<h:inputHidden id="hashedpassword" value="#{loginController.getStaff().password}"/>
+						
 					</h:form>
 				</div>
 			</div>

@@ -1,5 +1,6 @@
 package org.bfh.phd;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -14,7 +15,7 @@ import org.bfh.phd.interfaces.ILanguageController;
 
 @ManagedBean(name = "languagecontrollertest", eager = true)
 @SessionScoped
-public class LanguageController implements ILanguageController {
+public class LanguageController implements ILanguageController, Serializable {
 
 	private static Map<String, Object> countries;
 
@@ -38,7 +39,7 @@ public class LanguageController implements ILanguageController {
 	public String changeLanguageEvent(ActionEvent evt){
 		UIComponent comp = evt.getComponent();
 		String value = (String) comp.getAttributes().get("value");
-		Locale l = (Locale)countries.get(value);
+		Locale l = (Locale)this.countries.get(value);
 		if(this.countries.containsValue(l)){
 			FacesContext.getCurrentInstance().getViewRoot().setLocale(l);
 		}

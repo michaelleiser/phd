@@ -10,13 +10,13 @@ public interface ILanguageController {
 
 	/**
 	 * @return
-	 * 			a map of country names and their locals
+	 * 			a map of country names and their locales
 	 */
 	public Map<String, Object> getCountries();
 
 	/**
 	 * @param countries
-	 * 			a map of country names and their locals
+	 * 			a map of country names and their locales
 	 */
 	public void setCountries(Map<String, Object> countries);
 
