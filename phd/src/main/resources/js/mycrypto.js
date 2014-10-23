@@ -1,3 +1,11 @@
+function testsha(){
+	var plaintext = document.getElementById("shaid:testsha").value;
+	alert(plaintext);
+    var hashed = CryptoJS.SHA1(plaintext);
+    alert(hashed);
+    document.getElementById("shaid:testshahash").value = hashed;
+    alert("finishedhashing");
+}
 function testaesencrypt(){
 	var plaintext = document.getElementById("aesid:testaesencrypt").value;
 	alert(plaintext);

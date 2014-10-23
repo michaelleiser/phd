@@ -1251,9 +1251,10 @@ public class EntityManager implements IEntityManager {
 		initDepartment(); // TODO Da sonst nicht geupdated wird nach dem insert
 	}
 	
-	public List<Staff> searchStaff(Staff activeUser, String name) {
+	// TODO staffname kann nicht durchsucht werden, da später verschlüsselt
+	public List<Staff> searchStaff(Department_Has_Staff dhs, Staff activeUser, String name) {
 		List<Staff> staff = new ArrayList<Staff>();
-		for(Staff s : this.staff){
+		for(Staff s : dhs.getStaff()){
 			if(name.equals("") || s.getName().toUpperCase().contains(name.toUpperCase())){
 				staff.add(s);
 			}			

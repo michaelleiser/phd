@@ -64,13 +64,10 @@ public class LoginController implements Serializable, ILoginController{
 	public String login(String name, String password) {
 		activeUser = em.getStaff(name, password);
 		if(activeUser != null && activeUser.getActivated()){
-			if(this.activeDepartment_Has_Staff.isMember(activeUser)){
-				System.out.println("isMEMBER");
-			}else{
-				System.out.println("isNOTaMEMBER");
+			if(activeDepartment_Has_Staff != null && this.activeDepartment_Has_Staff.isMember(activeUser)){
+				setLoggedin(true);			
+				return "/restricted/loggedin?faces-redirect=true";
 			}
-			setLoggedin(true);			
-			return "/restricted/loggedin?faces-redirect=true";
 		}
 		return "/home?faces-redirect=true";
 	}
@@ -422,7 +419,6 @@ public class LoginController implements Serializable, ILoginController{
 	}
 
 	public void setDepartmentselected(String departmentselected) {
-		System.out.println("Dep before " + this.departmentselected);
 		this.departmentselected = departmentselected;
 		for(Department d : this.getDepartments()){
 			if(d.getName().equals(departmentselected)){
@@ -430,7 +426,6 @@ public class LoginController implements Serializable, ILoginController{
 				this.setDepartment_Has_Staff(dhs);
 			}
 		}
-		System.out.println("Dep after " + this.departmentselected);
 	}
 	
 	// TODO wenns geht nicht static !!
@@ -455,7 +450,7 @@ public class LoginController implements Serializable, ILoginController{
 	public List<Staff> searchStaff(String name) {		// TODO
 		System.out.println("SEARCHING Staff..." + name);
 		if(this.loggedin == true && activeUser.getRole() == 1){
-			List<Staff> l = em.searchStaff(activeUser, name);
+			List<Staff> l = em.searchStaff(activeDepartment_Has_Staff, activeUser, name);
 			return l;
 		}
 		return null;

@@ -8,7 +8,7 @@ function validation(){
 		return false;
 	}
 	if(document.getElementById("loginform:department").value == ""){
-		window.alert("Input a valid department");
+		window.alert("Select a valid department");
 		return false;
 	}
 	var pass = document.getElementById("loginform:password").value;

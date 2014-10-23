@@ -11,11 +11,11 @@ function validation(){
 		window.alert("Input a valid role");
 		return false;
 	}
-	if(document.getElementById("registernewform:department").value == ""){
-		window.alert("Input a valid department");
+	
+	if((document.getElementById("registernewform:department").value == "") && (document.getElementById("registernewform:departmentname").value == "")){
+		window.alert("Select a valid department or enter a new departmentname");
 		return false;
 	}
-	
 //    var key = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');
 //    var iv = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');
 	
