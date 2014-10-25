@@ -41,7 +41,8 @@ function validation(){
 	 * for existing departments -> encrypted group key is generated in activation process
 	 */
 	if(document.getElementById("registernewform:departmentname")){
-		var groupKey = CryptoJS.lib.WordArray.random(128/8);
+		var groupKey = "testgroupkey123";	// TODO just for testing
+//		var groupKey = CryptoJS.lib.WordArray.random(128/8);
 		crypt.setPublicKey(publicKey);
 		var encryptedGroupKey = crypt.encrypt(groupKey);
 		document.getElementById("registernewform:encryptedgroupkey").value = encryptedGroupKey;

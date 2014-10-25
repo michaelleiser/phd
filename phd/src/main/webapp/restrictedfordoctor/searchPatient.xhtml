@@ -16,9 +16,10 @@
 					<h:outputText value="#{msg['searchpatient']}" />
 				</h1>
 				<div id="patients">
-					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
 				
+					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
 					<h:outputScript library="js" name="validate_patient.js" />
+					
 					<h:form id="searchform">
 						<div id="filter">
 							<h:inputText binding="#{input1}" id="patid"></h:inputText>

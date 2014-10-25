@@ -10,6 +10,8 @@
 	<ui:composition>
 		<h:outputStylesheet library="css" name="styles.css" />
 		<div id="header">
+		<h:outputScript library="js" name="logout.js" />			
+		
 			<div id="headerlanguages">
 				<h:form>
 					<ui:repeat value="#{languagecontrollertest.getCountries().keySet().toArray()}" var="var">
@@ -19,7 +21,7 @@
 			</div>
 		
 			<div id="loggedinbox">
-				<h:form>
+				<h:form onsubmit="return destroyKeys();">
 					<h:outputLabel rendered="#{loginController.loggedin}">You are logged in</h:outputLabel><br />
 					<h:commandLink rendered="#{loginController.loggedin}" action="#{navigation.redirectToEditStaff}" value="#{(loginController.getStaff()).getName()}" /><br />
 					<h:outputLabel rendered="#{loginController.loggedin}"> as a #{(loginController.getStaff()).getRole()} in #{loginController.getDepartment_Has_Staff().getDepartment().getName()}</h:outputLabel><br />

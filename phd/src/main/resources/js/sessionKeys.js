@@ -1,7 +1,7 @@
 function sessionKeys() {
     if(typeof(Storage) !== "undefined") {
     	if(typeof(sessionStorage.privateKey) === "undefined"){
-            sessionStorage.privateKey = document.getElementById("sessionkeysid:private").value;
+//            sessionStorage.privateKey = document.getElementById("sessionkeysid:private").value;
             sessionStorage.publicKey = document.getElementById("sessionkeysid:public").value;
                     
 //            var key = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');
@@ -18,6 +18,14 @@ function sessionKeys() {
 //            alert(plaintext);
             
             sessionStorage.privateKey = plaintext;
+            
+            
+            
+        	var ciphertext = document.getElementById("sessionkeysid:group").value;
+        	var crypt = new JSEncrypt();
+        	crypt.setPrivateKey(sessionStorage.privateKey);
+            var decrypted = crypt.decrypt(ciphertext);
+            sessionStorage.groupKey = decrypted;
     	}
     } else {
     	alert("Sorry, your browser does not support web storage...");

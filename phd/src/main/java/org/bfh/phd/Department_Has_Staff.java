@@ -2,9 +2,7 @@ package org.bfh.phd;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -18,10 +16,12 @@ public class Department_Has_Staff implements Serializable {
 	private int department_has_staff_id;
 	private Department department;
 	private List<Staff> staff;
+	private List<String> encryptedGroupKey;
 	private Staff owner;
 	
 	public Department_Has_Staff(){
 		this.staff = new ArrayList<Staff>();
+		this.setEncryptedGroupKey(new ArrayList<String>());
 	}
 	
 	public int getDepartment_has_staff_id() {
@@ -72,5 +72,21 @@ public class Department_Has_Staff implements Serializable {
 	public boolean isMember(Staff s){
 		return this.staff.contains(s);
 	}
+
+	public List<String> getEncryptedGroupKey() {
+		return encryptedGroupKey;
+	}
+
+	public void setEncryptedGroupKey(List<String> encryptedGroupKey) {
+		this.encryptedGroupKey = encryptedGroupKey;
+	}
 	
+	public void addEncryptedGroupKey(String key){
+		this.encryptedGroupKey.add(key);
+	}
+	
+	public String getEncryptedGroupKeyFromStaff(Staff s){
+		int index = this.staff.indexOf(s);
+		return this.encryptedGroupKey.get(index);
+	}
 }

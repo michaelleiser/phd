@@ -19,10 +19,9 @@
 				
 					<h:outputScript library="js" name="CryptoJS/rollups/sha1.js" />
 					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
-					
 					<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
-					
 					<h:outputScript library="js" name="validate_registernew.js" />
+					
 					<h:form id="registernewform" onsubmit="return validation();">
 						<h:panelGrid columns="2">
 							<h:outputLabel for="name">Username</h:outputLabel>
@@ -60,10 +59,12 @@
 							</h:panelGroup>			
 							
 						</h:panelGrid>
+						
 						<h:inputHidden id="hashedpassword" value="#{staff.password}" />
 						<h:inputHidden id="encryptedprivatekey" value="#{staff.privateKey}" />
 						<h:inputHidden id="publickey" value="#{staff.publicKey}" />
 						<h:inputHidden id="encryptedgroupkey" binding="#{input_key}" />
+					
 					</h:form>
 				</div>
 			</div>

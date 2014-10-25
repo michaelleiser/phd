@@ -1187,7 +1187,7 @@ public class EntityManager implements IEntityManager {
 	}
 	
 
-	public void createToDepartment(Department d, Staff s, String key) {
+	public void createDepartment(Department d, Staff s, String key) {
 		System.out.println("11>" + d);
 		System.out.println("12>" + s);
 		String stm1 = "SELECT * FROM department WHERE name=?;";
@@ -1307,6 +1307,7 @@ public class EntityManager implements IEntityManager {
 				dhs.setDepartment_has_staff_id(rs.getInt("department_department_id"));
 				dhs.setDepartment(d);
 				dhs.addStaff(this.getStaff(rs.getInt("staff_staff_id")));
+				dhs.addEncryptedGroupKey(rs.getString("encryptedKey"));
 				if(Boolean.parseBoolean(rs.getString("owner"))){
 					dhs.setOwner(this.getStaff(rs.getInt("staff_staff_id")));;
 				}
@@ -1327,6 +1328,28 @@ public class EntityManager implements IEntityManager {
 			}
 		}
 		return null;
+	}
+	
+	public void setGroupKey(Department_Has_Staff dhs, Staff s, String secret){
+		String stm = "UPDATE department_has_staff SET encryptedKey=? WHERE department_department_id=? AND staff_staff_id=?;";
+		init();
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setString(1, secret);
+			pst.setInt(2, dhs.getDepartment_has_staff_id());
+			pst.setInt(3, s.getId());
+			pst.execute();
+			rs = pst.getResultSet();
+//			if(rs.next()) {
+//				return;
+//			}
+			closeWithoutRs();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeWithoutRs();
+		}
+//		initStaff(); // TODO Da sonst nicht geupdated wird nach dem insert
 	}
 	
 	/** This Method create a new question to a new template

@@ -59,7 +59,7 @@ public class TestClass extends TestCase {
 
 		l.setDepartmentselected(department);
 		l.login(doctorname, password);
-		l.activateStaff(l.getStaffs(username).get(0));
+		l.activateStaff(l.getStaffs(username).get(0), "");	// TODO secret 2ndd param
 		l.logout();
 		
 		l.setDepartmentselected(department);

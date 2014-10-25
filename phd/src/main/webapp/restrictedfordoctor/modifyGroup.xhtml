@@ -16,7 +16,11 @@
 					<h:outputText value="#{msg['modifygroup']}" />
 				</h1>
 				<div id="group">
-					<h:form>
+				
+					<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
+					<h:outputScript library="js" name="activation.js" />
+					
+					<h:form id="groupform" >
 						<div id="filter">
 							<h:inputText binding="#{input1}" id="staffid"></h:inputText>
 							<h:commandButton value="Filter Staff">
@@ -33,17 +37,27 @@
 							columnClasses="table-column-id,table-column-data,table-column-button">
 
 							<h:column>
-								<f:facet name="header">ID</f:facet>#{staffs.id}
+								<f:facet name="header">ID</f:facet>
+								<h:outputLabel>#{staffs.id}</h:outputLabel>
 							</h:column>
 							<h:column>
-								<f:facet name="header">Name</f:facet>#{staffs.name}
+								<f:facet name="header">Name</f:facet>
+								<h:outputLabel>#{staffs.name}</h:outputLabel>
 							</h:column>
 
 							<h:column>
-								<h:commandButton rendered="#{!staffs.getActivated()}"
-									value="Activate" action="#{loginController.activateStaff(staffs)}" />
-								<h:commandButton rendered="#{staffs.getActivated()}"
+								<h:commandButton id="act" rendered="#{!staffs.getActivated()}" onclick="return activate(this);"
+									value="Activate" action="#{loginController.activateStaff(staffs, inputsecret.value)}" />
+								<h:commandButton id="deact" rendered="#{staffs.getActivated()}"
 									value="Deactivate" action="#{loginController.deactivateStaff(staffs)}" />
+							</h:column>
+							
+							<h:column>
+								<h:inputText id="publicKey" value="#{staffs.publicKey}"/>
+							</h:column>
+							
+							<h:column>
+								<h:inputText binding="#{inputsecret}" id="encsecret" />
 							</h:column>
 
 							<f:facet name="footer">

@@ -102,7 +102,7 @@ public class LoginController implements Serializable, ILoginController{
 		boolean admin = true;
 		em.registernew(s, admin);
 		Staff ss = em.getStaff(s.getName(), s.getPassword());
-		em.createToDepartment(d, ss, key);
+		em.createDepartment(d, ss, key);
 		return "/home?faces-redirect=true";
 	}
 
@@ -456,11 +456,14 @@ public class LoginController implements Serializable, ILoginController{
 		return null;
 	}
 	
-	public void activateStaff(Staff s){
+	public void activateStaff(Staff s, String secret){
+		System.out.println("Enc Secret " + secret);
 		em.setActivateStaff(s, true);		// TODO add restrictions !!!
+		em.setGroupKey(activeDepartment_Has_Staff, s,  secret);
 	}
 	public void deactivateStaff(Staff s){
 		em.setActivateStaff(s, false);		// TODO add restrictions !!!
+		em.setGroupKey(activeDepartment_Has_Staff, s, null);
 	}
 	
 //	String pub = "-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSCF1HymTdYHQAoBcBmvt/dRbcevoqV1RlEIryp+R95pBhA3tqZv8Qv6w3AyFi0DPrquREc6bUywCZ7sJE7JstQOP3ETSDxSvqtvGTaogtll7icgxTexA+sLt28E7E4TIcvZqXweQ8XneW62yDDlk5yhcG9xTZT1289d66YbvH7wIDAQAB-----END PUBLIC KEY-----";

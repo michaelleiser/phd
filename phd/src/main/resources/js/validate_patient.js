@@ -59,18 +59,17 @@ function validation(){
 	alert(json);
 	
 	
-//	var groupKey = sessionStorage.groupKey;
-	var groupKey = "groupkey123";		// TODO ???
+	var groupKey = sessionStorage.groupKey;
 	var encrypted = CryptoJS.AES.encrypt(json, groupKey);
 	alert(encrypted);
 
 	document.getElementById("patientform:encryptedPersonalData").value = encrypted;
-
+	alert("finished validation");
 	return true;
 }
 
 function personalData(){
-	var groupKey = "groupkey123";		// TODO ???
+	var groupKey = sessionStorage.groupKey;
 	var encrypted = document.getElementById("patientform:encryptedPersonalData").value;
 	alert(encrypted);
 	var decrypted = CryptoJS.AES.decrypt(encrypted, groupKey);
@@ -92,13 +91,13 @@ function personalData(){
 		document.getElementById("patientform:gender1:1").checked = true;
 	}
 	document.getElementById("patientform:birth1").value = myobj["birth"];
-	
+	alert("finishedpersonaldata");
 }
 
 
 
 function personalData2(){
-	var groupKey = "groupkey123";
+	var groupKey = sessionStorage.groupKey;
 	var size = document.getElementById("searchform:outputMessage").rows.length - 2;
 	for(var i = 0 ; i < size ; i++){
 		var encrypted = document.getElementById("searchform:outputMessage:" + i + ":encdata").value;
@@ -107,5 +106,5 @@ function personalData2(){
 		var myobj = JSON.parse(json);
 		document.getElementById("searchform:outputMessage:" + i + ":decfirstname").value = myobj["firstname"];
 	}
-	
+	alert("finishedpersonaldata2");
 }
