@@ -30,11 +30,23 @@ function validation(){
 	publicKey = crypt.getPublicKey();
 	
 //	var ciphertext = CryptoJS.AES.encrypt(privateKey, key, {iv:iv, mode:CryptoJS.mode.CBC});
-	var ciphertext = CryptoJS.AES.encrypt(privateKey, pass);
+	var encryptedPrivateKey = CryptoJS.AES.encrypt(privateKey, pass);
 	
-	document.getElementById("registernewform:privatekey").value = ciphertext;
+	document.getElementById("registernewform:encryptedprivatekey").value = encryptedPrivateKey;
 	document.getElementById("registernewform:publickey").value = publicKey;
 	
+	
+	/*
+	 * for new departments -> creates an encrypted group key
+	 * for existing departments -> encrypted group key is generated in activation process
+	 */
+	if(document.getElementById("registernewform:departmentname")){
+		var groupKey = CryptoJS.lib.WordArray.random(128/8);
+		crypt.setPublicKey(publicKey);
+		var encryptedGroupKey = crypt.encrypt(groupKey);
+		document.getElementById("registernewform:encryptedgroupkey").value = encryptedGroupKey;
+	}
+
 	alert("finish");
 	return true;
 }

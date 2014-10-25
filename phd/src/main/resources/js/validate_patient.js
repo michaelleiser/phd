@@ -85,7 +85,27 @@ function personalData(){
 //	document.getElementById("patientform:city").value = myobj["city"];
 //	document.getElementById("patientform:zip").value = myobj["zip"];
 //	document.getElementById("patientform:telnumber").value = myobj["telnumber"];
-//	document.getElementById("patientform:gender").value = myobj["gender"];
-//	document.getElementById("patientform:birth").value = myobj["birth"];
+	if(myobj["gender"] == "male"){
+		document.getElementById("patientform:gender1:0").checked = true;
+	}
+	if(myobj["gender"] == "female"){
+		document.getElementById("patientform:gender1:1").checked = true;
+	}
+	document.getElementById("patientform:birth1").value = myobj["birth"];
+	
+}
+
+
+
+function personalData2(){
+	var groupKey = "groupkey123";
+	var size = document.getElementById("searchform:outputMessage").rows.length - 2;
+	for(var i = 0 ; i < size ; i++){
+		var encrypted = document.getElementById("searchform:outputMessage:" + i + ":encdata").value;
+		var decrypted = CryptoJS.AES.decrypt(encrypted, groupKey);
+		var json = decrypted.toString(CryptoJS.enc.Utf8);
+		var myobj = JSON.parse(json);
+		document.getElementById("searchform:outputMessage:" + i + ":decfirstname").value = myobj["firstname"];
+	}
 	
 }

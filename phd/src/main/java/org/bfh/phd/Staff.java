@@ -110,8 +110,8 @@ public class Staff implements IStaff{
 	
 	
 	
-	public String registernewWithDepartment(Department d){
-		return new LoginController().registernew(this, d);
+	public String registernewWithDepartment(Department d, String key){
+		return new LoginController().registernew(this, d, key);
 	}
 
 	

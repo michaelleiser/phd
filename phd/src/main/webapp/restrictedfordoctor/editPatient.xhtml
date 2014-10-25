@@ -84,6 +84,7 @@
 							</h:column>
 						</h:panelGrid>
 						
+	
 						<h:inputText id="encryptedPersonalData" value="#{loginController.activePatient.personalData}"/>
 						<h:outputLabel>Firstname1:</h:outputLabel>
 						<h:inputText id="firstname1" readonly="#{!(loginController.writeAccess(loginController.activePatient))}" required="true">
@@ -94,7 +95,18 @@
 						<h:inputText id="lastname1" readonly="#{!(loginController.writeAccess(loginController.activePatient))}" required="true">
 							<f:validateLength minimum="2" maximum="10" />
 						</h:inputText>
+						
+						<h:outputLabel>Gender1:</h:outputLabel>
+						<h:selectOneRadio id="gender1" readonly="#{!(loginController.writeAccess(loginController.activePatient))}" required="true">
+							<f:selectItem itemLabel="Male1" itemValue="male" />
+							<f:selectItem itemLabel="Female1" itemValue="female" />
+						</h:selectOneRadio>
 
+						<h:outputLabel>Birthday1 (dd.mm.yyyy):</h:outputLabel>
+						<h:inputText id="birth1" readonly="#{!(loginController.writeAccess(loginController.activePatient))}" required="true">
+							<f:validateLength minimum="10" maximum="10" />
+						</h:inputText>
+						
 					</h:form>
 
 				</div>

@@ -97,12 +97,12 @@ public class LoginController implements Serializable, ILoginController{
 		em.addToDepartment(this.departmentselected, ss);
 		return "/home?faces-redirect=true";
 	}
-	public String registernew(Staff s, Department d) {
+	public String registernew(Staff s, Department d, String key) {
 		System.out.println("lc reg new with dep " + s +":"+ d + ":" + this.departmentselected);
 		boolean admin = true;
 		em.registernew(s, admin);
 		Staff ss = em.getStaff(s.getName(), s.getPassword());
-		em.createToDepartment(d, ss);
+		em.createToDepartment(d, ss, key);
 		return "/home?faces-redirect=true";
 	}
 
@@ -457,7 +457,10 @@ public class LoginController implements Serializable, ILoginController{
 	}
 	
 	public void activateStaff(Staff s){
-		em.activateStaff(s);		// TODO add restrictions !!!
+		em.setActivateStaff(s, true);		// TODO add restrictions !!!
+	}
+	public void deactivateStaff(Staff s){
+		em.setActivateStaff(s, false);		// TODO add restrictions !!!
 	}
 	
 //	String pub = "-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSCF1HymTdYHQAoBcBmvt/dRbcevoqV1RlEIryp+R95pBhA3tqZv8Qv6w3AyFi0DPrquREc6bUywCZ7sJE7JstQOP3ETSDxSvqtvGTaogtll7icgxTexA+sLt28E7E4TIcvZqXweQ8XneW62yDDlk5yhcG9xTZT1289d66YbvH7wIDAQAB-----END PUBLIC KEY-----";

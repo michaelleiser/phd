@@ -16,7 +16,10 @@
 					<h:outputText value="#{msg['searchpatient']}" />
 				</h1>
 				<div id="patients">
-					<h:form>
+					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
+				
+					<h:outputScript library="js" name="validate_patient.js" />
+					<h:form id="searchform">
 						<div id="filter">
 							<h:inputText binding="#{input1}" id="patid"></h:inputText>
 							<h:commandButton value="Filter Patient">
@@ -72,7 +75,15 @@
 								<h:outputLabel rendered="#{(loginController.isOwner(patients))}"
 									value="Owner"></h:outputLabel>
 							</h:column>
-
+							<h:column>
+								<f:facet name="header">decrypted first name</f:facet>
+								<h:inputText id="decfirstname"/>
+							</h:column>
+							<h:column>
+								<f:facet name="header">enc data</f:facet>
+								<h:inputText id="encdata" value="#{patients.personalData}"/>
+							</h:column>
+					
 							<f:facet name="footer">
 								<h:panelGroup>
 									<h:commandButton
@@ -139,6 +150,11 @@
 					</h:form>
 				</div>
 			</div>
+			
+			<h:outputScript type="text/javascript">
+			    personalData2();
+     		</h:outputScript>
+			
 		</ui:define>
 	</ui:composition>
 

@@ -55,14 +55,15 @@
 							</h:panelGroup>
 							<h:outputLabel />
 							<h:panelGroup id="regnewwithdep">
-								<h:commandButton action="#{staff.registernewWithDepartment(department)}" rendered="#{empty loginController.departmentselected}"
+								<h:commandButton action="#{staff.registernewWithDepartment(department, input_key.value)}" rendered="#{empty loginController.departmentselected}"
 								value="RegisternewWithDep" />
 							</h:panelGroup>			
 							
 						</h:panelGrid>
 						<h:inputHidden id="hashedpassword" value="#{staff.password}" />
-						<h:inputHidden id="privatekey" value="#{staff.privateKey}"/>
-						<h:inputHidden id="publickey" value="#{staff.publicKey}"/>
+						<h:inputHidden id="encryptedprivatekey" value="#{staff.privateKey}" />
+						<h:inputHidden id="publickey" value="#{staff.publicKey}" />
+						<h:inputHidden id="encryptedgroupkey" binding="#{input_key}" />
 					</h:form>
 				</div>
 			</div>

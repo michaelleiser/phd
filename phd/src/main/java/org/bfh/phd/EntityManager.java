@@ -49,7 +49,8 @@ public class EntityManager implements IEntityManager {
 	
 	private PaginatorPatient paginatorPatient = new PaginatorPatient();
 	private PaginatorPatientData paginatorPatientData = new PaginatorPatientData();
-	
+	private PaginatorGroup paginatorGroup = new PaginatorGroup();
+
 	//Testvariablen
 	private String sss = "elbow"; 
 	
@@ -1105,7 +1106,14 @@ public class EntityManager implements IEntityManager {
 	public void setPaginatorPatientData(PaginatorPatientData p) {
 		this.paginatorPatientData = p;
 	}
-	
+
+	public PaginatorGroup getPaginatorGroup() {
+		return paginatorGroup;
+	}
+
+	public void setPaginatorGroup(PaginatorGroup p) {
+		this.paginatorGroup = p;
+	}
 	public List<ListOfQuestionnari> searchData(int id){
 		List<ListOfQuestionnari> quest = new ArrayList<ListOfQuestionnari>();
 		String stm = "SELECT t.typ, answer_id, date FROM questionnaire q INNER JOIN typ t ON q.typ = t.id WHERE patient_patient_id = ?;";
@@ -1179,12 +1187,12 @@ public class EntityManager implements IEntityManager {
 	}
 	
 
-	public void createToDepartment(Department d, Staff s) {
+	public void createToDepartment(Department d, Staff s, String key) {
 		System.out.println("11>" + d);
 		System.out.println("12>" + s);
 		String stm1 = "SELECT * FROM department WHERE name=?;";
 		String stm2 = "INSERT INTO department(name) VALUES(?);";
-		String stm3 = "INSERT INTO department_has_staff(department_department_id, staff_staff_id, owner) VALUES(?,?,?);";
+		String stm3 = "INSERT INTO department_has_staff(department_department_id, staff_staff_id, owner, encryptedKey) VALUES(?,?,?,?);";
 		init();
 		try {
 			pst = con.prepareStatement(stm1);
@@ -1208,6 +1216,7 @@ public class EntityManager implements IEntityManager {
 				pst.setInt(1, id);
 				pst.setInt(2, s.getId());
 				pst.setString(3, "true");
+				pst.setString(4, key);
 				pst.executeUpdate();
 				System.out.println(">>>"+d.getDepartment_id() + s.getId());
 			}
@@ -1237,6 +1246,7 @@ public class EntityManager implements IEntityManager {
 				pst.setInt(1, rs.getInt("department_id"));
 				pst.setInt(2, s.getId());
 				pst.setString(3, "false");
+//				pst.setString(4, "encryptedKey");	// not necessary yet
 				pst.executeUpdate();
 				System.out.println(">" + name + "" + s.getId());
 			} else {
@@ -1259,16 +1269,16 @@ public class EntityManager implements IEntityManager {
 				staff.add(s);
 			}			
 		}
-		paginatorPatient.setSize(staff.size());
+		paginatorGroup.setSize(staff.size());
 		return staff;
 	}
 	
-	public void activateStaff(Staff s){
+	public void setActivateStaff(Staff s, boolean b){
 		String stm = "UPDATE staff SET isActivated=? WHERE staff_id=?;";
 		init();
 		try {
 			pst = con.prepareStatement(stm);
-			pst.setString(1, "true");
+			pst.setString(1, Boolean.toString(b));
 			pst.setInt(2, s.getId());
 			pst.execute();
 			rs = pst.getResultSet();
