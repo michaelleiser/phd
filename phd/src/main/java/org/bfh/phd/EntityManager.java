@@ -137,29 +137,28 @@ public class EntityManager implements IEntityManager {
 		return null;
 	}
 
-	// Parameter sollte evtl STAFF sein
 	@Override
-	public void registernew(Staff s, boolean admin) {
-		String stm1 = "SELECT * FROM staff WHERE name=?;";
+	public void registernew(Staff s, boolean activated) {
+//		String stm1 = "SELECT * FROM staff WHERE name=?;";
 		String stm2 = "INSERT INTO staff(name, password, privateKey, publicKey, role_role_id, isActivated) VALUES(?, ?, ?, ?, ?, ?);";
 		init();
 		try {
-			pst = con.prepareStatement(stm1);
-			pst.setString(1, s.getName());
-			pst.execute();
-			rs = pst.getResultSet();
-			if(rs.next()) {
-				return;
-			} else {
+//			pst = con.prepareStatement(stm1);
+//			pst.setString(1, s.getName());
+//			pst.execute();
+//			rs = pst.getResultSet();
+//			if(rs.next()) {
+//				return;
+//			} else {
 				pst = con.prepareStatement(stm2);
 				pst.setString(1, s.getName());
 				pst.setString(2, s.getPassword());
 				pst.setString(3, s.getPrivateKey());
 				pst.setString(4, s.getPublicKey());
 				pst.setInt(5, s.getRole());
-				pst.setString(6, Boolean.toString(admin));		// TODO just for testing=true
+				pst.setString(6, Boolean.toString(activated));		// TODO just for testing=true
 				pst.executeUpdate();
-			}
+//			}
 			close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1261,7 +1260,6 @@ public class EntityManager implements IEntityManager {
 		initDepartment(); // TODO Da sonst nicht geupdated wird nach dem insert
 	}
 	
-	// TODO staffname kann nicht durchsucht werden, da später verschlüsselt
 	public List<Staff> searchStaff(Department_Has_Staff dhs, Staff activeUser, String name) {
 		List<Staff> staff = new ArrayList<Staff>();
 		for(Staff s : dhs.getStaff()){
@@ -1269,6 +1267,7 @@ public class EntityManager implements IEntityManager {
 				staff.add(s);
 			}			
 		}
+		staff.remove(activeUser);
 		paginatorGroup.setSize(staff.size());
 		return staff;
 	}

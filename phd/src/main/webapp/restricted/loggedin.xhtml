@@ -55,7 +55,7 @@
 				<h:inputHidden id="group" value="#{loginController.getDepartment_Has_Staff().getEncryptedGroupKeyFromStaff(loginController.getStaff())}"/>
 			</h:form>
 			<h:outputScript type="text/javascript">
-			    sessionKeys();
+			    getSessionKeys();
      		</h:outputScript>
      		
 		</ui:define>

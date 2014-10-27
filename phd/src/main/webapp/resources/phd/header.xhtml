@@ -21,7 +21,7 @@
 			</div>
 		
 			<div id="loggedinbox">
-				<h:form onsubmit="return destroyKeys();">
+				<h:form onsubmit="return clearSessionStorage();">
 					<h:outputLabel rendered="#{loginController.loggedin}">You are logged in</h:outputLabel><br />
 					<h:commandLink rendered="#{loginController.loggedin}" action="#{navigation.redirectToEditStaff}" value="#{(loginController.getStaff()).getName()}" /><br />
 					<h:outputLabel rendered="#{loginController.loggedin}"> as a #{(loginController.getStaff()).getRole()} in #{loginController.getDepartment_Has_Staff().getDepartment().getName()}</h:outputLabel><br />

@@ -90,19 +90,21 @@ public class LoginController implements Serializable, ILoginController{
 	}
 
 	public String registernew(Staff s) {
-		System.out.println("lc reg new " + s + ":" + this.departmentselected);
-		boolean admin = false;
-		em.registernew(s, admin);
-		Staff ss = em.getStaff(s.getName(), s.getPassword());
-		em.addToDepartment(this.departmentselected, ss);
+		if(!this.activeDepartment_Has_Staff.getStaff().contains(s)){
+			boolean activated = false;
+			em.registernew(s, activated);
+			Staff ss = em.getStaff(s.getName(), s.getPassword());
+			em.addToDepartment(this.departmentselected, ss);
+		}
 		return "/home?faces-redirect=true";
 	}
 	public String registernew(Staff s, Department d, String key) {
-		System.out.println("lc reg new with dep " + s +":"+ d + ":" + this.departmentselected);
-		boolean admin = true;
-		em.registernew(s, admin);
-		Staff ss = em.getStaff(s.getName(), s.getPassword());
-		em.createDepartment(d, ss, key);
+		if(!em.getDepartments().contains(d)){
+			boolean activated = true;
+			em.registernew(s, activated);
+			Staff ss = em.getStaff(s.getName(), s.getPassword());
+			em.createDepartment(d, ss, key);
+		}
 		return "/home?faces-redirect=true";
 	}
 
@@ -309,6 +311,10 @@ public class LoginController implements Serializable, ILoginController{
 		}
 		return false;
 	}
+	
+	public boolean isOwnerOfGroup(Staff s){
+		return activeDepartment_Has_Staff.getOwner().equals(s);
+	}
 
 	public boolean readAccess(Patient p){
 		if(this.loggedin == true && activeUser.getRole() == 1){
@@ -447,7 +453,7 @@ public class LoginController implements Serializable, ILoginController{
 //
 //	private Department activeDepartment;
 
-	public List<Staff> searchStaff(String name) {		// TODO
+	public List<Staff> searchStaffInGroup(String name) {
 		System.out.println("SEARCHING Staff..." + name);
 		if(this.loggedin == true && activeUser.getRole() == 1){
 			List<Staff> l = em.searchStaff(activeDepartment_Has_Staff, activeUser, name);
@@ -457,13 +463,18 @@ public class LoginController implements Serializable, ILoginController{
 	}
 	
 	public void activateStaff(Staff s, String secret){
-		System.out.println("Enc Secret " + secret);
-		em.setActivateStaff(s, true);		// TODO add restrictions !!!
-		em.setGroupKey(activeDepartment_Has_Staff, s,  secret);
+		System.out.println("ACTIVATE Staff..." + s);
+		if(this.loggedin == true && activeDepartment_Has_Staff.getOwner().equals(activeUser)){
+			em.setActivateStaff(s, true);
+			em.setGroupKey(activeDepartment_Has_Staff, s,  secret);	
+		}
 	}
 	public void deactivateStaff(Staff s){
-		em.setActivateStaff(s, false);		// TODO add restrictions !!!
-		em.setGroupKey(activeDepartment_Has_Staff, s, null);
+		System.out.println("DEACTIVATE Staff..." + s);
+		if(this.loggedin == true && activeDepartment_Has_Staff.getOwner().equals(activeUser)){
+			em.setActivateStaff(s, false);
+			em.setGroupKey(activeDepartment_Has_Staff, s, null);	
+		}
 	}
 	
 //	String pub = "-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSCF1HymTdYHQAoBcBmvt/dRbcevoqV1RlEIryp+R95pBhA3tqZv8Qv6w3AyFi0DPrquREc6bUywCZ7sJE7JstQOP3ETSDxSvqtvGTaogtll7icgxTexA+sLt28E7E4TIcvZqXweQ8XneW62yDDlk5yhcG9xTZT1289d66YbvH7wIDAQAB-----END PUBLIC KEY-----";

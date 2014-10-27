@@ -1,4 +1,4 @@
-function sessionKeys() {
+function getSessionKeys() {
     if(typeof(Storage) !== "undefined") {
     	if(typeof(sessionStorage.privateKey) === "undefined"){
 //            sessionStorage.privateKey = document.getElementById("sessionkeysid:private").value;
