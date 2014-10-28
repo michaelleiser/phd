@@ -56,10 +56,10 @@ public class EntityManager implements IEntityManager {
 	
 	public EntityManager(){
 		mycon = new MyConnection();
+		initDepartment();
 		initStaff();
 		initPatient();
 		initPatientData();
-		initDepartment();
 	}
 
 //---- Methods -----
@@ -397,8 +397,8 @@ public class EntityManager implements IEntityManager {
 	}
 	
 	@Override
-	public void updatePatient(Staff activeUser, Patient p) {
-		if(this.writeaccess(activeUser, p)){
+	public void updatePatient(Patient p, Staff activeUser) {
+		if(this.writeaccess(p, activeUser)){
 			init();
 			String stm = "UPDATE patient SET firstname=?, lastname=?, birthday=?, street=?, nr=?, city=?, zip=?, telnumber=?, gender=?, readaccess=?, writeaccess=?, insertaccess=?, encryptedPersonalData=? WHERE patient_id=?";
 			try {
@@ -477,15 +477,17 @@ public class EntityManager implements IEntityManager {
 			return questionnaris;
 	}
 	
-	//TODO firstname lastname
+	//TODO search name has to be in javascript
 	@Override
-	public List<Patient> searchPatient(Staff activeUser, String name) {
+	public List<Patient> searchPatient(String name, Department_Has_Staff dhs, Staff activeUser) {
 		List<Patient> patient = new ArrayList<Patient>();
 		for(Patient p : this.patient){
-			if(p.getReadaccess() || (p.getOwner() == activeUser.getId())){
-				if(name.equals("") || p.getFirstname().toUpperCase().contains(name.toUpperCase()) || p.getLastname().toUpperCase().contains(name.toUpperCase())){
-					patient.add(p);
-				}			
+			if(p.getDepartment().equals(dhs.getDepartment())){
+				if(p.getReadaccess() || (p.getOwner() == activeUser.getId())){
+					if(name.equals("") || p.getFirstname().toUpperCase().contains(name.toUpperCase()) || p.getLastname().toUpperCase().contains(name.toUpperCase())){
+						patient.add(p);
+					}			
+				}		
 			}
 		}
 		paginatorPatient.setSize(patient.size());
@@ -558,10 +560,10 @@ public class EntityManager implements IEntityManager {
 	}
 
 	@Override
-	public void createPatient(Patient p, Staff activeUser) {
+	public void createPatient(Patient p, Department_Has_Staff dhs, Staff activeUser) {
 		if((activeUser != null) && (activeUser.getRole() == 1)){
 			String stm1 = "SELECT * FROM patient WHERE firstname=? AND lastname=?;";
-			String stm2 = "INSERT INTO patient(firstname, lastname, birthday, street, nr, city, zip, telnumber, gender, readaccess, writeaccess, insertaccess, staff_staff_id, encryptedPersonalData) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			String stm2 = "INSERT INTO patient(firstname, lastname, birthday, street, nr, city, zip, telnumber, gender, readaccess, writeaccess, insertaccess, staff_staff_id, encryptedPersonalData, department_department_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 			init();
 			try {
 				pst = con.prepareStatement(stm1);
@@ -587,6 +589,7 @@ public class EntityManager implements IEntityManager {
 				pst.setString(12, "false");
 				pst.setInt(13, activeUser.getId());
 				pst.setString(14, p.getPersonalData());
+				pst.setInt(15, dhs.getDepartment().getDepartment_id());
 				pst.executeUpdate();
 				closeWithoutRs();
 			} catch (SQLException e) {
@@ -966,6 +969,7 @@ public class EntityManager implements IEntityManager {
 				p.setWriteaccess(Boolean.parseBoolean(rs.getString("writeaccess")));
 				p.setOwner(rs.getInt("staff_staff_id"));
 				p.setPersonalData(rs.getString("encryptedPersonalData"));
+				p.setDepartment(this.getDepartment(rs.getInt("department_department_id")));
 				patient.add(p);
 			}
 			close();
@@ -1001,26 +1005,26 @@ public class EntityManager implements IEntityManager {
 	}
 
 
-	public boolean isOwner(Staff activeUser, Patient patient) {
+	public boolean isOwner(Patient patient, Staff activeUser) {
 		if(this.getStaff(patient.getOwner()).getId() == activeUser.getId()){
 			return true;
 		}
 		return false;
 	}
-	public boolean readaccess(Staff activeUser, Patient p) {
-		if(isOwner(activeUser, p)){
+	public boolean readaccess(Patient p, Staff activeUser) {
+		if(isOwner(p, activeUser)){
 			return true;
 		}
 		return p.getReadaccess();
 	}
-	public boolean writeaccess(Staff activeUser, Patient p) {
-		if(isOwner(activeUser, p)){
+	public boolean writeaccess(Patient p, Staff activeUser) {
+		if(isOwner(p, activeUser)){
 			return true;
 		}
 		return p.getWriteaccess();
 	}
-	public boolean insertaccess(Staff activeUser, Patient p) {
-		if(isOwner(activeUser, p)){
+	public boolean insertaccess(Patient p, Staff activeUser) {
+		if(isOwner(p, activeUser)){
 			return true;
 		}
 		return p.getInsertaccess();
@@ -1260,7 +1264,7 @@ public class EntityManager implements IEntityManager {
 		initDepartment(); // TODO Da sonst nicht geupdated wird nach dem insert
 	}
 	
-	public List<Staff> searchStaff(Department_Has_Staff dhs, Staff activeUser, String name) {
+	public List<Staff> searchStaff(String name, Department_Has_Staff dhs, Staff activeUser) {
 		List<Staff> staff = new ArrayList<Staff>();
 		for(Staff s : dhs.getStaff()){
 			if(name.equals("") || s.getName().toUpperCase().contains(name.toUpperCase())){
@@ -1329,7 +1333,7 @@ public class EntityManager implements IEntityManager {
 		return null;
 	}
 	
-	public void setGroupKey(Department_Has_Staff dhs, Staff s, String secret){
+	public void setGroupKey(Staff s, Department_Has_Staff dhs, String secret){
 		String stm = "UPDATE department_has_staff SET encryptedKey=? WHERE department_department_id=? AND staff_staff_id=?;";
 		init();
 		try {

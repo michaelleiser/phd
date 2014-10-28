@@ -154,17 +154,17 @@ public class LoginController implements Serializable, ILoginController{
 		return null;
 	}
 	
-	public void updateStaff(Staff activeUser){
-		System.out.println("update staff..." + activeUser);
+	public void updateStaff(Staff s){
+		System.out.println("update staff..." + s);
 		if(this.loggedin == true){
-			em.updateStaff(activeUser);
+			em.updateStaff(s);
 		}
 	}
 	
 	public void updatePatient(Patient p){
 		System.out.println("update patient..." + p);
 		if(this.loggedin == true){
-			em.updatePatient(activeUser, p);
+			em.updatePatient(p, activeUser);
 		}
 	}
 
@@ -196,10 +196,10 @@ public class LoginController implements Serializable, ILoginController{
 		return null;
 	}
 
-	public List<Patient> searchPatient(String name) {		// TODO
+	public List<Patient> searchPatient(String name) {		// TODO name search in javascript
 		System.out.println("SEARCHING Patient..." + name);
 		if(this.loggedin == true && activeUser.getRole() == 1){
-			List<Patient> l = em.searchPatient(activeUser, name);
+			List<Patient> l = em.searchPatient(name, activeDepartment_Has_Staff, activeUser);
 			return l;
 		}
 		return null;
@@ -208,7 +208,7 @@ public class LoginController implements Serializable, ILoginController{
 	public String createPatient(Patient p) {
 		System.out.println("CREATE Patient..." + p);
 		if((this.loggedin == true) && (activeUser.getRole() == 1)){
-			em.createPatient(p, activeUser);
+			em.createPatient(p, activeDepartment_Has_Staff, activeUser);
 			return "/loggedin";
 		}
 		return null;
@@ -307,7 +307,7 @@ public class LoginController implements Serializable, ILoginController{
 
 	public boolean isOwner(Patient p){
 		if(this.loggedin == true && activeUser.getRole() == 1){
-			return em.isOwner(activeUser, p);
+			return em.isOwner(p, activeUser);
 		}
 		return false;
 	}
@@ -318,19 +318,19 @@ public class LoginController implements Serializable, ILoginController{
 
 	public boolean readAccess(Patient p){
 		if(this.loggedin == true && activeUser.getRole() == 1){
-			return em.readaccess(activeUser, p);
+			return em.readaccess(p, activeUser);
 		}
 		return false;
 	}
 	public boolean writeAccess(Patient p){
 		if(this.loggedin == true && activeUser.getRole() == 1){
-			return em.writeaccess(activeUser, p);
+			return em.writeaccess(p, activeUser);
 		}
 		return false;
 	}
 	public boolean insertAccess(Patient p){
 		if(this.loggedin == true && activeUser.getRole() == 1){
-			return em.insertaccess(activeUser, p);
+			return em.insertaccess(p, activeUser);
 		}
 		return false;
 	}
@@ -456,7 +456,7 @@ public class LoginController implements Serializable, ILoginController{
 	public List<Staff> searchStaffInGroup(String name) {
 		System.out.println("SEARCHING Staff..." + name);
 		if(this.loggedin == true && activeUser.getRole() == 1){
-			List<Staff> l = em.searchStaff(activeDepartment_Has_Staff, activeUser, name);
+			List<Staff> l = em.searchStaff(name, activeDepartment_Has_Staff, activeUser);
 			return l;
 		}
 		return null;
@@ -466,14 +466,14 @@ public class LoginController implements Serializable, ILoginController{
 		System.out.println("ACTIVATE Staff..." + s);
 		if(this.loggedin == true && activeDepartment_Has_Staff.getOwner().equals(activeUser)){
 			em.setActivateStaff(s, true);
-			em.setGroupKey(activeDepartment_Has_Staff, s,  secret);	
+			em.setGroupKey(s, activeDepartment_Has_Staff,  secret);	
 		}
 	}
 	public void deactivateStaff(Staff s){
 		System.out.println("DEACTIVATE Staff..." + s);
 		if(this.loggedin == true && activeDepartment_Has_Staff.getOwner().equals(activeUser)){
 			em.setActivateStaff(s, false);
-			em.setGroupKey(activeDepartment_Has_Staff, s, null);	
+			em.setGroupKey(s, activeDepartment_Has_Staff, null);	
 		}
 	}
 	

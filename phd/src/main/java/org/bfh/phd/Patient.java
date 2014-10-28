@@ -35,6 +35,8 @@ public class Patient implements Serializable, IPatient {
 	private boolean readaccess;
 	private boolean writeaccess;
 	private boolean insertaccess;
+	
+	private Department department;
 
 	public Patient() {
 	}
@@ -235,6 +237,14 @@ public class Patient implements Serializable, IPatient {
 	
 	public void setPersonalData(String personalData){
 		this.personalData = personalData;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
 	}
 	
 	

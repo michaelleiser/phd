@@ -11,5 +11,5 @@ function encryptGroupKey(e){
     var encrypted =  crypt.encrypt(groupKey);
     document.getElementById(substr + "encsecret").value = encrypted;
     
-    alert("finish");
+//    alert("finish");
 }

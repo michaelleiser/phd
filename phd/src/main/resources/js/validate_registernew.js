@@ -37,7 +37,7 @@ function validation(){
 		generateEncryptedGroupKey(publicKey);
 	}
 
-	alert("finish");
+//	alert("finish");
 	return true;
 }
 

@@ -11,7 +11,7 @@ function validation(){
 	}
 	hashPassword(newpass);
 	
-	alert("finish");
+//	alert("finish");
 	return true;
 }
 

@@ -58,7 +58,7 @@ function validation(){
 	var json = JSON.stringify(myobj);	// var myobj = JSON.parse(json);
 	encryptPersonalData(json);
 
-	alert("finish");
+//	alert("finish");
 	return true;
 }
 
@@ -71,10 +71,10 @@ function encryptPersonalData(json){
 function personalData(){
 	var groupKey = sessionStorage.groupKey;
 	var encrypted = document.getElementById("patientform:encryptedPersonalData").value;
-	alert(encrypted);
+//	alert(encrypted);
 	var decrypted = CryptoJS.AES.decrypt(encrypted, groupKey);
     var json = decrypted.toString(CryptoJS.enc.Utf8);
-    alert(json);
+//    alert(json);
 	var myobj = JSON.parse(json);
 
 	document.getElementById("patientform:firstname1").value = myobj["firstname"];

@@ -2,6 +2,7 @@ package org.bfh.phd.interfaces;
 
 import java.util.List;
 
+import org.bfh.phd.Department_Has_Staff;
 import org.bfh.phd.Patient;
 import org.bfh.phd.Staff;
 
@@ -87,32 +88,33 @@ public interface IEntityManager {
 
 	/**
 	 * updates the patient writeable by the active user
-	 * 
-	 * @param activeUser
-	 * 			the active user
 	 * @param p
 	 * 			the patient to be updated
-	 */
-	public void updatePatient(Staff activeUser, Patient p);
-
-	/**
 	 * @param activeUser
 	 * 			the active user
+	 */
+	public void updatePatient(Patient p, Staff activeUser);
+
+	/**
 	 * @param name
 	 * 			the name to be filtered
+	 * @param dhs TODO
+	 * @param activeUser
+	 * 			the active user
 	 * @return
 	 * 			a list of all patients readable by the active user that contain the name
 	 */
-	public List<Patient> searchPatient(Staff activeUser, String name);
+	public List<Patient> searchPatient(String name, Department_Has_Staff dhs, Staff activeUser);
 
 	/**
 	 * creates a new patient from the active user
 	 * 
 	 * @param p
 	 * 			the patient to be created
+	 * @param dhs TODO
 	 * @param activeUser
 	 * 			the active user
 	 */
-	public void createPatient(Patient p, Staff activeUser);
+	public void createPatient(Patient p, Department_Has_Staff dhs, Staff activeUser);
 
 }
