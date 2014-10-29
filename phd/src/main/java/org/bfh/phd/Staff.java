@@ -102,14 +102,12 @@ public class Staff implements IStaff{
 		return new LoginController().login(this.name, this.password);
 	}
 
-//	@Override
+	@Override
 	public String registernew(){
 		return new LoginController().registernew(this);
 	}
-	
-	
-	
-	
+
+	@Override
 	public String registernewWithDepartment(Department d, String key){
 		return new LoginController().registernew(this, d, key);
 	}

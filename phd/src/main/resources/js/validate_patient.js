@@ -48,14 +48,16 @@ function validation(){
 	if(gender1.checked){
 		gender = gender1.value;
 	}
-	var birth = document.getElementById("patientform:birth").value;
-	if(!birth.match(/^[0-3][0-9].[0-1][0-9].[1-2][0-9]{3}/)){
-		window.alert("Input a valid birth!");
+	var birthday = document.getElementById("patientform:birthday").value;
+	if(!birthday.match(/^[0-3][0-9].[0-1][0-9].[1-2][0-9]{3}/)){
+		window.alert("Input a valid birthday!");
 		return false;
 	}
 	
-	var myobj = {"firstname":firstname, "lastname":lastname, "street":street, "nr":nr, "city":city, "zip":zip, "telnumber":telnumber, "gender":gender, "birth":birth};
+	var myobj = {"firstname":firstname, "lastname":lastname, "street":street, "nr":nr, "city":city, "zip":zip, "telnumber":telnumber, "gender":gender, "birthday":birthday};
 	var json = JSON.stringify(myobj);	// var myobj = JSON.parse(json);
+//	alert(json);
+	
 	encryptPersonalData(json);
 
 //	alert("finish");
@@ -77,20 +79,20 @@ function personalData(){
 //    alert(json);
 	var myobj = JSON.parse(json);
 
-	document.getElementById("patientform:firstname1").value = myobj["firstname"];
-	document.getElementById("patientform:lastname1").value = myobj["lastname"];
-//	document.getElementById("patientform:street").value = myobj["street"];
-//	document.getElementById("patientform:nr").value = myobj["nr"];
-//	document.getElementById("patientform:city").value = myobj["city"];
-//	document.getElementById("patientform:zip").value = myobj["zip"];
-//	document.getElementById("patientform:telnumber").value = myobj["telnumber"];
+	document.getElementById("patientform:firstname").value = myobj["firstname"];
+	document.getElementById("patientform:lastname").value = myobj["lastname"];
+	document.getElementById("patientform:street").value = myobj["street"];
+	document.getElementById("patientform:nr").value = myobj["nr"];
+	document.getElementById("patientform:city").value = myobj["city"];
+	document.getElementById("patientform:zip").value = myobj["zip"];
+	document.getElementById("patientform:telnumber").value = myobj["telnumber"];
 	if(myobj["gender"] == "male"){
-		document.getElementById("patientform:gender1:0").checked = true;
+		document.getElementById("patientform:gender:0").checked = true;
 	}
 	if(myobj["gender"] == "female"){
-		document.getElementById("patientform:gender1:1").checked = true;
+		document.getElementById("patientform:gender:1").checked = true;
 	}
-	document.getElementById("patientform:birth1").value = myobj["birth"];
+	document.getElementById("patientform:birthday").value = myobj["birthday"];
 }
 
 
@@ -101,8 +103,13 @@ function personalData2(){
 	for(var i = 0 ; i < size ; i++){
 		var encrypted = document.getElementById("searchform:outputMessage:" + i + ":encdata").value;
 		var decrypted = CryptoJS.AES.decrypt(encrypted, groupKey);
-		var json = decrypted.toString(CryptoJS.enc.Utf8);
-		var myobj = JSON.parse(json);
-		document.getElementById("searchform:outputMessage:" + i + ":decfirstname").value = myobj["firstname"];
+		if(decrypted != ""){
+			var json = decrypted.toString(CryptoJS.enc.Utf8);
+			var myobj = JSON.parse(json);
+			document.getElementById("searchform:outputMessage:" + i + ":firstname").innerHTML = myobj["firstname"];
+			document.getElementById("searchform:outputMessage:" + i + ":lastname").innerHTML = myobj["lastname"];
+			document.getElementById("searchform:outputMessage:" + i + ":birthday").innerHTML = myobj["birthday"];
+
+		}
 	}
 }

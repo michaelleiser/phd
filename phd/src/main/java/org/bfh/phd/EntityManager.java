@@ -15,7 +15,6 @@ import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
-import javax.swing.text.Position;
 
 import org.bfh.phd.interfaces.IEntityManager;
 import org.bfh.phd.questionary.Answer;
@@ -28,9 +27,6 @@ import org.bfh.phd.questionary.Question;
 import org.bfh.phd.questionary.QuestionCheckbox;
 import org.bfh.phd.questionary.QuestionRadioButton;
 import org.bfh.phd.questionary.QuestionString;
-
-//import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
-
 
 @ManagedBean(name = "entityManager", eager = true)
 @SessionScoped
@@ -104,7 +100,7 @@ public class EntityManager implements IEntityManager {
 	public List<Patient> getPatient(Staff activeUser){
 		List<Patient> list = new ArrayList<Patient>();
 		for(Patient p : this.patient){
-			if(p.getReadaccess() || (p.getOwner() == activeUser.getId())){
+			if(p.getReadaccess() || (p.getOwner().equals(activeUser))){
 				list.add(p);
 			}
 		}
@@ -128,10 +124,8 @@ public class EntityManager implements IEntityManager {
 	@Override
 	public Patient getPatient(Staff activeUser, int patientid) {
 		for(Patient p : this.patient){
-			if((p.getPatientid() == patientid) && p.getReadaccess()){
-				if(p.getReadaccess() || (p.getOwner() == activeUser.getId())){
-					return p;
-				}
+			if((p.getReadaccess() || (p.getOwner().equals(activeUser))) && (p.getPatientid() == patientid)){
+				return p;
 			}
 		}
 		return null;
@@ -400,24 +394,15 @@ public class EntityManager implements IEntityManager {
 	public void updatePatient(Patient p, Staff activeUser) {
 		if(this.writeaccess(p, activeUser)){
 			init();
-			String stm = "UPDATE patient SET firstname=?, lastname=?, birthday=?, street=?, nr=?, city=?, zip=?, telnumber=?, gender=?, readaccess=?, writeaccess=?, insertaccess=?, encryptedPersonalData=? WHERE patient_id=?";
+			String stm = "UPDATE patient SET readaccess=?, writeaccess=?, insertaccess=?, encryptedPersonalData=? WHERE patient_id=?";
 			try {
 				System.out.println("jfkdlsajf");
 				pst = con.prepareStatement(stm);
-				pst.setString(1, p.getFirstname());
-				pst.setString(2, p.getLastname());
-				pst.setString(3, p.getBirth());
-				pst.setString(4, p.getStreet());
-				pst.setInt(5, p.getNr());
-				pst.setString(6, p.getCity());
-				pst.setString(7, p.getZip());
-				pst.setInt(8, p.getTelnumber());
-				pst.setString(9, p.getGender());
-				pst.setString(10, Boolean.toString(p.getReadaccess()));
-				pst.setString(11, Boolean.toString(p.getWriteaccess()));
-				pst.setString(12, Boolean.toString(p.getInsertaccess()));
-				pst.setString(13, p.getPersonalData());
-				pst.setInt(14, p.getPatientid());
+				pst.setString(1, Boolean.toString(p.getReadaccess()));
+				pst.setString(2, Boolean.toString(p.getWriteaccess()));
+				pst.setString(3, Boolean.toString(p.getInsertaccess()));
+				pst.setString(4, p.getPersonalData());
+				pst.setInt(5, p.getPatientid());
 				pst.executeUpdate();
 				closeWithoutRs();
 			} catch (SQLException e) {
@@ -477,16 +462,13 @@ public class EntityManager implements IEntityManager {
 			return questionnaris;
 	}
 	
-	//TODO search name has to be in javascript
 	@Override
-	public List<Patient> searchPatient(String name, Department_Has_Staff dhs, Staff activeUser) {
+	public List<Patient> searchPatient(Department_Has_Staff dhs, Staff activeUser) {
 		List<Patient> patient = new ArrayList<Patient>();
 		for(Patient p : this.patient){
 			if(p.getDepartment().equals(dhs.getDepartment())){
-				if(p.getReadaccess() || (p.getOwner() == activeUser.getId())){
-					if(name.equals("") || p.getFirstname().toUpperCase().contains(name.toUpperCase()) || p.getLastname().toUpperCase().contains(name.toUpperCase())){
-						patient.add(p);
-					}			
+				if(p.getReadaccess() || (p.getOwner().equals(activeUser))){
+					patient.add(p);		
 				}		
 			}
 		}
@@ -562,34 +544,16 @@ public class EntityManager implements IEntityManager {
 	@Override
 	public void createPatient(Patient p, Department_Has_Staff dhs, Staff activeUser) {
 		if((activeUser != null) && (activeUser.getRole() == 1)){
-			String stm1 = "SELECT * FROM patient WHERE firstname=? AND lastname=?;";
-			String stm2 = "INSERT INTO patient(firstname, lastname, birthday, street, nr, city, zip, telnumber, gender, readaccess, writeaccess, insertaccess, staff_staff_id, encryptedPersonalData, department_department_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			String stm2 = "INSERT INTO patient(readaccess, writeaccess, insertaccess, staff_staff_id, encryptedPersonalData, department_department_id) VALUES(?, ?, ?, ?, ?, ?);";
 			init();
 			try {
-				pst = con.prepareStatement(stm1);
-				pst.setString(1, p.getFirstname());
-				pst.setString(2, p.getLastname());
-				pst.execute();
-				rs = pst.getResultSet();
-				if(rs.next()){
-					return;		// Return if already a patient with this firstname and lastname exists
-				}
 				pst = con.prepareStatement(stm2);
-				pst.setString(1, p.getFirstname());
-				pst.setString(2, p.getLastname());
-				pst.setString(3, p.getBirth());
-				pst.setString(4, p.getStreet());
-				pst.setInt(5, p.getNr());
-				pst.setString(6, p.getCity());
-				pst.setString(7, p.getZip());
-				pst.setInt(8, p.getTelnumber());
-				pst.setString(9, p.getGender());
-				pst.setString(10, "false");
-				pst.setString(11, "false");
-				pst.setString(12, "false");
-				pst.setInt(13, activeUser.getId());
-				pst.setString(14, p.getPersonalData());
-				pst.setInt(15, dhs.getDepartment().getDepartment_id());
+				pst.setString(1, "false");
+				pst.setString(2, "false");
+				pst.setString(3, "false");
+				pst.setInt(4, activeUser.getId());
+				pst.setString(5, p.getPersonalData());
+				pst.setInt(6, dhs.getDepartment().getDepartment_id());
 				pst.executeUpdate();
 				closeWithoutRs();
 			} catch (SQLException e) {
@@ -956,18 +920,9 @@ public class EntityManager implements IEntityManager {
 			while (rs.next()) {
 				Patient p = new Patient();
 				p.setPatientid(rs.getInt("patient_id"));
-				p.setFirstname(rs.getString("firstname"));
-				p.setLastname(rs.getString("lastname"));
-				p.setBirth(rs.getString("birthday"));
-				p.setStreet(rs.getString("street"));
-				p.setNr(rs.getInt("nr"));
-				p.setCity(rs.getString("city"));
-				p.setZip(rs.getString("zip"));
-				p.setTelnumber(rs.getInt("telnumber"));
-				p.setGender(rs.getString("gender"));
 				p.setReadaccess(Boolean.parseBoolean(rs.getString("readaccess")));
 				p.setWriteaccess(Boolean.parseBoolean(rs.getString("writeaccess")));
-				p.setOwner(rs.getInt("staff_staff_id"));
+				p.setOwner(this.getStaff(rs.getInt("staff_staff_id")));
 				p.setPersonalData(rs.getString("encryptedPersonalData"));
 				p.setDepartment(this.getDepartment(rs.getInt("department_department_id")));
 				patient.add(p);
@@ -1006,7 +961,7 @@ public class EntityManager implements IEntityManager {
 
 
 	public boolean isOwner(Patient patient, Staff activeUser) {
-		if(this.getStaff(patient.getOwner()).getId() == activeUser.getId()){
+		if(patient.getOwner().equals(activeUser)){
 			return true;
 		}
 		return false;
@@ -1191,8 +1146,6 @@ public class EntityManager implements IEntityManager {
 	
 
 	public void createDepartment(Department d, Staff s, String key) {
-		System.out.println("11>" + d);
-		System.out.println("12>" + s);
 		String stm1 = "SELECT * FROM department WHERE name=?;";
 		String stm2 = "INSERT INTO department(name) VALUES(?);";
 		String stm3 = "INSERT INTO department_has_staff(department_department_id, staff_staff_id, owner, encryptedKey) VALUES(?,?,?,?);";
@@ -1203,9 +1156,7 @@ public class EntityManager implements IEntityManager {
 			pst.execute();
 			rs = pst.getResultSet();
 			if(rs.next()) {		// Department already exists
-				System.out.println("EXIST should not");
 			} else {
-				System.out.println("CREATE");
 				pst = con.prepareStatement(stm2, Statement.RETURN_GENERATED_KEYS);
 				pst.setString(1, d.getName());
 				pst.executeUpdate();
@@ -1214,14 +1165,12 @@ public class EntityManager implements IEntityManager {
 				if(rs.next()){
 					id = rs.getInt(1);
 				}
-				System.out.println(">>"+ d.getName());
 				pst = con.prepareStatement(stm3);
 				pst.setInt(1, id);
 				pst.setInt(2, s.getId());
 				pst.setString(3, "true");
 				pst.setString(4, key);
 				pst.executeUpdate();
-				System.out.println(">>>"+d.getDepartment_id() + s.getId());
 			}
 			close();
 		} catch (SQLException e) {
@@ -1232,8 +1181,6 @@ public class EntityManager implements IEntityManager {
 		initDepartment(); // TODO Da sonst nicht geupdated wird nach dem insert
 	}
 	public void addToDepartment(String name, Staff s) {
-		System.out.println("21>" + name);
-		System.out.println("22>" + s);
 		String stm1 = "SELECT * FROM department WHERE name=?;";
 		String stm2 = "INSERT INTO department(name) VALUES(?);";
 		String stm3 = "INSERT INTO department_has_staff(department_department_id, staff_staff_id, owner) VALUES(?,?,?);";
@@ -1244,16 +1191,13 @@ public class EntityManager implements IEntityManager {
 			pst.execute();
 			rs = pst.getResultSet();
 			if(rs.next()) {		// Department already exists
-				System.out.println("ADD TO");
 				pst = con.prepareStatement(stm3);
 				pst.setInt(1, rs.getInt("department_id"));
 				pst.setInt(2, s.getId());
 				pst.setString(3, "false");
 //				pst.setString(4, "encryptedKey");	// not necessary yet
 				pst.executeUpdate();
-				System.out.println(">" + name + "" + s.getId());
 			} else {
-				System.out.println("NEW should not");
 			}
 			close();
 		} catch (SQLException e) {

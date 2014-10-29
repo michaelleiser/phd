@@ -19,27 +19,17 @@ public interface IPatient {
 	 * @param patientid
 	 */
 	public void setPatientid(int patientid);
-
+	
 	/**
 	 * @return
 	 */
-	public String getFirstname();
+	public String getPersonalData();
 
 	/**
-	 * @param firstname
+	 * @param personalData
 	 */
-	public void setFirstname(String firstname);
-
-	/**
-	 * @return
-	 */
-	public String getLastname();
-
-	/**
-	 * @param lastname
-	 */
-	public void setLastname(String lastname);
-
+	public void setPersonalData(String personalData);
+	
 	/**
 	 * @return
 	 * 			a list of data from the patient

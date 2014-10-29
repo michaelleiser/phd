@@ -28,25 +28,28 @@
 							</h:commandButton>
 						</div>
 						<div id="table">
-						<h:dataTable first="#{entityManager.getPaginatorPatient().first}"
+						<h:dataTable
 							id="outputMessage"
-							rows="#{entityManager.getPaginatorPatient().pagesize}"
-							value="#{loginController.searchPatient(input1.value)}"
+							value="#{loginController.searchPatient()}"
 							var="patients" headerClass="table-header"
 							rowClasses="table-odd-row,table-even-row"
 							columnClasses="table-column-id,table-column-data,table-column-data,table-column-data,table-column-button,table-column-button,table-column-button">
 
 							<h:column>
-								<f:facet name="header">ID</f:facet>#{patients.patientid}
+								<f:facet name="header">ID</f:facet>
+								<h:outputLabel>#{patients.patientid}</h:outputLabel>
 							</h:column>
 							<h:column>
-								<f:facet name="header">Firstname</f:facet>#{patients.firstname}
+								<f:facet name="header">Firstname</f:facet>
+								<h:outputLabel id="firstname" />
 							</h:column>
 							<h:column>
-								<f:facet name="header">Lastname</f:facet>#{patients.lastname}
+								<f:facet name="header">Lastname</f:facet>
+								<h:outputLabel id="lastname" />
 							</h:column>
 							<h:column>
-								<f:facet name="header">Birthday</f:facet>#{patients.birth}
+								<f:facet name="header">Birthday</f:facet>
+								<h:outputLabel id="birthday" />
 							</h:column>
 							<h:column>
 
@@ -76,10 +79,7 @@
 								<h:outputLabel rendered="#{(loginController.isOwner(patients))}"
 									value="Owner"></h:outputLabel>
 							</h:column>
-							<h:column>
-								<f:facet name="header">decrypted first name</f:facet>
-								<h:inputText id="decfirstname"/>
-							</h:column>
+
 							<h:column>
 								<f:facet name="header">enc data</f:facet>
 								<h:inputText id="encdata" value="#{patients.personalData}"/>

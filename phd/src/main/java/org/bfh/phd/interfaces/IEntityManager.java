@@ -96,15 +96,13 @@ public interface IEntityManager {
 	public void updatePatient(Patient p, Staff activeUser);
 
 	/**
-	 * @param name
-	 * 			the name to be filtered
 	 * @param dhs TODO
 	 * @param activeUser
 	 * 			the active user
 	 * @return
 	 * 			a list of all patients readable by the active user that contain the name
 	 */
-	public List<Patient> searchPatient(String name, Department_Has_Staff dhs, Staff activeUser);
+	public List<Patient> searchPatient(Department_Has_Staff dhs, Staff activeUser);
 
 	/**
 	 * creates a new patient from the active user

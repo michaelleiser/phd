@@ -28,8 +28,8 @@ public class Department_Has_Staff implements Serializable {
 		return this.department_has_staff_id;
 	}
 
-	public void setDepartment_has_staff_id(int department_has_staff_id) {
-		this.department_has_staff_id = department_has_staff_id;
+	public void setDepartment_has_staff_id(int id) {
+		this.department_has_staff_id = id;
 	}
 	
 	public Department getDepartment() {
@@ -47,32 +47,11 @@ public class Department_Has_Staff implements Serializable {
 	public void setStaff(List<Staff> staff) {
 		this.staff = staff;
 	}
-
-	public Staff getOwner() {
-		return this.owner;
-	}
-
-	public void setOwner(Staff owner) {
-		this.owner = owner;
-	}
-
-	@Override
-	public String toString(){
-		return this.department + " : " + this.staff + " : " + this.owner;
-	}
-
+	
 	public void addStaff(Staff staff) {
 		this.staff.add(staff);
 	}
 	
-	public boolean isOwner(Staff s){
-		return s.equals(this.owner);
-	}
-	
-	public boolean isMember(Staff s){
-		return this.staff.contains(s);
-	}
-
 	public List<String> getEncryptedGroupKey() {
 		return encryptedGroupKey;
 	}
@@ -85,8 +64,30 @@ public class Department_Has_Staff implements Serializable {
 		this.encryptedGroupKey.add(key);
 	}
 	
-	public String getEncryptedGroupKeyFromStaff(Staff s){
-		int index = this.staff.indexOf(s);
+	public String getEncryptedGroupKeyFromStaff(Staff staff){
+		int index = this.staff.indexOf(staff);
 		return this.encryptedGroupKey.get(index);
 	}
+
+	public Staff getOwner() {
+		return this.owner;
+	}
+
+	public void setOwner(Staff owner) {
+		this.owner = owner;
+	}
+
+	public boolean isOwner(Staff s){
+		return s.equals(this.owner);
+	}
+	
+	public boolean isMember(Staff s){
+		return this.staff.contains(s);
+	}
+	
+	@Override
+	public String toString(){
+		return this.department + " : " + this.staff + " : " + this.owner;
+	}
+
 }

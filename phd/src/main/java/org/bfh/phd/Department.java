@@ -14,12 +14,16 @@ public class Department implements Serializable {
 	private int department_id;
 	private String name;
 	
+	public Department(){
+		
+	}
+	
 	public int getDepartment_id() {
 		return this.department_id;
 	}
 
-	public void setDepartment_id(int department_id) {
-		this.department_id = department_id;
+	public void setDepartment_id(int id) {
+		this.department_id = id;
 	}
 
 	public String getName() {

@@ -196,10 +196,10 @@ public class LoginController implements Serializable, ILoginController{
 		return null;
 	}
 
-	public List<Patient> searchPatient(String name) {		// TODO name search in javascript
-		System.out.println("SEARCHING Patient..." + name);
+	public List<Patient> searchPatient() {
+		System.out.println("SEARCHING Patient...");
 		if(this.loggedin == true && activeUser.getRole() == 1){
-			List<Patient> l = em.searchPatient(name, activeDepartment_Has_Staff, activeUser);
+			List<Patient> l = em.searchPatient(activeDepartment_Has_Staff, activeUser);
 			return l;
 		}
 		return null;

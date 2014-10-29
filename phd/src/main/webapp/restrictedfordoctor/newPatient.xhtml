@@ -22,48 +22,48 @@
 					<h:form id="patientform" onsubmit="return validation();">
 						<h:panelGrid columns="2">
 							<h:outputLabel>Firstname:</h:outputLabel>
-							<h:inputText id="firstname" value="#{patient.firstname}" required="true">
+							<h:inputText id="firstname" required="true">
 								<f:validateLength minimum="2" maximum="20" />
 							</h:inputText>
 							
 							<h:outputLabel>Lastname:</h:outputLabel>
-							<h:inputText id="lastname" value="#{patient.lastname}" required="true">
+							<h:inputText id="lastname" required="true">
 								<f:validateLength minimum="2" maximum="20" />
 							</h:inputText>
 					
 							<h:outputLabel>Street:</h:outputLabel>
-							<h:inputText id="street" value="#{patient.street}" required="true">
+							<h:inputText id="street" required="true">
 								<f:validateLength minimum="2" maximum="20" />
 							</h:inputText>
 		
 							<h:outputLabel>Nr:</h:outputLabel>
-							<h:inputText id="nr" value="#{patient.nr}" required="true">
+							<h:inputText id="nr" required="true">
 								<f:validateLength minimum="1" maximum="20" />
 							</h:inputText>
 		
 							<h:outputLabel>City:</h:outputLabel>
-							<h:inputText id="city" value="#{patient.city}" required="true">
+							<h:inputText id="city" required="true">
 								<f:validateLength minimum="1" maximum="20" />
 							</h:inputText>
 	
 							<h:outputLabel>Zip:</h:outputLabel>
-							<h:inputText id="zip" value="#{patient.zip}" required="true">
+							<h:inputText id="zip" required="true">
 								<f:validateLength minimum="2" maximum="10" />
 							</h:inputText>
 	
 							<h:outputLabel>Telnumber:</h:outputLabel>
-							<h:inputText id="telnumber" value="#{patient.telnumber}" required="true">
+							<h:inputText id="telnumber" required="true">
 								<f:validateLength minimum="10" maximum="10" />
 							</h:inputText>
 
 							<h:outputLabel>Gender:</h:outputLabel>
-							<h:selectOneRadio id="gender" value="#{patient.gender}" required="true">
+							<h:selectOneRadio id="gender" required="true">
 								<f:selectItem itemLabel="Male" itemValue="male" />
 								<f:selectItem itemLabel="Female" itemValue="female" />
 							</h:selectOneRadio>
 
 							<h:outputLabel>Birthday (dd.mm.yyyy):</h:outputLabel>
-							<h:inputText id="birth" value="#{patient.birth}" required="true">
+							<h:inputText id="birthday" required="true">
 								<f:validateLength minimum="10" maximum="10" />
 							</h:inputText>
 
@@ -71,7 +71,7 @@
 							<h:commandButton action="#{loginController.createPatient(patient)}" value="Add New Patient" />
 						</h:panelGrid>
 						
-						<h:inputText id="encryptedPersonalData" value="#{patient.personalData}" />
+						<h:inputHidden id="encryptedPersonalData" value="#{patient.personalData}" />
 						
 					</h:form>
 				</div>

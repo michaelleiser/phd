@@ -1,5 +1,7 @@
 package org.bfh.phd.interfaces;
 
+import org.bfh.phd.Department;
+
 /**
  * @author leism3, koblt1
  *
@@ -81,9 +83,16 @@ public interface IStaff {
 	 */
 	public String login();
 
-//	/**
-//	 * @return
-//	 */
-//	public String registernew();
+	/**
+	 * @return
+	 */
+	public String registernew();
+
+	/**
+	 * @param d
+	 * @param key
+	 * @return
+	 */
+	public String registernewWithDepartment(Department d, String key);
 
 }
