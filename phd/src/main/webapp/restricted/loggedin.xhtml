@@ -43,6 +43,12 @@
 				</div>
 			</div>
 					
+					<div id="menuitem">
+						<h:form>
+							<h:commandLink class="menuitem" action="/restrictedfordoctor/searchPatient2" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Search Patient test" />
+						</h:form>
+					</div>
+					
 					
 			<!-- automatically load public private key in session storage -->			
 			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />

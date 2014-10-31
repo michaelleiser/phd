@@ -922,6 +922,7 @@ public class EntityManager implements IEntityManager {
 				p.setPatientid(rs.getInt("patient_id"));
 				p.setReadaccess(Boolean.parseBoolean(rs.getString("readaccess")));
 				p.setWriteaccess(Boolean.parseBoolean(rs.getString("writeaccess")));
+				p.setInsertaccess(Boolean.parseBoolean(rs.getString("insertaccess")));
 				p.setOwner(this.getStaff(rs.getInt("staff_staff_id")));
 				p.setPersonalData(rs.getString("encryptedPersonalData"));
 				p.setDepartment(this.getDepartment(rs.getInt("department_department_id")));

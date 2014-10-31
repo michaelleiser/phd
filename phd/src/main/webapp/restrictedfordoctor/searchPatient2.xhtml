@@ -18,7 +18,7 @@
 				<div id="patients">
 				
 					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
-					<h:outputScript library="js" name="validate_patient.js" />
+					<h:outputScript library="js" name="test.js" />
 					
 					<h:form id="searchform">
 						<div id="filter">
@@ -29,10 +29,10 @@
 						<div id="table">
 						<table id="testtable">
 							<tr id="rowheader">
-								<td>ID</td>
-								<td>Firstname</td>
-								<td>Lastname</td>
-								<td>Birthday</td>
+								<td><h:outputLabel>ID</h:outputLabel></td>
+								<td><h:outputLabel>Firstname</h:outputLabel></td>
+								<td><h:outputLabel>Lastname</h:outputLabel></td>
+								<td><h:outputLabel>Birthday</h:outputLabel></td>
 							</tr>
 							<c:forEach varStatus="status" items="#{loginController.searchPatient()}" var="patients">
 								<tr id="row#{status.index}">
@@ -65,7 +65,7 @@
 							</c:forEach>							
 						</table>
 						<h:commandButton id="backward" value="backward" onclick="return backward();"/>
-						<h:outputLabel>Page </h:outputLabel><h:outputLabel id="pagenumber">1</h:outputLabel>
+						<h:outputLabel id="pagenumber">1</h:outputLabel>
 						<h:commandButton id="forward" value="forward" onclick="return forward();"/>
 						</div>
 					</h:form>

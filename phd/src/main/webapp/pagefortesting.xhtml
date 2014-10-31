@@ -12,6 +12,8 @@
 
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
+		
+			<h:outputScript library="js" name="test.js" />
 
 
 			<h:form>
@@ -20,6 +22,26 @@
 					passwordValue="#{staff.password}" loginButtonLabel="Login"
 					loginButtonAction="#{staff.login}" />
 			</h:form>
+
+
+
+			<table id="testtable">
+				<tr id="row1">
+					<td id="first1">paul</td>
+					<td id="last1">mike</td>
+					<td id="birth1">tom</td>
+				</tr>
+				<tr id="row2">
+					<td id="first2">dre</td>
+					<td id="last2">abc</td>
+					<td id="birth2">def</td>
+				</tr>
+			</table>
+
+
+			<h:outputScript type="text/javascript">
+			    indexeddb();
+     		</h:outputScript>
 
 
 		</ui:define>

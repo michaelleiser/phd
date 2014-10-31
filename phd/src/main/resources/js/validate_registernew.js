@@ -64,8 +64,15 @@ function generatePublicKeyAndEncryptedPrivateKey(pass){
 }
 
 function generateEncryptedGroupKey(publicKey){
-	var groupKey = "testgroupkey123";	// TODO just for testing
-//	var groupKey = CryptoJS.lib.WordArray.random(128/8);
+//	var groupKey = "testgroupkey123";	// TODO just for testing
+//	var groupKey = CryptoJS.lib.WordArray.random(128/8);	// An alternative to window.crypto.getRandomValues()
+
+	var array = new Uint8Array(128/8);
+	window.crypto.getRandomValues(array);
+	var groupKey = "";
+	for (var i = 0; i < array.length; i++) {
+		groupKey = groupKey + String.fromCharCode(array[i]);
+	}
 
 	var crypt = new JSEncrypt();
 	crypt.getKey();

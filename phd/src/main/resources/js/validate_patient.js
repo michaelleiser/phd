@@ -70,7 +70,7 @@ function encryptPersonalData(json){
 	document.getElementById("patientform:encryptedPersonalData").value = encrypted;
 }
 
-function personalData(){
+function decryptPersonalData(){
 	var groupKey = sessionStorage.groupKey;
 	var encrypted = document.getElementById("patientform:encryptedPersonalData").value;
 //	alert(encrypted);
@@ -97,19 +97,94 @@ function personalData(){
 
 
 
-function personalData2(){
+var pagenr = 1;
+var pagesize = 2;
+var size = 0;
+var patients;
+var patients_f;
+var first = 0;
+
+function decryptPersonalDataForSearch(){
 	var groupKey = sessionStorage.groupKey;
-	var size = document.getElementById("searchform:outputMessage").rows.length - 2;
+	size = document.getElementById("testtable").rows.length - 1;	// -1 because of the header row
+	var firstname;
+	var lastname;
+	var birthday;
+	patients = new Array();
 	for(var i = 0 ; i < size ; i++){
-		var encrypted = document.getElementById("searchform:outputMessage:" + i + ":encdata").value;
+		var encrypted = document.getElementById("searchform:encdata" + i).value;
 		var decrypted = CryptoJS.AES.decrypt(encrypted, groupKey);
 		if(decrypted != ""){
 			var json = decrypted.toString(CryptoJS.enc.Utf8);
 			var myobj = JSON.parse(json);
-			document.getElementById("searchform:outputMessage:" + i + ":firstname").innerHTML = myobj["firstname"];
-			document.getElementById("searchform:outputMessage:" + i + ":lastname").innerHTML = myobj["lastname"];
-			document.getElementById("searchform:outputMessage:" + i + ":birthday").innerHTML = myobj["birthday"];
-
+			patients.push({"firstname":myobj["firstname"], "lastname":myobj["lastname"], "birthday":myobj["birthday"]});
+			document.getElementById("searchform:firstname" + i).innerHTML = patients[i].firstname;
+			document.getElementById("searchform:lastname" + i).innerHTML = patients[i].lastname;
+			document.getElementById("searchform:birthday" + i).innerHTML = patients[i].birthday;
 		}
 	}
+	patients_f = patients;
+	display();
+}
+
+
+function filter(){
+	patients_f = new Array();
+	var filtername = document.getElementById("searchform:filter").value.toLowerCase();
+	for(var i = 0 ; i < patients.length ; i++){
+		if((patients[i].firstname.toLowerCase().indexOf(filtername) > -1) ||
+			(patients[i].lastname.toLowerCase().indexOf(filtername) > -1)	){
+			document.getElementById("row" + i).style.display = "inherit";
+//			alert("match: "+ patients[i].firstname  +  patients[i].lastname);
+			patients_f.push(patients[i]);
+		}else{
+			document.getElementById("row" + i).style.display = "none";
+//			alert("dismatch: "+ patients[i].firstname  +  patients[i].lastname);
+		}
+	}
+	display();
+	return false;
+}
+
+function display(){
+	for(var i = 0 ; i < patients_f.length ; i ++){
+		if((i >= first) && (i < (first + pagesize))){
+			document.getElementById("row" + i).style.display = "inherit";
+		} else{
+			document.getElementById("row" + i).style.display = "none";
+		}
+	}
+	if(pagenr == 1){
+		document.getElementById("searchform:backward").style.visibility = "hidden";
+	} else{
+		document.getElementById("searchform:backward").style.visibility = "visible";
+	}
+	if(pagenr > patients_f.length/pagesize){
+		document.getElementById("searchform:forward").style.visibility = "hidden";
+	} else{
+		document.getElementById("searchform:forward").style.visibility = "visible";
+	}
+}
+
+function backward(){
+	if(pagenr > 1){
+		pagenr--;
+		first = first - pagesize;
+		if(first < 0){
+			first = 0;
+		}
+		document.getElementById("searchform:pagenumber").innerHTML = pagenr;
+	}
+	display();
+	return false;
+}
+
+function forward(){
+	if(pagenr < patients_f.length/pagesize){
+		pagenr++;
+		first = first + pagesize;
+		document.getElementById("searchform:pagenumber").innerHTML = pagenr;
+	}
+	display();
+	return false;
 }
