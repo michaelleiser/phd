@@ -62,9 +62,9 @@ public class LoginController implements Serializable, ILoginController{
 	
 	@Override
 	public String login(String name, String password) {
-		activeUser = em.getStaff(name, password);
-		if(activeUser != null && activeUser.getActivated()){
-			if(activeDepartment_Has_Staff != null && this.activeDepartment_Has_Staff.isMember(activeUser)){
+		if(activeDepartment_Has_Staff != null){
+			activeUser = activeDepartment_Has_Staff.getStaff(name, password);
+			if(activeUser != null && activeUser.getActivated()){
 				setLoggedin(true);			
 				return "/restricted/loggedin?faces-redirect=true";
 			}
@@ -92,8 +92,8 @@ public class LoginController implements Serializable, ILoginController{
 	public String registernew(Staff s) {
 		if(!this.activeDepartment_Has_Staff.getStaff().contains(s)){
 			boolean activated = false;
-			em.registernew(s, activated);
-			Staff ss = em.getStaff(s.getName(), s.getPassword());
+			Staff ss = em.registernew(s, activated);
+//			Staff ss = em.getStaff(s.getName(), s.getPassword());
 			em.addToDepartment(this.departmentselected, ss);
 		}
 		return "/home?faces-redirect=true";
@@ -101,8 +101,8 @@ public class LoginController implements Serializable, ILoginController{
 	public String registernew(Staff s, Department d, String key) {
 		if(!em.getDepartments().contains(d)){
 			boolean activated = true;
-			em.registernew(s, activated);
-			Staff ss = em.getStaff(s.getName(), s.getPassword());
+			Staff ss = em.registernew(s, activated);
+//			Staff ss = em.getStaff(s.getName(), s.getPassword()); 
 			em.createDepartment(d, ss, key);
 		}
 		return "/home?faces-redirect=true";

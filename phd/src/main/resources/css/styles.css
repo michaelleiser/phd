@@ -39,6 +39,7 @@ div#menuitem {
 	font-size: 25px;
 	padding: 10px 10px 10px 10px;
 	text-decoration: none;
+	transition: background 0.3s linear 0s;
 }
 .menuitem:hover {
     background-color: #ff0000;

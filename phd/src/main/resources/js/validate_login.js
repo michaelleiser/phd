@@ -30,6 +30,6 @@ function savePasswordInSessionStorage(pass){
     if(typeof(Storage) !== "undefined") {
         sessionStorage.password = pass;
     } else {
-    	alert("Sorry, your browser does not support web storage...");
+    	alert("Web Storage not supported");
     }
 }

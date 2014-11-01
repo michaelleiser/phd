@@ -26,15 +26,22 @@ function validation(){
 	}
 	
 	hashPassword(pass);
-	generatePublicKeyAndEncryptedPrivateKey(pass);
 	
 	/**
-	 * for new departments -> creates an encrypted group key
-	 * for existing departments -> encrypted group key is generated in activation process
+	 * Just for doctors
+	 * Statistician don't need a public key, private key and mustn't need the group key
 	 */
-	var publicKey = document.getElementById("registernewform:publickey").value;
-	if(departmentname != ""){
-		generateEncryptedGroupKey(publicKey);
+	if(role0.checked){
+		generatePublicKeyAndEncryptedPrivateKey(pass);
+		
+		/**
+		 * for new departments -> creates an encrypted group key
+		 * for existing departments -> encrypted group key is generated in activation process
+		 */
+		var publicKey = document.getElementById("registernewform:publickey").value;
+		if(departmentname != ""){
+			generateEncryptedGroupKey(publicKey);
+		}
 	}
 
 //	alert("finish");
@@ -50,7 +57,7 @@ function generatePublicKeyAndEncryptedPrivateKey(pass){
 //  var key = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');
 //  var iv = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');
 
-	var crypt = new JSEncrypt();
+	var crypt = new JSEncrypt();	// new JSEncrypt({default_key_size: 1024});
 	crypt.getKey();
 	
 	privateKey = crypt.getPrivateKey();
@@ -64,7 +71,7 @@ function generatePublicKeyAndEncryptedPrivateKey(pass){
 }
 
 function generateEncryptedGroupKey(publicKey){
-//	var groupKey = "testgroupkey123";	// TODO just for testing
+//	var groupKey = "testgroupkey123";	// For testing
 //	var groupKey = CryptoJS.lib.WordArray.random(128/8);	// An alternative to window.crypto.getRandomValues()
 
 	var array = new Uint8Array(128/8);

@@ -49,7 +49,7 @@
 
 <session-config>
 <session-timeout>
-30
+10
 </session-timeout>
 </session-config>
 
@@ -65,7 +65,7 @@
 <!-- </error-page> -->
 <error-page>
 	<exception-type>javax.faces.application.ViewExpiredException</exception-type>
-	<location>/error.xhtml</location>
+	<location>/home.xhtml</location>
 </error-page>
 
 

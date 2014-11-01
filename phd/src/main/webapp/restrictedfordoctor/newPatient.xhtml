@@ -22,39 +22,25 @@
 					<h:form id="patientform" onsubmit="return validation();">
 						<h:panelGrid columns="2">
 							<h:outputLabel>Firstname:</h:outputLabel>
-							<h:inputText id="firstname" required="true">
-								<f:validateLength minimum="2" maximum="20" />
-							</h:inputText>
+							<h:inputText id="firstname" required="true" />
 							
 							<h:outputLabel>Lastname:</h:outputLabel>
-							<h:inputText id="lastname" required="true">
-								<f:validateLength minimum="2" maximum="20" />
-							</h:inputText>
+							<h:inputText id="lastname" required="true" />
 					
 							<h:outputLabel>Street:</h:outputLabel>
-							<h:inputText id="street" required="true">
-								<f:validateLength minimum="2" maximum="20" />
-							</h:inputText>
+							<h:inputText id="street" required="true" />
 		
 							<h:outputLabel>Nr:</h:outputLabel>
-							<h:inputText id="nr" required="true">
-								<f:validateLength minimum="1" maximum="20" />
-							</h:inputText>
+							<h:inputText id="nr" required="true" />
 		
 							<h:outputLabel>City:</h:outputLabel>
-							<h:inputText id="city" required="true">
-								<f:validateLength minimum="1" maximum="20" />
-							</h:inputText>
+							<h:inputText id="city" required="true" />
 	
 							<h:outputLabel>Zip:</h:outputLabel>
-							<h:inputText id="zip" required="true">
-								<f:validateLength minimum="2" maximum="10" />
-							</h:inputText>
+							<h:inputText id="zip" required="true" />
 	
 							<h:outputLabel>Telnumber:</h:outputLabel>
-							<h:inputText id="telnumber" required="true">
-								<f:validateLength minimum="10" maximum="10" />
-							</h:inputText>
+							<h:inputText id="telnumber" required="true" />
 
 							<h:outputLabel>Gender:</h:outputLabel>
 							<h:selectOneRadio id="gender" required="true">
@@ -63,9 +49,7 @@
 							</h:selectOneRadio>
 
 							<h:outputLabel>Birthday (dd.mm.yyyy):</h:outputLabel>
-							<h:inputText id="birthday" required="true">
-								<f:validateLength minimum="10" maximum="10" />
-							</h:inputText>
+							<h:inputText id="birthday" required="true" />
 
 							<h:outputLabel />
 							<h:commandButton action="#{loginController.createPatient(patient)}" value="Add New Patient" />

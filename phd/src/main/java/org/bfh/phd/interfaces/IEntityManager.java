@@ -75,8 +75,9 @@ public interface IEntityManager {
 	 * 			the staff to be registered
 	 * @param admin
 	 * 			if is admin
+	 * @return TODO
 	 */
-	public void registernew(Staff staff, boolean admin);
+	public Staff registernew(Staff staff, boolean admin);
 
 	/**
 	 * updates the active user

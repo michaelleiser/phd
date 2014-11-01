@@ -159,7 +159,7 @@ function display(){
 	} else{
 		document.getElementById("searchform:backward").style.visibility = "visible";
 	}
-	if(pagenr > patients_f.length/pagesize){
+	if(pagenr >= patients_f.length/pagesize){
 		document.getElementById("searchform:forward").style.visibility = "hidden";
 	} else{
 		document.getElementById("searchform:forward").style.visibility = "visible";

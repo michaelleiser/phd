@@ -42,6 +42,7 @@
 						</h:column>
 						
 						<h:inputHidden id="hashedpassword" value="#{loginController.getStaff().password}"/>
+						<h:inputHidden id="encryptedprivatekey" value="#{loginController.getStaff().privateKey}"/>	
 						
 					</h:form>
 				</div>

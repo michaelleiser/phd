@@ -132,7 +132,8 @@ public class EntityManager implements IEntityManager {
 	}
 
 	@Override
-	public void registernew(Staff s, boolean activated) {
+	public Staff registernew(Staff s, boolean activated) {
+		long l = 0;
 //		String stm1 = "SELECT * FROM staff WHERE name=?;";
 		String stm2 = "INSERT INTO staff(name, password, privateKey, publicKey, role_role_id, isActivated) VALUES(?, ?, ?, ?, ?, ?);";
 		init();
@@ -142,16 +143,20 @@ public class EntityManager implements IEntityManager {
 //			pst.execute();
 //			rs = pst.getResultSet();
 //			if(rs.next()) {
-//				return;
+//				return null;
 //			} else {
-				pst = con.prepareStatement(stm2);
+				pst = con.prepareStatement(stm2, Statement.RETURN_GENERATED_KEYS);
 				pst.setString(1, s.getName());
 				pst.setString(2, s.getPassword());
 				pst.setString(3, s.getPrivateKey());
 				pst.setString(4, s.getPublicKey());
 				pst.setInt(5, s.getRole());
-				pst.setString(6, Boolean.toString(activated));		// TODO just for testing=true
+				pst.setString(6, Boolean.toString(activated));
 				pst.executeUpdate();
+				rs = pst.getGeneratedKeys();
+				if(rs.next()){
+					l = rs.getLong(1);
+				}
 //			}
 			close();
 		} catch (SQLException e) {
@@ -160,6 +165,8 @@ public class EntityManager implements IEntityManager {
 			close();
 		}
 		initStaff(); // TODO Da sonst nicht geupdated wird nach dem insert
+
+		return this.getStaff((int) l);
 	}
 
 	public List<Questionnari> getQuestionnaris(int i) {
@@ -376,11 +383,14 @@ public class EntityManager implements IEntityManager {
 	@Override
 	public void updateStaff(Staff activeUser) {
 		init();
-		String stm = "UPDATE staff SET password=? WHERE staff_id=?";
+		String stm = "UPDATE staff SET name=?, password=?, privateKey=?, publicKey=? WHERE staff_id=?";
 		try {
 			pst = con.prepareStatement(stm);
-			pst.setString(1, activeUser.getPassword());
-			pst.setInt(2, activeUser.getId());
+			pst.setString(1, activeUser.getName());
+			pst.setString(2, activeUser.getPassword());
+			pst.setString(3, activeUser.getPrivateKey());
+			pst.setString(4, activeUser.getPublicKey());
+			pst.setInt(5, activeUser.getId());
 			pst.executeUpdate();
 			closeWithoutRs();
 		} catch (SQLException e) {

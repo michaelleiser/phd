@@ -1,0 +1,36 @@
+Password gehasht und mit Nonce
+
+JavaScript insert patient nicht doppelt einfügen verhindern
+
+Activate Deactivate bzw login nach registernew geht erst nach einem ein ausloggen bzw session cookie löschen
+
+diverse filter für statistiker seite
+gehört statistiker überhautp einem department an ? eigentlich nicht nötig.
+
+encryption with web workers, async javascripts
+
+
+
+datenbank automatisch füllen
+
+vergleich javascript und indexeddb
+
+navigation-rules statt navigatin class???
+
+jpa???
+
+signaturen der messages???
+
+PW Bruteforce verhindern
+
+Deployable WAR init script, git clone, ...? was geht am einfachsten?
+
+was tun bei renew pk sk gk
+
+---------------
+Crypto (aktueller stand)
+---------------
+Password = SHA1 (TODO Nonces)
+PK SK = 1024 RSA
+GK = 128bit
+Patient = 256bit AES CBC (Passphrase = 256bit)

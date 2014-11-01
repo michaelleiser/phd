@@ -10,6 +10,7 @@ function validation(){
 		return false;
 	}
 	hashPassword(newpass);
+	encryptPrivateKey(newpass);
 	
 //	alert("finish");
 	return true;
@@ -18,4 +19,10 @@ function validation(){
 function hashPassword(pass){
 	var hash = CryptoJS.SHA1(pass);
 	document.getElementById("staffform:hashedpassword").value = hash;
+}
+
+function encryptPrivateKey(pass){
+	var encryptedPrivatekey = sessionStorage.privateKey;
+	var reEncryptedPrivateKey = CryptoJS.AES.encrypt(encryptedPrivatekey, pass);
+	document.getElementById("staffform:encryptedprivatekey").value = reEncryptedPrivateKey;
 }

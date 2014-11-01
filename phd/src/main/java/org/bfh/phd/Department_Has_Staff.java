@@ -89,5 +89,18 @@ public class Department_Has_Staff implements Serializable {
 	public String toString(){
 		return this.department + " : " + this.staff + " : " + this.owner;
 	}
+	
+	
+	
+	
+
+	public Staff getStaff(String name, String password) {
+		for(Staff s : this.staff){
+			if(s.getName().equals(name) && s.getPassword().equals(password)){
+				return s;
+			}
+		}
+		return null;
+	}
 
 }
