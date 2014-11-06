@@ -27,35 +27,52 @@ import org.bfh.phd.questionary.Question;
 import org.bfh.phd.questionary.QuestionCheckbox;
 import org.bfh.phd.questionary.QuestionRadioButton;
 import org.bfh.phd.questionary.QuestionString;
+import org.bfh.phd.questionary.Questionnair;
 
 @ManagedBean(name = "entityManager", eager = true)
 @SessionScoped
 public class EntityManager implements IEntityManager {
 	
+	private static EntityManager em;
+	
 	private List<Staff> staff;	
 	private List<Patient> patient;
 	private List<PatientData> patientdata;
 	private List<Department> departments;
+	private List<Question> questions;
+	private List<String> questiontyp;
+	private List<String> operationtyp;
+	private List<String> error;
+	private Map<String, Integer> typ;
+	private String templatename = "";
 	
 	private MyConnection mycon = null;
 	
-	private Connection con = null;
-	private PreparedStatement pst = null;
-	private ResultSet rs = null;
+	private Connection con = null, con2 = null;
+	private PreparedStatement pst = null, pst2 = null;
+	private ResultSet rs = null, rs2 = null;
 	
 //	private PaginatorPatient paginatorPatient = new PaginatorPatient();
 	private PaginatorPatientData paginatorPatientData = new PaginatorPatientData();
 	private PaginatorGroup paginatorGroup = new PaginatorGroup();
-
-	//Testvariablen
-	private String sss = "elbow"; 
 	
+		
+		
+		
 	public EntityManager(){
+		em = this;
 		mycon = new MyConnection();
 		initDepartment();
 		initStaff();
 		initPatient();
 		initPatientData();
+		initQuestionTyp();
+		initOperationTyp();
+		initTyp();
+
+	
+	public static EntityManager em(){
+		return em;
 	}
 
 //---- Methods -----
@@ -169,34 +186,35 @@ public class EntityManager implements IEntityManager {
 		return this.getStaff((int) l);
 	}
 
-	public List<Questionnari> getQuestionnaris(int i) {
-		ArrayList<Questionnari> ids = new ArrayList<Questionnari>(); 
-		String stm1 = "SELECT * FROM question WHERE q5 = " + i + ";" ;
-		init();
-		try {
-			pst = con.prepareStatement(stm1);
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-					Questionnari q = new Questionnari();
-//					q.setQ1(rs.getInt("q1"));
-//					q.setQ2(rs.getInt("q2"));
-//					q.setQ3(rs.getInt("q3"));
-//					q.setQ4(rs.getInt("q4"));
-//					q.setQ5(rs.getInt("q5"));
-					q.setId(rs.getInt("id"));
-					ids.add(q);
-				}
-				close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				close();
-			}
-			return ids;
-	}
+//	public List<Questionnair> getQuestionnaris(int i) {
+//		ArrayList<Questionnair> ids = new ArrayList<Questionnair>(); 
+//		String stm1 = "SELECT * FROM question WHERE q5 = " + i + ";" ;
+//		init();
+//		try {
+//			pst = con.prepareStatement(stm1);
+//			pst.execute();
+//			rs = pst.getResultSet();
+//			while (rs.next()) {
+//				Questionnair q = new Questionnair();
+////					q.setQ1(rs.getInt("q1"));
+////					q.setQ2(rs.getInt("q2"));
+////					q.setQ3(rs.getInt("q3"));
+////					q.setQ4(rs.getInt("q4"));
+////					q.setQ5(rs.getInt("q5"));
+//					q.setId(rs.getInt("id"));
+//					ids.add(q);
+//				}
+//				close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			} finally {
+//				close();
+//			}
+//			return ids;
+//	}
 	
 	public List<Question> getQuestionnaris2(int id) {
+		System.out.println("Questionnaris2  id:"+id);
 		String quest = "knee";
 		List<Question> questions = this.getQuestions(quest);
 		init();
@@ -253,8 +271,8 @@ public class EntityManager implements IEntityManager {
 	}
 	
 	public List<Question> getFilledQuestion2(int id){
-		List<Question> q = getQuestions(sss);
-		List<Answer> a = getAnswers(sss, id);
+		List<Question> q = getQuestions("knee");
+		List<Answer> a = getAnswers(id);
 		System.err.println(id);
 		System.err.println(a);
 		System.err.println(a.size());
@@ -290,9 +308,9 @@ public class EntityManager implements IEntityManager {
 	}
 	
 
-	public List<Tools> getFilledQuestion(int id){
-		List<Question> q = getQuestions(sss);
-		List<Answer> a = getAnswers(sss, id);
+	public List<Tools> getFilledQuestion(int id, String questionnaireName){
+		List<Question> q = getQuestions(questionnaireName);
+		List<Answer> a = getAnswers(id);
 		List<Tools> list = new ArrayList<Tools>();
 		if(q.size()==a.size()){
 			for(int i = 0; i < a.size(); i++){
@@ -448,16 +466,16 @@ public class EntityManager implements IEntityManager {
 		this.patientdata = patientdatas;
 	}
 
-	public List<Questionnari> searchQuestionnaris(int id) {
+	public List<org.bfh.phd.Questionnair> searchQuestionnaris(int id) {
 		init();
-		ArrayList<Questionnari> questionnaris = new ArrayList<Questionnari>(); 
+		ArrayList<org.bfh.phd.Questionnair> questionnaris = new ArrayList<org.bfh.phd.Questionnair>(); 
 		String stm1 = "SELECT * FROM quest LEFT JOIN op ON quest.op_id = op.id WHERE patient_id=" + id + ";" ;
 		try {
 			pst = con.prepareStatement(stm1);
 			pst.execute();
 			rs = pst.getResultSet();
 			while (rs.next()) {
-					Questionnari q = new Questionnari();
+					org.bfh.phd.Questionnair q = new org.bfh.phd.Questionnair();
 					q.setDate(rs.getDate("date"));
 					q.setOp(rs.getString("opart"));
 					q.setId(rs.getInt("quest_id"));
@@ -576,31 +594,22 @@ public class EntityManager implements IEntityManager {
 	}
 	
 	public List<Question> getQuestions(String quest) {
-//		String quest = "knee";
-//		if(o instanceof Knee){
-//			quest = "knee";
-//			System.out.println("EM: knee");
-//		} else if (o instanceof Elbow){
-//			quest = "elbow";
-//			System.out.println("EM: elbow");
-//		} else {
-//			
-//		}
-		
-		
+		if(!templatename.equals(quest)){		
 		List<Question> questions = new ArrayList<Question>();
 		init();
-		String stm = "SELECT * FROM " + quest + ";";
+		String stm = "SELECT fragenr, typ, question, pos_id FROM testdb.q_template t JOIN q_template_name n ON t.id = n.id JOIN question2 q2 ON t.question_id = q2.id JOIN q_typ ON q2.type_id = q_typ.id WHERE name=?;";
 		try {
 			pst = con.prepareStatement(stm);
-//			pst.setString(1, quest);		// don't know why does not work
+			pst.setString(1, quest);
 			pst.execute();
 			rs = pst.getResultSet();
 			while (rs.next()) {
 				Question question = null;
-				int id = rs.getInt(quest + "_id");
-				String t = rs.getString("type");
+				int id = rs.getInt("fragenr");
+				int pos_id = rs.getInt("pos_id");
+				String t = rs.getString("typ");
 				String q = rs.getString("question");
+				System.out.println(q);
 				if(t.equals("String")){
 					question = new QuestionString();
 					question.setId(id);
@@ -611,15 +620,13 @@ public class EntityManager implements IEntityManager {
 					question.setId(id);
 					question.setType(t);
 					question.setQuestion(q);
-					List<String> list = this.getPossibilities(quest, rs.getInt(quest + "_possibilities_" + quest + "_possibilities_id"));	
-					question.setAnswerPossibilities(list);
+					question.setAnswerPossibilities(getPossibleAnswers(pos_id));
 				} else if(t.equals("Checkbox")) {
 					question = new QuestionCheckbox();
 					question.setId(id);
 					question.setType(t);
-					question.setQuestion(q);
-					List<String> list = this.getPossibilities(quest, rs.getInt(quest + "_possibilities_" + quest + "_possibilities_id"));	
-					question.setAnswerPossibilities(list);
+					question.setQuestion(q);	
+					question.setAnswerPossibilities(getPossibleAnswers(pos_id));
 				} else {
 					
 				}
@@ -631,14 +638,34 @@ public class EntityManager implements IEntityManager {
 		} finally {
 			close();
 		}
+		this.templatename = quest;
+		this.questions = questions;
+		}
 		return questions;
 	}
 	
+	private List<String> getPossibleAnswers(int i) {
+		List<String> list = new ArrayList<String>();
+		String stm = "SELECT answer FROM posibilitis p JOIN pos_answer pa ON p.pos_id=pa.id WHERE p.id=?;";
+		try{
+			pst2 = con2.prepareStatement(stm);
+			pst2.setInt(1, i);
+			pst2.execute();
+			rs2 = pst2.getResultSet();
+			while(rs2.next()){
+				list.add(rs2.getString("answer"));
+			}
+		} catch (SQLException e){
+			e.printStackTrace();
+		}finally{
+		}
+		return list;
+	}
+
 	// Datenbank io
-	public List<String> getPossibilities(String quest, int id) {
+	public List<String> getPossibilities(int id) {
 		List<String> possibilities = new ArrayList<String>();
-//		init();
-		String stm = "SELECT * FROM testdb.posibilitis p INNER JOIN pos_answer a On p.pos_id = a.id WHERE p.id=?;";
+		String stm = "SELECT * FROM posibilitis p INNER JOIN pos_answer a On p.pos_id = a.id WHERE p.id=?;";
 		try {
 			PreparedStatement pst = con.prepareStatement(stm);
 			pst.setInt(1, id);
@@ -654,37 +681,32 @@ public class EntityManager implements IEntityManager {
 		return possibilities;
 	}
 
-	public List<Answer> getAnswers(String quest, int id) {
+	public List<Answer> getAnswers(int id) {
 		List<Answer> answers = new ArrayList<Answer>();
-		List<Question> questions = this.getQuestions(quest);
 		init();
-		String stm = "SELECT * FROM " + quest + "_answer WHERE " + quest + "_answer_id=?;";
+		String stm = "SELECT answer, t.typ AS typ FROM testdb.questionnair_has_answer qha JOIN answer a ON qha.answer_id = a.id JOIN q_typ t ON qha.typ = t.id WHERE qha.id = ?;";
 		try {
 			pst = con.prepareStatement(stm);
 			pst.setInt(1, id);
 			pst.execute();
 			rs = pst.getResultSet();
-			if (rs.next()) {
-				for(int i = 0; i < questions.size(); i++){
-					Answer a = null;
-					String type = questions.get(i).getType();
-					if(type.equals("String")){
-						String s = rs.getString(i+2);
-						a = new AnswerString();
-						a.setAnswer(s);
-					} else if(type.equals("RadioButton")){
-						String s = rs.getString(i+2);
-						a = new AnswerRadioButton();
-						a.addAnswer(s);
-					} else if(type.equals("Checkbox")){
-						String s = rs.getString(i+2);
-						a = new AnswerCheckbox();
-						a.setAnswer(toArray(s));
-					} else {
-					
-					}
-					answers.add(a);
+			while(rs.next()){
+				Answer a = null;
+				String type = rs.getString("typ");
+				String answer = rs.getString("answer");
+				if(type.equals("String")){
+					a = new AnswerString();
+					a.setAnswer(answer);
+				}else if(type.equals("RadioButton")){
+					a = new AnswerRadioButton();
+					a.setAnswer(answer);
+				}else if(type.equals("Checkbox")){
+					a = new AnswerCheckbox();
+					a.setAnswer(toArray(answer));
+				}else{
+					throw new RuntimeException("QuestionType not implemented");
 				}
+				answers.add(a);
 			}
 			close();
 		} catch (SQLException e) {
@@ -766,6 +788,7 @@ public class EntityManager implements IEntityManager {
 	}
 
 	public List<Elbow> searchPatientData2(String op) {
+		System.out.println("elbow");
 		List<Elbow> elbowlist = new ArrayList<Elbow>();
 		init();
 		String stm = "SELECT * FROM elbow_answer;";
@@ -801,10 +824,12 @@ public class EntityManager implements IEntityManager {
 		} finally {
 			close();
 		}
+		System.out.println(elbowlist);
 		return elbowlist;
 	}
 
 	public List<Knee> searchPatientData3(String op) {
+		System.out.println("knee");
 		List<Knee> kneelist = new ArrayList<Knee>();
 		init();
 		String stm = "SELECT * FROM knee_answer;";
@@ -843,6 +868,7 @@ public class EntityManager implements IEntityManager {
 		} finally {
 			close();
 		}
+		System.out.println(kneelist);
 		return kneelist;
 	}
 
@@ -946,6 +972,24 @@ public class EntityManager implements IEntityManager {
 		}
 	}	
 	
+	private void initTyp() {
+		typ = new HashMap<String, Integer>();
+		String stm = "SELECT * FROM q_typ";
+		init();
+		try {
+			pst = con.prepareStatement(stm);
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+				typ.put(rs.getString("typ"), rs.getInt("id"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			close();
+		}
+	}
+	
 	private void initPatientData() {
 		patientdata = new ArrayList<PatientData>();
 		init();
@@ -998,6 +1042,7 @@ public class EntityManager implements IEntityManager {
 
 	public void init() {
 		con = mycon.getConnection();
+		con2 = mycon.getConnection();
 	}
 	
 	public void closed(){
@@ -1085,7 +1130,7 @@ public class EntityManager implements IEntityManager {
 	}
 	public List<ListOfQuestionnari> searchData(int id){
 		List<ListOfQuestionnari> quest = new ArrayList<ListOfQuestionnari>();
-		String stm = "SELECT t.typ, answer_id, date FROM questionnaire q INNER JOIN typ t ON q.typ = t.id WHERE patient_patient_id = ?;";
+		String stm = "SELECT date, answer_id, name FROM questionnaire q JOIN q_template_name n ON q.template_name_id = n.id WHERE q.patient_patient_id = ?;";
 		init();
 		try {
 			pst = con.prepareStatement(stm);
@@ -1096,37 +1141,21 @@ public class EntityManager implements IEntityManager {
 				ListOfQuestionnari list = new ListOfQuestionnari();
 				list.setDate(rs.getDate("date"));
 				list.setQuestId(rs.getInt("answer_id"));
-				list.setTypOfQuest(rs.getString("typ"));
+				list.setTypOfQuest(rs.getString("name"));
 				quest.add(list);
 			}
+//			close();
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			close();
 		}
 		paginatorPatientData.setSize(quest.size());
 		return quest;
 	}
 	
-	public void updateQuestionnaire(Questionnari q) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public List<String> getTyps() {
-		List<String> typ = new ArrayList<String>();
-		init();
-		String stm = "SELECT * FROM testdb.typ;";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				typ.add(rs.getString("typ"));				
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return typ;
+		return getType();
 	}
 	
 	public List<Department> getDepartments() {
@@ -1318,21 +1347,25 @@ public class EntityManager implements IEntityManager {
 	 * @param nameOfTemplate
 	 * @param pos they are the possible answer for this question by String a empty String.
 	 */
-	public void addQuestionnaireTemplate(String typ, String question, String nameOfTemplate, List<String> pos){
+	public void addQuestionnaireTemplate(String typ, String question, String nameOfTemplate, List<String> pos, int fragenr){
 		init();
 		long key = 0, templatenr = 0; 
-		String stm = "INSERT INTO question2 (pos_id, type_id, question) VALUES(?,?,?);";
+		String stm = "INSERT INTO question2 (pos_id, type_id, question, fragenr) VALUES(?,?,?,?);";
 		String stm2 = "INSERT INTO q_template_name(name) VALUES (?);";
 		String stm3 = "INSERT INTO q_template (id, question_id) VALUES (?,?);";
 		String stm4 = "SELECT id FROM q_template_name WHERE name = ?;";
 		Map map = getQuestType();
 			try {
-				int i = setPosibilitis(pos);
+				int i = 0;
+				if(typ != "String"){
+					i = setPosibilitis(pos);
+				}
 				int j = (Integer) map.get(typ);
 				pst = con.prepareStatement(stm, Statement.RETURN_GENERATED_KEYS);
 				pst.setInt(1, i);
 				pst.setInt(2, j);
 				pst.setString(3, question);
+				pst.setInt(4, fragenr);
 				pst.executeUpdate();
 				rs = pst.getGeneratedKeys();
 				if(rs.next()){
@@ -1359,6 +1392,8 @@ public class EntityManager implements IEntityManager {
 				close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+			} finally {
+				close();
 			}
 	}
 	
@@ -1377,6 +1412,7 @@ public class EntityManager implements IEntityManager {
 		for(int j = 0; j < pos.size(); j++){
 			pst = con.prepareStatement(stm2, Statement.RETURN_GENERATED_KEYS);
 			pst.setString(1, pos.get(j));
+			System.out.println(pst);
 			pst.executeUpdate();
 			rs = pst.getGeneratedKeys();
 			if(rs.next()){
@@ -1390,20 +1426,50 @@ public class EntityManager implements IEntityManager {
 		return i;
 	}
 	
-	public List<String> getType(){
-		List<String> list = new ArrayList<String>();
+	public void initOperationTyp(){
+		operationtyp = new ArrayList<String>();
+		init();
+		String stm = "SELECT name FROM q_template_name;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.execute();
+			rs = pst.getResultSet();
+			while(rs.next()){
+				operationtyp.add(rs.getString(1));
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			close();
+		}
+	}
+	
+	public void initQuestionTyp(){
+		questiontyp = new ArrayList<String>();
+		init();
 		String stm = "SELECT typ FROM q_typ;";
 		try {
 			pst = con.prepareStatement(stm);
 			pst.execute();
 			rs = pst.getResultSet();
 			while(rs.next()){
-				list.add(rs.getString(1));
+				questiontyp.add(rs.getString(1));
 			}
+			close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally{
+			close();
 		}
-		return list;
+	}
+	
+	public List<String> getType(){
+		return questiontyp;
+	}
+	
+	public List<String> getTemplateNames(){
+		return operationtyp;
 	}
 	
 	private HashMap getQuestType(){
@@ -1421,4 +1487,249 @@ public class EntityManager implements IEntityManager {
 		}
 		return map;
 	}
+	
+	public List<org.bfh.phd.questionary.Questionnair> getTemplate(String name){
+		
+		init();
+		List<org.bfh.phd.questionary.Questionnair> quest = new ArrayList<org.bfh.phd.questionary.Questionnair>();
+		String stm = "SELECT fragenr, q.id, name, pos_id, question, typ FROM q_template t  join q_template_name n On n.id=t.id join question2 q On t.question_id=q.id join q_typ ty On q.type_id=ty.id WHERE name = ? ORDER BY fragenr;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setString(1, name);
+			pst.execute();
+			rs = pst.getResultSet();
+				while (rs.next()) {
+					System.out.println();
+					org.bfh.phd.questionary.Questionnair q = new org.bfh.phd.questionary.Questionnair();
+					q.setId(rs.getInt("fragenr"));
+					q.setDbId(rs.getInt("id"));
+					q.setQuestion(rs.getString("question"));
+					q.setType(rs.getString("typ"));
+
+					List<String> list = getPossibilities(rs.getInt("pos_id"));
+					for(String s: list){
+						q.addPossibleAnswer(s);
+					}
+					quest.add(q);
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally{
+			close();
+		}
+		return quest;
+	}
+		
+	public void getS(){
+		for(String s : error){
+		System.out.println(s);
+		}
+	}
+
+	public void deletTemplateQuestion(org.bfh.phd.questionary.Questionnair q) throws SQLException{
+		init();
+		String stm = "DELETE FROM question2 WHERE id=?;";
+		if(q.getType()!="String"){
+			String stm1 = "SELECT pos_id FROM question2 WHERE id=?;";
+			String stm2 = "SELECT pos_id FROM posibilitis WHERE id=?;";
+			String stm3 = "DELETE FROM posibilitis WHERE id=?";
+			String stm4 = "DELETE FROM pos_answer WHERE id=?";
+			int i = 0;
+
+				pst = con.prepareStatement(stm1);
+				pst.setInt(1, q.getDbId());
+				pst.execute();
+				rs = pst.getResultSet();
+				if(rs.next()){
+				i = rs.getInt("pos_id");
+				}
+				pst = con.prepareStatement(stm2);
+				pst.setInt(1, i);
+				pst.execute();
+				rs = pst.getResultSet();
+				while(rs.next()){
+					pst2 = con2.prepareStatement(stm4);
+					pst2.setInt(1, rs.getInt("pos_id"));
+					pst2.execute();
+				}
+				pst = con.prepareStatement(stm3);
+				pst.setInt(1, i);
+				pst.execute();
+			}
+		pst = con.prepareStatement(stm);
+		pst.setInt(1, q.getDbId());
+		pst.execute();
+		close();
+	}
+
+	public void editQuestion(Questionnair q) throws SQLException {
+		init();
+		String stm = "UPDATE question2 SET question=? WHERE id=?;";
+		String stm1 = "SELECT pos_id FROM question2 WHERE id=?;";
+		String stm2 = "SELECT pos_id FROM posibilitis WHERE id=?;";
+		String stm3 = "UPDATE pos_answer SET answer=? WHERE id=?;";
+		pst = con.prepareStatement(stm);
+		pst.setString(1, q.getQuestion());
+		pst.setInt(2, q.getDbId());
+		pst.executeUpdate();
+		if(q.getType() != "String"){
+		pst = con.prepareStatement(stm1);
+		pst.setInt(1, q.getDbId());
+		pst.execute();
+		rs = pst.getResultSet();
+		if(rs.next()){
+			int i = rs.getInt("pos_id");	
+			pst = con.prepareStatement(stm2);
+			pst.setInt(1, i);
+			pst.execute();
+			rs = pst.getResultSet();
+			int j = 0;
+			while (rs.next()) {
+				pst2 = con2.prepareStatement(stm3);
+				pst2.setString(1,q.getAnswer().get(j));
+				pst2.setInt(2,rs.getInt("pos_id"));
+				pst2.executeUpdate();
+				j++;
+			}
+		}
+		}
+		close();
+		}
+
+	public void changeQuestionNr(String templateNameSelected, int eNumber) {
+		// TODO Auto-generated method stub
+		System.out.println("change number");
+		System.out.println(templateNameSelected);
+		System.out.println(eNumber);
+		init();
+		String stm = "SELECT q.id, fragenr FROM testdb.question2 q JOIN q_template t ON q.id = t.question_id JOIN q_template_name n ON t.id = n.id WHERE name = ? AND q.fragenr > ?;";
+		String stm2 = "UPDATE question2 SET fragenr=? WHERE id=?;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setString(1, templateNameSelected);
+			pst.setInt(2, eNumber);
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+				pst = con.prepareStatement(stm2);
+				pst.setInt(2, rs.getInt("id"));
+				pst.setInt(1, rs.getInt("fragenr")+1);
+				pst.executeUpdate();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+		close();
+		}
+	}
+	
+	public void addAnswer(Patient activePatient, List<Answer> answer, int questionnaireId) {
+		init();
+		try{
+		int j = createQuestionnaireDataSet(activePatient.getPatientid(), getLastInsertID(), questionnaireId);
+		for(Answer a : answer){
+				int k = insertAnswer(a.toString());
+				insertDatasetToAnswer(j,k, typ.get(a.getTyp()));
+		}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			close();
+		}
+	}
+	
+	private void insertDatasetToAnswer(int j, int k, int l) throws SQLException {
+		String stm = "INSERT INTO questionnaire (patient_patient_id, date, template_name_id, answer_id) VALUES (?,?,?,?);";
+		pst = con.prepareStatement(stm);
+		pst.setInt(1, j);
+		pst.setInt(2, k);
+		pst.setInt(3, l);
+		pst.execute();
+	}
+
+	private int createQuestionnaireDataSet(int id, int i, int qId) throws SQLException {
+		String stm = "INSERT INTO questionnaire (patient_patient_id, date, template_name_id, answer_id) VALUES (?,?,?,?);";
+		pst = con.prepareStatement(stm);
+		pst.setInt(1, id);
+		pst.setDate(2, new java.sql.Date(new Date().getTime()));
+		pst.setInt(3, qId);
+		pst.setInt(4, i);
+		pst.execute();
+		return i;
+	}
+
+	private int getLastInsertID() throws SQLException {
+		int i = 0;
+		String stm = "SELECT MAX(id) FROM questionnair_has_answer;";
+		pst2 = con2.prepareStatement(stm);
+		pst2.execute();
+		rs2 = pst2.getResultSet();
+		if(rs2.next()){
+			i=rs2.getInt("id");
+		}
+		return i;
+	}
+
+	public int insertAnswer(String a) throws SQLException{
+		int i = 0;
+		String stm = "SELECT id FROM answer WHERE answer = ?;";
+		String stm2 = "INSERT INTO answer (answer) VALUES (?);";
+		pst2 = con2.prepareStatement(stm);
+		pst2.setString(1, a);
+		pst2.execute();
+		rs2 = pst2.getResultSet();
+		if(rs2.next()){
+			i=rs2.getInt("id");
+		}else{
+			pst2 = con2.prepareStatement(stm2);
+			pst2.setString(1, a);
+			pst2.executeUpdate();
+			rs2 = pst.getGeneratedKeys();
+			if(rs.next()){
+				i = (int)rs2.getLong(1);
+			}
+		}
+		return i;
+	}
+
+
+
+		
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

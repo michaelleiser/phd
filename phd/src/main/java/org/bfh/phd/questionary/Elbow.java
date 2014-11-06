@@ -8,6 +8,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.bfh.phd.EntityManager;
+import org.bfh.phd.LoginController;
 
 @ManagedBean(name = "elbow", eager = true)
 @ViewScoped
@@ -53,17 +54,12 @@ public class Elbow {
 		this.answers = answers;
 	}
 	
-	public void safe(){
+	public void safe(LoginController lc){
 		System.out.println("******");
 		EntityManager em = new EntityManager();
 		em.addAnswer("elbow", answers, 5);
-		// TODO ID
-		for(Answer a : answers){
-			System.out.println("->>" + a);
-		}
+			lc.addAnswer(answers);
 	}
-	
-	
 	
 	public void addString(final AjaxBehaviorEvent event){
 		String i1 = event.getComponent().getId();

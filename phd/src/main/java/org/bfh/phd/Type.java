@@ -19,13 +19,9 @@ public class Type implements Serializable {
 	private static int x;
 	
 	static{
-		//EntityManager em = new EntityManager();
-		type = new ArrayList<String>();
+		EntityManager em = new EntityManager();
+		type = em.getType();
 		y = new ArrayList<Integer>();
-		//TODO automatisieren
-		type.add("String");
-		type.add("RadioButton");
-		type.add("Checkbox");
 		for(int j = 1; j <= 10; j++){
 			y.add(new Integer(j));
 		}

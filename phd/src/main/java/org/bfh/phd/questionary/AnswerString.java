@@ -28,4 +28,9 @@ public class AnswerString implements Answer<String, String> {
 		return answer.toString();
 	}
 
+	@Override
+	public String getTyp() {
+		return "String";
+	}
+
 }

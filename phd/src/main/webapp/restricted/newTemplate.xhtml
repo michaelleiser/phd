@@ -53,11 +53,9 @@
 					<f:selectItems value="#{type.types}" />
 				</h:selectOneMenu>		
 				<br /><br />
-				
-					<h:outputText value="#{type.typeselected}"></h:outputText>
 				<c:if test="#{type.typeselected eq 'String'}">
 					<h:outputLabel>Bitte geben sie die gewünschte Frage ein:</h:outputLabel><br />
-					<h:inputText value="#{template.questionString}"><f:ajax event="change" execute="@this" listener="#{template.addString}" /></h:inputText><br /><br />
+					<h:inputText value="#{template.questionString}"><f:ajax event="change" execute="@this" listener="#{template.addString}" /><f:attribute name="edit" value="0"/></h:inputText><br /><br />
 				</c:if>
 				<c:if test="#{type.typeselected eq 'RadioButton'}">
 					<h:outputLabel>Bitte geben sie die gewünschte Fragen ein:</h:outputLabel><br />
@@ -71,7 +69,7 @@
 						<c:forEach begin="2" end="#{a}">
 						<h:inputText value="#{template.answerRadioButton}"><f:ajax event="change" execute="@this" listener="#{template.addAnswer}" /></h:inputText>	<br />
 						</c:forEach>
-						<h:inputText value="#{template.answerRadioButton}"><f:ajax event="change" execute="@this" listener="#{template.addRadioButton}" /></h:inputText><br />	
+						<h:inputText value="#{template.answerRadioButton}"><f:ajax event="change" execute="@this" listener="#{template.addRadioButton}" /><f:attribute name="edit" value="0"/></h:inputText><br />	
 				</c:if>
 				<c:if test="#{type.typeselected eq 'Checkbox'}">
 					<h:outputLabel>Bitte geben sie die gewünschte Frage ein:</h:outputLabel><br />
@@ -83,13 +81,13 @@
 							</h:selectOneMenu><br />
 						<c:set var="a" value="#{type.numberselected}"/>
 						<c:forEach begin="2" end="#{a}">
-						<h:inputText  value="#{template.answerCheckbox}"><f:ajax event="change" execute="@this" listener="#{template.addAnswer}" /></h:inputText><br />	
+						<h:inputText value="#{template.answerCheckbox}"><f:ajax event="change" execute="@this" listener="#{template.addAnswer}" /></h:inputText><br />	
 						</c:forEach>
-						<h:inputText value="#{template.answerCheckbox}" ><f:ajax event="change" execute="@this" listener="#{template.addCheckbox}" /></h:inputText><br />	
+						<h:inputText value="#{template.answerCheckbox}" ><f:ajax event="change" execute="@this" listener="#{template.addCheckbox}" /><f:attribute name="edit" value="0"/></h:inputText><br />	
 				</c:if>		
 
 				<br /><h:commandButton actionListener="#{template.add}" value=" add new Question "></h:commandButton>				
-				<br /><h:commandButton actionListener="#{template.safe}" action="#{navigation.redirectToLoggedin}" value="Safe Template"></h:commandButton>
+				<br /><h:commandButton actionListener="#{template.safe(loginController)}" action="#{navigation.redirectToLoggedin}" value="Safe Template"></h:commandButton>
 				
 			</h:form>
 		</ui:define>

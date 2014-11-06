@@ -30,5 +30,10 @@ public class AnswerCheckbox implements Answer <List<String>, String> {
 	public String toString(){;
 		return answer.toString();
 	}
+
+	@Override
+	public String getTyp() {
+		return "Checkbox";
+	}
 	
 }

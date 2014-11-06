@@ -90,11 +90,10 @@
 								<f:facet name="header">ID</f:facet>
 								<h:commandLink value="#{quests.questId}"
 									action="#{navigation.toShowQuestionnari}">
-									<f:setPropertyActionListener target="#{questionnaridata.quest}"
-										value="#{quests.questId}" />
 									<f:setPropertyActionListener
 										target="#{loginController.patientid}"
-										value="#{quests.questId}"></f:setPropertyActionListener>
+										value="#{quests}">
+									</f:setPropertyActionListener>
 								</h:commandLink>
 							</h:column>
 							<h:column>

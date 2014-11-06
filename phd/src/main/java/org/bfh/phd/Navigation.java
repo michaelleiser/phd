@@ -122,4 +122,7 @@ public class Navigation implements Serializable {
 	public String toNewQuestionnareTemplate(){
 		return "/restricted/newTemplate";
 	}
+	public String toEditQuestionnareTemplate(){
+		return "/restricted/editTemplate";
+	}
 }
