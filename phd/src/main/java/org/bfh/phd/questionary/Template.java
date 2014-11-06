@@ -4,28 +4,56 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.bfh.phd.EntityManager;
+import org.bfh.phd.LoginController;
 
 @ManagedBean(name = "template", eager = true)
-@ViewScoped
+@SessionScoped
 public class Template {
 	
 	private static int i = 1;
+	private int j = 0;
+	private int eNumber = 0;
+	private Questionnair eQuestion = new Questionnair();
+	private String name;
 	private String templatename = "";
 	private String questionString;
 	private String answerString;
-	private List<Test> test = new ArrayList<Test>();
+	private static List<String> templateName;
+	private static String templateNameSelected;
+	private List<Questionnair> test = new ArrayList<Questionnair>();
 	private List<String> answerRadioButton = new ArrayList<String>();
 	private List<String> answerCheckbox = new ArrayList<String>();
+	private List<Questionnair> edit = new ArrayList<Questionnair>();
+	private Questionnair t = new Questionnair();
+	private static EntityManager em;
 	
+	
+	static{
+		init();
+	}
+	private static void init(){
+		em = new EntityManager();
+		templateName = new ArrayList<String>();
+		templateName = em.getTemplateNames();	
+	}
+	
+	private void clear(){
+		name = templatename = questionString = answerString = "";
+		answerRadioButton.clear();
+		answerCheckbox.clear();
+		test.clear();
+		edit.clear();
+	}
 	
 	public Template(){
 	}
-	
+		
 	public boolean isEmpty(){
 		return templatename.isEmpty();
 	}
@@ -38,47 +66,77 @@ public class Template {
 		return !test.isEmpty();
 	}
 	
-	public List<Test> getQuestion() {
+	public List<Questionnair> getQuestion() {
 		return test;
 	}
 	
 	public void add(){
+		t = new Questionnair();
+		eQuestion = new Questionnair();
+		answerCheckbox.clear();
+		answerRadioButton.clear();
 	}
 	
-	public void safe(){
-		System.out.println("******");
-		EntityManager em = new EntityManager();
-		for(Test t:test){
-		em.addQuestionnaireTemplate(t.getType(), t.getQuestion(),templatename, t.getAnswer());
+	public void safe(LoginController lc){
+		int i = 1;
+		for(Questionnair t:test){
+		lc.addQuestionnaireTemplate(t.getType(), t.getQuestion(),templatename, t.getAnswer(), i);
+		i++;
 		}
+		init();
+		clear();
+	}
+	
+	public void saveAddEdit(LoginController lc){
+		lc.changeQuestionNr(templateNameSelected, eNumber);
+		lc.addQuestionnaireTemplate(eQuestion.getType(), eQuestion.getQuestion(), templateNameSelected , eQuestion .getAnswer(), eNumber+1);
+		eNumber = 0;
+		setTemplates();
+		add();
+	}
+	
+	public void saveAddEdit(LoginController lc){
+		lc.changeQuestionNr(templateNameSelected, eNumber);
+		lc.addQuestionnaireTemplate(eQuestion.getType(), eQuestion.getQuestion(), templateNameSelected , eQuestion .getAnswer(), eNumber+1);
+		eNumber = 0;
+		setTemplates();
+		add();
 	}
 	
 	public void addString(final AjaxBehaviorEvent event){
-		Test t = new Test();
 		t.setQuestion(questionString);
 		t.setType("String");
-		t.addPossibleAnswer("");
-		t.setId(i);
-		test.add(t);
-		i++;		
+		t.addPossibleAnswer("-");
+		if(event.getComponent().getAttributes().get("edit").equals("1")){
+			t.setId(i);
+			eQuestion = t;
+		}else{
+			t.setId(i);	
+			test.add(t);	
+		}
+		i++;
 	}
 		
 	public void addRadioButton(final AjaxBehaviorEvent event){
-		Test t = new Test();
 		t.setQuestion(questionString);
 		t.setType("RadioButton");
 		for(String s: answerRadioButton){
 			if(s != ""){
-		t.addPossibleAnswer(s);
+				t.addPossibleAnswer(s);
 			}
 		}
-		t.setId(i);
-		test.add(t);
+		if(event.getComponent().getAttributes().get("edit").equals("1")){
+			t.setId(i);
+			eQuestion = t;
+		}else{
+			t.setId(i);
+			test.add(t);	
+		}
 		i++;
+		answerRadioButton.clear();
 	}
-			
+				
 	public void addCheckbox(final AjaxBehaviorEvent event){
-		Test t = new Test();
 		t.setQuestion(questionString);
 		t.setType("Checkbox");
 		for(String s: answerCheckbox){
@@ -86,8 +144,35 @@ public class Template {
 		t.addPossibleAnswer(s);
 			}
 		}
-		t.setId(i);
-		test.add(t);
+		if(event.getComponent().getAttributes().get("edit").equals("1")){
+			t.setId(i);
+			eQuestion = t;
+
+		}else{
+			t.setId(i);
+			test.add(t);	
+		}
+		i++;
+		answerCheckbox.clear();
+	}
+	
+	public List<String> getTemplateNames(){
+		return templateName;
+	}
+
+	public String templateNameChanged(ActionEvent evt) {
+		UIComponent comp = evt.getComponent();
+		templateNameSelected = (String) comp.getAttributes().get("value");
+		return "";
+	}
+
+	public String getTemplateNameselected() {
+		return templateNameSelected;
+	}
+
+	public void setTemplateNameselected(String questselected) {
+		this.templateNameSelected = questselected;
+		setTemplates();
 	}
 	
 	public void addName(final AjaxBehaviorEvent event) {
@@ -150,44 +235,55 @@ public class Template {
 	public String nameToTemp(){
 		templatename = this.name;
 		return "";
-	} 
-		
-		public class Test{
-			private int id = 0;
-			private String question;
-			private String type;
-			private List<String> list = new ArrayList<String>();
-				
-			public void setId(int i){
-				id = i;
-			}
-			
-			public void setQuestion(String question){
-				this.question = question;
-			}
-			
-			public String getQuestion(){
-				return this.question;
-			}
-			
-			public void setType(String type){
-				this.type = type;
-			}
+	}
 	
-			public String getType(){
-				return this.type;
-			}
-			
-			public void addPossibleAnswer(String answer){
-				this.list.add(answer);
-			}
-			
-			public List<String> getAnswer(){
-				return this.list;
-			}
-			
-			public int getId(){
-				return this.id;
+	private void setTemplates(){
+		edit.clear();
+		edit = em.getTemplate(templateNameSelected);
+	}
+	
+	public List<Questionnair> getTemplates(){
+		return edit;
+	}
+	
+	public void editTemplate(){
+		System.out.println("edit Question");
+	}
+	
+	public void deletQuestion(LoginController lc, Questionnair q){
+		lc.deletTemplateQuestion(q);
+		setTemplates();
+	}
+	
+	public void deletTemplate(LoginController lc){
+		System.out.println("not implemented");
+	}
+	
+	public void saveEdit(LoginController lc){
+		for(Questionnair q:edit){
+			if(q.isEditable()){
+				System.out.println(q.getAnswer());
+				q.setEditable(false);
+				lc.editQuestion(q);
 			}
 		}
+	}
+	
+	public String editAction(Questionnair q){
+		q.setEditable(true);
+		return null;
+	}
+	
+	public String addAction(Questionnair q){
+		eNumber = q.getId();
+		return null;
+	}
+
+	public int getE() {
+		return eNumber;
+	}
+
+	public void setE(int e) {
+		this.eNumber = e;
+	}
 }

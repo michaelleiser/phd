@@ -1,6 +1,7 @@
 package org.bfh.phd;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import org.bfh.phd.questionary.Answer;
 import org.bfh.phd.questionary.Elbow;
 import org.bfh.phd.questionary.Knee;
 import org.bfh.phd.questionary.Question;
+import org.bfh.phd.questionary.Questionnair;
 
 @ManagedBean(name = "loginController", eager = true)
 @SessionScoped
@@ -27,6 +29,7 @@ public class LoginController implements Serializable, ILoginController{
 	private Patient activePatient;
 	private PatientData activePatientData;
 	private int questionnaireId;
+	private String questionnaireName;
 	private String s = "knee";
 
 	private Date to;
@@ -167,12 +170,6 @@ public class LoginController implements Serializable, ILoginController{
 			em.updatePatient(p, activeUser);
 		}
 	}
-
-	public void updateQuestionnaire(Questionnari q){
-		if(this.loggedin == true && activeUser.getRole() == 1){
-			em.updateQuestionnaire(q);
-		}
-	}
 	
 	public void updatePatientData(PatientData pd){
 		System.out.println("update pateint data..." + pd);
@@ -223,7 +220,7 @@ public class LoginController implements Serializable, ILoginController{
 	}
 	
 	public List<Tools> getFilledQuestion(){
-		return em.getFilledQuestion(questionnaireId);
+		return em.getFilledQuestion(questionnaireId, questionnaireName);
 	}
 
 	public List<Question> getQuestions() {
@@ -235,7 +232,7 @@ public class LoginController implements Serializable, ILoginController{
 	}
 
 	public List<Answer> getAnswers(int i) {
-		return em.getAnswers(s, i);
+		return em.getAnswers(i);
 	}
 	
 	public void safe(ActionEvent evt){
@@ -348,12 +345,13 @@ public class LoginController implements Serializable, ILoginController{
 		return null;
 	}
 	
-	public void setPatientid(int i){
-		this.questionnaireId = i;
+	public void setPatientid(ListOfQuestionnari list){
+		this.questionnaireId = list.getQuestId();
+		this.questionnaireName = list.getTypOfQuest();
 	}
 
-	public int getPatientid(){
-		return this.questionnaireId;
+	public ListOfQuestionnari getPatientid(){
+		return null;
 	}
 
 	public int getQuestionnariId() {
@@ -364,7 +362,11 @@ public class LoginController implements Serializable, ILoginController{
 		this.questionnaireId = questionnariId;
 	}
 	
-	
+	public void addQuestionnaireTemplate(String typ,String question,String nameOfTemplate,List<String> pos, int fragenr){
+		if(this.loggedin == true && activeUser.getRole() == 1){
+		em.addQuestionnaireTemplate(typ, question, nameOfTemplate, pos, fragenr);
+		}
+	}
 	
 	
 	
@@ -476,6 +478,206 @@ public class LoginController implements Serializable, ILoginController{
 			em.setGroupKey(s, activeDepartment_Has_Staff, null);	
 		}
 	}
+
+	public List<Questionnair> getTemplate(String name) {
+		if(this.loggedin == true && activeUser.getRole() == 1){
+		return em.getTemplate(name);
+		}
+		return null;
+	}
+
+	public void deletTemplateQuestion(Questionnair q) {
+		if(this.loggedin == true && activeUser.getRole() == 1){
+		try {
+			em.deletTemplateQuestion(q);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		}
+	}
+
+	public void editQuestion(Questionnair q) {
+		if(this.loggedin == true && activeUser.getRole() == 1){
+		try {
+			em.editQuestion(q);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		}
+	}
+
+	public void changeQuestionNr(String templateNameSelected, int eNumber) {
+		em.changeQuestionNr(templateNameSelected, eNumber);
+	}
+
+	public List<String> getTemplateNames() {
+		return em.getTemplateNames();
+	}
+
+	public void addAnswer(List<Answer> a) {
+		em.addAnswer(activePatient, a, questionnaireId);
+	}
+
+
+	public List<Questionnair> getTemplate(String name) {
+		if(this.loggedin == true && activeUser.getRole() == 1){
+		return em.getTemplate(name);
+		}
+		return null;
+	}
+
+	public void deletTemplateQuestion(Questionnair q) {
+		if(this.loggedin == true && activeUser.getRole() == 1){
+		try {
+			em.deletTemplateQuestion(q);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		}
+	}
+
+	public void editQuestion(Questionnair q) {
+		if(this.loggedin == true && activeUser.getRole() == 1){
+		try {
+			em.editQuestion(q);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		}
+	}
+
+	public void changeQuestionNr(String templateNameSelected, int eNumber) {
+		em.changeQuestionNr(templateNameSelected, eNumber);
+	}
+
+	public List<String> getTemplateNames() {
+		return em.getTemplateNames();
+	}
+
+	public void addAnswer(List<Answer> a) {
+		em.addAnswer(activePatient, a, questionnaireId);
+	}
+
+
+	public List<Questionnair> getTemplate(String name) {
+		if(this.loggedin == true && activeUser.getRole() == 1){
+		return em.getTemplate(name);
+		}
+		return null;
+	}
+
+	public void deletTemplateQuestion(Questionnair q) {
+		if(this.loggedin == true && activeUser.getRole() == 1){
+		try {
+			em.deletTemplateQuestion(q);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		}
+	}
+
+	public void editQuestion(Questionnair q) {
+		if(this.loggedin == true && activeUser.getRole() == 1){
+		try {
+			em.editQuestion(q);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		}
+	}
+
+	public void changeQuestionNr(String templateNameSelected, int eNumber) {
+		em.changeQuestionNr(templateNameSelected, eNumber);
+	}
+
+	public List<String> getTemplateNames() {
+		return em.getTemplateNames();
+	}
+
+	public void addAnswer(List<Answer> a) {
+		em.addAnswer(activePatient, a, questionnaireId);
+	}
+
+
+	public List<Questionnair> getTemplate(String name) {
+		if(this.loggedin == true && activeUser.getRole() == 1){
+		return em.getTemplate(name);
+		}
+		return null;
+	}
+
+	public void deletTemplateQuestion(Questionnair q) {
+		if(this.loggedin == true && activeUser.getRole() == 1){
+		try {
+			em.deletTemplateQuestion(q);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		}
+	}
+
+	public void editQuestion(Questionnair q) {
+		if(this.loggedin == true && activeUser.getRole() == 1){
+		try {
+			em.editQuestion(q);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		}
+	}
+
+	public void changeQuestionNr(String templateNameSelected, int eNumber) {
+		em.changeQuestionNr(templateNameSelected, eNumber);
+	}
+
+	public List<String> getTemplateNames() {
+		return em.getTemplateNames();
+	}
+
+	public void addAnswer(List<Answer> a) {
+		em.addAnswer(activePatient, a, questionnaireId);
+	}
+
+
+	public List<Questionnair> getTemplate(String name) {
+		if(this.loggedin == true && activeUser.getRole() == 1){
+		return em.getTemplate(name);
+		}
+		return null;
+	}
+
+	public void deletTemplateQuestion(Questionnair q) {
+		if(this.loggedin == true && activeUser.getRole() == 1){
+		try {
+			em.deletTemplateQuestion(q);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		}
+	}
+
+	public void editQuestion(Questionnair q) {
+		if(this.loggedin == true && activeUser.getRole() == 1){
+		try {
+			em.editQuestion(q);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		}
+	}
+
+	public void changeQuestionNr(String templateNameSelected, int eNumber) {
+		em.changeQuestionNr(templateNameSelected, eNumber);
+	}
+
+	public List<String> getTemplateNames() {
+		return em.getTemplateNames();
+	}
+
+	public void addAnswer(List<Answer> a) {
+		em.addAnswer(activePatient, a, questionnaireId);
+	}
+
 	
 //	String pub = "-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSCF1HymTdYHQAoBcBmvt/dRbcevoqV1RlEIryp+R95pBhA3tqZv8Qv6w3AyFi0DPrquREc6bUywCZ7sJE7JstQOP3ETSDxSvqtvGTaogtll7icgxTexA+sLt28E7E4TIcvZqXweQ8XneW62yDDlk5yhcG9xTZT1289d66YbvH7wIDAQAB-----END PUBLIC KEY-----";
 //	String priv = "-----BEGIN RSA PRIVATE KEY-----MIICWwIBAAKBgQCSCF1HymTdYHQAoBcBmvt/dRbcevoqV1RlEIryp+R95pBhA3tqZv8Qv6w3AyFi0DPrquREc6bUywCZ7sJE7JstQOP3ETSDxSvqtvGTaogtll7icgxTexA+sLt28E7E4TIcvZqXweQ8XneW62yDDlk5yhcG9xTZT1289d66YbvH7wIDAQABAoGAPcTt9/TjT0SCLNWKhbJRmSsk3WPjN0+zMgCaVWOw4ZRKE88OQAaK80GwDaD0WUCqBZBGd7HXqoCno3T7lX3jcNBDPr4D88BwyDLpmQgkPk5qCQ3pgwQYOaXsEYnA9Apr6VZtdBqjO3u94oiuWGv1XYdEgfWF6BysEE0nDbD7/OkCQQDDFZDdYFZh+OQn97Wc2CmI3BaLWHikxXUJ/I093YQKZRO26opKW29ZQMDjvGaMitIoxSh6gCp2TfU23JyYgMM1AkEAv6HEW91lVoYuBZ5NmnDRQ51qk0dYf+qGlhkPOq4TeVET5tRNxxuy7D+6CK1bwQCjVkbgo1mcYc0DKUxk1r5/EwJAUTgoUNJsBGwP6UfrF7qzSCSBSlByIf+HY7n+v9P6xi0g0RXCr4Rzzk/0PpxQgZDGQG0dFitIAmsgfU/J7oAlRQJAKrhTX+9hMgLDq7j4r99Kp3omUiLrlcigrEF15az85mSuvRzDIgoIvyYNwPV0qPgNcaRnW8MUW7EqbUB8kmrxRQJAM1VdxBYVlZfKo/iAHaiziQcax27VA7p12N7+xp4lJLGInK5YYdGJrkNE04BBZiYtfWBSPseuFET95RMS56iWVQ==-----END RSA PRIVATE KEY-----";
@@ -494,7 +696,4 @@ public class LoginController implements Serializable, ILoginController{
 ////		return null;
 ////	}
 	
-	public void addQuestionnaireTemplate(){
-		//em.addQuestionnaireTemplate(typ, question, nameOfTemplate, pos);
-	}
 }

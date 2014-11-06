@@ -7,5 +7,7 @@ public interface Answer <A, B>  {
 	void setAnswer(A o);
 
 	void addAnswer(B o);
+	
+	String getTyp();
 
 }

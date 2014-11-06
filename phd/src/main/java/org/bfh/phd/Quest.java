@@ -1,8 +1,8 @@
 package org.bfh.phd;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
@@ -15,13 +15,13 @@ public class Quest implements Serializable {
 	private static List<String> quests;
 	private static String questselected;
 	
-	static{
+	static {
 		EntityManager em = new EntityManager();
-		quests = new ArrayList<String>();
-		quests = em.getTyps();
+		quests = em.getTemplateNames();
 	}
 	
 	public List<String> getQuests(){
+		System.out.println(quests);
 		return quests;
 	}
 
@@ -39,5 +39,4 @@ public class Quest implements Serializable {
 	public void setQuestselected(String questselected) {
 		this.questselected = questselected;
 	}
-
 }
