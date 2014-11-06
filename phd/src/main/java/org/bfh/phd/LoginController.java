@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -39,14 +40,17 @@ public class LoginController implements Serializable, ILoginController{
 	}
 		
 	public void setStaff(Staff s){
+		System.out.println("SET STAFF");
 		this.activeUser = s;
 	}
 	
 	public Staff getStaff(){
+		System.out.println("GET STAFF");
 		return this.activeUser;
 	}
 	
 	public List<Staff> getStaffs(){
+		System.out.println("GET STAFFS");
 		if(this.loggedin == true){
 			return em.getStaff();
 		}
@@ -54,6 +58,7 @@ public class LoginController implements Serializable, ILoginController{
 	}
 	
 	public List<Staff> getStaffs(String name){
+		System.out.println("GET STAFFS name");
 		if(this.loggedin == true){
 			return em.getStaffs(name);
 		}
@@ -62,6 +67,7 @@ public class LoginController implements Serializable, ILoginController{
 	
 	@Override
 	public String login(String name, String password) {
+		System.out.println("LOGIN");
 		if(activeDepartment_Has_Staff != null){
 			activeUser = activeDepartment_Has_Staff.getStaff(name, password);
 			if(activeUser != null && activeUser.getActivated()){
@@ -73,7 +79,8 @@ public class LoginController implements Serializable, ILoginController{
 	}
 	
 	@Override
-	public String logout(){	
+	public String logout(){
+		System.out.println("LOGOUT");
 		setLoggedin(false);
 		if(FacesContext.getCurrentInstance() != null){	// Just for JUnit
 			FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
@@ -90,6 +97,7 @@ public class LoginController implements Serializable, ILoginController{
 	}
 
 	public String registernew(Staff s) {
+		System.out.println("REGISTER NEW");
 		if(!this.activeDepartment_Has_Staff.getStaff().contains(s)){
 			boolean activated = false;
 			Staff ss = em.registernew(s, activated);
@@ -99,6 +107,7 @@ public class LoginController implements Serializable, ILoginController{
 		return "/home?faces-redirect=true";
 	}
 	public String registernew(Staff s, Department d, String key) {
+		System.out.println("REGISTER NEW");
 		if(!em.getDepartments().contains(d)){
 			boolean activated = true;
 			Staff ss = em.registernew(s, activated);
@@ -251,6 +260,7 @@ public class LoginController implements Serializable, ILoginController{
 //	}
 
 	public Patient getActivePatient() {
+		System.out.println("ActivePatient");
 		if(this.loggedin == true && activeUser.getRole() == 1){
 			return activePatient;
 		}
@@ -306,6 +316,7 @@ public class LoginController implements Serializable, ILoginController{
 	}
 
 	public boolean isOwner(Patient p){
+		System.out.println("IsOwner");
 		if(this.loggedin == true && activeUser.getRole() == 1){
 			return em.isOwner(p, activeUser);
 		}
@@ -317,18 +328,21 @@ public class LoginController implements Serializable, ILoginController{
 	}
 
 	public boolean readAccess(Patient p){
+		System.out.println("ReadAccess");
 		if(this.loggedin == true && activeUser.getRole() == 1){
 			return em.readaccess(p, activeUser);
 		}
 		return false;
 	}
 	public boolean writeAccess(Patient p){
+		System.out.println("WriteAccess");
 		if(this.loggedin == true && activeUser.getRole() == 1){
 			return em.writeaccess(p, activeUser);
 		}
 		return false;
 	}
 	public boolean insertAccess(Patient p){
+		System.out.println("InsertAccess");
 		if(this.loggedin == true && activeUser.getRole() == 1){
 			return em.insertaccess(p, activeUser);
 		}

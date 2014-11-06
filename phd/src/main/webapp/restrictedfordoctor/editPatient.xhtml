@@ -51,7 +51,7 @@
 							</h:selectOneRadio>
 
 							<h:outputLabel>Birthday (dd.mm.yyyy):</h:outputLabel>
-							<h:inputText id="birthday" readonly="#{!(loginController.writeAccess(loginController.activePatient))}" required="true" />t>
+							<h:inputText id="birthday" readonly="#{!(loginController.writeAccess(loginController.activePatient))}" required="true" />
 							
 							<h:outputLabel>Read Accessability</h:outputLabel>
 							<h:selectBooleanCheckbox id="readaccess" readonly="#{!(loginController.writeAccess(loginController.activePatient))}" value="#{loginController.activePatient.readaccess}" />

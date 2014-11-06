@@ -98,19 +98,52 @@ function decryptPersonalData(){
 
 
 var pagenr = 1;
-var pagesize = 2;
+var pagesize = 10;
 var size = 0;
 var patients;
-var patients_f;
+var visiblerows;
 var first = 0;
 
-function decryptPersonalDataForSearch(){
-	var groupKey = sessionStorage.groupKey;
+
+var w;
+var groupKey;
+
+
+function start() {
 	size = document.getElementById("testtable").rows.length - 1;	// -1 because of the header row
+	groupKey = self.sessionStorage.groupKey;
+	var patients = [];
+	for(var i = 0 ; i < size ; i++){
+		var encrypted = document.getElementById("searchform:encdata" + i).value;
+		patients.push(encrypted);
+	}
+	
+	var arr = {size: size, groupKey: groupKey, encryptedData: patients};
+	
+    if(typeof(Worker) !== "undefined") {
+        if(typeof(w) == "undefined") {
+            w = new Worker("/phd/javax.faces.resource/worker.js.xhtml?ln=js");
+            w.postMessage(arr);
+        }
+        w.onmessage = function(event) {
+//        	console.log("Event " + event.data);
+//        	console.log("Data" + event.data["firstname"]);
+//        	document.getElementById("result").value = event.data["firstname"];
+        };
+    } else {
+    	console.log("Web Worker not supported");    
+    }
+}
+
+function decryptPersonalDataForSearch(){
+	size = document.getElementById("testtable").rows.length - 1;	// -1 because of the header row
+	groupKey = self.sessionStorage.groupKey;
 	var firstname;
 	var lastname;
 	var birthday;
 	patients = new Array();
+	visiblerows = new Array();
+	var time1 = new Date().getTime();
 	for(var i = 0 ; i < size ; i++){
 		var encrypted = document.getElementById("searchform:encdata" + i).value;
 		var decrypted = CryptoJS.AES.decrypt(encrypted, groupKey);
@@ -121,25 +154,29 @@ function decryptPersonalDataForSearch(){
 			document.getElementById("searchform:firstname" + i).innerHTML = patients[i].firstname;
 			document.getElementById("searchform:lastname" + i).innerHTML = patients[i].lastname;
 			document.getElementById("searchform:birthday" + i).innerHTML = patients[i].birthday;
+			visiblerows.push(i);
 		}
 	}
-	patients_f = patients;
+	var time2 = new Date().getTime();
+	console.log("TIME direkt: " + (time2 - time1));
+//	patients.sort();		// TODO alphabetisch sortieren
 	display();
 }
 
 
 function filter(){
-	patients_f = new Array();
+	visiblerows = new Array();
 	var filtername = document.getElementById("searchform:filter").value.toLowerCase();
+//	console.log("FILTERING::" + filtername);
 	for(var i = 0 ; i < patients.length ; i++){
 		if((patients[i].firstname.toLowerCase().indexOf(filtername) > -1) ||
 			(patients[i].lastname.toLowerCase().indexOf(filtername) > -1)	){
 			document.getElementById("row" + i).style.display = "inherit";
-//			alert("match: "+ patients[i].firstname  +  patients[i].lastname);
-			patients_f.push(patients[i]);
+//			console.log("match: "+ patients[i].firstname  +  patients[i].lastname);
+			visiblerows.push(i);
 		}else{
 			document.getElementById("row" + i).style.display = "none";
-//			alert("dismatch: "+ patients[i].firstname  +  patients[i].lastname);
+//			console.log("dismatch: "+ patients[i].firstname  +  patients[i].lastname);
 		}
 	}
 	display();
@@ -147,11 +184,11 @@ function filter(){
 }
 
 function display(){
-	for(var i = 0 ; i < patients_f.length ; i ++){
+	for(var i = 0 ; i < visiblerows.length ; i++){
 		if((i >= first) && (i < (first + pagesize))){
-			document.getElementById("row" + i).style.display = "inherit";
+			document.getElementById("row" + visiblerows[i]).style.display = "inherit";
 		} else{
-			document.getElementById("row" + i).style.display = "none";
+			document.getElementById("row" + visiblerows[i]).style.display = "none";
 		}
 	}
 	if(pagenr == 1){
@@ -159,7 +196,7 @@ function display(){
 	} else{
 		document.getElementById("searchform:backward").style.visibility = "visible";
 	}
-	if(pagenr >= patients_f.length/pagesize){
+	if(pagenr >= visiblerows.length/pagesize){
 		document.getElementById("searchform:forward").style.visibility = "hidden";
 	} else{
 		document.getElementById("searchform:forward").style.visibility = "visible";
@@ -180,7 +217,7 @@ function backward(){
 }
 
 function forward(){
-	if(pagenr < patients_f.length/pagesize){
+	if(pagenr < visiblerows.length/pagesize){
 		pagenr++;
 		first = first + pagesize;
 		document.getElementById("searchform:pagenumber").innerHTML = pagenr;

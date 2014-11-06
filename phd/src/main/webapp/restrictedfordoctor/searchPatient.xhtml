@@ -21,6 +21,7 @@
 					<h:outputScript library="js" name="validate_patient.js" />
 					
 					<h:form id="searchform">
+										
 						<div id="filter">
 							<h:inputText id="filter"></h:inputText>
 							<h:commandButton onclick="return filter();" value="Filter Patient">
@@ -121,6 +122,15 @@
 				</div>
 			</div>
 			
+			
+
+			
+			<div id="result">test</div>
+
+			<h:outputScript type="text/javascript">
+			    start();
+     		</h:outputScript>
+
 			<h:outputScript type="text/javascript">
 			    decryptPersonalDataForSearch();
      		</h:outputScript>

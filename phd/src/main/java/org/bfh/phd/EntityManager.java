@@ -43,7 +43,7 @@ public class EntityManager implements IEntityManager {
 	private PreparedStatement pst = null;
 	private ResultSet rs = null;
 	
-	private PaginatorPatient paginatorPatient = new PaginatorPatient();
+//	private PaginatorPatient paginatorPatient = new PaginatorPatient();
 	private PaginatorPatientData paginatorPatientData = new PaginatorPatientData();
 	private PaginatorGroup paginatorGroup = new PaginatorGroup();
 
@@ -482,7 +482,7 @@ public class EntityManager implements IEntityManager {
 				}		
 			}
 		}
-		paginatorPatient.setSize(patient.size());
+//		paginatorPatient.setSize(patient.size());
 		return patient;
 	}
 	
@@ -1060,13 +1060,13 @@ public class EntityManager implements IEntityManager {
 		}
 	}
 	
-	public PaginatorPatient getPaginatorPatient() {
-		return paginatorPatient;
-	}
-
-	public void setPaginatorPatient(PaginatorPatient p) {
-		this.paginatorPatient = p;
-	}
+//	public PaginatorPatient getPaginatorPatient() {
+//		return paginatorPatient;
+//	}
+//
+//	public void setPaginatorPatient(PaginatorPatient p) {
+//		this.paginatorPatient = p;
+//	}
 
 	public PaginatorPatientData getPaginatorPatientData() {
 		return paginatorPatientData;
@@ -1166,7 +1166,8 @@ public class EntityManager implements IEntityManager {
 			pst.setString(1, d.getName());
 			pst.execute();
 			rs = pst.getResultSet();
-			if(rs.next()) {		// Department already exists
+			if(rs.next()) {
+				// Department already exists
 			} else {
 				pst = con.prepareStatement(stm2, Statement.RETURN_GENERATED_KEYS);
 				pst.setString(1, d.getName());
@@ -1201,14 +1202,15 @@ public class EntityManager implements IEntityManager {
 			pst.setString(1, name);
 			pst.execute();
 			rs = pst.getResultSet();
-			if(rs.next()) {		// Department already exists
+			if(rs.next()) {
 				pst = con.prepareStatement(stm3);
 				pst.setInt(1, rs.getInt("department_id"));
 				pst.setInt(2, s.getId());
 				pst.setString(3, "false");
-//				pst.setString(4, "encryptedKey");	// not necessary yet
+//				pst.setString(4, "encryptedKey");	// Not necessary yet, written in activation process
 				pst.executeUpdate();
 			} else {
+				// Department does not exist
 			}
 			close();
 		} catch (SQLException e) {

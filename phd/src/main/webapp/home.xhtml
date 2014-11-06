@@ -21,6 +21,7 @@
 					<h:outputScript library="js" name="validate_login.js" />			
 				
 					<h:form id="loginform" onsubmit="return validation();">
+												
 						<h:panelGrid columns="2" rendered="#{!loginController.loggedin}">
 							<h:outputLabel for="name">Username</h:outputLabel>
 							<h:inputText id="name" value="#{staff.name}" />

@@ -19,7 +19,10 @@
 				
 					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
 					<h:outputScript library="js" name="test.js" />
+					<div id="result">
 					
+					
+					</div>
 					<h:form id="searchform">
 						<div id="filter">
 							<h:inputText id="filter"></h:inputText>
@@ -36,7 +39,7 @@
 							</tr>
 							<c:forEach varStatus="status" items="#{loginController.searchPatient()}" var="patients">
 								<tr id="row#{status.index}">
-									<td class="table-column-id"><h:outputLabel>#{patients.patientid}</h:outputLabel></td>
+									<td class="table-column-id"><h:outputLabel id="id#{status.index}">#{patients.patientid}</h:outputLabel></td>
 									<td><h:outputLabel id="firstname#{status.index}"/></td>
 									<td><h:outputLabel id="lastname#{status.index}"/></td>
 									<td><h:outputLabel id="birthday#{status.index}" /></td>
