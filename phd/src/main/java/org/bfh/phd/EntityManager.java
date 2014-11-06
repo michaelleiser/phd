@@ -69,7 +69,7 @@ public class EntityManager implements IEntityManager {
 		initQuestionTyp();
 		initOperationTyp();
 		initTyp();
-
+	}
 	
 	public static EntityManager em(){
 		return em;
