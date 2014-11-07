@@ -7,13 +7,12 @@ Activate Deactivate bzw login nach registernew geht erst nach einem ein auslogge
 diverse filter für statistiker seite
 gehört statistiker überhautp einem department an ? eigentlich nicht nötig.
 
-encryption with web workers, async javascripts
-
 sortieren staff in mod group, 
 sortieren patietn in search patient
 
 autologout nach 10 min
 
+logincontroller, variablen NICHT static!?!
 
 
 datenbank automatisch füllen

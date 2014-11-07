@@ -28,58 +28,55 @@
 							</h:commandButton>
 						</div>
 						<div id="table">
-						<h:dataTable first="#{entityManager.getPaginatorGroup().first}"
-							id="outputMessage"
-							rows="#{entityManager.getPaginatorGroup().pagesize}"
-							value="#{loginController.searchStaffInGroup(input1.value)}"
-							var="staffs" headerClass="table-header"
-							rowClasses="table-odd-row,table-even-row"
-							columnClasses="table-column-id,table-column-data,table-column-button">
+							<h:dataTable first="#{entityManager.getPaginatorGroup().first}"
+								id="outputMessage"
+								rows="#{entityManager.getPaginatorGroup().pagesize}"
+								value="#{loginController.searchStaffInGroup(input1.value)}"
+								var="staffs" 
+								headerClass="table-header"
+								rowClasses="table-odd-row,table-even-row"
+								columnClasses="table-column-id,table-column-data,table-column-button">
 
-							<h:column>
-								<f:facet name="header">ID</f:facet>
-								<h:outputLabel>#{staffs.id}</h:outputLabel>
-							</h:column>
-							<h:column>
-								<f:facet name="header">Name</f:facet>
-								<h:outputLabel>#{staffs.name}</h:outputLabel>
-							</h:column>
-
-							<h:column>
-								<h:commandButton id="act" rendered="#{!staffs.getActivated()}" onclick="return encryptGroupKey(this);"
-									value="Activate" action="#{loginController.activateStaff(staffs, inputsecret.value)}" />
-								<h:commandButton id="deact" rendered="#{staffs.getActivated()}" 
-									value="Deactivate" action="#{loginController.deactivateStaff(staffs)}" />
-							</h:column>
+								<h:column>
+									<f:facet name="header">ID</f:facet>
+									<h:outputLabel>#{staffs.id}</h:outputLabel>
+								</h:column>
+								<h:column>
+									<f:facet name="header">Name</f:facet>
+									<h:outputLabel>#{staffs.name}</h:outputLabel>
+								</h:column>
+	
+								<h:column>
+									<h:commandButton action="#{loginController.activateStaff(staffs, inputsecret.value)}"
+										id="act" 
+										onclick="return encryptGroupKey(this);"
+										rendered="#{!staffs.getActivated()}" 
+										value="Activate" />
+									<h:commandButton action="#{loginController.deactivateStaff(staffs)}"
+										id="deact" 
+										rendered="#{staffs.getActivated()}" 
+										value="Deactivate" />
+								</h:column>
 							
-							<h:column>
-								<h:inputText id="publicKey" value="#{staffs.publicKey}" />
-							</h:column>
-							
-							<h:column>
-								<h:inputText binding="#{inputsecret}" id="encsecret" />
-							</h:column>
+								<h:inputHidden id="publicKey" value="#{staffs.publicKey}" />
+								<h:inputHidden binding="#{inputsecret}" id="encsecret" />
 
-							<f:facet name="footer">
-								<h:panelGroup>
-									<h:commandButton
-										rendered="#{entityManager.getPaginatorGroup().hasPrevious()}"
-										action="#{entityManager.getPaginatorGroup().backward}"
-										value="&lt;&lt; Page #{entityManager.getPaginatorGroup().pagenr - 1}" />
-									<h:outputLabel
-										value="Page #{entityManager.getPaginatorGroup().pagenr}" />
-									<h:commandButton
-										rendered="#{entityManager.getPaginatorGroup().hasNext()}"
-										action="#{entityManager.getPaginatorGroup().forward}"
-										value="Page #{entityManager.getPaginatorGroup().pagenr + 1} &gt;&gt;" />
-								</h:panelGroup>
-							</f:facet>
-						</h:dataTable>
+								<f:facet name="footer">
+									<h:panelGroup>
+										<h:commandButton action="#{entityManager.getPaginatorGroup().backward}"
+											rendered="#{entityManager.getPaginatorGroup().hasPrevious()}"
+											value="&lt;&lt; Page #{entityManager.getPaginatorGroup().pagenr - 1}" />
+										<h:outputLabel
+											value="Page #{entityManager.getPaginatorGroup().pagenr}" />
+										<h:commandButton action="#{entityManager.getPaginatorGroup().forward}"
+											rendered="#{entityManager.getPaginatorGroup().hasNext()}"	
+											value="Page #{entityManager.getPaginatorGroup().pagenr + 1} &gt;&gt;" />
+									</h:panelGroup>
+								</f:facet>
+							</h:dataTable>
 						</div>
 					</h:form>
 				</div>
-
-
 			</div>
 		</ui:define>
 	</ui:composition>

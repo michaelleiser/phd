@@ -2,25 +2,16 @@ var i = 0;
 var size;
 var groupKey;
 var encryptedData;
-var time1;
-var time2;
 
 function decryptPatientData() {
 	
 	if((size !== "undefined") && (i < size)){
-		if(i == 0){
-			time1 = new Date().getTime();
-		}
-		var decrypted = CryptoJS.AES.decrypt(encryptedData[i], groupKey);
+		var decrypted = CryptoJS.AES.decrypt(encryptedData[i].data, groupKey);
 		if(decrypted != ""){
 			var json = decrypted.toString(CryptoJS.enc.Utf8);
-			var myobj = JSON.parse(json);
-			var obj = [encryptedData[i], myobj];
+			var patient = JSON.parse(json);
+			var obj = {row:encryptedData[i].row, data:patient};
 		    postMessage(obj);
-		}
-		if(i == size - 1){
-			time2 = new Date().getTime();
-			console.log("TIme work" + (time2 - time1));	// TODO just testing
 		}
 		i++;
 	}
@@ -29,10 +20,10 @@ function decryptPatientData() {
 
 decryptPatientData(); 
 
-onmessage = function(e){
-	size = e.data.size;
-	groupKey = e.data.groupKey;
-	encryptedData = e.data.encryptedData;
+onmessage = function(evt){
+	size = evt.data.size;
+	groupKey = evt.data.groupKey;
+	encryptedData = evt.data.encryptedData;
 }
 
 

@@ -17,9 +17,7 @@ function getSessionKeys() {
             var plaintext = decrypted.toString(CryptoJS.enc.Utf8);
 //            alert(plaintext);
             
-            sessionStorage.privateKey = plaintext;
-            
-            
+            sessionStorage.privateKey = plaintext; 
             
         	var ciphertext = document.getElementById("sessionkeysid:group").value;
         	var crypt = new JSEncrypt();

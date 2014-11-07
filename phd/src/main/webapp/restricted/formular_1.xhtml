@@ -14,9 +14,16 @@
 			<h1>
 				<h:outputText value="#{msg['formular']}" />
 			</h1>
-			<h2>Formular new Patient data #{loginController.activePatient}</h2>
+			<h2>
+				<h:outputLabel id="firstname"></h:outputLabel>
+				<h:outputLabel id="lastname"></h:outputLabel>
+				<h:outputLabel id="birthday"></h:outputLabel>
+			</h2>
 			
-			<h:form>
+			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
+			<h:outputScript library="js" name="validate_patient.js" />
+	
+			<h:form id="formularform">
 				<h:outputLabel>Operation</h:outputLabel><br />
 				<h:selectOneMenu onchange="submit()" value="#{quest.questselected}" actionListener="#{quest.questChanged}">
 					<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
@@ -52,8 +59,16 @@
 				</c:forEach>
 				<ui:fragment rendered="#{not empty quest.questselected}" >			
 				<h:commandButton actionListener="#{elbow.safe(LoginController)}" value="Safe"></h:commandButton>
-				</ui:fragment>	
-			</h:form>			
+				</ui:fragment>
+				
+				<h:inputHidden id="encryptedPersonalData" value="#{loginController.activePatient.personalData}"/>
+				
+			</h:form>
+			
+			<h:outputScript type="text/javascript">
+			    decryptPersonalDataForFormular();
+     		</h:outputScript>
+     					
 		</ui:define>
 	</ui:composition>
 
