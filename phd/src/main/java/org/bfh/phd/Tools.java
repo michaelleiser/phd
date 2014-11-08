@@ -1,6 +1,11 @@
 package org.bfh.phd;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.Properties;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -46,6 +51,44 @@ public void incQuestions() {
 public void decQuestions(){
 	this.questions--;
 }
+
+public String getLogPath(){
+Properties prop = new Properties();
+String propFile = "config.properties";
+InputStream input = Patient.class.getClassLoader().getResourceAsStream(propFile);
+try {
+	prop.load(input);
+} catch (IOException e1) {
+	e1.printStackTrace();
+}
+String path = prop.getProperty("LOGPATH");
+System.out.println(path);
+return path;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

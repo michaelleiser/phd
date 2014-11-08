@@ -9,14 +9,10 @@ import java.util.Map;
 
 import javax.sound.midi.SysexMessage;
 
-import org.bfh.phd.questionary.Answer;
 import org.bfh.phd.questionary.AnswerCheckbox;
 import org.bfh.phd.questionary.AnswerRadioButton;
 import org.bfh.phd.questionary.AnswerString;
-import org.bfh.phd.questionary.Knee;
-import org.bfh.phd.questionary.Question;
 import org.bfh.phd.questionary.QuestionString;
-import org.bfh.phd.questionary.Questionnair;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,25 +30,22 @@ public class TestEntityManager{
 	public void after(){
 	}
 	
-	@Test
-	public void testInsertNewAnswer(){
-		int a = 0,b = 0,c = 0;
-		try {
-			a = em.insertAnswer("test");
-			b = em.insertAnswer("aha");
-			c = em.insertAnswer("test");
-			System.out.println(a);
-			System.out.println(b); 
-			System.out.println(c);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			assertEquals(a, 1);
-			assertEquals(b, 2);
-			assertEquals(c, 1);
-		}
-	}
+//	@Test
+//	public void testInsertNewAnswer(){
+//		int a = 0,b = 0,c = 0;
+//		try {
+//			a = em.insertAnswer("test");
+//			b = em.insertAnswer("aha");
+//			c = em.insertAnswer("test");
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}finally{
+//			assertEquals(a, 1);
+//			assertEquals(b, 2);
+//			assertEquals(c, 1);
+//		}
+//	}
 //
 //	@Test
 //	public void getTemplate(){

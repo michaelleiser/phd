@@ -1,5 +1,7 @@
 package org.bfh.phd.questionary;
 
+import org.bfh.phd.interfaces.Answer;
+
 public class AnswerRadioButton implements Answer<String, String> {
 	
 	private String answer = "";

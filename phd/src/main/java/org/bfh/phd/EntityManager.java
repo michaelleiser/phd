@@ -1,5 +1,6 @@
 package org.bfh.phd;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.util.Date;
 import java.sql.PreparedStatement;
@@ -16,18 +17,17 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
+import org.bfh.phd.interfaces.Answer;
 import org.bfh.phd.interfaces.IEntityManager;
-import org.bfh.phd.questionary.Answer;
+import org.bfh.phd.interfaces.Question;
 import org.bfh.phd.questionary.AnswerCheckbox;
 import org.bfh.phd.questionary.AnswerRadioButton;
 import org.bfh.phd.questionary.AnswerString;
 import org.bfh.phd.questionary.Elbow;
-import org.bfh.phd.questionary.Knee;
-import org.bfh.phd.questionary.Question;
 import org.bfh.phd.questionary.QuestionCheckbox;
 import org.bfh.phd.questionary.QuestionRadioButton;
 import org.bfh.phd.questionary.QuestionString;
-import org.bfh.phd.questionary.Questionnair;
+import org.bfh.phd.questionary.QuestionnairTools;
 
 @ManagedBean(name = "entityManager", eager = true)
 @SessionScoped
@@ -466,16 +466,16 @@ public class EntityManager implements IEntityManager {
 		this.patientdata = patientdatas;
 	}
 
-	public List<org.bfh.phd.Questionnair> searchQuestionnaris(int id) {
+	public List<Questionnari> searchQuestionnaris(int id) {
 		init();
-		ArrayList<org.bfh.phd.Questionnair> questionnaris = new ArrayList<org.bfh.phd.Questionnair>(); 
+		ArrayList<Questionnari> questionnaris = new ArrayList<Questionnari>(); 
 		String stm1 = "SELECT * FROM quest LEFT JOIN op ON quest.op_id = op.id WHERE patient_id=" + id + ";" ;
 		try {
 			pst = con.prepareStatement(stm1);
 			pst.execute();
 			rs = pst.getResultSet();
 			while (rs.next()) {
-					org.bfh.phd.Questionnair q = new org.bfh.phd.Questionnair();
+					Questionnari q = new Questionnari();
 					q.setDate(rs.getDate("date"));
 					q.setOp(rs.getString("opart"));
 					q.setId(rs.getInt("quest_id"));
@@ -828,94 +828,94 @@ public class EntityManager implements IEntityManager {
 		return elbowlist;
 	}
 
-	public List<Knee> searchPatientData3(String op) {
-		System.out.println("knee");
-		List<Knee> kneelist = new ArrayList<Knee>();
-		init();
-		String stm = "SELECT * FROM knee_answer;";
-		try {
-			pst = con.prepareStatement(stm);
-//			pst.setString(1, operation);
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				List<Answer> answerlist = new ArrayList<Answer>();
-				Knee e = new Knee();
-				Answer a1 = new AnswerString();
-				a1.addAnswer(rs.getString("answer1"));
-				Answer a2 = new AnswerString();
-				a2.addAnswer(rs.getString("answer2"));
-				Answer a3 = new AnswerString();
-				a3.addAnswer(rs.getString("answer3"));
-				Answer a4 = new AnswerString();
-				a4.addAnswer(rs.getString("answer4"));
-				Answer a5 = new AnswerString();
-				a5.addAnswer(rs.getString("answer5"));
-
-				answerlist.add(a1);
-				answerlist.add(a2);
-				answerlist.add(a3);
-				answerlist.add(a4);
-				answerlist.add(a5);
-				e.setAnswers(answerlist);
-				System.out.println("->" + e.getAnswers());
-				
-				kneelist.add(e);
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		System.out.println(kneelist);
-		return kneelist;
-	}
-
-	public List<Knee> getAnswers(String quest) {
-		List<Knee> knees = new ArrayList<Knee>();
-		List<Question> questions = this.getQuestions(quest);
-		List<Answer> answers = new ArrayList<Answer>();
-		init();
-		String stm = "SELECT * FROM " + quest + "_answer;";
-		try {
-			pst = con.prepareStatement(stm);
-//			pst.setInt(1, id);
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				for(int i = 0; i < questions.size(); i++){
-					Answer a = null;
-					String type = questions.get(i).getType();
-					if(type.equals("String")){
-						String s = rs.getString(i+2);
-						a = new AnswerString();
-						a.setAnswer(s);
-					} else if(type.equals("RadioButton")){
-						String s = rs.getString(i+2);
-						a = new AnswerRadioButton();
-						a.addAnswer(s);
-					} else if(type.equals("Checkbox")){
-						String s = rs.getString(i+2);
-						a = new AnswerCheckbox();
-						a.addAnswer(s);
-					} else {
-					
-					}
-					answers.add(a);
-				}
-				Knee k = new Knee();
-				k.setAnswers(answers);
-				knees.add(k);
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		return knees;
-	}
+//	public List<Knee> searchPatientData3(String op) {
+//		System.out.println("knee");
+//		List<Knee> kneelist = new ArrayList<Knee>();
+//		init();
+//		String stm = "SELECT * FROM knee_answer;";
+//		try {
+//			pst = con.prepareStatement(stm);
+////			pst.setString(1, operation);
+//			pst.execute();
+//			rs = pst.getResultSet();
+//			while (rs.next()) {
+//				List<Answer> answerlist = new ArrayList<Answer>();
+//				Knee e = new Knee();
+//				Answer a1 = new AnswerString();
+//				a1.addAnswer(rs.getString("answer1"));
+//				Answer a2 = new AnswerString();
+//				a2.addAnswer(rs.getString("answer2"));
+//				Answer a3 = new AnswerString();
+//				a3.addAnswer(rs.getString("answer3"));
+//				Answer a4 = new AnswerString();
+//				a4.addAnswer(rs.getString("answer4"));
+//				Answer a5 = new AnswerString();
+//				a5.addAnswer(rs.getString("answer5"));
+//
+//				answerlist.add(a1);
+//				answerlist.add(a2);
+//				answerlist.add(a3);
+//				answerlist.add(a4);
+//				answerlist.add(a5);
+//				e.setAnswers(answerlist);
+//				System.out.println("->" + e.getAnswers());
+//				
+//				kneelist.add(e);
+//			}
+//			close();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			close();
+//		}
+//		System.out.println(kneelist);
+//		return kneelist;
+//	}
+//
+//	public List<Knee> getAnswers(String quest) {
+//		List<Knee> knees = new ArrayList<Knee>();
+//		List<Question> questions = this.getQuestions(quest);
+//		List<Answer> answers = new ArrayList<Answer>();
+//		init();
+//		String stm = "SELECT * FROM " + quest + "_answer;";
+//		try {
+//			pst = con.prepareStatement(stm);
+////			pst.setInt(1, id);
+//			pst.execute();
+//			rs = pst.getResultSet();
+//			while (rs.next()) {
+//				for(int i = 0; i < questions.size(); i++){
+//					Answer a = null;
+//					String type = questions.get(i).getType();
+//					if(type.equals("String")){
+//						String s = rs.getString(i+2);
+//						a = new AnswerString();
+//						a.setAnswer(s);
+//					} else if(type.equals("RadioButton")){
+//						String s = rs.getString(i+2);
+//						a = new AnswerRadioButton();
+//						a.addAnswer(s);
+//					} else if(type.equals("Checkbox")){
+//						String s = rs.getString(i+2);
+//						a = new AnswerCheckbox();
+//						a.addAnswer(s);
+//					} else {
+//					
+//					}
+//					answers.add(a);
+//				}
+//				Knee k = new Knee();
+//				k.setAnswers(answers);
+//				knees.add(k);
+//			}
+//			close();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			close();
+//		}
+//		return knees;
+//	}
 
 	
 	private void initStaff() {
@@ -1488,10 +1488,9 @@ public class EntityManager implements IEntityManager {
 		return map;
 	}
 	
-	public List<org.bfh.phd.questionary.Questionnair> getTemplate(String name){
-		
+	public List<QuestionnairTools> getTemplate(String name){
 		init();
-		List<org.bfh.phd.questionary.Questionnair> quest = new ArrayList<org.bfh.phd.questionary.Questionnair>();
+		List<QuestionnairTools> quest = new ArrayList<QuestionnairTools>();
 		String stm = "SELECT fragenr, q.id, name, pos_id, question, typ FROM q_template t  join q_template_name n On n.id=t.id join question2 q On t.question_id=q.id join q_typ ty On q.type_id=ty.id WHERE name = ? ORDER BY fragenr;";
 		try {
 			pst = con.prepareStatement(stm);
@@ -1500,7 +1499,7 @@ public class EntityManager implements IEntityManager {
 			rs = pst.getResultSet();
 				while (rs.next()) {
 					System.out.println();
-					org.bfh.phd.questionary.Questionnair q = new org.bfh.phd.questionary.Questionnair();
+					QuestionnairTools q = new QuestionnairTools();
 					q.setId(rs.getInt("fragenr"));
 					q.setDbId(rs.getInt("id"));
 					q.setQuestion(rs.getString("question"));
@@ -1527,7 +1526,7 @@ public class EntityManager implements IEntityManager {
 		}
 	}
 
-	public void deletTemplateQuestion(org.bfh.phd.questionary.Questionnair q) throws SQLException{
+	public void deletTemplateQuestion(QuestionnairTools q) throws SQLException{
 		init();
 		String stm = "DELETE FROM question2 WHERE id=?;";
 		if(q.getType()!="String"){
@@ -1563,7 +1562,7 @@ public class EntityManager implements IEntityManager {
 		close();
 	}
 
-	public void editQuestion(Questionnair q) throws SQLException {
+	public void editQuestion(QuestionnairTools q) throws SQLException {
 		init();
 		String stm = "UPDATE question2 SET question=? WHERE id=?;";
 		String stm1 = "SELECT pos_id FROM question2 WHERE id=?;";
@@ -1691,6 +1690,16 @@ public class EntityManager implements IEntityManager {
 			}
 		}
 		return i;
+	}
+
+	public void setExeption(SecurityException e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setExeption(IOException e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
