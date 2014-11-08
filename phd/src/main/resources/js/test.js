@@ -1,5 +1,5 @@
 var dbname = "test";
-var dbversion = 3;
+var dbversion = 5;
 var db;
 var request;
 
@@ -154,7 +154,7 @@ function initdb() {
 	
 	console.log("init start");
 	var groupKey = sessionStorage.groupKey;
-	size = document.getElementById("testtable").rows.length - 1;	// -1 because of the header row
+	size = document.getElementById("patienttable").rows.length - 1;	// -1 because of the header row
 	
 	request = indexedDB.open(dbname, dbversion);
 	request.onupgradeneeded = function(){
@@ -168,6 +168,7 @@ function initdb() {
 			store.createIndex("id", "id", {unique:true});
 			store.createIndex("firstname", "firstname", {unique:false});
 			store.createIndex("lastname", "lastname", {unique:false});
+			store.createIndex("birthday", "birthday", {unique:false});
 		}
 	};
 
@@ -183,9 +184,9 @@ function initdb() {
 			if(decrypted != ""){
 				var json = decrypted.toString(CryptoJS.enc.Utf8);
 				var myobj = JSON.parse(json);
-				var item = { id: document.getElementById("searchform:id"+i).innerHTML, firstname: myobj["firstname"], lastname: myobj["lastname"] };
+				var item = {row: i, id: document.getElementById("searchform:id"+i).innerHTML, firstname: myobj["firstname"], lastname: myobj["lastname"] };
 				var request = store.put(item);
-				console.log("put " + item);
+//				console.log("put " + item);
 			}
 		}
 		var time2 = new Date().getTime();
@@ -199,20 +200,48 @@ function initdb() {
 		var cursorRequest1 = store1.openCursor(range1);
 		cursorRequest1.onsuccess = function(evt){;
 			var result = evt.target.result;
-			if(result){
+			if(result){				
 				var row = document.createElement("tr");
+				var col0 = document.createElement("td");
+				col0.innerHTML = result.value.row;
+				row.appendChild(col0);
+
 				var col1 = document.createElement("td");
 				col1.innerHTML = result.value.id;
 				row.appendChild(col1);
+				
 				var col2 = document.createElement("td");
 				col2.innerHTML = result.value.firstname;
 				row.appendChild(col2);
+								
 				var col3 = document.createElement("td");
 				col3.innerHTML = result.value.lastname;
 				row.appendChild(col3);
-				table.appendChild(row);
 				
-				console.log("Found entry " + result.value.id + result.value.firstname + result.value.lastname);
+				var col4 = document.createElement("td");
+				col4.innerHTML = result.value.birthday;
+				row.appendChild(col4);
+				
+				var col5 = document.createElement("td");
+				var btn1 = document.createElement("BUTTON");
+				btn1.innerHTML = "Edit Pat";
+				col5.appendChild(btn1);
+				row.appendChild(col5);
+
+				var col6 = document.createElement("td");
+				var div = document.createElement("div");
+				div.innerHTML = "<input type='button' value='pat data' />";
+				col6.appendChild(div);
+				row.appendChild(col6);
+				
+				
+				table.appendChild(row);	
+				
+				document.getElementById("searchform:firstname" + result.value.row).innerHTML = result.value.firstname;
+				document.getElementById("searchform:lastname" + result.value.row).innerHTML = result.value.lastname;
+				document.getElementById("searchform:birthday" + result.value.row).innerHTML = result.value.birthday;
+
+//				console.log("Found entry " + result.value.id + result.value.firstname + result.value.lastname);
 				result.continue();
 			}
 		};

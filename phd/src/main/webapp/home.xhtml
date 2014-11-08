@@ -24,7 +24,7 @@
 												
 						<h:panelGrid columns="2" rendered="#{!loginController.loggedin}">
 							<h:outputLabel for="name">Username</h:outputLabel>
-							<h:inputText id="name" value="#{staff.name}" />
+							<h:inputText id="name" binding="#{name}"/>
 							<h:outputLabel for="password">Password</h:outputLabel>
 							<h:inputSecret id="password" />
 							<h:outputLabel for="department">Department</h:outputLabel>
@@ -33,14 +33,14 @@
 								<f:selectItems value="#{loginController.departments}" var="c" itemValue="#{c}" itemLabel="#{c.name}"/>
 							</h:selectOneMenu>	
 							<h:outputLabel />
-							<h:commandButton action="#{staff.login}" value="Login" />
+							<h:commandButton action="#{loginController.login(name.value, password.value)}" value="Login" />
 						</h:panelGrid>
 						<!-- could be deleted -->
 						<h:outputLabel rendered="#{loginController.loggedin}">You are logged in as #{staff.name}</h:outputLabel>
 						<h:commandButton action="#{loginController.logout}" id="button"
 							rendered="#{loginController.loggedin}" value="Logout" />
 							
-						<h:inputHidden id="hashedpassword" value="#{staff.password}"/>
+						<h:inputHidden id="hashedpassword" binding="#{password}"/>
 							
 					</h:form>
 				</div>

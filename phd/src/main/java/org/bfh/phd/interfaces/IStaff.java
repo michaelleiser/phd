@@ -78,21 +78,4 @@ public interface IStaff {
 	 */
 	public void setPrivateKey(String privateKey);	
 	
-	/**
-	 * @return
-	 */
-	public String login();
-
-	/**
-	 * @return
-	 */
-	public String registernew();
-
-	/**
-	 * @param d
-	 * @param key
-	 * @return
-	 */
-	public String registernewWithDepartment(Department d, String key);
-
 }

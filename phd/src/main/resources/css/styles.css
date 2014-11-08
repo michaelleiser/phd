@@ -129,3 +129,6 @@ div#table{
 	background-color: #eeeeee;
 	padding: 5px 5px 5px 5px;
 }
+.table-column-hidden {
+	background-color: #eeeeee;
+}

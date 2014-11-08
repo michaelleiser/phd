@@ -35,7 +35,7 @@
 								var="staffs" 
 								headerClass="table-header"
 								rowClasses="table-odd-row,table-even-row"
-								columnClasses="table-column-id,table-column-data,table-column-button">
+								columnClasses="table-column-id,table-column-data,table-column-button,table-column-hidden,table-column-hidden">
 
 								<h:column>
 									<f:facet name="header">ID</f:facet>
@@ -57,10 +57,13 @@
 										rendered="#{staffs.getActivated()}" 
 										value="Deactivate" />
 								</h:column>
-							
-								<h:inputHidden id="publicKey" value="#{staffs.publicKey}" />
-								<h:inputHidden binding="#{inputsecret}" id="encsecret" />
-
+								<h:column>
+									<h:inputHidden id="publicKey" value="#{staffs.publicKey}" />
+								</h:column>
+								<h:column>
+									<h:inputHidden binding="#{inputsecret}" id="encsecret" />
+								</h:column>
+								
 								<f:facet name="footer">
 									<h:panelGroup>
 										<h:commandButton action="#{entityManager.getPaginatorGroup().backward}"

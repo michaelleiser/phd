@@ -5,10 +5,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
@@ -24,9 +22,9 @@ import org.bfh.phd.questionary.Questionnair;
 public class LoginController implements Serializable, ILoginController{
 
 	private static final long serialVersionUID = 1L;
-	private static boolean loggedin = false;
-	
-	private static Staff activeUser;
+	private boolean loggedin = false;
+
+	private Staff activeUser;
 	private Patient activePatient;
 	private PatientData activePatientData;
 	private int questionnaireId;
@@ -35,7 +33,7 @@ public class LoginController implements Serializable, ILoginController{
 
 	private Date to;
 	private EntityManager em;
-	
+
 	//----- Methods----
 	
 	public LoginController() {
@@ -109,7 +107,7 @@ public class LoginController implements Serializable, ILoginController{
 		}
 		return "/home?faces-redirect=true";
 	}
-	public String registernew(Staff s, Department d, String key) {
+	public String registernewWithDepartment(Staff s, Department d, String key) {
 		System.out.println("REGISTER NEW");
 		if(!em.getDepartments().contains(d)){
 			boolean activated = true;
@@ -427,10 +425,8 @@ public class LoginController implements Serializable, ILoginController{
 //
 //	private String in;
 	
-	
-	
-	// TODO wenns geht nicht static !!
-	private static String departmentselected;
+
+	private String departmentselected;
 	
 	public List<Department> getDepartments(){
 		return new EntityManager().getDepartments();
@@ -449,9 +445,8 @@ public class LoginController implements Serializable, ILoginController{
 			}
 		}
 	}
-	
-	// TODO wenns geht nicht static !!
-	private static Department_Has_Staff activeDepartment_Has_Staff;
+
+	private Department_Has_Staff activeDepartment_Has_Staff;
 	public Department_Has_Staff getDepartment_Has_Staff(){
 		return this.activeDepartment_Has_Staff;
 	}
@@ -532,10 +527,6 @@ public class LoginController implements Serializable, ILoginController{
 		em.addAnswer(activePatient, a, questionnaireId);
 	}
 
-
-
-
-
 	
 //	String pub = "-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSCF1HymTdYHQAoBcBmvt/dRbcevoqV1RlEIryp+R95pBhA3tqZv8Qv6w3AyFi0DPrquREc6bUywCZ7sJE7JstQOP3ETSDxSvqtvGTaogtll7icgxTexA+sLt28E7E4TIcvZqXweQ8XneW62yDDlk5yhcG9xTZT1289d66YbvH7wIDAQAB-----END PUBLIC KEY-----";
 //	String priv = "-----BEGIN RSA PRIVATE KEY-----MIICWwIBAAKBgQCSCF1HymTdYHQAoBcBmvt/dRbcevoqV1RlEIryp+R95pBhA3tqZv8Qv6w3AyFi0DPrquREc6bUywCZ7sJE7JstQOP3ETSDxSvqtvGTaogtll7icgxTexA+sLt28E7E4TIcvZqXweQ8XneW62yDDlk5yhcG9xTZT1289d66YbvH7wIDAQABAoGAPcTt9/TjT0SCLNWKhbJRmSsk3WPjN0+zMgCaVWOw4ZRKE88OQAaK80GwDaD0WUCqBZBGd7HXqoCno3T7lX3jcNBDPr4D88BwyDLpmQgkPk5qCQ3pgwQYOaXsEYnA9Apr6VZtdBqjO3u94oiuWGv1XYdEgfWF6BysEE0nDbD7/OkCQQDDFZDdYFZh+OQn97Wc2CmI3BaLWHikxXUJ/I093YQKZRO26opKW29ZQMDjvGaMitIoxSh6gCp2TfU23JyYgMM1AkEAv6HEW91lVoYuBZ5NmnDRQ51qk0dYf+qGlhkPOq4TeVET5tRNxxuy7D+6CK1bwQCjVkbgo1mcYc0DKUxk1r5/EwJAUTgoUNJsBGwP6UfrF7qzSCSBSlByIf+HY7n+v9P6xi0g0RXCr4Rzzk/0PpxQgZDGQG0dFitIAmsgfU/J7oAlRQJAKrhTX+9hMgLDq7j4r99Kp3omUiLrlcigrEF15az85mSuvRzDIgoIvyYNwPV0qPgNcaRnW8MUW7EqbUB8kmrxRQJAM1VdxBYVlZfKo/iAHaiziQcax27VA7p12N7+xp4lJLGInK5YYdGJrkNE04BBZiYtfWBSPseuFET95RMS56iWVQ==-----END RSA PRIVATE KEY-----";
@@ -553,5 +544,13 @@ public class LoginController implements Serializable, ILoginController{
 ////		String plaintext = CopyOfRSA.decrypt(ciphertext, privateKey);
 ////		return null;
 ////	}
+	
+	public Staff getActiveUser(){
+		return this.activeUser;
+	}
+	
+	public void setActiveUser(Staff s){
+		this.activeUser = s;
+	}
 	
 }

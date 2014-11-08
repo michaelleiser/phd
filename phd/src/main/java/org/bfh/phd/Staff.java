@@ -1,12 +1,12 @@
 package org.bfh.phd;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.RequestScoped;
 
 import org.bfh.phd.interfaces.IStaff;
 
 @ManagedBean(name = "staff", eager = true)
-@SessionScoped
+@RequestScoped
 public class Staff implements IStaff{
 	
 	private int id;
@@ -96,24 +96,6 @@ public class Staff implements IStaff{
 	public void setPrivateKey(String privateKey) {
 		this.privateKey = privateKey;
 	}
-
-	@Override
-	public String login() {	
-		return new LoginController().login(this.name, this.password);
-	}
-
-	@Override
-	public String registernew(){
-		return new LoginController().registernew(this);
-	}
-
-	@Override
-	public String registernewWithDepartment(Department d, String key){
-		return new LoginController().registernew(this, d, key);
-	}
-
-	
-	
 	
 	@Override
 	public int hashCode() {
@@ -139,6 +121,5 @@ public class Staff implements IStaff{
 			return false;
 		return true;
 	}
-	
 	
 }

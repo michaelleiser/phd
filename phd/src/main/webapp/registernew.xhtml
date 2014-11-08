@@ -49,12 +49,12 @@
 							
 							<h:outputLabel />
 							<h:panelGroup id="regnew">
-								<h:commandButton action="#{staff.registernew()}" rendered="#{not empty loginController.departmentselected}"
+								<h:commandButton action="#{loginController.registernew(staff)}" rendered="#{not empty loginController.departmentselected}"
 								value="Registernew" />
 							</h:panelGroup>
 							<h:outputLabel />
 							<h:panelGroup id="regnewwithdep">
-								<h:commandButton action="#{staff.registernewWithDepartment(department, input_key.value)}" rendered="#{empty loginController.departmentselected}"
+								<h:commandButton action="#{loginController.registernewWithDepartment(staff, department, input_key.value)}" rendered="#{empty loginController.departmentselected}"
 								value="RegisternewWithDep" />
 							</h:panelGroup>			
 							
