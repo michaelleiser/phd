@@ -70,7 +70,7 @@ public class TestClass extends TestCase {
 //		s.setName(doctorname);
 //		s.setPassword(password);
 //		s.setRole(1);
-//		l.registernew(s, d, "an encrypted group key");
+//		l.registernewWithDepartment(s, d, "an encrypted group key");
 //		
 //		l.setDepartmentselected(departmentname);
 //		l.login(doctorname, password);

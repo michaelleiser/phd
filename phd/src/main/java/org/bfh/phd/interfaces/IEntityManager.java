@@ -20,7 +20,7 @@ public interface IEntityManager {
 
 	/**
 	 * @param id
-	 * 			id of the staff
+	 * 			of the staff
 	 * @return
 	 * 			a staff with the specified id
 	 */
@@ -28,17 +28,17 @@ public interface IEntityManager {
 
 	/**
 	 * @param name
-	 * 			the name of the staff
+	 * 			of the staff
 	 * @param password
-	 * 			the password of the staff
+	 * 			of the staff
 	 * @return
-	 * 			a staff with the specified name and password
+	 * 			a staff with the specified name and password or null if it does not exist
 	 */
 	public Staff getStaff(String name, String password);
 
 	/**
 	 * @param name
-	 * 			the name to filter the return list
+	 * 			to filter the return list
 	 * @return
 	 * 			a list of all staffs that contain the name
 	 */
@@ -62,58 +62,58 @@ public interface IEntityManager {
 	 * @param activeUser
 	 * 			the active user
 	 * @param patientid
-	 * 			the id of the patient
+	 * 			of the patient
 	 * @return
 	 * 			a patient with the the specified id readable by the active user
 	 */
 	public Patient getPatient(Staff activeUser, int patientid);
 
 	/**
-	 * registers a new staff
-	 * 
+	 * Register a new staff.
 	 * @param staff
-	 * 			the staff to be registered
+	 * 			to be registered
 	 * @param admin
 	 * 			if is admin
-	 * @return TODO
+	 * @return
+	 * 			the registered staff
 	 */
 	public Staff registernew(Staff staff, boolean admin);
 
 	/**
-	 * updates the active user
-	 * 
+	 * Update the active user.
 	 * @param activeUser
 	 * 			the active user
 	 */
 	public void updateStaff(Staff activeUser);
 
 	/**
-	 * updates the patient writeable by the active user
-	 * @param p
-	 * 			the patient to be updated
+	 * Update the patient which is writable by the active user.
+	 * @param patient
+	 * 			to be updated
 	 * @param activeUser
 	 * 			the active user
 	 */
-	public void updatePatient(Patient p, Staff activeUser);
+	public void updatePatient(Patient patient, Staff activeUser);
 
 	/**
-	 * @param dhs TODO
+	 * @param dhs
+	 * 			the department group
 	 * @param activeUser
 	 * 			the active user
 	 * @return
-	 * 			a list of all patients readable by the active user that contain the name
+	 * 			a list of all patients in the department group readable by the active user
 	 */
 	public List<Patient> searchPatient(Department_Has_Staff dhs, Staff activeUser);
 
 	/**
-	 * creates a new patient from the active user
-	 * 
-	 * @param p
+	 * Create a new patient in the department group with the active user as the owner.
+	 * @param patient
 	 * 			the patient to be created
-	 * @param dhs TODO
+	 * @param dhs
+	 * 			the department group
 	 * @param activeUser
 	 * 			the active user
 	 */
-	public void createPatient(Patient p, Department_Has_Staff dhs, Staff activeUser);
+	public void createPatient(Patient patient, Department_Has_Staff dhs, Staff activeUser);
 
 }

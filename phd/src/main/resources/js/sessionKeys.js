@@ -1,3 +1,8 @@
+/**
+ * Store the public key, private key and group key in the session storage.
+ * The private key is decrypted with the password of the user.
+ * The group key is decrypted with the private key of the user.
+ */
 function getSessionKeys() {
     if(typeof(Storage) !== "undefined") {
     	if(typeof(sessionStorage.privateKey) === "undefined"){

@@ -17,6 +17,8 @@ import org.bfh.phd.interfaces.ILanguageController;
 @SessionScoped
 public class LanguageController implements ILanguageController, Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	private static Map<String, Object> countries;
 
 	static {

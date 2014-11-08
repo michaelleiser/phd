@@ -51,49 +51,59 @@ public class Patient implements Serializable, IPatient {
 		this.personalData = personalData;
 	}
 	
+	@Override
 	public Staff getOwner() {
-		return owner;
+		return this.owner;
 	}
 
+	@Override
 	public void setOwner(Staff owner) {
 		this.owner = owner;
 	}
 	
+	@Override
 	public Department getDepartment() {
-		return department;
+		return this.department;
 	}
 
+	@Override
 	public void setDepartment(Department department) {
 		this.department = department;
 	}
 	
+	@Override
 	public boolean getReadaccess() {
-		return readaccess;
+		return this.readaccess;
 	}
 
-	public void setReadaccess(boolean read) {
-		this.readaccess = read;
+	@Override
+	public void setReadaccess(boolean readaccess) {
+		this.readaccess = readaccess;
 	}
 
+	@Override
 	public boolean getWriteaccess() {
-		return writeaccess;
+		return this.writeaccess;
 	}
 
-	public void setWriteaccess(boolean write) {
-		this.writeaccess = write;
+	@Override
+	public void setWriteaccess(boolean writeaccess) {
+		this.writeaccess = writeaccess;
 	}
 	
+	@Override
 	public boolean getInsertaccess() {
-		return insertaccess;
+		return this.insertaccess;
 	}
 
+	@Override
 	public void setInsertaccess(boolean insertaccess) {
 		this.insertaccess = insertaccess;
 	}
 
 	@Override
 	public List<PatientData> getPatientData() {
-		return patientData;
+		return this.patientData;
 	}
 
 	@Override
@@ -108,7 +118,7 @@ public class Patient implements Serializable, IPatient {
 
 	@Override
 	public String toString(){
-		return patientid + " : " + personalData;
+		return this.patientid + " : " + this.personalData;
 	}
 
 }

@@ -1,3 +1,10 @@
+/**
+ * Validate the staff data, hash the password.
+ * For doctors create a public key private key pair. Encrypt the private key with the password of the user.
+ * For new departments create a group key. Encrypt the group key with the private key the user.
+ * @returns
+ * 			true if new user can be registered
+ */
 function validation(){
 	var name = document.getElementById("registernewform:name").value;
 	if(!name.match(/^[A-Za-z]+$/)){
@@ -29,14 +36,14 @@ function validation(){
 	
 	/**
 	 * Just for doctors
-	 * Statistician don't need a public key, private key and mustn't need the group key
+	 * Statisticians don't need a public key, private key and mustn't get the group key
 	 */
 	if(role0.checked){
 		generatePublicKeyAndEncryptedPrivateKey(pass);
 		
 		/**
-		 * for new departments -> creates an encrypted group key
-		 * for existing departments -> encrypted group key is generated in activation process
+		 * For new departments -> create an encrypted group key
+		 * For existing departments -> encrypted group key is generated in activation process
 		 */
 		var publicKey = document.getElementById("registernewform:publickey").value;
 		if(departmentname != ""){
@@ -48,12 +55,22 @@ function validation(){
 	return true;
 }
 
+/**
+ * Hash the password.
+ * @param pass
+ * 			to be hashed
+ */
 function hashPassword(pass){
 	var hash = CryptoJS.SHA1(pass);
 	document.getElementById("registernewform:hashedpassword").value = hash;
 }
 
-function generatePublicKeyAndEncryptedPrivateKey(pass){
+/**
+ * Generate a public key private key pair and encrypt the private key with the password.
+ * @param password
+ * 			to encrypt the private key with
+ */
+function generatePublicKeyAndEncryptedPrivateKey(password){
 //  var key = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');
 //  var iv = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');
 
@@ -64,12 +81,17 @@ function generatePublicKeyAndEncryptedPrivateKey(pass){
 	publicKey = crypt.getPublicKey();
 	
 //	var ciphertext = CryptoJS.AES.encrypt(privateKey, key, {iv:iv, mode:CryptoJS.mode.CBC});
-	var encryptedPrivateKey = CryptoJS.AES.encrypt(privateKey, pass);
+	var encryptedPrivateKey = CryptoJS.AES.encrypt(privateKey, password);
 	
 	document.getElementById("registernewform:encryptedprivatekey").value = encryptedPrivateKey;
 	document.getElementById("registernewform:publickey").value = publicKey;
 }
 
+/**
+ * Generate a group key and encrypt it with the public key of the user.
+ * @param publicKey
+ * 			to encrypt the group key with
+ */
 function generateEncryptedGroupKey(publicKey){
 //	var groupKey = "testgroupkey123";	// For testing
 //	var groupKey = CryptoJS.lib.WordArray.random(128/8);	// An alternative to window.crypto.getRandomValues()

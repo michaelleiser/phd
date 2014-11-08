@@ -5,9 +5,11 @@ import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import org.bfh.phd.interfaces.IDepartment;
+
 @ManagedBean(name = "department", eager = true)
 @RequestScoped
-public class Department implements Serializable {
+public class Department implements Serializable, IDepartment {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -18,18 +20,22 @@ public class Department implements Serializable {
 		
 	}
 	
+	@Override
 	public int getDepartment_id() {
 		return this.department_id;
 	}
 
+	@Override
 	public void setDepartment_id(int id) {
 		this.department_id = id;
 	}
 
+	@Override
 	public String getName() {
 		return this.name;
 	}
 
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -43,7 +49,7 @@ public class Department implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
 		return result;
 	}
 
@@ -56,14 +62,12 @@ public class Department implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Department other = (Department) obj;
-		if (name == null) {
+		if (this.name == null) {
 			if (other.name != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!this.name.equals(other.name))
 			return false;
 		return true;
 	}
-	
-
 	
 }

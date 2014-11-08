@@ -38,7 +38,7 @@ public interface IPaginator {
 	
 	/**
 	 * @param first
-	 * 			the first entry to display
+	 * 			entry to display
 	 */
 	public void setFirst(int first);
 
@@ -50,7 +50,7 @@ public interface IPaginator {
 
 	/**
 	 * @param size
-	 * 			the absolute  number of entries
+	 * 			the absolute number of entries
 	 */
 	public void setSize(int size);
 	
@@ -67,12 +67,12 @@ public interface IPaginator {
 	public boolean hasNext();
 	
 	/**
-	 * goes one page backward
+	 * Go one page backward.
 	 */
 	public void backward();
 	
 	/**
-	 * goes one page forward
+	 * Go one page forward.
 	 */
 	public void forward();
 	

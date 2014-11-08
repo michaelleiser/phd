@@ -1,3 +1,8 @@
+/**
+ * Validate the patient data and encrypt it with the group key.
+ * @returns
+ * 			true if patient can be created
+ */
 function validation(){
 	var firstname = document.getElementById("patientform:firstname").value;
 	if(!firstname.match(/^[A-Za-z]+$/)){
@@ -58,18 +63,28 @@ function validation(){
 	var json = JSON.stringify(myobj);
 //	alert(json);
 	
-	encryptPersonalData(json);
+	var encrypted = encryptPersonalData(json);
+	document.getElementById("patientform:encryptedPersonalData").value = encrypted;
 
 //	alert("finish");
 	return true;
 }
 
-function encryptPersonalData(json){
+/**
+ * Encrypt the specified data.
+ * @param data
+ * 			to be encrypted
+ * @returns
+ * 			the encrypted data
+ */
+function encryptPersonalData(data){
 	var groupKey = sessionStorage.groupKey;
-	var encrypted = CryptoJS.AES.encrypt(json, groupKey);
-	document.getElementById("patientform:encryptedPersonalData").value = encrypted;
+	return CryptoJS.AES.encrypt(data, groupKey);
 }
 
+/**
+ * Decrypt the personal data of one patient.
+ */
 function decryptPersonalData(){
 	var groupKey = sessionStorage.groupKey;
 	var encrypted = document.getElementById("patientform:encryptedPersonalData").value;
@@ -95,6 +110,9 @@ function decryptPersonalData(){
 	document.getElementById("patientform:birthday").value = myobj["birthday"];
 }
 
+/**
+ * Decrypt a part of the personal data of one patient.
+ */
 function decryptPersonalDataForFormular(){
 	if(document.getElementById("formularform:encryptedPersonalData") == null){
 //		alert("null");
@@ -124,6 +142,10 @@ var first = 0;
 var worker;
 var groupKey;
 
+/**
+ * Decrypt the personal data of the patients and display the result set.
+ * The decryption procedure is done in a web worker.
+ */
 function decryptPersonalDataForSearchWebWorker() {
 	size = document.getElementById("patienttable").rows.length - 1;	// -1 because of the header row
 	groupKey = self.sessionStorage.groupKey;
@@ -166,6 +188,9 @@ function decryptPersonalDataForSearchWebWorker() {
 //	patients.sort();		// TODO alphabetisch sortieren
 }
 
+/**
+ * Decrypt the personal data of the patients and display the result set.
+ */
 function decryptPersonalDataForSearch(){
 //	size = document.getElementById("patienttable").rows.length - 1;	// -1 because of the header row
 //	groupKey = self.sessionStorage.groupKey;
@@ -191,7 +216,11 @@ function decryptPersonalDataForSearch(){
 ////	patients.sort();		// TODO alphabetisch sortieren
 }
 
-
+/**
+ * Filter the patient data with the filter name and display the result set.
+ * @returns
+ * 			false to avoid reloading the page
+ */
 function filter(){
 	visiblerows = new Array();
 	var filtername = document.getElementById("searchform:filter").value.toLowerCase();
@@ -211,6 +240,9 @@ function filter(){
 	return false;
 }
 
+/**
+ * Display exactly one page of all the visible rows (prefiltered rows).
+ */
 function display(){
 	for(var i = 0 ; i < visiblerows.length ; i++){
 		if((i >= first) && (i < (first + pagesize))){
@@ -231,6 +263,11 @@ function display(){
 	}
 }
 
+/**
+ * Go one page backward.
+ * @returns
+ * 			false to avoid reloading the page
+ */
 function backward(){
 	if(pagenr > 1){
 		pagenr--;
@@ -244,6 +281,11 @@ function backward(){
 	return false;
 }
 
+/**
+ * Go one page forward.
+ * @returns
+ * 			false to avoid reloading the page
+ */
 function forward(){
 	if(pagenr < visiblerows.length/pagesize){
 		pagenr++;

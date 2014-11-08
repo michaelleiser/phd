@@ -31,6 +31,9 @@ public class LoginController implements Serializable, ILoginController{
 	private String questionnaireName;
 	private String s = "knee";
 
+	private String departmentselected;
+	private Department_Has_Staff activeDepartment_Has_Staff;
+	
 	private Date to;
 	private EntityManager em;
 
@@ -97,22 +100,22 @@ public class LoginController implements Serializable, ILoginController{
 		this.loggedin = loggedin;
 	}
 
+	@Override
 	public String registernew(Staff s) {
 		System.out.println("REGISTER NEW");
 		if(!this.activeDepartment_Has_Staff.getStaff().contains(s)){
 			boolean activated = false;
 			Staff ss = em.registernew(s, activated);
-//			Staff ss = em.getStaff(s.getName(), s.getPassword());
 			em.addToDepartment(this.departmentselected, ss);
 		}
 		return "/home?faces-redirect=true";
 	}
+	@Override
 	public String registernewWithDepartment(Staff s, Department d, String key) {
 		System.out.println("REGISTER NEW");
 		if(!em.getDepartments().contains(d)){
 			boolean activated = true;
 			Staff ss = em.registernew(s, activated);
-//			Staff ss = em.getStaff(s.getName(), s.getPassword()); 
 			em.createDepartment(d, ss, key);
 		}
 		return "/home?faces-redirect=true";
@@ -164,6 +167,7 @@ public class LoginController implements Serializable, ILoginController{
 		return null;
 	}
 	
+	@Override
 	public void updateStaff(Staff s){
 		System.out.println("update staff..." + s);
 		if(this.loggedin == true){
@@ -171,6 +175,7 @@ public class LoginController implements Serializable, ILoginController{
 		}
 	}
 	
+	@Override
 	public void updatePatient(Patient p){
 		System.out.println("update patient..." + p);
 		if(this.loggedin == true){
@@ -209,6 +214,7 @@ public class LoginController implements Serializable, ILoginController{
 		return null;
 	}
 
+	@Override
 	public String createPatient(Patient p) {
 		System.out.println("CREATE Patient..." + p);
 		if((this.loggedin == true) && (activeUser.getRole() == 1)){
@@ -329,6 +335,7 @@ public class LoginController implements Serializable, ILoginController{
 		}
 		return false;
 	}
+	
 	public boolean writeAccess(Patient p){
 		System.out.println("WriteAccess");
 		if(this.loggedin == true && activeUser.getRole() == 1){
@@ -336,6 +343,7 @@ public class LoginController implements Serializable, ILoginController{
 		}
 		return false;
 	}
+	
 	public boolean insertAccess(Patient p){
 		System.out.println("InsertAccess");
 		if(this.loggedin == true && activeUser.getRole() == 1){
@@ -426,7 +434,7 @@ public class LoginController implements Serializable, ILoginController{
 //	private String in;
 	
 
-	private String departmentselected;
+
 	
 	public List<Department> getDepartments(){
 		return new EntityManager().getDepartments();
@@ -446,7 +454,6 @@ public class LoginController implements Serializable, ILoginController{
 		}
 	}
 
-	private Department_Has_Staff activeDepartment_Has_Staff;
 	public Department_Has_Staff getDepartment_Has_Staff(){
 		return this.activeDepartment_Has_Staff;
 	}
@@ -473,6 +480,7 @@ public class LoginController implements Serializable, ILoginController{
 		return null;
 	}
 	
+	@Override
 	public void activateStaff(Staff s, String secret){
 		System.out.println("ACTIVATE Staff..." + s);
 		if(this.loggedin == true && activeDepartment_Has_Staff.getOwner().equals(activeUser)){
@@ -480,6 +488,8 @@ public class LoginController implements Serializable, ILoginController{
 			em.setGroupKey(s, activeDepartment_Has_Staff,  secret);	
 		}
 	}
+	
+	@Override
 	public void deactivateStaff(Staff s){
 		System.out.println("DEACTIVATE Staff..." + s);
 		if(this.loggedin == true && activeDepartment_Has_Staff.getOwner().equals(activeUser)){

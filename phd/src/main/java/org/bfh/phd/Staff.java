@@ -71,11 +71,6 @@ public class Staff implements IStaff{
 	public void setActivated(boolean isActivated) {
 		this.isActivated = isActivated;
 	}
-	
-	@Override
-	public String toString(){
-		return this.name + " : " + this.role;
-	}
 
 	@Override
 	public String getPublicKey() {
@@ -97,6 +92,11 @@ public class Staff implements IStaff{
 		this.privateKey = privateKey;
 	}
 	
+	@Override
+	public String toString(){
+		return this.name + " : " + this.role;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -1,3 +1,8 @@
+/**
+ * Validate the password, hash the password and encrypt the private key with the new password.
+ * @returns
+ * 			true if password can be changed
+ */
 function validation(){
 	var newpass = document.getElementById("staffform:newpass").value;
 	if(!newpass.match(/^[A-Za-z0-9]+$/)){
@@ -9,20 +14,35 @@ function validation(){
 		window.alert("Password 1 and 2 are not equal");
 		return false;
 	}
-	hashPassword(newpass);
-	encryptPrivateKey(newpass);
+	var hash = hashPassword(newpass);
+	document.getElementById("staffform:hashedpassword").value = hash;
+	
+	var encryptedPrivateKey = encryptPrivateKey(newpass);
+	document.getElementById("staffform:encryptedprivatekey").value = encryptedPrivateKey;
 	
 //	alert("finish");
 	return true;
 }
 
+/**
+ * Hash the password.
+ * @param pass
+ * 			to be hashed
+ * @returns
+ * 			the hashed password
+ */
 function hashPassword(pass){
-	var hash = CryptoJS.SHA1(pass);
-	document.getElementById("staffform:hashedpassword").value = hash;
+	return CryptoJS.SHA1(pass);
 }
 
+/**
+ * Encrypt the private key with the specified password.
+ * @param pass
+ * 			to encrypt with
+ * @returns
+ * 			the encrypted private key
+ */
 function encryptPrivateKey(pass){
 	var encryptedPrivatekey = sessionStorage.privateKey;
-	var reEncryptedPrivateKey = CryptoJS.AES.encrypt(encryptedPrivatekey, pass);
-	document.getElementById("staffform:encryptedprivatekey").value = reEncryptedPrivateKey;
+	return CryptoJS.AES.encrypt(encryptedPrivatekey, pass);
 }

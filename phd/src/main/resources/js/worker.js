@@ -3,8 +3,10 @@ var size;
 var groupKey;
 var encryptedData;
 
+/**
+ * Decrypt the personal data of a patient and send the data back to the calling thread.
+ */
 function decryptPatientData() {
-	
 	if((size !== "undefined") && (i < size)){
 		var decrypted = CryptoJS.AES.decrypt(encryptedData[i].data, groupKey);
 		if(decrypted != ""){
@@ -20,6 +22,11 @@ function decryptPatientData() {
 
 decryptPatientData(); 
 
+/**
+ * Initialize the worker thread with the encrypted information and the key for the decryption.
+ * @param evt
+ * 			contains the data for initializing the worker thread
+ */
 onmessage = function(evt){
 	size = evt.data.size;
 	groupKey = evt.data.groupKey;
