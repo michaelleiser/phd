@@ -61,7 +61,7 @@ function validation(){
 	
 	var myobj = {"firstname":firstname, "lastname":lastname, "street":street, "nr":nr, "city":city, "zip":zip, "telnumber":telnumber, "gender":gender, "birthday":birthday};
 	var json = JSON.stringify(myobj);
-//	alert(json);
+	alert(json);
 	
 	var encrypted = encryptPersonalData(json);
 	document.getElementById("patientform:encryptedPersonalData").value = encrypted;
