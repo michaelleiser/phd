@@ -1,4 +1,4 @@
-package org.bfh.phd.questionary;
+package org.bfh.phd.interfaces;
 
 public interface Answer <A, B>  {
 	

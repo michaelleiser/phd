@@ -3,6 +3,8 @@ package org.bfh.phd.questionary;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bfh.phd.interfaces.Answer;
+
 public class AnswerCheckbox implements Answer <List<String>, String> {
 	
 	private List<String> answer = new ArrayList<String>();

@@ -3,6 +3,8 @@ package org.bfh.phd.questionary;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bfh.phd.interfaces.Question;
+
 
 public class QuestionRadioButton implements Question <String, String, List<String>> {
 	

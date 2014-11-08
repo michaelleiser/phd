@@ -1,21 +1,25 @@
 package org.bfh.phd;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import org.bfh.phd.interfaces.Answer;
 import org.bfh.phd.interfaces.ILoginController;
-import org.bfh.phd.questionary.Answer;
+import org.bfh.phd.interfaces.Question;
 import org.bfh.phd.questionary.Elbow;
-import org.bfh.phd.questionary.Knee;
-import org.bfh.phd.questionary.Question;
-import org.bfh.phd.questionary.Questionnair;
+import org.bfh.phd.questionary.QuestionnairTools;
+
 
 @ManagedBean(name = "loginController", eager = true)
 @SessionScoped
@@ -34,12 +38,32 @@ public class LoginController implements Serializable, ILoginController{
 	private Date to;
 	private EntityManager em;
 
+
+	private Logger log;
 	//----- Methods----
-	
+	 
 	public LoginController() {
 		this.em = new EntityManager();
+		initLogger();
 	}
 		
+	private void initLogger() {
+		log = Logger.getLogger(LoginController.class.getName());
+		FileHandler fh;
+		try {
+			fh = new FileHandler(new Tools().getLogPath(), true);
+			fh.setFormatter(new SimpleFormatter());
+			log.addHandler(fh);
+		} catch (SecurityException e) {
+			em.setExeption(e);
+		} catch (IOException e) {
+			em.setExeption(e);
+		}
+		
+		// TODO Auto-generated method stub
+		
+	}
+
 	public void setStaff(Staff s){
 		System.out.println("SET STAFF");
 		this.activeUser = s;
@@ -304,11 +328,11 @@ public class LoginController implements Serializable, ILoginController{
 		return l;
 	}
 	
-	public List<Knee> searchPatientData3(String op) {
-		System.out.println("SEARCHING Patient Data..." + op + from + "--" + to);
-		List<Knee> l = em.searchPatientData3(op);
-		return l;
-	}
+//	public List<Knee> searchPatientData3(String op) {
+//		System.out.println("SEARCHING Patient Data..." + op + from + "--" + to);
+//		List<Knee> l = em.searchPatientData3(op);
+//		return l;
+//	}
 
 	public boolean isOwner(Patient p){
 		System.out.println("IsOwner");
@@ -344,18 +368,18 @@ public class LoginController implements Serializable, ILoginController{
 		return false;
 	}
 	
-	public void addAnswer(String string, Knee k) {
-		if(this.loggedin == true && activeUser.getRole() == 1){
-			em.addAnswer("knee", k.getAnswers(), k.getId());
-		}
-	}
-
-	public List<Knee> getAnswers(String string) {
-		if(this.loggedin == true){
-			return em.getAnswers(string);
-		}
-		return null;
-	}
+//	public void addAnswer(String string, Knee k) {
+//		if(this.loggedin == true && activeUser.getRole() == 1){
+//			em.addAnswer("knee", k.getAnswers(), k.getId());
+//		}
+//	}
+//
+//	public List<Knee> getAnswers(String string) {
+//		if(this.loggedin == true){
+//			return em.getAnswers(string);
+//		}
+//		return null;
+//	}
 	
 	public void setPatientid(ListOfQuestionnari list){
 		this.questionnaireId = list.getQuestId();
@@ -488,14 +512,14 @@ public class LoginController implements Serializable, ILoginController{
 		}
 	}
 
-	public List<Questionnair> getTemplate(String name) {
+	public List<QuestionnairTools> getTemplate(String name) {
 		if(this.loggedin == true && activeUser.getRole() == 1){
 		return em.getTemplate(name);
 		}
 		return null;
 	}
 
-	public void deletTemplateQuestion(Questionnair q) {
+	public void deletTemplateQuestion(QuestionnairTools q) {
 		if(this.loggedin == true && activeUser.getRole() == 1){
 		try {
 			em.deletTemplateQuestion(q);

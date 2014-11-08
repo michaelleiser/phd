@@ -11,6 +11,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 
 import org.bfh.phd.EntityManager;
 import org.bfh.phd.LoginController;
+import org.bfh.phd.Questionnari;
 
 @ManagedBean(name = "template", eager = true)
 @SessionScoped
@@ -19,18 +20,18 @@ public class Template {
 	private static int i = 1;
 	private int j = 0;
 	private int eNumber = 0;
-	private Questionnair eQuestion = new Questionnair();
+	private QuestionnairTools eQuestion = new QuestionnairTools();
 	private String name;
 	private String templatename = "";
 	private String questionString;
 	private String answerString;
 	private static List<String> templateName;
 	private static String templateNameSelected;
-	private List<Questionnair> test = new ArrayList<Questionnair>();
+	private List<QuestionnairTools> test = new ArrayList<QuestionnairTools>();
 	private List<String> answerRadioButton = new ArrayList<String>();
 	private List<String> answerCheckbox = new ArrayList<String>();
-	private List<Questionnair> edit = new ArrayList<Questionnair>();
-	private Questionnair t = new Questionnair();
+	private List<QuestionnairTools> edit = new ArrayList<QuestionnairTools>();
+	private QuestionnairTools t = new QuestionnairTools();
 	private static EntityManager em;
 	
 	
@@ -66,20 +67,20 @@ public class Template {
 		return !test.isEmpty();
 	}
 	
-	public List<Questionnair> getQuestion() {
+	public List<QuestionnairTools> getQuestion() {
 		return test;
 	}
 	
 	public void add(){
-		t = new Questionnair();
-		eQuestion = new Questionnair();
+		t = new QuestionnairTools();
+		eQuestion = new QuestionnairTools();
 		answerCheckbox.clear();
 		answerRadioButton.clear();
 	}
 	
 	public void safe(LoginController lc){
 		int i = 1;
-		for(Questionnair t:test){
+		for(QuestionnairTools t:test){
 		lc.addQuestionnaireTemplate(t.getType(), t.getQuestion(),templatename, t.getAnswer(), i);
 		i++;
 		}
@@ -94,15 +95,7 @@ public class Template {
 		setTemplates();
 		add();
 	}
-	
-	public void saveAddEdit(LoginController lc){
-		lc.changeQuestionNr(templateNameSelected, eNumber);
-		lc.addQuestionnaireTemplate(eQuestion.getType(), eQuestion.getQuestion(), templateNameSelected , eQuestion .getAnswer(), eNumber+1);
-		eNumber = 0;
-		setTemplates();
-		add();
-	}
-	
+		
 	public void addString(final AjaxBehaviorEvent event){
 		t.setQuestion(questionString);
 		t.setType("String");
@@ -223,7 +216,6 @@ public class Template {
 		this.answerRadioButton.add(test);
 	}
 		
-	private String name;
 	public String getName() {
 		return name;
 	}
@@ -242,7 +234,7 @@ public class Template {
 		edit = em.getTemplate(templateNameSelected);
 	}
 	
-	public List<Questionnair> getTemplates(){
+	public List<QuestionnairTools> getTemplates(){
 		return edit;
 	}
 	
@@ -250,7 +242,7 @@ public class Template {
 		System.out.println("edit Question");
 	}
 	
-	public void deletQuestion(LoginController lc, Questionnair q){
+	public void deletQuestion(LoginController lc, QuestionnairTools q){
 		lc.deletTemplateQuestion(q);
 		setTemplates();
 	}
@@ -260,7 +252,7 @@ public class Template {
 	}
 	
 	public void saveEdit(LoginController lc){
-		for(Questionnair q:edit){
+		for(QuestionnairTools q:edit){
 			if(q.isEditable()){
 				System.out.println(q.getAnswer());
 				q.setEditable(false);
@@ -269,12 +261,12 @@ public class Template {
 		}
 	}
 	
-	public String editAction(Questionnair q){
+	public String editAction(QuestionnairTools q){
 		q.setEditable(true);
 		return null;
 	}
 	
-	public String addAction(Questionnair q){
+	public String addAction(QuestionnairTools q){
 		eNumber = q.getId();
 		return null;
 	}

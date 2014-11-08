@@ -2,6 +2,8 @@ package org.bfh.phd.questionary;
 
 import java.util.List;
 
+import org.bfh.phd.interfaces.Question;
+
 
 public class QuestionString implements Question <String, String, String> {
 	
