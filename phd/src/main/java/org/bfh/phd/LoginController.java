@@ -529,7 +529,7 @@ public class LoginController implements Serializable, ILoginController{
 		}
 	}
 
-	public void editQuestion(Questionnair q) {
+	public void editQuestion(QuestionnairTools q) {
 		if(this.loggedin == true && activeUser.getRole() == 1){
 		try {
 			em.editQuestion(q);
