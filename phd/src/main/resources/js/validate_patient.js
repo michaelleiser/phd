@@ -147,12 +147,12 @@ var groupKey;
  * The decryption procedure is done in a web worker.
  */
 function decryptPersonalDataForSearchWebWorker() {
+	var time1 = new Date().getTime();
 	size = document.getElementById("patienttable").rows.length - 1;	// -1 because of the header row
 	groupKey = self.sessionStorage.groupKey;
 	patients = new Array();
 	visiblerows = new Array();
 	var encryptedData = [];
-	var time1 = new Date().getTime();
 	for(var i = 0 ; i < size ; i++){
 		var encrypted = document.getElementById("searchform:encdata" + i).value;
 		var obj = {row:i, data:encrypted};
@@ -176,9 +176,9 @@ function decryptPersonalDataForSearchWebWorker() {
 			visiblerows.push(i);
 			j++;
 			if(j == size){
+				display();
 				var time2 = new Date().getTime();
 				console.log("TIME worker: " + (time2 - time1));
-				display();
 			}
         };
     } else {
@@ -192,11 +192,11 @@ function decryptPersonalDataForSearchWebWorker() {
  * Decrypt the personal data of the patients and display the result set.
  */
 function decryptPersonalDataForSearch(){
+//	var time1 = new Date().getTime();
 //	size = document.getElementById("patienttable").rows.length - 1;	// -1 because of the header row
 //	groupKey = self.sessionStorage.groupKey;
 //	patients = new Array();
 //	visiblerows = new Array();
-//	var time1 = new Date().getTime();
 //	for(var i = 0 ; i < size ; i++){
 //		var encrypted = document.getElementById("searchform:encdata" + i).value;
 //		var decrypted = CryptoJS.AES.decrypt(encrypted, groupKey);
@@ -210,9 +210,9 @@ function decryptPersonalDataForSearch(){
 //			visiblerows.push(i);
 //		}
 //	}
+//	display();
 //	var time2 = new Date().getTime();
 //	console.log("TIME direct: " + (time2 - time1));
-//	display();
 ////	patients.sort();		// TODO alphabetisch sortieren
 }
 
@@ -222,9 +222,12 @@ function decryptPersonalDataForSearch(){
  * 			false to avoid reloading the page
  */
 function filter(){
+	var time1 = new Date().getTime();
+	pagenr = 1;
+	document.getElementById("searchform:pagenumber").innerHTML = pagenr;
+	first = 0;
 	visiblerows = new Array();
 	var filtername = document.getElementById("searchform:filter").value.toLowerCase();
-//	console.log("FILTERING::" + filtername);
 	for(var i = 0 ; i < patients.length ; i++){
 		if((patients[i].firstname.toLowerCase().indexOf(filtername) > -1) ||
 			(patients[i].lastname.toLowerCase().indexOf(filtername) > -1)	){
@@ -237,6 +240,8 @@ function filter(){
 		}
 	}
 	display();
+	var time2 = new Date().getTime();
+	console.log("TIME Filter: " + (time2 - time1));
 	return false;
 }
 

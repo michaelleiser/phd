@@ -25,18 +25,14 @@ div#headerlanguages {
 
 div#menu {
 }
-div#menuitem {
-	color: #000000;
-	font-size: 25px;
-	padding: 20px 20px 20px 20px;
-	text-decoration: none;
-}
 .menuitem {
 	background-color: #ffffff;
 	border-radius: 5px;
 	box-shadow: 5px 5px 10px #666;
 	color: #000000;
+	display: block;
 	font-size: 25px;
+	margin: 20px;
 	padding: 10px 10px 10px 10px;
 	text-decoration: none;
 	transition: background 0.3s linear 0s;
@@ -46,24 +42,13 @@ div#menuitem {
     border-radius: 5px;
 }
 
+
 div#loggedinbox {
 	float: right;
 	padding: 10px 10px 10px 10px;
 }
 
-div#formular {
-	background-color: #ffffff;
-	border-color: #bbbbbb;
-	border-radius: 5px;
-	border-style: solid;
-	border-width: 1px;
-	box-shadow: 10px 10px 25px #666;
-	height: auto;
-	padding: 20px 20px 20px 20px;	
-	width: auto;
-}
-
-div#registernew{
+.formular {
 	background-color: #ffffff;
 	border-color: #bbbbbb;
 	border-radius: 5px;
@@ -101,7 +86,7 @@ div#filter{
 
 
 
-div#table{
+.table{
 	
 }
 .table-header {

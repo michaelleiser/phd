@@ -14,7 +14,7 @@
 				<h1>
 					<h:outputText value="#{msg['editstaff']}" />
 				</h1>
-				<div id="formular">
+				<div class="formular">
 				
 					<h:outputScript library="js" name="CryptoJS/rollups/sha1.js" />
 					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />			
@@ -25,7 +25,7 @@
 							<h:outputLabel>Staff id</h:outputLabel>
 							<h:outputLabel>#{loginController.getStaff().getId()}</h:outputLabel>
 							<h:outputLabel>Staff name</h:outputLabel>
-							<h:outputLabel>#{staff.getName()}</h:outputLabel>
+							<h:outputLabel>#{loginController.getStaff().getName()}</h:outputLabel>
 							
 							<h:outputLabel>New Password:</h:outputLabel>
 							<h:inputSecret id="newpass" required="true">
@@ -35,17 +35,24 @@
 							<h:inputSecret id="confpass" required="true">
 								<f:validateLength minimum="2" maximum="10" />
 							</h:inputSecret>		
-		
-							</h:panelGrid>
-						<h:column>
+
+							<h:outputLabel />	
 							<h:commandButton action="#{loginController.updateStaff(loginController.getStaff())}" value="Update Password" />
-						</h:column>
+
+						</h:panelGrid>
 						
 						<h:inputHidden id="hashedpassword" value="#{loginController.getStaff().password}"/>
 						<h:inputHidden id="encryptedprivatekey" value="#{loginController.getStaff().privateKey}"/>	
 						
 					</h:form>
 				</div>
+				
+				<div class="formular">
+					<h:form onsubmit="return renew();">
+						<h:commandButton value="Renew Public Key Private Key"/>
+					</h:form>
+				</div>
+				
 			</div>
 		</ui:define>
 	</ui:composition>

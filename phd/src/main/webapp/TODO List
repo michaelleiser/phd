@@ -1,7 +1,5 @@
 Password gehasht und mit Nonce
 
-JavaScript insert patient nicht doppelt einfügen verhindern
-
 Activate Deactivate bzw login nach registernew geht erst nach einem ein ausloggen bzw session cookie löschen
 
 diverse filter für statistiker seite
@@ -10,7 +8,6 @@ gehört statistiker überhautp einem department an ? eigentlich nicht nötig.
 sortieren staff in mod group, 
 sortieren patietn in search patient
 
-autologout nach 10 min
 
 
 

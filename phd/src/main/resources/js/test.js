@@ -105,13 +105,13 @@ function deletedb(){
 
 
 function filter(){
+	var time1 = new Date().getTime();
 	
 	var element = document.getElementById("result");
 	while(element.firstChild){
 		element.removeChild(element.firstChild);
 	}
-	
-	console.log("filter start");
+
 	var filtername = document.getElementById("searchform:filter").value.toLowerCase();
 
 	request = indexedDB.open(dbname, dbversion);
@@ -121,26 +121,64 @@ function filter(){
 		var trans = db.transaction(["patients"], "readonly");
 		var store = trans.objectStore("patients");
 		var index = store.index("firstname");
-		var request = index.get(filtername);
+		
+		var range;
+		if(filtername != "") {
+			range = IDBKeyRange.bound(filtername, filtername+"zzzzzzzzzzzzzz");
+		} else if(filtername == "") {
+			range = IDBKeyRange.upperBound(filtername+"zzzzzzzzzzzzz");
+		} else {
+			range = IDBKeyRange.lowerBound(filtername);
+		}
+		
+		var request = index.openCursor(range);
 		request.onsuccess = function(evt){
-//			console.log("Found entry " + request.result.firstname + request.result.lastname);
 			var result = evt.target.result;
 			if(result){
 				var row = document.createElement("tr");
-				for(var field in result){
-					var col = document.createElement("td");
-					col.innerHTML = result[field];
-					row.appendChild(col);
-					console.log("resfil:: " + field + "=" + result[field]);
-				}
+				
+				var col0 = document.createElement("td");
+				col0.innerHTML = result.value.row;
+				row.appendChild(col0);
+				
+				var col1 = document.createElement("td");
+				col1.innerHTML = result.value.id;
+				row.appendChild(col1);
+				
+				var col2 = document.createElement("td");
+				col2.innerHTML = result.value.firstname;
+				row.appendChild(col2);
+				
+				var col3 = document.createElement("td");
+				col3.innerHTML = result.value.lastname;
+				row.appendChild(col3);
+				
+				var col4 = document.createElement("td");
+				col4.innerHTML = result.value.birthday;
+				row.appendChild(col4);
+				
+				var col5 = document.createElement("td");
+				var btn1 = document.createElement("BUTTON");
+				btn1.innerHTML = "Edit Pat";
+				col5.appendChild(btn1);
+				row.appendChild(col5);
+
+				var col6 = document.createElement("td");
+				var div = document.createElement("div");
+				div.innerHTML = "<input type='button' value='pat data' />";
+				col6.appendChild(div);
+				row.appendChild(col6);
+				
 				table.appendChild(row);
-//				result.continue();
+				result.continue();
 			}else{
-				console.log("no match");
+//				console.log("no match");
 			}
 		};
 		
 		element.appendChild(table);
+		var time2 = new Date().getTime();
+		console.log("TIME db filter: " + (time2 - time1));
 	}
 	console.log("filter end");
 	return false;
@@ -149,6 +187,7 @@ function filter(){
 
 
 function initdb() {
+	var time1 = new Date().getTime();
 	
 	var element = document.getElementById("result");
 	
@@ -177,20 +216,17 @@ function initdb() {
 		db = this.result;
 		var trans = db.transaction(["patients"], "readwrite");
 		var store = trans.objectStore("patients")
-		var time1 = new Date().getTime();
 		for(var i = 0 ; i < size ; i++){
 			var encrypted = document.getElementById("searchform:encdata" + i).value;
 			var decrypted = CryptoJS.AES.decrypt(encrypted, groupKey);
 			if(decrypted != ""){
 				var json = decrypted.toString(CryptoJS.enc.Utf8);
 				var myobj = JSON.parse(json);
-				var item = {row: i, id: document.getElementById("searchform:id"+i).innerHTML, firstname: myobj["firstname"], lastname: myobj["lastname"] };
+				var item = {row: i, id: document.getElementById("searchform:id"+i).innerHTML, firstname: myobj["firstname"], lastname: myobj["lastname"], birthday: myobj["birthday"] };
 				var request = store.put(item);
 //				console.log("put " + item);
 			}
 		}
-		var time2 = new Date().getTime();
-		alert("TIME: " + (time2 - time1));
 		
 		var table = document.createElement("table");
 		
@@ -232,8 +268,7 @@ function initdb() {
 				var div = document.createElement("div");
 				div.innerHTML = "<input type='button' value='pat data' />";
 				col6.appendChild(div);
-				row.appendChild(col6);
-				
+				row.appendChild(col6);	
 				
 				table.appendChild(row);	
 				
@@ -241,16 +276,15 @@ function initdb() {
 				document.getElementById("searchform:lastname" + result.value.row).innerHTML = result.value.lastname;
 				document.getElementById("searchform:birthday" + result.value.row).innerHTML = result.value.birthday;
 
-//				console.log("Found entry " + result.value.id + result.value.firstname + result.value.lastname);
 				result.continue();
 			}
 		};
 		element.appendChild(table);
-	}
-	
+		var time2 = new Date().getTime();
+		console.log("TIME db: " + (time2 - time1));
+	}	
 	request.onerror = function(evt){
 		console.log("error" + evt);
 	}
-	
 	console.log("init end");
 }

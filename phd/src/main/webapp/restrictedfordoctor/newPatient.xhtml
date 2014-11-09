@@ -14,7 +14,7 @@
 				<h1>
 					<h:outputText value="#{msg['newpatient']}" />
 				</h1>
-				<div id="formular">
+				<div class="formular">
 				
 					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
 					<h:outputScript library="js" name="validate_patient.js" />
@@ -53,6 +53,7 @@
 
 							<h:outputLabel />
 							<h:commandButton action="#{loginController.createPatient(patient)}" value="Add New Patient" />
+						
 						</h:panelGrid>
 						
 						<h:inputHidden id="encryptedPersonalData" value="#{patient.personalData}" />

@@ -14,7 +14,7 @@
 				<h1>
 					<h:outputText value="#{msg['editpatient']}" />
 				</h1>
-				<div id="formular">
+				<div class="formular">
 				
 					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
 					<h:outputScript library="js" name="validate_patient.js" />
@@ -62,10 +62,9 @@
 							<h:outputLabel>Insert Accessability</h:outputLabel>
 							<h:selectBooleanCheckbox id="insertaccess" readonly="#{!(loginController.writeAccess(loginController.activePatient))}" value="#{loginController.activePatient.insertaccess}" />
 													
-							<h:outputLabel></h:outputLabel>					
-							<h:column>
-								<h:commandButton action="#{loginController.updatePatient(loginController.activePatient)}" rendered="#{(loginController.writeAccess(loginController.activePatient))}" value="Update Patient" />
-							</h:column>
+							<h:outputLabel />					
+							<h:commandButton action="#{loginController.updatePatient(loginController.activePatient)}" rendered="#{(loginController.writeAccess(loginController.activePatient))}" value="Update Patient" />
+
 						</h:panelGrid>
 						
 						<h:inputHidden id="encryptedPersonalData" value="#{loginController.activePatient.personalData}"/>
