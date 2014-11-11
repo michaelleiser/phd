@@ -12,8 +12,9 @@ import javax.faces.event.AjaxBehaviorEvent;
 
 import org.bfh.phd.EntityManager;
 import org.bfh.phd.LoginController;
-import org.bfh.phd.interfaces.Answer;
-import org.bfh.phd.interfaces.Question;
+import org.bfh.phd.interfaces.IAnswer;
+import org.bfh.phd.interfaces.IQuestion;
+
 
 @ManagedBean(name = "elbow", eager = true)
 @ViewScoped
@@ -21,8 +22,8 @@ public class Elbow implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	private int id;
-	private List<Question> questions = new ArrayList<Question>();
-	private List<Answer> answers = new ArrayList<Answer>();
+	private List<IQuestion> questions = new ArrayList<IQuestion>();
+	private List<IAnswer> answers = new ArrayList<IAnswer>();
 	private static List<String> quests;
 	private static String questselected;
 	private List<String> answerCheckbox;
@@ -45,27 +46,27 @@ public class Elbow implements Serializable{
 		this.id = id;
 	}
 	
-	public void addQuestion(Question question) {
+	public void addQuestion(IQuestion question) {
 		questions.add(question);
 	}
 	
-	public List<Question> getQuestions() {
+	public List<IQuestion> getQuestions() {
 		return questions;
 	}
 	
-	public void setQuestions(List<Question> questions) {
+	public void setQuestions(List<IQuestion> questions) {
 		this.questions = questions;
 	}
 	
-	public void addAnswer(Answer answer) {
+	public void addAnswer(IAnswer answer) {
 		answers.add(answer);
 	}
 	
-	public List<Answer> getAnswers() {
+	public List<IAnswer> getAnswers() {
 		return answers;
 	}
 	
-	public void setAnswers(List<Answer> answers) {
+	public void setAnswers(List<IAnswer> answers) {
 		this.answers = answers;
 	}
 	
@@ -76,7 +77,7 @@ public class Elbow implements Serializable{
 	public void addString(final AjaxBehaviorEvent event){
 		String i1 = event.getComponent().getId();
 		int i2 = Integer.parseInt(i1.substring(5));
-		Answer a = new AnswerString();
+		IAnswer a = new AnswerString();
 		a.setAnswer(answerString);
 		while(answers.size() < i2){
 			answers.add(null);
@@ -88,7 +89,7 @@ public class Elbow implements Serializable{
 	public void addRadioButton(final AjaxBehaviorEvent event){
 		String i1 = event.getComponent().getId();
 		int i2 = Integer.parseInt(i1.substring(5));
-		Answer a = new AnswerRadioButton();
+		IAnswer a = new AnswerRadioButton();
 		a.setAnswer(answerRadioButton);
 		while(answers.size() < i2){
 			answers.add(null);
@@ -100,7 +101,7 @@ public class Elbow implements Serializable{
 	public void addCheckbox(final AjaxBehaviorEvent event){
 		String i1 = event.getComponent().getId();
 		int i2 = Integer.parseInt(i1.substring(5));
-		Answer a = new AnswerCheckbox();
+		IAnswer a = new AnswerCheckbox();
 		a.setAnswer(answerCheckbox);
 		while(answers.size() < i2){
 			answers.add(null);

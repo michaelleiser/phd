@@ -10,7 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
-import org.bfh.phd.interfaces.Answer;
+import org.bfh.phd.interfaces.IAnswer;
 import org.bfh.phd.questionary.AnswerCheckbox;
 import org.bfh.phd.questionary.AnswerRadioButton;
 import org.bfh.phd.questionary.AnswerString;
@@ -28,7 +28,7 @@ public class Questionnari implements Serializable {
 	private Date date;
 	private String op;
 	private int patient;
-	private ArrayList<Answer> a;
+	private ArrayList<IAnswer> a;
 	private List<String> answerCheckbox;
 	private String answerRadioButton;
 	private String answerString;
@@ -77,11 +77,11 @@ public class Questionnari implements Serializable {
 		this.quest = quest;
 	}
 
-	public ArrayList<Answer> getA() {
+	public ArrayList<IAnswer> getA() {
 		return a;
 	}
 
-	public void setA(Answer a) {
+	public void setA(IAnswer a) {
 		this.a.add(a);
 	}
 	
@@ -93,7 +93,7 @@ public class Questionnari implements Serializable {
 	public void addString(final AjaxBehaviorEvent event){
 		String i1 = event.getComponent().getId();
 		int i2 = Integer.parseInt(i1.substring(5));
-		Answer a = new AnswerString();
+		IAnswer a = new AnswerString();
 		a.setAnswer(answerString);
 		while(this.a.size() < i2){
 			this.a.add(null);
@@ -105,7 +105,7 @@ public class Questionnari implements Serializable {
 	public void addRadioButton(final AjaxBehaviorEvent event){
 		String i1 = event.getComponent().getId();
 		int i2 = Integer.parseInt(i1.substring(5));
-		Answer a = new AnswerRadioButton();
+		IAnswer a = new AnswerRadioButton();
 		a.setAnswer(answerRadioButton);
 		while(this.a.size() < i2){
 			this.a.add(null);
@@ -117,7 +117,7 @@ public class Questionnari implements Serializable {
 	public void addCheckbox(final AjaxBehaviorEvent event){
 		String i1 = event.getComponent().getId();
 		int i2 = Integer.parseInt(i1.substring(5));
-		Answer a = new AnswerCheckbox();
+		IAnswer a = new AnswerCheckbox();
 		a.setAnswer(answerCheckbox);
 		while(this.a.size() < i2){
 			this.a.add(null);

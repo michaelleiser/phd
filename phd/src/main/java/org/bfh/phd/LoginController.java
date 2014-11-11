@@ -14,9 +14,9 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
-import org.bfh.phd.interfaces.Answer;
+import org.bfh.phd.interfaces.IAnswer;
 import org.bfh.phd.interfaces.ILoginController;
-import org.bfh.phd.interfaces.Question;
+import org.bfh.phd.interfaces.IQuestion;
 import org.bfh.phd.questionary.Elbow;
 import org.bfh.phd.questionary.QuestionnairTools;
 
@@ -259,15 +259,15 @@ public class LoginController implements Serializable, ILoginController{
 		return em.getFilledQuestion(questionnaireId, questionnaireName);
 	}
 
-	public List<Question> getQuestions() {
+	public List<IQuestion> getQuestions() {
 		return em.getQuestions(s);
 	}
 	
-	public List<Question> getQuestions(String s) {
+	public List<IQuestion> getQuestions(String s) {
 		return em.getQuestions(s);
 	}
 
-	public List<Answer> getAnswers(int i) {
+	public List<IAnswer> getAnswers(int i) {
 		return em.getAnswers(i);
 	}
 	
@@ -327,11 +327,11 @@ public class LoginController implements Serializable, ILoginController{
 		this.to = to;
 	}
 
-	public List<Elbow> searchPatientData2(String op) {
-		System.out.println("SEARCHING Patient Data..." + op + from + "--" + to);
-		List<Elbow> l = em.searchPatientData2(op);
-		return l;
-	}
+//	public List<Elbow> searchPatientData2(String op) {
+//		System.out.println("SEARCHING Patient Data..." + op + from + "--" + to);
+//		List<Elbow> l = em.searchPatientData2(op);
+//		return l;
+//	}
 	
 //	public List<Knee> searchPatientData3(String op) {
 //		System.out.println("SEARCHING Patient Data..." + op + from + "--" + to);
@@ -556,7 +556,7 @@ public class LoginController implements Serializable, ILoginController{
 		return em.getTemplateNames();
 	}
 
-	public void addAnswer(List<Answer> a, String template) {
+	public void addAnswer(List<IAnswer> a, String template) {
 		em.addAnswer(activePatient, a, template);
 	}
 

@@ -2,10 +2,10 @@ package org.bfh.phd.questionary;
 
 import java.util.List;
 
-import org.bfh.phd.interfaces.Question;
+import org.bfh.phd.interfaces.IQuestion;
 
 
-public class QuestionString implements Question <String, String, String> {
+public class QuestionString implements IQuestion <String, String, String> {
 	
 	private String type;
 	private String question;

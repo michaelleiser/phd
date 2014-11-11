@@ -3,14 +3,13 @@ package org.bfh.phd.questionary;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bfh.phd.interfaces.Answer;
+import org.bfh.phd.interfaces.IAnswer;
 
-public class AnswerCheckbox implements Answer <List<String>, String> {
+public class AnswerCheckbox implements IAnswer <List<String>, String> {
 	
 	private List<String> answer = new ArrayList<String>();
 	
-	public AnswerCheckbox(){
-		
+	public AnswerCheckbox(){	
 	}
 	
 	@Override

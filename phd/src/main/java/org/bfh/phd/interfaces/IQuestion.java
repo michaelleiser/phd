@@ -2,7 +2,7 @@ package org.bfh.phd.interfaces;
 
 import java.util.List;
 
-public interface Question <A, B, C> {
+public interface IQuestion <A, B, C> {
 	
 	public int getId();
 	

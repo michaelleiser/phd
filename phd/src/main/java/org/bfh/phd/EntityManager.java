@@ -17,9 +17,9 @@ import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import org.bfh.phd.interfaces.Answer;
+import org.bfh.phd.interfaces.IAnswer;
 import org.bfh.phd.interfaces.IEntityManager;
-import org.bfh.phd.interfaces.Question;
+import org.bfh.phd.interfaces.IQuestion;
 import org.bfh.phd.questionary.AnswerCheckbox;
 import org.bfh.phd.questionary.AnswerRadioButton;
 import org.bfh.phd.questionary.AnswerString;
@@ -44,7 +44,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	private List<Patient> patient;
 	private List<PatientData> patientdata;
 	private List<Department> departments;
-	private List<Question> questions;
+	private List<IQuestion> questions;
 	private List<String> questiontyp;
 	private List<String> operationtyp;
 	private List<String> error;
@@ -218,10 +218,10 @@ public class EntityManager implements IEntityManager, Serializable {
 //			return ids;
 //	}
 	
-	public List<Question> getQuestionnaris2(int id) {
+	public List<IQuestion> getQuestionnaris2(int id) {
 		System.out.println("Questionnaris2  id:"+id);
 		String quest = "knee";
-		List<Question> questions = this.getQuestions(quest);
+		List<IQuestion> questions = this.getQuestions(quest);
 		init();
 		String stm = "SELECT * FROM " + quest + "_answer WHERE " + quest + "_answer_id=?;";
 		try {
@@ -275,9 +275,9 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 	
-	public List<Question> getFilledQuestion2(int id){
-		List<Question> q = getQuestions("knee");
-		List<Answer> a = getAnswers(id);
+	public List<IQuestion> getFilledQuestion2(int id){
+		List<IQuestion> q = getQuestions("knee");
+		List<IAnswer> a = getAnswers(id);
 		System.err.println(id);
 		System.err.println(a);
 		System.err.println(a.size());
@@ -314,8 +314,8 @@ public class EntityManager implements IEntityManager, Serializable {
 	
 
 	public List<Tools> getFilledQuestion(int id, String questionnaireName){
-		List<Question> q = getQuestions(questionnaireName);
-		List<Answer> a = getAnswers(id);
+		List<IQuestion> q = getQuestions(questionnaireName);
+		List<IAnswer> a = getAnswers(id);
 		List<Tools> list = new ArrayList<Tools>();
 		if(q.size()==a.size()){
 			for(int i = 0; i < a.size(); i++){
@@ -325,18 +325,20 @@ public class EntityManager implements IEntityManager, Serializable {
 				Tools to = new Tools();
 				to.setString(q.get(i).getQuestion());
 				list.add(to);
-				List<String> b =  (List<String>) a.get(i).getAnswer();
-				for(int c = 0; c < b.size(); c++){
+				String b = a.get(i).toString();
+				List<String> d = toArray(b);
+				for(int c = 0; c < d.size(); c++){
 				t = new Tools();
 
-				t.setString(b.get(c));
+				t.setString(d.get(c));
+				System.out.println(t.getString());
 				list.add(t);
 				}
 				}else if(s.equals("RadioButton")){
 					Tools to = new Tools();
 					to.setString(q.get(i).getQuestion());
 					list.add(to);
-					t.setString((String) a.get(i).getAnswer());
+					t.setString(a.get(i).toString());
 					list.add(t);
 				}else if(s.equals("String")) {
 					Tools to = new Tools();
@@ -598,9 +600,9 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 	
-	public List<Question> getQuestions(String quest) {
+	public List<IQuestion> getQuestions(String quest) {
 		if(!templatename.equals(quest)){		
-		List<Question> questions = new ArrayList<Question>();
+		List<IQuestion> questions = new ArrayList<IQuestion>();
 		init();
 		String stm = "SELECT fragenr, typ, question, pos_id FROM testdb.q_template t JOIN q_template_name n ON t.id = n.id JOIN question2 q2 ON t.question_id = q2.id JOIN q_typ ON q2.type_id = q_typ.id WHERE name=?;";
 		try {
@@ -609,7 +611,7 @@ public class EntityManager implements IEntityManager, Serializable {
 			pst.execute();
 			rs = pst.getResultSet();
 			while (rs.next()) {
-				Question question = null;
+				IQuestion question = null;
 				int id = rs.getInt("fragenr");
 				int pos_id = rs.getInt("pos_id");
 				String t = rs.getString("typ");
@@ -686,8 +688,8 @@ public class EntityManager implements IEntityManager, Serializable {
 		return possibilities;
 	}
 
-	public List<Answer> getAnswers(int id) {
-		List<Answer> answers = new ArrayList<Answer>();
+	public List<IAnswer> getAnswers(int id) {
+		List<IAnswer> answers = new ArrayList<IAnswer>();
 		init();
 		String stm = "SELECT answer, t.typ AS typ FROM testdb.questionnair_has_answer qha JOIN answer a ON qha.answer_id = a.id JOIN q_typ t ON qha.typ = t.id WHERE qha.id = ?;";
 		try {
@@ -696,7 +698,7 @@ public class EntityManager implements IEntityManager, Serializable {
 			pst.execute();
 			rs = pst.getResultSet();
 			while(rs.next()){
-				Answer a = null;
+				IAnswer a = null;
 				String type = rs.getString("typ");
 				String answer = rs.getString("answer");
 				if(type.equals("String")){
@@ -740,7 +742,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	
 
 	
-	public void addAnswer(String quest, List<Answer> a, int id) {
+	public void addAnswer(String quest, List<IAnswer> a, int id) {
 		long l = 0;
 		int size = a.size();
 		String stm = "INSERT INTO " + quest + "_answer(answer1";
@@ -803,15 +805,15 @@ public class EntityManager implements IEntityManager, Serializable {
 			pst.execute();
 			rs = pst.getResultSet();
 			while (rs.next()) {
-				List<Answer> answerlist = new ArrayList<Answer>();
+				List<IAnswer> answerlist = new ArrayList<IAnswer>();
 				Elbow e = new Elbow();
-				Answer a1 = new AnswerString();
+				IAnswer a1 = new AnswerString();
 				a1.addAnswer(rs.getString("answer1"));
-				Answer a2 = new AnswerString();
+				IAnswer a2 = new AnswerString();
 				a2.addAnswer(rs.getString("answer2"));
-				Answer a3 = new AnswerString();
+				IAnswer a3 = new AnswerString();
 				a3.addAnswer(rs.getString("answer3"));
-				Answer a4 = new AnswerString();
+				IAnswer a4 = new AnswerString();
 				a4.addAnswer(rs.getString("answer4"));
 
 				answerlist.add(a1);
@@ -1627,11 +1629,11 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 	
-	public void addAnswer(Patient activePatient, List<Answer> answer, String template) {
+	public void addAnswer(Patient activePatient, List<IAnswer> answer, String template) {
 		init();
 		try{
 		int j = createQuestionnaireDataSet(activePatient.getPatientid(), getLastInsertID(), getTemplateNr(template));
-		for(Answer a : answer){
+		for(IAnswer a : answer){
 				int k = insertAnswer(a.toString());
 				insertDatasetToAnswer(j,k, typ.get(a.getTyp()));
 		}
@@ -1643,7 +1645,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 	
 	private int getTemplateNr(String template) {
-		int i = 0;	
+		int i = 1;	
 		String stm = "SELECT id FROM q_template_name WHERE name = ?;";
 		try {
 			pst = con.prepareStatement(stm);

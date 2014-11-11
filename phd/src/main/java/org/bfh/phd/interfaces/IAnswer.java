@@ -1,6 +1,8 @@
 package org.bfh.phd.interfaces;
 
-public interface Answer <A, B>  {
+import java.util.List;
+
+public interface IAnswer <A, B>  {
 	
 	A getAnswer();
 	

@@ -1,8 +1,8 @@
 package org.bfh.phd.questionary;
 
-import org.bfh.phd.interfaces.Answer;
+import org.bfh.phd.interfaces.IAnswer;
 
-public class AnswerString implements Answer<String, String> {
+public class AnswerString implements IAnswer<String, String> {
 	
 	private String answer = "";
 	

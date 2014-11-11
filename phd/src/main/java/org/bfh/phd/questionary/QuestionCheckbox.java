@@ -3,10 +3,10 @@ package org.bfh.phd.questionary;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bfh.phd.interfaces.Question;
+import org.bfh.phd.interfaces.IQuestion;
 
 
-public class QuestionCheckbox implements Question <String, String, List<String>> {
+public class QuestionCheckbox implements IQuestion <String, String, List<String>> {
 	
 	private String type;
 	private String question;
