@@ -21,14 +21,13 @@ public class Quest implements Serializable {
 	}
 	
 	public List<String> getQuests(){
-		System.out.println(quests);
 		return quests;
 	}
 
 	public String questChanged(ActionEvent evt) {
+		System.out.println("EVENT"+evt);
 		UIComponent comp = evt.getComponent();
 		questselected = (String) comp.getAttributes().get("value");
-		System.out.println("QUEST: " + questselected);
 		return "";
 	}
 

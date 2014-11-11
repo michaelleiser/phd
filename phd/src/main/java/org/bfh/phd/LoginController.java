@@ -62,9 +62,6 @@ public class LoginController implements Serializable, ILoginController{
 		} catch (IOException e) {
 			em.setExeption(e);
 		}
-		
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void setStaff(Staff s){
@@ -257,6 +254,8 @@ public class LoginController implements Serializable, ILoginController{
 	}
 	
 	public List<Tools> getFilledQuestion(){
+		System.out.println(questionnaireId);
+		System.out.println(questionnaireName);
 		return em.getFilledQuestion(questionnaireId, questionnaireName);
 	}
 
@@ -557,8 +556,8 @@ public class LoginController implements Serializable, ILoginController{
 		return em.getTemplateNames();
 	}
 
-	public void addAnswer(List<Answer> a) {
-		em.addAnswer(activePatient, a, questionnaireId);
+	public void addAnswer(List<Answer> a, String template) {
+		em.addAnswer(activePatient, a, template);
 	}
 
 	

@@ -1,6 +1,7 @@
 package org.bfh.phd;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.util.Date;
 import java.sql.PreparedStatement;
@@ -15,7 +16,6 @@ import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 
 import org.bfh.phd.interfaces.Answer;
 import org.bfh.phd.interfaces.IEntityManager;
@@ -31,8 +31,13 @@ import org.bfh.phd.questionary.QuestionnairTools;
 
 @ManagedBean(name = "entityManager", eager = true)
 @SessionScoped
-public class EntityManager implements IEntityManager {
+public class EntityManager implements IEntityManager, Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private static EntityManager em;
 	
 	private List<Staff> staff;	
@@ -1412,7 +1417,6 @@ public class EntityManager implements IEntityManager {
 		for(int j = 0; j < pos.size(); j++){
 			pst = con.prepareStatement(stm2, Statement.RETURN_GENERATED_KEYS);
 			pst.setString(1, pos.get(j));
-			System.out.println(pst);
 			pst.executeUpdate();
 			rs = pst.getGeneratedKeys();
 			if(rs.next()){
@@ -1623,10 +1627,10 @@ public class EntityManager implements IEntityManager {
 		}
 	}
 	
-	public void addAnswer(Patient activePatient, List<Answer> answer, int questionnaireId) {
+	public void addAnswer(Patient activePatient, List<Answer> answer, String template) {
 		init();
 		try{
-		int j = createQuestionnaireDataSet(activePatient.getPatientid(), getLastInsertID(), questionnaireId);
+		int j = createQuestionnaireDataSet(activePatient.getPatientid(), getLastInsertID(), getTemplateNr(template));
 		for(Answer a : answer){
 				int k = insertAnswer(a.toString());
 				insertDatasetToAnswer(j,k, typ.get(a.getTyp()));
@@ -1638,8 +1642,25 @@ public class EntityManager implements IEntityManager {
 		}
 	}
 	
+	private int getTemplateNr(String template) {
+		int i = 0;	
+		String stm = "SELECT id FROM q_template_name WHERE name = ?;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setString(1, template);
+			pst.execute();
+			rs = pst.getResultSet();
+			if(rs.next()){
+				i = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	return i;
+	}
+
 	private void insertDatasetToAnswer(int j, int k, int l) throws SQLException {
-		String stm = "INSERT INTO questionnaire (patient_patient_id, date, template_name_id, answer_id) VALUES (?,?,?,?);";
+		String stm = "INSERT INTO questionnair_has_answer (id, answer_id, typ) VALUES (?,?,?);";
 		pst = con.prepareStatement(stm);
 		pst.setInt(1, j);
 		pst.setInt(2, k);
@@ -1659,34 +1680,37 @@ public class EntityManager implements IEntityManager {
 	}
 
 	private int getLastInsertID() throws SQLException {
-		int i = 0;
+		int i = 1;
 		String stm = "SELECT MAX(id) FROM questionnair_has_answer;";
 		pst2 = con2.prepareStatement(stm);
 		pst2.execute();
 		rs2 = pst2.getResultSet();
 		if(rs2.next()){
-			i=rs2.getInt("id");
+			if(null != rs2.getObject(1)){
+			i+=rs2.getInt(1);
+			}
 		}
 		return i;
 	}
 
 	public int insertAnswer(String a) throws SQLException{
-		int i = 0;
+		int i = 1;
 		String stm = "SELECT id FROM answer WHERE answer = ?;";
-		String stm2 = "INSERT INTO answer (answer) VALUES (?);";
+		String stm2 = "INSERT INTO answer (answer) VALUES ('"+a+"');";
 		pst2 = con2.prepareStatement(stm);
 		pst2.setString(1, a);
 		pst2.execute();
 		rs2 = pst2.getResultSet();
+		System.out.println(pst2);
+		System.out.println(rs2);
 		if(rs2.next()){
 			i=rs2.getInt("id");
 		}else{
-			pst2 = con2.prepareStatement(stm2);
-			pst2.setString(1, a);
+			pst2 = con2.prepareStatement(stm2, Statement.RETURN_GENERATED_KEYS);
 			pst2.executeUpdate();
-			rs2 = pst.getGeneratedKeys();
-			if(rs.next()){
-				i = (int)rs2.getLong(1);
+			rs2 = pst2.getGeneratedKeys();
+			if(rs2.first()){
+				i = rs2.getInt(1);
 			}
 		}
 		return i;

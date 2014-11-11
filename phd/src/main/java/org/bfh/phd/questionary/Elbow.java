@@ -1,10 +1,13 @@
 package org.bfh.phd.questionary;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.bfh.phd.EntityManager;
@@ -14,14 +17,24 @@ import org.bfh.phd.interfaces.Question;
 
 @ManagedBean(name = "elbow", eager = true)
 @ViewScoped
-public class Elbow {
+public class Elbow implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private List<Question> questions = new ArrayList<Question>();
 	private List<Answer> answers = new ArrayList<Answer>();
+	private static List<String> quests;
+	private static String questselected;
+	private List<String> answerCheckbox;
+	private String answerString;
+	private String answerRadioButton;
 	
 	public Elbow(){
-
+	}
+	
+	static {
+		EntityManager em = new EntityManager();
+		quests = em.getTemplateNames();
 	}
 	
 	public int getId() {
@@ -57,8 +70,7 @@ public class Elbow {
 	}
 	
 	public void safe(LoginController lc){
-		System.out.println(lc);
-		lc.addAnswer(answers);
+		lc.addAnswer(answers, questselected);
 	}
 	
 	public void addString(final AjaxBehaviorEvent event){
@@ -97,9 +109,6 @@ public class Elbow {
 		System.out.println("->" + answerCheckbox);
 	}
 	
-
-
-	private String answerString;
 	public String getAnswerString() {
 		return answerString;
 	}
@@ -107,7 +116,6 @@ public class Elbow {
 		this.answerString = answerString;
 	}
 	
-	private String answerRadioButton;
 	public String getAnswerRadioButton() {
 		return answerRadioButton;
 	}
@@ -115,11 +123,32 @@ public class Elbow {
 		this.answerRadioButton = answerRadioButton;
 	}
 	
-	private List<String> answerCheckbox;
 	public List<String> getAnswerCheckbox() {
 		return answerCheckbox;
 	}
 	public void setAnswerCheckbox(List<String> answerCheckbox) {
 		this.answerCheckbox = answerCheckbox;
+	}
+		
+	public List<String> getQuests(){
+		return quests;
+	}
+
+	public String questChanged(ActionEvent evt) {
+		System.out.println(evt);
+		UIComponent comp = evt.getComponent();
+		System.out.println(questselected);
+		questselected = (String) comp.getAttributes().get("value");
+		return "";
+	}
+
+	public String getQuestselected() {
+		System.out.println("get Quest " + questselected);
+		return questselected;
+	}
+
+	public void setQuestselected(String questselected) {
+		System.out.println(questselected);
+		this.questselected = questselected;
 	}
 }

@@ -29,6 +29,9 @@ public class Questionnari implements Serializable {
 	private String op;
 	private int patient;
 	private ArrayList<Answer> a;
+	private List<String> answerCheckbox;
+	private String answerRadioButton;
+	private String answerString;
 
 	public void setId(int id){
 		this.id = id;
@@ -82,16 +85,10 @@ public class Questionnari implements Serializable {
 		this.a.add(a);
 	}
 	
-	public void safe(){
-		System.out.println("******");
-		EntityManager em = new EntityManager();
-		em.addAnswer("knee", a, patient);
-		for(Answer b : a){
-			System.out.println("->>" + b);
-		}
+	public void safe(LoginController lc){
+		System.out.println("Questionnari.java anschauen aufruf save");
+		lc.addAnswer(a, "");
 	}
-	
-	
 	
 	public void addString(final AjaxBehaviorEvent event){
 		String i1 = event.getComponent().getId();
@@ -129,9 +126,6 @@ public class Questionnari implements Serializable {
 		System.out.println("->" + answerCheckbox);
 	}
 	
-
-
-	private String answerString;
 	public String getAnswerString() {
 		return answerString;
 	}
@@ -139,15 +133,13 @@ public class Questionnari implements Serializable {
 		this.answerString = answerString;
 	}
 	
-	private String answerRadioButton;
 	public String getAnswerRadioButton() {
 		return answerRadioButton;
 	}
 	public void setAnswerRadioButton(String answerRadioButton) {
 		this.answerRadioButton = answerRadioButton;
 	}
-	
-	private List<String> answerCheckbox;
+
 	public List<String> getAnswerCheckbox() {
 		return answerCheckbox;
 	}
