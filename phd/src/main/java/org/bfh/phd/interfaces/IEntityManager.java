@@ -1,10 +1,15 @@
 package org.bfh.phd.interfaces;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.bfh.phd.Department_Has_Staff;
 import org.bfh.phd.Patient;
+import org.bfh.phd.PatientData;
+import org.bfh.phd.Questionnari;
 import org.bfh.phd.Staff;
+import org.bfh.phd.Tools;
+import org.bfh.phd.questionary.QuestionnairTools;
 
 /**
  * @author leism3, koblt1
@@ -115,5 +120,116 @@ public interface IEntityManager {
 	 * 			the active user
 	 */
 	public void createPatient(Patient patient, Department_Has_Staff dhs, Staff activeUser);
+	
+	/**
+	 * @param patientid
+	 * @return
+	 */
+	public List<PatientData> getPatientDatas(int patientid);
+	
+	//TODO
+	/** check for delete
+	 * @param id
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public abstract List<IQuestion> getQuestionnaris2(int id);
 
+	/**
+	 * @param id
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	public abstract List<IQuestion> getFilledQuestion2(int id);
+
+	/** 
+	 * @param id its the identificationsnumber of a answer set
+	 * @param questionnaireName is the name of the template, that questions we need. 
+	 * @return a list of answer-question pairs
+	 */
+	public abstract List<Tools> getFilledQuestion(int id, String questionnaireName);
+
+	/** Search the Questionnaires from one person
+	 * @param id is the patient identification number
+	 * @return a list of Questionnaire data set
+	 */
+	public abstract List<Questionnari> searchQuestionnaris(int id);
+
+	/**
+	 * Search all questions to an template
+	 * @param quest is the name of the template
+	 * @return a list of questions
+	 */
+	@SuppressWarnings("rawtypes")
+	public abstract List<IQuestion> getQuestions(String quest);
+
+	/**
+	 * Search all answers to a question
+	 * @param id is the key of the answer that possibilities we search
+	 * @return a list of possible answers
+	 */
+	@SuppressWarnings("rawtypes")
+	public abstract List<IAnswer> getAnswers(int id);
+
+	/** This Method create a new question to a new template
+	 * @param typ is the type of a question.
+	 * @param question the question
+	 * @param nameOfTemplate
+	 * @param pos they are the possible answer for this question by String a empty String.
+	 */
+	public abstract void addQuestionnaireTemplate(String typ, String question,
+			String nameOfTemplate, List<String> pos, int fragenr);
+
+	/**
+	 * Initialization of all Templates 
+	 */
+	public abstract void initOperationTyp();
+
+	/**
+	 * Initialization of all types that is usable for questions
+	 */
+	public abstract void initQuestionTyp();
+
+	/**
+	 * @return the types of question that is usable
+	 */
+	public List<String> getType();
+
+	/** Create a complete Questionnaire 
+	 * @param name is the templatename that Questionnaire we search
+	 * @return a complete Questionnaire
+	 */
+	public List<QuestionnairTools> getTemplate(String name);
+
+	/** delete a question from a template
+	 * @param q is the template question
+	 * @throws SQLException
+	 */
+	public void deletTemplateQuestion(QuestionnairTools q) throws SQLException;
+
+	/** edit a question from a template
+	 * @param q is the template question
+	 * @throws SQLException
+	 */
+	public void editQuestion(QuestionnairTools q) throws SQLException;
+
+	/** insert a answer into the database
+	 * @param a is the answer string 
+	 * @return the generated key of this answer
+	 * @throws SQLException
+	 */
+	public int insertAnswer(String a) throws SQLException;
+	
+	/** Update the question number, All number after eNumber are incremented
+	 * @param templateNameSelected is the name of the template
+	 * @param eNumber is the first number they are incremented
+	 */
+	public void changeQuestionNr(String templateNameSelected, int eNumber);
+	
+	/** Add all Answers to the database
+	 * @param activePatient is the patient that has a new questionnaire
+	 * @param answer a list of all answers that he filled out
+	 * @param template the name of the questionnaire
+	 */
+	public void addAnswer(Patient activePatient, List<IAnswer> answer, String template);
 }

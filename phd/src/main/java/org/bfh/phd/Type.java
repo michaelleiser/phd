@@ -19,7 +19,7 @@ public class Type implements Serializable {
 	private static int x;
 	
 	static{
-		EntityManager em = new EntityManager();
+		Interfacetest em = new EntityManager();
 		type = em.getType();
 		y = new ArrayList<Integer>();
 		for(int j = 1; j <= 10; j++){

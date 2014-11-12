@@ -21,7 +21,7 @@ import org.bfh.phd.questionary.AnswerString;
 @SessionScoped
 public class Questionnari implements Serializable {
 	
-	private EntityManager em = new EntityManager();
+	private Interfacetest em = new EntityManager();
 	
 	private int quest;
 	private int id;

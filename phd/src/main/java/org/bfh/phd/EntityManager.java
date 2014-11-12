@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.util.Date;
+import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -29,16 +31,23 @@ import org.bfh.phd.questionary.QuestionRadioButton;
 import org.bfh.phd.questionary.QuestionString;
 import org.bfh.phd.questionary.QuestionnairTools;
 
+/**
+ * @author leism3, koblt1
+ *
+ */
 @ManagedBean(name = "entityManager", eager = true)
 @SessionScoped
-public class EntityManager implements IEntityManager, Serializable {
+public class EntityManager implements IEntityManager, Serializable{
+	
 	
 	private static final long serialVersionUID = 1L;
 	
+
 	private List<Staff> staff;	
 	private List<Patient> patient;
 	private List<PatientData> patientdata;
 	private List<Department> departments;
+	@SuppressWarnings("rawtypes")
 	private List<IQuestion> questions;
 	private List<String> questiontyp;
 	private List<String> operationtyp;
@@ -163,7 +172,6 @@ public class EntityManager implements IEntityManager, Serializable {
 			close();
 		}
 		initStaff(); // TODO Da sonst nicht geupdated wird nach dem insert
-
 		return this.getStaff((int) l);
 	}
 
@@ -194,101 +202,103 @@ public class EntityManager implements IEntityManager, Serializable {
 //			return ids;
 //	}
 	
+
+	//TODO not used
+	@SuppressWarnings("rawtypes")
+	@Override
 	public List<IQuestion> getQuestionnaris2(int id) {
 		System.out.println("Questionnaris2  id:"+id);
-		String quest = "knee";
-		List<IQuestion> questions = this.getQuestions(quest);
-		init();
-		String stm = "SELECT * FROM " + quest + "_answer WHERE " + quest + "_answer_id=?;";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setInt(1, id);
-			System.err.println(pst);
-			pst.execute();
-			rs = pst.getResultSet();
-			
-			if (rs.next()) {
-				for(int i = 0; i < questions.size(); i++){
-					questions.get(i).addAnswerPossibility(rs.getString(i+2));
-//					if(type.equals("String")){
-//						String s = rs.getString(i+2);
-//						a = new AnswerString();
-//						a.setAnswer(s);
-//					} else if(type.equals("RadioButton")){
-//						String s = rs.getString(i+2);
-//						a = new AnswerRadioButton();
-//						a.addAnswer(s);
-//					} else if(type.equals("Checkbox")){
-//						String s = rs.getString(i+2);
-//						a = new AnswerCheckbox();
-//						a.addAnswer(s);
-//					} else {
-//					
-//					}
-				}
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		return questions;
+//		String quest = "knee";
+//		List<IQuestion> questions = this.getQuestions(quest);
+//		init();
+//		String stm = "SELECT * FROM " + quest + "_answer WHERE " + quest + "_answer_id=?;";
+//		try {
+//			pst = con.prepareStatement(stm);
+//			pst.setInt(1, id);
+//			System.err.println(pst);
+//			pst.execute();
+//			rs = pst.getResultSet();
+//			
+//			if (rs.next()) {
+//				for(int i = 0; i < questions.size(); i++){
+//					questions.get(i).addAnswerPossibility(rs.getString(i+2));
+////					if(type.equals("String")){
+////						String s = rs.getString(i+2);
+////						a = new AnswerString();
+////						a.setAnswer(s);
+////					} else if(type.equals("RadioButton")){
+////						String s = rs.getString(i+2);
+////						a = new AnswerRadioButton();
+////						a.addAnswer(s);
+////					} else if(type.equals("Checkbox")){
+////						String s = rs.getString(i+2);
+////						a = new AnswerCheckbox();
+////						a.addAnswer(s);
+////					} else {
+////					
+////					}
+//				}
+//			}
+//			close();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			close();
+//		}
+//		return questions;
+		return null;
 	}
-	
-	public void addFilledQuestionnaire(String answer) {
-		String stm2 = "INSERT INTO question(q1, q2, q3, q4, q5) VALUES("+answer+");";
-		init();
-		try {
-			pst = con.prepareStatement(stm2);
-			pst.execute();
-			
-			closeWithoutRs();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			closeWithoutRs();
-		}
-	}
-	
+		
+	/* (non-Javadoc)
+	 * @see org.bfh.phd.Interfacetest#getFilledQuestion2(int)
+	 */
+	//TODO not used
+	@SuppressWarnings("rawtypes")
+	@Override
 	public List<IQuestion> getFilledQuestion2(int id){
-		List<IQuestion> q = getQuestions("knee");
-		List<IAnswer> a = getAnswers(id);
-		System.err.println(id);
-		System.err.println(a);
-		System.err.println(a.size());
-		System.err.println(q.size());
-		if(q.size()==a.size()){
-			for(int i = 0; i < a.size(); i++){
-				String s = q.get(i).getType();
-				if(s.equals("Checkbox")){
-					List<String> list = q.get(i).getAnswerPossibilities();
-					int k = 0;
-					ArrayList<String> b = (ArrayList<String>) a.get(i).getAnswer();
-					for(int j = 0; j < list.size(); j++)	
-						if(list.get(j).equals(b.get(k))){
-							q.get(i).setAnswer("true");
-						}else{
-							q.get(i).setAnswer("false");
-						}
-				}else if(s.equals("RadioButton")){
-					List<String> list = q.get(i).getAnswerPossibilities();	
-					for(int j = 0; j < list.size(); j++){
-						if(list.get(j).equals(a.get(i).getAnswer())){
-							q.get(i).setAnswer("true");
-						}else{
-							q.get(i).setAnswer("false");
-						}
-					}
-				}else if(s.equals("String")) {
-					q.get(i).setAnswer((String)a.get(i).getAnswer());
-				}else{}
-			}
-		}
-		return q;
+//		List<IQuestion> q = getQuestions("knee");
+//		List<IAnswer> a = getAnswers(id);
+//		System.err.println(id);
+//		System.err.println(a);
+//		System.err.println(a.size());
+//		System.err.println(q.size());
+//		if(q.size()==a.size()){
+//			for(int i = 0; i < a.size(); i++){
+//				String s = q.get(i).getType();
+//				if(s.equals("Checkbox")){
+//					List<String> list = q.get(i).getAnswerPossibilities();
+//					int k = 0;
+//					ArrayList<String> b = (ArrayList<String>) a.get(i).getAnswer();
+//					for(int j = 0; j < list.size(); j++)	
+//						if(list.get(j).equals(b.get(k))){
+//							q.get(i).setAnswer("true");
+//						}else{
+//							q.get(i).setAnswer("false");
+//						}
+//				}else if(s.equals("RadioButton")){
+//					List<String> list = q.get(i).getAnswerPossibilities();	
+//					for(int j = 0; j < list.size(); j++){
+//						if(list.get(j).equals(a.get(i).getAnswer())){
+//							q.get(i).setAnswer("true");
+//						}else{
+//							q.get(i).setAnswer("false");
+//						}
+//					}
+//				}else if(s.equals("String")) {
+//					q.get(i).setAnswer((String)a.get(i).getAnswer());
+//				}else{}
+//			}
+//		}
+//		return q;
+		return null;
 	}
 	
 
+	/* (non-Javadoc)
+	 * @see org.bfh.phd.Interfacetest#getFilledQuestion(int, java.lang.String)
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
 	public List<Tools> getFilledQuestion(int id, String questionnaireName){
 		List<IQuestion> q = getQuestions(questionnaireName);
 		List<IAnswer> a = getAnswers(id);
@@ -302,12 +312,10 @@ public class EntityManager implements IEntityManager, Serializable {
 				to.setString(q.get(i).getQuestion());
 				list.add(to);
 				String b = a.get(i).toString();
-				List<String> d = toArray(b);
+				List<String> d = (ArrayList<String>) Arrays.asList(b.split(","));
 				for(int c = 0; c < d.size(); c++){
 				t = new Tools();
-
 				t.setString(d.get(c));
-				System.out.println(t.getString());
 				list.add(t);
 				}
 				}else if(s.equals("RadioButton")){
@@ -328,6 +336,14 @@ public class EntityManager implements IEntityManager, Serializable {
 		return list;
 		}
 	
+	/* (non-Javadoc)
+	 * @see org.bfh.phd.interfaces.IEntityManager#getPatientDatas(int)
+	 */
+	@Override
+	/* (non-Javadoc)
+	 * @see org.bfh.phd.interfaces.IEntityManager#getPatientDatas(int)
+	 */
+	@Override
 //	public List<PatientData> getPatientDatas(int patientid) {
 //		List<PatientData> data = new ArrayList<PatientData>();
 //		init();
@@ -355,6 +371,14 @@ public class EntityManager implements IEntityManager, Serializable {
 //		return data;
 //	}
 
+	/**
+	 * @param patientdataid
+	 * @return
+	 */
+	/**
+	 * @param patientdataid
+	 * @return
+	 */
 //	public List<PatientData> getPatientData(int patientdataid) {
 //		List<PatientData> list = new ArrayList<PatientData>();
 //		init();
@@ -381,6 +405,9 @@ public class EntityManager implements IEntityManager, Serializable {
 //		return list;
 //	}
 
+	/* (non-Javadoc)
+	 * @see org.bfh.phd.interfaces.IEntityManager#updateStaff(org.bfh.phd.Staff)
+	 */
 	@Override
 	public void updateStaff(Staff activeUser) {
 		init();
@@ -424,6 +451,9 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 	
+	/** Updates Patient data
+	 * @param pd the new Patient data
+	 */
 //	public void updatePatientData(PatientData pd) {
 //		init();
 //		String stm = "UPDATE patientdata SET firstdata=?, seconddata=? WHERE patientdata_id=?";
@@ -449,6 +479,10 @@ public class EntityManager implements IEntityManager, Serializable {
 		this.patientdata = patientdatas;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.bfh.phd.Interfacetest#searchQuestionnaris(int)
+	 */
+	@Override
 	public List<Questionnari> searchQuestionnaris(int id) {
 		init();
 		ArrayList<Questionnari> questionnaris = new ArrayList<Questionnari>(); 
@@ -488,6 +522,10 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 	
 
+	/** search any patients they had a special operation
+	 * @param operation is the type of operation
+	 * @return data set with all patient they had this operation
+	 */
 //	public List<PatientData> searchPatientData(String operation) {
 //		List<PatientData> list = new ArrayList<PatientData>();
 //		init();
@@ -530,6 +568,12 @@ public class EntityManager implements IEntityManager, Serializable {
 		return list;
 	}
 	
+	/** search any patients they had a special operation between from and to.
+	 * @param operation is the type of operation
+	 * @param from start date (default 1970-01-01)
+	 * @param to end date (default 2100-01-01)
+	 * @return data set with all patient they had this operation
+	 */
 //	public List<ListOfQuestionnari> searchPatientDatas(String operation, Date from, Date to) {
 //		List<ListOfQuestionnari> list = new ArrayList<ListOfQuestionnari>();
 //		init();
@@ -590,6 +634,8 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
 	public List<IQuestion> getQuestions(String quest) {
 		if(!templatename.equals(quest)){		
 		List<IQuestion> questions = new ArrayList<IQuestion>();
@@ -606,7 +652,6 @@ public class EntityManager implements IEntityManager, Serializable {
 				int pos_id = rs.getInt("pos_id");
 				String t = rs.getString("typ");
 				String q = rs.getString("question");
-				System.out.println(q);
 				if(t.equals("String")){
 					question = new QuestionString();
 					question.setId(id);
@@ -641,12 +686,17 @@ public class EntityManager implements IEntityManager, Serializable {
 		return questions;
 	}
 	
-	private List<String> getPossibleAnswers(int i) {
+	/** return the possible answers from the selected question
+	 * @param id the identifier key to find the possibilities into the database
+	 * @return the answer as a collection of Strings
+	 */
+	private List<String> getPossibleAnswers(int id) {
+		System.out.println("Entitimanager 684 is used");
 		List<String> list = new ArrayList<String>();
 		String stm = "SELECT answer FROM posibilitis p JOIN pos_answer pa ON p.pos_id=pa.id WHERE p.id=?;";
 		try{
 			pst2 = con2.prepareStatement(stm);
-			pst2.setInt(1, i);
+			pst2.setInt(1, id);
 			pst2.execute();
 			rs2 = pst2.getResultSet();
 			while(rs2.next()){
@@ -659,8 +709,12 @@ public class EntityManager implements IEntityManager, Serializable {
 		return list;
 	}
 
-	// Datenbank io
+	/** return the possible answers from the selected question
+	 * @param id the identifier key to find the possibilities into the database
+	 * @return the answer as a collection of Strings
+	 */
 	public List<String> getPossibilities(int id) {
+		System.out.println("Entitimanager 704 is used");
 		List<String> possibilities = new ArrayList<String>();
 		String stm = "SELECT * FROM posibilitis p INNER JOIN pos_answer a On p.pos_id = a.id WHERE p.id=?;";
 		try {
@@ -678,6 +732,8 @@ public class EntityManager implements IEntityManager, Serializable {
 		return possibilities;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
 	public List<IAnswer> getAnswers(int id) {
 		List<IAnswer> answers = new ArrayList<IAnswer>();
 		init();
@@ -699,7 +755,7 @@ public class EntityManager implements IEntityManager, Serializable {
 					a.setAnswer(answer);
 				}else if(type.equals("Checkbox")){
 					a = new AnswerCheckbox();
-					a.setAnswer(toArray(answer));
+					a.setAnswer((ArrayList<String>) Arrays.asList(answer.split(",")));
 				}else{
 					throw new RuntimeException("QuestionType not implemented");
 				}
@@ -713,26 +769,11 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 		return answers;
 	}
-
-	private ArrayList<String> toArray(String s) {
-		if(s == null){
-			return new ArrayList<String>();
-			}
-		String b = "";
-		s = s.replace("[", "");
-		s = s.replace("]", "");
-		String[] a = s.split(",", 10 );
-		ArrayList<String> c = new ArrayList<String>();
-		for (int i = 0; i < a.length; i++){
-			c.add(a[i]);
-		}
-		return c;
-	}
-	
 	
 
-	
+	@SuppressWarnings("rawtypes")
 	public void addAnswer(String quest, List<IAnswer> a, int id) {
+		System.out.println("Entitymanager 768is used");
 		long l = 0;
 		int size = a.size();
 		String stm = "INSERT INTO " + quest + "_answer(answer1";
@@ -784,6 +825,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		return rs.getInt("id");
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 //	public List<Elbow> searchPatientData2(String op) {
 //		System.out.println("elbow");
 //		List<Elbow> elbowlist = new ArrayList<Elbow>();
@@ -942,6 +984,9 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 	
+	/** Initialization of all patients
+	 *
+	 */
 	private void initPatient() {
 		patient = new ArrayList<Patient>();
 		init();
@@ -969,6 +1014,9 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}	
 	
+	/** Initialization of all question types
+	 *
+	 */
 	private void initTyp() {
 		typ = new HashMap<String, Integer>();
 		String stm = "SELECT * FROM q_typ";
@@ -987,6 +1035,9 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 	
+	/** Initialization of patient data
+	 * 
+	 */
 	private void initPatientData() {
 		patientdata = new ArrayList<PatientData>();
 //		init();
@@ -1037,15 +1088,21 @@ public class EntityManager implements IEntityManager, Serializable {
 		return p.getInsertaccess();
 	}
 
-	public void init() {
+	/** Initialization of the two database connections
+	 *
+	 */
+	private void init() {
 		con = mycon.getConnection();
 		con2 = mycon.getConnection();
 	}
 	
-	public void closed(){
-		close();
-	}
+//	private void closed(){
+//		close();
+//	}
 	
+	/** Close the database connection without result set
+	 *
+	 */
 	private void closeWithoutRs() {
 		try {
 			pst.close();
@@ -1070,6 +1127,9 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 	
+	/** Close the database connection with result set
+	 *
+	 */
 	private void close() {
 		try {
 			rs.close();
@@ -1125,6 +1185,11 @@ public class EntityManager implements IEntityManager, Serializable {
 	public void setPaginatorGroup(PaginatorGroup p) {
 		this.paginatorGroup = p;
 	}
+	
+	/** Search all questionnaires from one patient
+	 * @param id is the identification number of the patient
+	 * @return
+	 */
 	public List<ListOfQuestionnari> searchData(int id){
 		List<ListOfQuestionnari> quest = new ArrayList<ListOfQuestionnari>();
 		String stm = "SELECT date, answer_id, name FROM questionnaire q JOIN q_template_name n ON q.template_name_id = n.id WHERE q.patient_patient_id = ?;";
@@ -1151,14 +1216,13 @@ public class EntityManager implements IEntityManager, Serializable {
 		return quest;
 	}
 	
-	public List<String> getTyps() {
-		return getType();
-	}
-	
 	public List<Department> getDepartments() {
 		return this.departments;
 	}
 	
+	/** Initialization of all departments
+	 * 
+	 */
 	private void initDepartment() {
 		departments = new ArrayList<Department>();
 		init();
@@ -1182,6 +1246,11 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 	
 
+	/** Create a new department
+	 * @param d
+	 * @param s is the staff member they create the department
+	 * @param key
+	 */
 	public void createDepartment(Department d, Staff s, String key) {
 		String stm1 = "SELECT * FROM department WHERE name=?;";
 		String stm2 = "INSERT INTO department(name) VALUES(?);";
@@ -1218,8 +1287,14 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 		initDepartment(); // TODO Da sonst nicht geupdated wird nach dem insert
 	}
+	
+	/** Add a new staff member to a department
+	 * @param name is the name of the department
+	 * @param s is the staff member
+	 */
 	public void addToDepartment(String name, Staff s) {
 		String stm1 = "SELECT * FROM department WHERE name=?;";
+		@SuppressWarnings("unused")
 		String stm2 = "INSERT INTO department(name) VALUES(?);";
 		String stm3 = "INSERT INTO department_has_staff(department_department_id, staff_staff_id, owner) VALUES(?,?,?);";
 		init();
@@ -1247,6 +1322,12 @@ public class EntityManager implements IEntityManager, Serializable {
 		initDepartment(); // TODO Da sonst nicht geupdated wird nach dem insert
 	}
 	
+	/**
+	 * @param name
+	 * @param dhs
+	 * @param activeUser
+	 * @return
+	 */
 	public List<Staff> searchStaffs(String name, Department_Has_Staff dhs, Staff activeUser) {
 		List<Staff> staff = new ArrayList<Staff>();
 		for(Staff s : dhs.getStaff()){
@@ -1259,6 +1340,10 @@ public class EntityManager implements IEntityManager, Serializable {
 		return staff;
 	}
 	
+	/** Activate or deactivate a staff member
+	 * @param s is the staff member 
+	 * @param b activate = true / deactivate = false
+	 */
 	public void setActivateStaff(Staff s, boolean b){
 		String stm = "UPDATE staff SET isActivated=? WHERE staff_id=?;";
 		init();
@@ -1280,6 +1365,10 @@ public class EntityManager implements IEntityManager, Serializable {
 		initStaff(); // TODO Da sonst nicht geupdated wird nach dem insert
 	}
 	
+	/**
+	 * @param d
+	 * @return
+	 */
 	public Department_Has_Staff getDepartment_Has_Staff(Department d) {
 		Department_Has_Staff dhs = new Department_Has_Staff();
 		init();
@@ -1316,6 +1405,11 @@ public class EntityManager implements IEntityManager, Serializable {
 		return null;
 	}
 	
+	/**
+	 * @param s
+	 * @param dhs
+	 * @param secret
+	 */
 	public void setGroupKey(Staff s, Department_Has_Staff dhs, String secret){
 		String stm = "UPDATE department_has_staff SET encryptedKey=? WHERE department_department_id=? AND staff_staff_id=?;";
 		init();
@@ -1338,12 +1432,8 @@ public class EntityManager implements IEntityManager, Serializable {
 //		initStaff(); // TODO Da sonst nicht geupdated wird nach dem insert
 	}
 	
-	/** This Method create a new question to a new template
-	 * @param typ is the type of a question.
-	 * @param question the question
-	 * @param nameOfTemplate
-	 * @param pos they are the possible answer for this question by String a empty String.
-	 */
+	@SuppressWarnings("rawtypes")
+	@Override
 	public void addQuestionnaireTemplate(String typ, String question, String nameOfTemplate, List<String> pos, int fragenr){
 		init();
 		long key = 0, templatenr = 0; 
@@ -1394,6 +1484,12 @@ public class EntityManager implements IEntityManager, Serializable {
 			}
 	}
 	
+	/**
+	 * Insert all possibilities that have a question to the database. Attention its create duplicates in case of edit some possible answer that the other question isn't corrupt.  
+	 * @param pos the list of possible answers
+	 * @return the generated key of this set of possibilities
+	 * @throws SQLException
+	 */
 	private int setPosibilitis(List<String> pos) throws SQLException{
 		int i=1;
 		int l=0;
@@ -1422,6 +1518,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		return i;
 	}
 	
+	@Override
 	public void initOperationTyp(){
 		operationtyp = new ArrayList<String>();
 		init();
@@ -1441,6 +1538,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 	
+	@Override
 	public void initQuestionTyp(){
 		questiontyp = new ArrayList<String>();
 		init();
@@ -1460,6 +1558,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 	
+	@Override
 	public List<String> getType(){
 		return questiontyp;
 	}
@@ -1468,6 +1567,8 @@ public class EntityManager implements IEntityManager, Serializable {
 		return operationtyp;
 	}
 	
+	//TODO test with hasmap ready to delet
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private HashMap getQuestType(){
 		HashMap map = new HashMap();
 		String stm = "SELECT * FROM q_typ;";
@@ -1484,6 +1585,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		return map;
 	}
 	
+	@Override
 	public List<QuestionnairTools> getTemplate(String name){
 		init();
 		List<QuestionnairTools> quest = new ArrayList<QuestionnairTools>();
@@ -1522,6 +1624,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 
+	@Override
 	public void deletTemplateQuestion(QuestionnairTools q) throws SQLException{
 		init();
 		String stm = "DELETE FROM question2 WHERE id=?;";
@@ -1558,6 +1661,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		close();
 	}
 
+	@Override
 	public void editQuestion(QuestionnairTools q) throws SQLException {
 		init();
 		String stm = "UPDATE question2 SET question=? WHERE id=?;";
@@ -1592,8 +1696,8 @@ public class EntityManager implements IEntityManager, Serializable {
 		close();
 		}
 
+	@Override
 	public void changeQuestionNr(String templateNameSelected, int eNumber) {
-		// TODO Auto-generated method stub
 		System.out.println("change number");
 		System.out.println(templateNameSelected);
 		System.out.println(eNumber);
@@ -1619,6 +1723,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public void addAnswer(Patient activePatient, List<IAnswer> answer, String template) {
 		init();
 		try{
@@ -1634,6 +1739,10 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 	
+	/** Search the right template
+	 * @param template is the name of the searched template
+	 * @return the id of this template
+	 */
 	private int getTemplateNr(String template) {
 		int i = 1;	
 		String stm = "SELECT id FROM q_template_name WHERE name = ?;";
@@ -1651,6 +1760,12 @@ public class EntityManager implements IEntityManager, Serializable {
 	return i;
 	}
 
+	/** Create a new dataset to questionnair_has_answer
+	 * @param j the id of the questionnaire
+	 * @param k the answer id into the database
+	 * @param l the type of question
+	 * @throws SQLException
+	 */
 	private void insertDatasetToAnswer(int j, int k, int l) throws SQLException {
 		String stm = "INSERT INTO questionnair_has_answer (id, answer_id, typ) VALUES (?,?,?);";
 		pst = con.prepareStatement(stm);
@@ -1660,6 +1775,13 @@ public class EntityManager implements IEntityManager, Serializable {
 		pst.execute();
 	}
 
+	/** Create a new questionnaire
+	 * @param id is the id of the patient
+	 * @param i is the questionnair_has_answer id
+	 * @param qId is the id of template
+	 * @return the questionnair_has_answer id
+	 * @throws SQLException
+	 */
 	private int createQuestionnaireDataSet(int id, int i, int qId) throws SQLException {
 		String stm = "INSERT INTO questionnaire (patient_patient_id, date, template_name_id, answer_id) VALUES (?,?,?,?);";
 		pst = con.prepareStatement(stm);
@@ -1671,6 +1793,10 @@ public class EntityManager implements IEntityManager, Serializable {
 		return i;
 	}
 
+	/** Search the last questionnair_has_answer entry
+	 * @return the the actual questionnair_has_answer id
+	 * @throws SQLException
+	 */
 	private int getLastInsertID() throws SQLException {
 		int i = 1;
 		String stm = "SELECT MAX(id) FROM questionnair_has_answer;";
@@ -1685,6 +1811,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		return i;
 	}
 
+	@Override
 	public int insertAnswer(String a) throws SQLException{
 		int i = 1;
 		String stm = "SELECT id FROM answer WHERE answer = ?;";
@@ -1717,44 +1844,4 @@ public class EntityManager implements IEntityManager, Serializable {
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
-		
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

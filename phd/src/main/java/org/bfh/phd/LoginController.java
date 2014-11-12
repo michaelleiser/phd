@@ -17,10 +17,13 @@ import javax.faces.event.ActionEvent;
 import org.bfh.phd.interfaces.IAnswer;
 import org.bfh.phd.interfaces.ILoginController;
 import org.bfh.phd.interfaces.IQuestion;
-import org.bfh.phd.questionary.Elbow;
 import org.bfh.phd.questionary.QuestionnairTools;
 
 
+/**
+ * @author leism3, koblt1
+ *
+ */
 @ManagedBean(name = "loginController", eager = true)
 @SessionScoped
 public class LoginController implements Serializable, ILoginController{
