@@ -16,7 +16,7 @@ public interface IEntityManager {
 	 * @return
 	 * 			a list of all staffs
 	 */
-	public List<Staff> getStaff();
+	public List<Staff> getStaffs();
 
 	/**
 	 * @param id
@@ -50,7 +50,7 @@ public interface IEntityManager {
 	 * @return
 	 * 			a list of all patients readable by the active user
 	 */
-	public List<Patient> getPatient(Staff activeUser);
+	public List<Patient> getPatients(Staff activeUser);
 
 	/**
 	 * @return
@@ -103,7 +103,7 @@ public interface IEntityManager {
 	 * @return
 	 * 			a list of all patients in the department group readable by the active user
 	 */
-	public List<Patient> searchPatient(Department_Has_Staff dhs, Staff activeUser);
+	public List<Patient> searchPatients(Department_Has_Staff dhs, Staff activeUser);
 
 	/**
 	 * Create a new patient in the department group with the active user as the owner.

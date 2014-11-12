@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 <h:head>
 </h:head>
 <h:body>
@@ -13,13 +14,16 @@
 			<h1>
 				<h:outputText value="#{msg['searchpatientdata']}" />
 			</h1>
-			<h:form>
+			
+			<h:outputScript library="js" name="statistics.js" />
+			
+			<h:form id="formularform">
 				<h:panelGrid columns="2">
 					<h:outputLabel value="Operation" />
-					<h:selectOneMenu value="#{quest.questselected}" required="true">
+					<h:selectOneMenu onchange="submit()" value="#{quest.questselected}" actionListener="#{quest.questChanged}">
 						<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
-						<f:selectItems value="#{quest.quests}" />
-					</h:selectOneMenu>
+						<f:selectItems value="#{loginController.templateNames}" />
+					</h:selectOneMenu>	
 				
 					<h:outputLabel for="from" value="From" />
 					<h:inputText value="#{loginController.from}" id="from"><f:convertDateTime pattern="yyyy-MM-dd" /></h:inputText>
@@ -28,30 +32,51 @@
 				</h:panelGrid>
 				
 				<h:commandButton value="Search Patient Data"></h:commandButton>
-				
-				<h:dataTable first="#{entityManager.getPaginatorPatientData().first}" rows="#{entityManager.getPaginatorPatientData().pagesize}" rendered="#{quest.questselected!=null}" value="#{loginController.searchPatientData(quest.questselected)}" var="patientdatas" headerClass="table-header" rowClasses="table-odd-row,table-even-row" columnClasses="table-column-id,table-column-first,table-column-second,table-column-timestamp">
-					<h:column>
-						<f:facet name="header">ID</f:facet>#{patientdatas.patientdata_id}
-					</h:column>
-					<h:column>
-						<f:facet name="header">first</f:facet>#{patientdatas.firstdata}
-					</h:column>
-					<h:column>
-						<f:facet name="header">second</f:facet>#{patientdatas.seconddata}
-					</h:column>
-					<h:column>
-						<f:facet name="header">timestamp</f:facet>#{patientdatas.inserttime}
-					</h:column>
-					
-					<f:facet name="footer">
-						<h:panelGroup>							
-							<h:commandButton rendered="#{entityManager.getPaginatorPatientData().hasPrevious()}" action="#{entityManager.getPaginatorPatientData().backward}" value="&lt;&lt; Page #{entityManager.getPaginatorPatientData().pagenr - 1}" />
-							<h:outputLabel value="Page #{entityManager.getPaginatorPatientData().pagenr}" />
-							<h:commandButton rendered="#{entityManager.getPaginatorPatientData().hasNext()}" action="#{entityManager.getPaginatorPatientData().forward}" value="Page #{entityManager.getPaginatorPatientData().pagenr + 1} &gt;&gt;" />
-						</h:panelGroup>
-					</f:facet>
-				</h:dataTable>
 			</h:form>	
+			
+			<hr />
+			
+			<h:form id="statistics">		
+				<c:forEach items="#{loginController.getQuestions(quest.questselected)}" var="q">
+					<c:if test="#{q.type eq 'String'}">
+						<h:outputLabel>#{q.question}</h:outputLabel><br />
+						<h:inputText disabled="true" id="j_idt#{q.id}" value="#{elbow.answerString}" />
+					</c:if>
+					<c:if test="#{q.type eq 'RadioButton'}">
+						<h:outputLabel>#{q.question}</h:outputLabel>
+							<h:selectOneRadio disabled="true" id="j_idt#{q.id}" value="#{elbow.answerRadioButton}">
+								<c:forEach items="#{q.answerPossibilities}" var="p">
+									<f:selectItem itemLabel="#{p}" itemValue="#{p}" />
+								</c:forEach>
+							</h:selectOneRadio>
+					</c:if>
+					<c:if test="#{q.type eq 'Checkbox'}">
+						<h:outputLabel>#{q.question}</h:outputLabel>
+							<h:selectManyCheckbox disabled="true" id="j_idt#{q.id}" value="#{elbow.answerCheckbox}">
+								<c:forEach items="#{q.answerPossibilities}" var="p">
+									<f:selectItem itemLabel="#{p}" itemValue="#{p}" />
+								</c:forEach>
+							</h:selectManyCheckbox>
+					</c:if><br />
+				</c:forEach>
+			</h:form>
+			
+			
+			<h:form id="patientdatas">
+				<c:forEach items="#{loginController.searchPatientDatas(quest.questselected)}" var="patientdatas" varStatus="status">
+					<tr id="row#{status.index}">
+						<td>
+							<h:inputText id="formulardata#{status.index}" value="#{patientdatas.data}"/>
+						</td>
+					</tr>
+				</c:forEach>	
+			</h:form>
+			
+			
+			
+			<h:outputScript type="text/javascript">
+			    dostatistics();
+     		</h:outputScript>
 
 		</ui:define>
 	</ui:composition>

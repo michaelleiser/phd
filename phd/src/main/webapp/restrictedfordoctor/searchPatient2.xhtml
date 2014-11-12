@@ -37,7 +37,7 @@
 								<td><h:outputLabel>Lastname</h:outputLabel></td>
 								<td><h:outputLabel>Birthday</h:outputLabel></td>
 							</tr>
-							<c:forEach varStatus="status" items="#{loginController.searchPatient()}" var="patients">
+							<c:forEach varStatus="status" items="#{loginController.searchPatients()}" var="patients">
 								<tr id="row#{status.index}">
 									<td class="table-column-id"><h:outputLabel id="id#{status.index}">#{patients.patientid}</h:outputLabel></td>
 									<td><h:outputLabel id="firstname#{status.index}"/></td>
@@ -85,14 +85,14 @@
 							first="#{entityManager.getPaginatorPatientData().first}"
 							id="outputMessage123"
 							rows="#{entityManager.getPaginatorPatientData().pagesize}"
-							value="#{loginController.getPatientData()}" var="quests"
+							value="#{loginController.getPatientDatas()}" var="quests"
 							headerClass="table-header"
 							rowClasses="table-odd-row,table-even-row">
 							<h:column>
 								<f:facet name="header">ID</f:facet>
 								<h:commandLink value="#{quests.questId}"
-									action="#{navigation.toShowQuestionnari}">
-									<f:setPropertyActionListener target="#{questionnaridata.quest}"
+									action="#{navigation.toShowQuestionnaire}">
+									<f:setPropertyActionListener target="#{questionnairedata.quest}"
 										value="#{quests.questId}" />
 									<f:setPropertyActionListener
 										target="#{loginController.patientid}"

@@ -113,7 +113,7 @@ function filter(){
 	}
 
 	var filtername = document.getElementById("searchform:filter").value.toLowerCase();
-
+console.log("filna " + filtername);
 	request = indexedDB.open(dbname, dbversion);
 	request.onsuccess = function(evt){
 		var table = document.createElement("table");
@@ -135,6 +135,7 @@ function filter(){
 		request.onsuccess = function(evt){
 			var result = evt.target.result;
 			if(result){
+				console.log("resfil " + result);
 				var row = document.createElement("tr");
 				
 				var col0 = document.createElement("td");
@@ -236,7 +237,8 @@ function initdb() {
 		var cursorRequest1 = store1.openCursor(range1);
 		cursorRequest1.onsuccess = function(evt){;
 			var result = evt.target.result;
-			if(result){				
+			if(result){			
+				console.log("res " + result);
 				var row = document.createElement("tr");
 				var col0 = document.createElement("td");
 				col0.innerHTML = result.value.row;

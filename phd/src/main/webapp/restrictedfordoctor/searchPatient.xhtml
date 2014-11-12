@@ -29,7 +29,7 @@
 						</div>
 						<div class="table">
 						<table id="patienttable">
-							<tr id="rowheader">
+							<tr class="table-header" id="rowheader">
 								<th class="colid">ID</th>
 								<th class="colfirst">Firstname</th>
 								<th class="collast">Lastname</th>
@@ -39,21 +39,21 @@
 								<th></th>
 								<th></th>
 							</tr>
-							<c:forEach items="#{loginController.searchPatient()}" var="patients" varStatus="status">
+							<c:forEach items="#{loginController.searchPatients()}" var="patients" varStatus="status">
 								<tr id="row#{status.index}">
 									<td class="table-column-id">
 										<h:outputLabel>#{patients.patientid}</h:outputLabel>
 									</td>
-									<td>
+									<td class="table-column-data">
 										<h:outputLabel id="firstname#{status.index}"/>
 									</td>
-									<td>
+									<td class="table-column-data">
 										<h:outputLabel id="lastname#{status.index}"/>
 									</td>
-									<td>
+									<td class="table-column-data">
 										<h:outputLabel id="birthday#{status.index}" />
 									</td>
-									<td>
+									<td class="table-column-button">
 										<h:commandButton action="#{navigation.redirectToEditPatient}"
 											rendered="#{(loginController.writeAccess(patients))}"
 											value="Edit Patient">
@@ -65,13 +65,13 @@
 											<f:setPropertyActionListener target="#{loginController.activePatient}" value="#{patients}" />
 										</h:commandButton>
 									</td>
-									<td>
+									<td class="table-column-button">
 										<h:commandButton action="#{loginController.setActivePatient(patients)}" value="Patient Datas" />
 									</td>
-									<td>
+									<td class="table-column-data">
 										<h:outputLabel rendered="#{(loginController.isOwner(patients))}" value="Owner" />
 									</td>
-									<td>
+									<td class="table-column-hidden">
 										<h:inputHidden id="encdata#{status.index}" value="#{patients.personalData}"/>
 									</td>
 								</tr>
@@ -101,13 +101,13 @@
 							first="#{entityManager.getPaginatorPatientData().first}"
 							id="outputMessage123"
 							rows="#{entityManager.getPaginatorPatientData().pagesize}"
-							value="#{loginController.getPatientData()}" 
+							value="#{loginController.getPatientDatas()}" 
 							var="quests"
 							headerClass="table-header"
 							rowClasses="table-odd-row,table-even-row">
 							<h:column>
 								<f:facet name="header">ID</f:facet>
-								<h:commandLink action="#{navigation.toShowQuestionnari}" value="#{quests.questId}">
+								<h:commandLink action="#{navigation.redirectToShowQuestionnaire}" value="#{quests.questId}">
 									<f:setPropertyActionListener target="#{loginController.patientid}" value="#{quests}" />
 								</h:commandLink>
 							</h:column>

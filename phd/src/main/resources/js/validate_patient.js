@@ -61,7 +61,7 @@ function validation(){
 	
 	var myobj = {"firstname":firstname, "lastname":lastname, "street":street, "nr":nr, "city":city, "zip":zip, "telnumber":telnumber, "gender":gender, "birthday":birthday};
 	var json = JSON.stringify(myobj);
-	alert(json);
+//	alert(json);
 	
 	var encrypted = encryptPersonalData(json);
 	document.getElementById("patientform:encryptedPersonalData").value = encrypted;
@@ -124,7 +124,7 @@ function decryptPersonalDataForFormular(){
 	var decrypted = CryptoJS.AES.decrypt(encrypted, groupKey);
     var json = decrypted.toString(CryptoJS.enc.Utf8);
 	var myobj = JSON.parse(json);
-	alert(myobj);
+//	alert(myobj);
 	document.getElementById("firstname").innerHTML = myobj["firstname"];
 	document.getElementById("lastname").innerHTML = myobj["lastname"];
 	document.getElementById("birthday").innerHTML = myobj["birthday"];
@@ -252,6 +252,11 @@ function display(){
 	for(var i = 0 ; i < visiblerows.length ; i++){
 		if((i >= first) && (i < (first + pagesize))){
 			document.getElementById("row" + visiblerows[i]).style.display = "inherit";
+			if(i % 2 == 0){
+				document.getElementById("row" + visiblerows[i]).className = "table-odd-row";
+			} else {
+				document.getElementById("row" + visiblerows[i]).className = "table-even-row";
+			}
 		} else{
 			document.getElementById("row" + visiblerows[i]).style.display = "none";
 		}
@@ -265,7 +270,7 @@ function display(){
 		document.getElementById("searchform:forward").style.visibility = "hidden";
 	} else{
 		document.getElementById("searchform:forward").style.visibility = "visible";
-	}
+	}	
 }
 
 /**

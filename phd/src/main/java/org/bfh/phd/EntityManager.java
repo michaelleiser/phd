@@ -33,12 +33,7 @@ import org.bfh.phd.questionary.QuestionnairTools;
 @SessionScoped
 public class EntityManager implements IEntityManager, Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
-	private static EntityManager em;
 	
 	private List<Staff> staff;	
 	private List<Patient> patient;
@@ -60,12 +55,8 @@ public class EntityManager implements IEntityManager, Serializable {
 //	private PaginatorPatient paginatorPatient = new PaginatorPatient();
 	private PaginatorPatientData paginatorPatientData = new PaginatorPatientData();
 	private PaginatorGroup paginatorGroup = new PaginatorGroup();
-	
-		
-		
 		
 	public EntityManager(){
-		em = this;
 		mycon = new MyConnection();
 		initDepartment();
 		initStaff();
@@ -75,15 +66,9 @@ public class EntityManager implements IEntityManager, Serializable {
 		initOperationTyp();
 		initTyp();
 	}
-	
-	public static EntityManager em(){
-		return em;
-	}
-
-//---- Methods -----
 
 	@Override
-	public List<Staff> getStaff() {
+	public List<Staff> getStaffs() {
 		return this.staff;
 	}
 	
@@ -119,7 +104,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	@Override
-	public List<Patient> getPatient(Staff activeUser){
+	public List<Patient> getPatients(Staff activeUser){
 		List<Patient> list = new ArrayList<Patient>();
 		for(Patient p : this.patient){
 			if(p.getReadaccess() || (p.getOwner().equals(activeUser))){
@@ -133,15 +118,6 @@ public class EntityManager implements IEntityManager, Serializable {
 	public List<Patient> getPatient(){
 		return this.patient;
 	}
-
-//	public Patient getPatient(int patientid) {
-//		for(Patient p : this.patient){
-//			if(p.getReadaccess() || (p.getOwner() == activeUser.getId())){
-//				list.add(p);
-//			}
-//		}
-//		return list;
-//	}
 
 	@Override
 	public Patient getPatient(Staff activeUser, int patientid) {
@@ -352,58 +328,58 @@ public class EntityManager implements IEntityManager, Serializable {
 		return list;
 		}
 	
-	public List<PatientData> getPatientDatas(int patientid) {
-		List<PatientData> data = new ArrayList<PatientData>();
-		init();
-		String stm = "SELECT * FROM patientdata WHERE patient_patient_id=?;";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setInt(1, patientid);
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				PatientData pd = new PatientData();
-				pd.setPatientdata_id(rs.getInt("patientdata_id"));
-				pd.setFirstdata(rs.getString("firstdata"));
-				pd.setSeconddata(rs.getString("seconddata"));
-				pd.setInserttime(rs.getDate("inserttime"));
-				data.add(pd);
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		paginatorPatientData.setSize(data.size());
-		return data;
-	}
+//	public List<PatientData> getPatientDatas(int patientid) {
+//		List<PatientData> data = new ArrayList<PatientData>();
+//		init();
+//		String stm = "SELECT * FROM patientdata WHERE patient_patient_id=?;";
+//		try {
+//			pst = con.prepareStatement(stm);
+//			pst.setInt(1, patientid);
+//			pst.execute();
+//			rs = pst.getResultSet();
+//			while (rs.next()) {
+//				PatientData pd = new PatientData();
+//				pd.setPatientdata_id(rs.getInt("patientdata_id"));
+//				pd.setFirstdata(rs.getString("firstdata"));
+//				pd.setSeconddata(rs.getString("seconddata"));
+//				pd.setInserttime(rs.getDate("inserttime"));
+//				data.add(pd);
+//			}
+//			close();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			close();
+//		}
+//		paginatorPatientData.setSize(data.size());
+//		return data;
+//	}
 
-	public List<PatientData> getPatientData(int patientdataid) {
-		List<PatientData> list = new ArrayList<PatientData>();
-		init();
-		String stm = "SELECT * FROM patientdata WHERE patientdata_id=?;";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setInt(1, patientdataid);
-			pst.execute();
-			rs = pst.getResultSet();
-			if (rs.next()) {
-				PatientData pd = new PatientData();
-				pd.setPatientdata_id(rs.getInt("patientdata_id"));
-				pd.setFirstdata(rs.getString("firstdata"));
-				pd.setSeconddata(rs.getString("seconddata"));
-				pd.setInserttime(rs.getDate("inserttime"));
-				list.add(pd);
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		return list;
-	}
+//	public List<PatientData> getPatientData(int patientdataid) {
+//		List<PatientData> list = new ArrayList<PatientData>();
+//		init();
+//		String stm = "SELECT * FROM patientdata WHERE patientdata_id=?;";
+//		try {
+//			pst = con.prepareStatement(stm);
+//			pst.setInt(1, patientdataid);
+//			pst.execute();
+//			rs = pst.getResultSet();
+//			if (rs.next()) {
+//				PatientData pd = new PatientData();
+//				pd.setPatientdata_id(rs.getInt("patientdata_id"));
+//				pd.setFirstdata(rs.getString("firstdata"));
+//				pd.setSeconddata(rs.getString("seconddata"));
+//				pd.setInserttime(rs.getDate("inserttime"));
+//				list.add(pd);
+//			}
+//			close();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			close();
+//		}
+//		return list;
+//	}
 
 	@Override
 	public void updateStaff(Staff activeUser) {
@@ -448,22 +424,22 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 	
-	public void updatePatientData(PatientData pd) {
-		init();
-		String stm = "UPDATE patientdata SET firstdata=?, seconddata=? WHERE patientdata_id=?";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setString(1, pd.getFirstdata());
-			pst.setString(2, pd.getSeconddata());
-			pst.setInt(3, pd.getPatientdata_id());
-			pst.executeUpdate();
-			closeWithoutRs();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			closeWithoutRs();
-		}
-	}
+//	public void updatePatientData(PatientData pd) {
+//		init();
+//		String stm = "UPDATE patientdata SET firstdata=?, seconddata=? WHERE patientdata_id=?";
+//		try {
+//			pst = con.prepareStatement(stm);
+//			pst.setString(1, pd.getFirstdata());
+//			pst.setString(2, pd.getSeconddata());
+//			pst.setInt(3, pd.getPatientdata_id());
+//			pst.executeUpdate();
+//			closeWithoutRs();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			closeWithoutRs();
+//		}
+//	}
 
 	public List<PatientData> getPatientdatas() {
 		return patientdata;
@@ -498,7 +474,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 	
 	@Override
-	public List<Patient> searchPatient(Department_Has_Staff dhs, Staff activeUser) {
+	public List<Patient> searchPatients(Department_Has_Staff dhs, Staff activeUser) {
 		List<Patient> patient = new ArrayList<Patient>();
 		for(Patient p : this.patient){
 			if(p.getDepartment().equals(dhs.getDepartment())){
@@ -512,69 +488,83 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 	
 
-	public List<PatientData> searchPatientData(String operation) {
+//	public List<PatientData> searchPatientData(String operation) {
+//		List<PatientData> list = new ArrayList<PatientData>();
+//		init();
+//		String stm = "SELECT * FROM patientdata WHERE firstdata=?;";
+//		try {
+//			pst = con.prepareStatement(stm);
+//			pst.setString(1, operation);
+//			pst.execute();
+//			rs = pst.getResultSet();
+//			while (rs.next()) {
+//				PatientData pd = new PatientData();
+//				pd.setPatientdata_id(rs.getInt("patientdata_id"));
+//				pd.setFirstdata(rs.getString("firstdata"));
+//				pd.setSeconddata(rs.getString("seconddata"));
+//				pd.setInserttime(rs.getDate("inserttime"));
+//				list.add(pd);
+//			}
+//			close();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			close();
+//		}
+//		paginatorPatientData.setSize(list.size());
+//		return list;
+//	}
+	
+	
+	
+	
+	public List<PatientData> searchPatientDatas(){
 		List<PatientData> list = new ArrayList<PatientData>();
-		init();
-		String stm = "SELECT * FROM patientdata WHERE firstdata=?;";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setString(1, operation);
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				PatientData pd = new PatientData();
-				pd.setPatientdata_id(rs.getInt("patientdata_id"));
-				pd.setFirstdata(rs.getString("firstdata"));
-				pd.setSeconddata(rs.getString("seconddata"));
-				pd.setInserttime(rs.getDate("inserttime"));
-				list.add(pd);
+		for(Patient p : patient){
+			for(PatientData pd : p.getPatientData()){
+				if(true){
+					list.add(pd);
+				}
 			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
 		}
-		paginatorPatientData.setSize(list.size());
 		return list;
 	}
 	
-	public List<PatientData> searchPatientData(String operation, Date from, Date to) {
-		List<PatientData> list = new ArrayList<PatientData>();
-		init();
-		if(from == null){
-			from = new Date();
-			from.setTime(0);						// 1970-01-01
-		}
-		if(to == null){
-			to = new Date();
-			to.setTime(new Long("4102444800000"));	// 2100-01-01
-		}
-		String stm = "SELECT * FROM patientdata WHERE firstdata=? AND inserttime BETWEEN ? AND ?;";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setString(1, operation);
-			pst.setDate(2, new java.sql.Date(from.getTime()));
-			pst.setDate(3, new java.sql.Date(to.getTime()));
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				PatientData pd = new PatientData();
-				pd.setPatientdata_id(rs.getInt("patientdata_id"));
-				pd.setFirstdata(rs.getString("firstdata"));
-				pd.setSeconddata(rs.getString("seconddata"));
-				pd.setInserttime(rs.getDate("inserttime"));
-				list.add(pd);
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		paginatorPatientData.setSize(list.size());
-		return list;
-	}
+//	public List<ListOfQuestionnari> searchPatientDatas(String operation, Date from, Date to) {
+//		List<ListOfQuestionnari> list = new ArrayList<ListOfQuestionnari>();
+//		init();
+//		if(from == null){
+//			from = new Date();
+//			from.setTime(0);						// 1970-01-01
+//		}
+//		if(to == null){
+//			to = new Date();
+//			to.setTime(new Long("4102444800000"));	// 2100-01-01
+//		}
+//		String stm = "SELECT * FROM questionnaire WHERE inserttime BETWEEN ? AND ?;";
+//		try {
+//			pst = con.prepareStatement(stm);
+//			pst.setDate(1, new java.sql.Date(from.getTime()));
+//			pst.setDate(2, new java.sql.Date(to.getTime()));
+//			pst.execute();
+//			rs = pst.getResultSet();
+//			while (rs.next()) {
+////				PatientData pd = new PatientData();
+////				pd.setPatientdata_id(rs.getInt("patientdata_id"));
+////				pd.setFirstdata(rs.getString("firstdata"));
+////				pd.setSeconddata(rs.getString("seconddata"));
+////				pd.setInserttime(rs.getDate("inserttime"));
+////				list.add(pd);
+//			}
+//			close();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			close();
+//		}
+//		paginatorPatientData.setSize(list.size());
+//		return list;
+//	}
 
 	@Override
 	public void createPatient(Patient p, Department_Has_Staff dhs, Staff activeUser) {
@@ -794,46 +784,46 @@ public class EntityManager implements IEntityManager, Serializable {
 		return rs.getInt("id");
 	}
 
-	public List<Elbow> searchPatientData2(String op) {
-		System.out.println("elbow");
-		List<Elbow> elbowlist = new ArrayList<Elbow>();
-		init();
-		String stm = "SELECT * FROM elbow_answer;";
-		try {
-			pst = con.prepareStatement(stm);
-//			pst.setString(1, operation);
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				List<IAnswer> answerlist = new ArrayList<IAnswer>();
-				Elbow e = new Elbow();
-				IAnswer a1 = new AnswerString();
-				a1.addAnswer(rs.getString("answer1"));
-				IAnswer a2 = new AnswerString();
-				a2.addAnswer(rs.getString("answer2"));
-				IAnswer a3 = new AnswerString();
-				a3.addAnswer(rs.getString("answer3"));
-				IAnswer a4 = new AnswerString();
-				a4.addAnswer(rs.getString("answer4"));
-
-				answerlist.add(a1);
-				answerlist.add(a2);
-				answerlist.add(a3);
-				answerlist.add(a4);
-				e.setAnswers(answerlist);
-				System.out.println("->" + e.getAnswers());
-				
-				elbowlist.add(e);
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		System.out.println(elbowlist);
-		return elbowlist;
-	}
+//	public List<Elbow> searchPatientData2(String op) {
+//		System.out.println("elbow");
+//		List<Elbow> elbowlist = new ArrayList<Elbow>();
+//		init();
+//		String stm = "SELECT * FROM elbow_answer;";
+//		try {
+//			pst = con.prepareStatement(stm);
+////			pst.setString(1, operation);
+//			pst.execute();
+//			rs = pst.getResultSet();
+//			while (rs.next()) {
+//				List<IAnswer> answerlist = new ArrayList<IAnswer>();
+//				Elbow e = new Elbow();
+//				IAnswer a1 = new AnswerString();
+//				a1.addAnswer(rs.getString("answer1"));
+//				IAnswer a2 = new AnswerString();
+//				a2.addAnswer(rs.getString("answer2"));
+//				IAnswer a3 = new AnswerString();
+//				a3.addAnswer(rs.getString("answer3"));
+//				IAnswer a4 = new AnswerString();
+//				a4.addAnswer(rs.getString("answer4"));
+//
+//				answerlist.add(a1);
+//				answerlist.add(a2);
+//				answerlist.add(a3);
+//				answerlist.add(a4);
+//				e.setAnswers(answerlist);
+//				System.out.println("->" + e.getAnswers());
+//				
+//				elbowlist.add(e);
+//			}
+//			close();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			close();
+//		}
+//		System.out.println(elbowlist);
+//		return elbowlist;
+//	}
 
 //	public List<Knee> searchPatientData3(String op) {
 //		System.out.println("knee");
@@ -999,26 +989,26 @@ public class EntityManager implements IEntityManager, Serializable {
 	
 	private void initPatientData() {
 		patientdata = new ArrayList<PatientData>();
-		init();
-		String stm = "SELECT * FROM patientdata;";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				PatientData pd = new PatientData();
-				pd.setPatientdata_id(rs.getInt("patient_patient_id"));
-				pd.setFirstdata(rs.getString("firstdata"));
-				pd.setSeconddata(rs.getString("seconddata"));
-//				pd.setInserttime(rs.getString("inserttime"));
-				patientdata.add(pd);
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
+//		init();
+//		String stm = "SELECT * FROM questionnaire;";
+//		try {
+//			pst = con.prepareStatement(stm);
+//			pst.execute();
+//			rs = pst.getResultSet();
+//			while (rs.next()) {
+//				PatientData pd = new PatientData();
+//				pd.setPatientdata_id(rs.getInt("patient_patient_id"));
+//				pd.setFirstdata(rs.getString("firstdata"));
+//				pd.setSeconddata(rs.getString("seconddata"));
+////				pd.setInserttime(rs.getString("inserttime"));
+//				patientdata.add(pd);
+//			}
+//			close();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			close();
+//		}
 	}
 
 
@@ -1257,7 +1247,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		initDepartment(); // TODO Da sonst nicht geupdated wird nach dem insert
 	}
 	
-	public List<Staff> searchStaff(String name, Department_Has_Staff dhs, Staff activeUser) {
+	public List<Staff> searchStaffs(String name, Department_Has_Staff dhs, Staff activeUser) {
 		List<Staff> staff = new ArrayList<Staff>();
 		for(Staff s : dhs.getStaff()){
 			if(name.equals("") || s.getName().toUpperCase().contains(name.toUpperCase())){

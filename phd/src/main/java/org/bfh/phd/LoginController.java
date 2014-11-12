@@ -77,7 +77,7 @@ public class LoginController implements Serializable, ILoginController{
 	public List<Staff> getStaffs(){
 		System.out.println("GET STAFFS");
 		if(this.loggedin == true){
-			return em.getStaff();
+			return em.getStaffs();
 		}
 		return null;
 	}
@@ -141,15 +141,6 @@ public class LoginController implements Serializable, ILoginController{
 		}
 		return "/home?faces-redirect=true";
 	}
-
-	public int getPatientdataid() {
-		return 0;
-		//TODO delet this
-	}
-	public void setPatientdataid(int patientdataid) {
-		//this.patientdataid = patientdataid;
-		//TODO delet this
-	}
 		
 	public Patient getPatient(int patientid){
 		System.out.println("GetPatient " + patientid);
@@ -162,25 +153,13 @@ public class LoginController implements Serializable, ILoginController{
 	public List<Patient> getPatients(){
 		System.out.println("GetPatients");
 		if((this.loggedin == true) && (activeUser.getRole() == 1)){
-			List<Patient> l = em.getPatient(activeUser);
+			List<Patient> l = em.getPatients(activeUser);
 			return l;
 		}
 		return null;
 	}
 	
-	public String getPatientDataWithId(int id){		
-		System.out.println("Not Implementet LoginController line 140 ");
-		//TODO delet
-		return "";
-	}
-	
-	public List<PatientData> getPatientDatas() {
-		System.out.println("Not Implementet LoginController line 146 ");
-		//TODO delet
-		return null;
-	}
-
-	public List<ListOfQuestionnari> getPatientData(){
+	public List<ListOfQuestionnari> getPatientDatas(){
 		if((this.loggedin == true) && (this.activePatient != null)){
 		List<ListOfQuestionnari> l = em.searchData(this.activePatient.getPatientid());
 			return l;
@@ -205,31 +184,25 @@ public class LoginController implements Serializable, ILoginController{
 	}
 	
 	public void updatePatientData(PatientData pd){
-		System.out.println("update pateint data..." + pd);
-		if(this.loggedin == true){		// TODO rW access
-			em.updatePatientData(pd);
-		}
+//		System.out.println("update pateint data..." + pd);
+//		if(this.loggedin == true){		// TODO rW access
+//			em.updatePatientData(pd);
+//		}
 	}
 	
-//	public List<PatientData> searchPatientData(String op){		// TODO
-//		System.out.println("SEARCHING Patient Data..." + op + from + to);
-//		List<PatientData> l = em.searchPatientData(op);
-//		return l;
-//	}
-	
-	public List<PatientData> searchPatientData(String op){		// TODO
-		System.out.println("SEARCHING Patient Data..." + op + from + "--" + to);
-		if(this.loggedin == true){
-			List<PatientData> l = em.searchPatientData(op, from , to);
-			return l;
-		}
+	public List<ListOfQuestionnari> searchPatientDatas(String op){		// TODO
+//		System.out.println("SEARCHING Patient Data..." + op + from + "--" + to);
+//		if(this.loggedin == true){
+//			List<ListOfQuestionnari> l = em.searchPatientDatas(op, from , to);
+//			return l;
+//		}
 		return null;
 	}
 
-	public List<Patient> searchPatient() {
+	public List<Patient> searchPatients() {
 		System.out.println("SEARCHING Patient...");
 		if(this.loggedin == true && activeUser.getRole() == 1){
-			List<Patient> l = em.searchPatient(activeDepartment_Has_Staff, activeUser);
+			List<Patient> l = em.searchPatients(activeDepartment_Has_Staff, activeUser);
 			return l;
 		}
 		return null;
@@ -243,14 +216,6 @@ public class LoginController implements Serializable, ILoginController{
 			return "/loggedin";
 		}
 		return null;
-	}
-
-	public void createPatientData(Patient p, PatientData pd) {
-		System.out.println("Not Implementet LoginController line 227 ");
-		//TODO delet
-//		if(this.loggedin == true && activeUser.getRole() == 1){
-//			em.createPatientData(p, pd);
-//		}
 	}
 	
 	public List<Tools> getFilledQuestion(){
@@ -274,14 +239,6 @@ public class LoginController implements Serializable, ILoginController{
 	public void safe(ActionEvent evt){
 		System.out.println("->"+evt );
 	}
-	
-//	public void setNavigation(Navigation navigation){
-//		this.navigation = navigation;
-//	}
-//	
-//	public Navigation getNavigation(){
-//		return this.navigation;
-//	}
 
 	public Patient getActivePatient() {
 		System.out.println("ActivePatient");
@@ -327,18 +284,6 @@ public class LoginController implements Serializable, ILoginController{
 		this.to = to;
 	}
 
-//	public List<Elbow> searchPatientData2(String op) {
-//		System.out.println("SEARCHING Patient Data..." + op + from + "--" + to);
-//		List<Elbow> l = em.searchPatientData2(op);
-//		return l;
-//	}
-	
-//	public List<Knee> searchPatientData3(String op) {
-//		System.out.println("SEARCHING Patient Data..." + op + from + "--" + to);
-//		List<Knee> l = em.searchPatientData3(op);
-//		return l;
-//	}
-
 	public boolean isOwner(Patient p){
 		System.out.println("IsOwner");
 		if(this.loggedin == true && activeUser.getRole() == 1){
@@ -375,18 +320,6 @@ public class LoginController implements Serializable, ILoginController{
 		return false;
 	}
 	
-//	public void addAnswer(String string, Knee k) {
-//		if(this.loggedin == true && activeUser.getRole() == 1){
-//			em.addAnswer("knee", k.getAnswers(), k.getId());
-//		}
-//	}
-//
-//	public List<Knee> getAnswers(String string) {
-//		if(this.loggedin == true){
-//			return em.getAnswers(string);
-//		}
-//		return null;
-//	}
 	
 	public void setPatientid(ListOfQuestionnari list){
 		this.questionnaireId = list.getQuestId();
@@ -483,21 +416,11 @@ public class LoginController implements Serializable, ILoginController{
 	public void setDepartment_Has_Staff(Department_Has_Staff activeDepartment_Has_Staff){
 		this.activeDepartment_Has_Staff = activeDepartment_Has_Staff;
 	}
-	
-//	public Department getActiveDepartment() {
-//		return activeDepartment;
-//	}
-//
-//	public void setActiveDepartment(Department activeDepartment) {
-//		this.activeDepartment = activeDepartment;
-//	}
-//
-//	private Department activeDepartment;
 
-	public List<Staff> searchStaffInGroup(String name) {
+	public List<Staff> searchStaffsInGroup(String name) {
 		System.out.println("SEARCHING Staff..." + name);
 		if(this.loggedin == true && activeUser.getRole() == 1){
-			List<Staff> l = em.searchStaff(name, activeDepartment_Has_Staff, activeUser);
+			List<Staff> l = em.searchStaffs(name, activeDepartment_Has_Staff, activeUser);
 			return l;
 		}
 		return null;
@@ -577,13 +500,6 @@ public class LoginController implements Serializable, ILoginController{
 ////		String plaintext = CopyOfRSA.decrypt(ciphertext, privateKey);
 ////		return null;
 ////	}
-	
-	public Staff getActiveUser(){
-		return this.activeUser;
-	}
-	
-	public void setActiveUser(Staff s){
-		this.activeUser = s;
-	}
+
 	
 }
