@@ -121,12 +121,6 @@ public interface IEntityManager {
 	 */
 	public void createPatient(Patient patient, Department_Has_Staff dhs, Staff activeUser);
 	
-	/**
-	 * @param patientid
-	 * @return
-	 */
-	public List<PatientData> getPatientDatas(int patientid);
-	
 	//TODO
 	/** check for delete
 	 * @param id

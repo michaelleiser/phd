@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.util.Date;
-import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +11,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +23,6 @@ import org.bfh.phd.interfaces.IQuestion;
 import org.bfh.phd.questionary.AnswerCheckbox;
 import org.bfh.phd.questionary.AnswerRadioButton;
 import org.bfh.phd.questionary.AnswerString;
-import org.bfh.phd.questionary.Elbow;
 import org.bfh.phd.questionary.QuestionCheckbox;
 import org.bfh.phd.questionary.QuestionRadioButton;
 import org.bfh.phd.questionary.QuestionString;
@@ -336,14 +333,6 @@ public class EntityManager implements IEntityManager, Serializable{
 		return list;
 		}
 	
-	/* (non-Javadoc)
-	 * @see org.bfh.phd.interfaces.IEntityManager#getPatientDatas(int)
-	 */
-	@Override
-	/* (non-Javadoc)
-	 * @see org.bfh.phd.interfaces.IEntityManager#getPatientDatas(int)
-	 */
-	@Override
 //	public List<PatientData> getPatientDatas(int patientid) {
 //		List<PatientData> data = new ArrayList<PatientData>();
 //		init();
@@ -825,7 +814,6 @@ public class EntityManager implements IEntityManager, Serializable{
 		return rs.getInt("id");
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 //	public List<Elbow> searchPatientData2(String op) {
 //		System.out.println("elbow");
 //		List<Elbow> elbowlist = new ArrayList<Elbow>();
