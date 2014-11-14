@@ -46,11 +46,10 @@ public class LoginController implements Serializable, ILoginController{
 
 
 	private Logger log;
-	//----- Methods----
 	 
 	public LoginController() {
 		this.em = new EntityManager();
-		initLogger();
+//		initLogger(); TODO write the loggincontroller
 	}
 		
 	private void initLogger() {
@@ -221,16 +220,18 @@ public class LoginController implements Serializable, ILoginController{
 		return null;
 	}
 	
-	public List<Tools> getFilledQuestion(){
+	public FilledQuestionnaire getFilledQuestion(){
 		System.out.println(questionnaireId);
 		System.out.println(questionnaireName);
 		return em.getFilledQuestion(questionnaireId, questionnaireName);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public List<IQuestion> getQuestions() {
 		return em.getQuestions(s);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public List<IQuestion> getQuestions(String s) {
 		return em.getQuestions(s);
 	}
@@ -482,8 +483,8 @@ public class LoginController implements Serializable, ILoginController{
 		return em.getTemplateNames();
 	}
 
-	public void addAnswer(List<IAnswer> a, String template) {
-		em.addAnswer(activePatient, a, template);
+	public void addAnswer(FilledQuestionnaire f) {
+		em.addAnswer(activePatient, f);
 	}
 
 	

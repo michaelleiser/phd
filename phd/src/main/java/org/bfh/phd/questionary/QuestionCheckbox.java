@@ -6,22 +6,12 @@ import java.util.List;
 import org.bfh.phd.interfaces.IQuestion;
 
 
-public class QuestionCheckbox implements IQuestion <String, String, List<String>> {
+public class QuestionCheckbox implements IQuestion <String, String> {
 	
-	private String type;
 	private String question;
 	private List<String> answerPossibilities = new ArrayList<String>();
 	private List<String> answer = new ArrayList<String>();
 
-	@Override
-	public String getType() {
-		return type;
-	}
-	
-	@Override
-	public void setType(String o) {
-		type = o;
-	}
 
 	@Override
 	public String getQuestion() {
@@ -35,7 +25,7 @@ public class QuestionCheckbox implements IQuestion <String, String, List<String>
 
 	@Override
 	public String toString(){
-		return id + " " + type + " " + question;
+		return question;
 	}
 
 	@Override

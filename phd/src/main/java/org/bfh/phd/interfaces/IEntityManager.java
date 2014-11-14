@@ -2,8 +2,10 @@ package org.bfh.phd.interfaces;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.bfh.phd.Department_Has_Staff;
+import org.bfh.phd.FilledQuestionnaire;
 import org.bfh.phd.Patient;
 import org.bfh.phd.PatientData;
 import org.bfh.phd.Questionnari;
@@ -137,11 +139,11 @@ public interface IEntityManager {
 	public abstract List<IQuestion> getFilledQuestion2(int id);
 
 	/** 
-	 * @param id its the identificationsnumber of a answer set
+	 * @param id its the identification number of a answer set
 	 * @param questionnaireName is the name of the template, that questions we need. 
-	 * @return a list of answer-question pairs
+	 * @return a list of filled questionnaires pairs
 	 */
-	public abstract List<Tools> getFilledQuestion(int id, String questionnaireName);
+	public abstract FilledQuestionnaire getFilledQuestion(int id, String questionnaireName);
 
 	/** Search the Questionnaires from one person
 	 * @param id is the patient identification number
@@ -180,14 +182,9 @@ public interface IEntityManager {
 	public abstract void initOperationTyp();
 
 	/**
-	 * Initialization of all types that is usable for questions
-	 */
-	public abstract void initQuestionTyp();
-
-	/**
 	 * @return the types of question that is usable
 	 */
-	public List<String> getType();
+	public Map<String, Integer> getType();
 
 	/** Create a complete Questionnaire 
 	 * @param name is the templatename that Questionnaire we search
@@ -222,8 +219,12 @@ public interface IEntityManager {
 	
 	/** Add all Answers to the database
 	 * @param activePatient is the patient that has a new questionnaire
-	 * @param answer a list of all answers that he filled out
-	 * @param template the name of the questionnaire
+	 * @param f is an object with all answers and questionnaire information
 	 */
-	public void addAnswer(Patient activePatient, List<IAnswer> answer, String template);
+	public void addAnswer(Patient activePatient, FilledQuestionnaire f);
+
+	/** Get all filled questionnaires from all departments
+	 * @return a collection of FilledQuestionnaires
+	 */
+	public List<FilledQuestionnaire> getFilledQuestionnaires();
 }

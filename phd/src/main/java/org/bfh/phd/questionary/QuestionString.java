@@ -5,21 +5,11 @@ import java.util.List;
 import org.bfh.phd.interfaces.IQuestion;
 
 
-public class QuestionString implements IQuestion <String, String, String> {
+public class QuestionString implements IQuestion <String, String> {
 	
-	private String type;
 	private String question;
 	private String answer;
 
-	@Override
-	public String getType() {
-		return type;
-	}
-	
-	@Override
-	public void setType(String o) {
-		type = o;
-	}
 
 	@Override
 	public String getQuestion() {
@@ -33,7 +23,7 @@ public class QuestionString implements IQuestion <String, String, String> {
 
 	@Override
 	public String toString(){
-		return id + " " + type + " " + question;
+		return question;
 	}
 
 	@Override

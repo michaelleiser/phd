@@ -21,7 +21,7 @@ import org.bfh.phd.questionary.AnswerString;
 @SessionScoped
 public class Questionnari implements Serializable {
 	
-	private Interfacetest em = new EntityManager();
+	private EntityManager em = new EntityManager();
 	
 	private int quest;
 	private int id;
@@ -87,7 +87,7 @@ public class Questionnari implements Serializable {
 	
 	public void safe(LoginController lc){
 		System.out.println("Questionnari.java anschauen aufruf save");
-		lc.addAnswer(a, "");
+		//lc.addAnswer(a, "");
 	}
 	
 	public void addString(final AjaxBehaviorEvent event){

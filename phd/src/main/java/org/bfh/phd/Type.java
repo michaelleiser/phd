@@ -3,6 +3,7 @@ package org.bfh.phd;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -13,13 +14,13 @@ import javax.faces.event.ActionEvent;
 @RequestScoped
 public class Type implements Serializable {
 	
-	private static List<String> type;
+	private static Map<String, Integer> type;
 	private static String typeselected;
 	private static List<Integer> y;
 	private static int x;
 	
 	static{
-		Interfacetest em = new EntityManager();
+		EntityManager em = new EntityManager();
 		type = em.getType();
 		y = new ArrayList<Integer>();
 		for(int j = 1; j <= 10; j++){
@@ -28,7 +29,12 @@ public class Type implements Serializable {
 	}
 	
 	public List<String> getTypes(){
-		return type;
+		System.out.println("Type class are used");
+		List<String> list = new ArrayList<String>();
+		for(String s: type.keySet()){
+			list.add(s);
+		}
+		return list;
 	}
 
 	public String typeChanged(ActionEvent evt) {

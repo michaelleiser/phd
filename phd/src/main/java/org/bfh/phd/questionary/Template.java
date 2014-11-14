@@ -1,7 +1,9 @@
 package org.bfh.phd.questionary;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -49,7 +51,8 @@ public class Template {
 		em = new EntityManager();
 		templateName = new ArrayList<String>();
 		templateName = em.getTemplateNames();
-		type = em.getType();
+		Map<String, Integer> map = em.getType();
+		type = new ArrayList<String>(map.keySet());
 		y = new ArrayList<Integer>();
 		for (int j = 1; j <= 10; j++) {
 			y.add(new Integer(j));
