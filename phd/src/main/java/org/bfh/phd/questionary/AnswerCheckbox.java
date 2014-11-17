@@ -29,12 +29,10 @@ public class AnswerCheckbox implements IAnswer <List<String>, String> {
 	
 	@Override
 	public String toString(){;
-		return answer.toString();
+	return answer.toString().replace("[", "").replace("]", "");
 	}
 
-	@Override
-	public String getTyp() {
-		return "Checkbox";
+	public String getAnswersAsString() {
+		return answer.toString();
 	}
-	
 }

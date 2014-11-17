@@ -11,7 +11,7 @@ public class QuestionCheckbox implements IQuestion <String, String> {
 	private String question;
 	private List<String> answerPossibilities = new ArrayList<String>();
 	private List<String> answer = new ArrayList<String>();
-
+	private String type = "Checkbox";
 
 	@Override
 	public String getQuestion() {
@@ -65,4 +65,7 @@ public class QuestionCheckbox implements IQuestion <String, String> {
 		
 	}
 
+	public String getType() {
+		return type;
+	}
 }

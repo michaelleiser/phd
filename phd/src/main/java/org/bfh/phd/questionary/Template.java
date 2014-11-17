@@ -16,7 +16,7 @@ import org.bfh.phd.LoginController;
 import org.bfh.phd.Questionnari;
 
 /**
- * @author 
+ * @author leism3, koblt1
  *
  */
 @ManagedBean(name = "template", eager = true)
@@ -49,7 +49,6 @@ public class Template {
 
 	private static void init() {
 		em = new EntityManager();
-		templateName = new ArrayList<String>();
 		templateName = em.getTemplateNames();
 		Map<String, Integer> map = em.getType();
 		type = new ArrayList<String>(map.keySet());
@@ -71,9 +70,6 @@ public class Template {
 		answerCheckbox.clear();
 		answerRadioButton.clear();
 		answerString = "";
-	}
-
-	public Template() {
 	}
 
 	public boolean isEmpty() {
@@ -101,8 +97,7 @@ public class Template {
 	public void safe(LoginController lc) {
 		int i = 1;
 		for (QuestionnairTools t : test) {
-			lc.addQuestionnaireTemplate(t.getType(), t.getQuestion(),
-					templatename, t.getAnswer(), i);
+			lc.addQuestionnaireTemplate(t.getType(), t.getQuestion(), templatename, t.getAnswer(), i);
 			i++;
 		}
 		init();
@@ -339,5 +334,4 @@ public class Template {
 	public void setNumberselected(int k) {
 		this.x = k;
 	}
-
 }

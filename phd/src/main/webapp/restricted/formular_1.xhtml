@@ -25,17 +25,17 @@
 	
 			<h:form id="formularform">
 				<h:outputLabel>Operation</h:outputLabel><br />
-				<h:selectOneMenu onchange="submit()" value="#{quest.questselected}" actionListener="#{quest.questChanged}">
+				<h:selectOneMenu onchange="submit()" value="#{elbow.questselected}" actionListener="#{elbow.questChanged}">
 					<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
 					<f:selectItems value="#{loginController.templateNames}" />
 				</h:selectOneMenu>		
 				<br />
 				
-				<c:forEach items="#{loginController.getQuestions(quest.questselected)}" var="q">
+				<c:forEach items="#{loginController.getQuestions(elbow.questselected)}" var="q">
 					<c:if test="#{q.type eq 'String'}">
 						<h:outputLabel>#{q.question}</h:outputLabel><br />
 						<h:inputText id="j_idt#{q.id}" value="#{elbow.answerString}">
-							<f:validateRegex pattern="([A-Za-z0-9,.\-!?])+"/>
+							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
 							<f:ajax event="change" execute="@this" listener="#{elbow.addString}" />
 						</h:inputText>
 					</c:if>
@@ -58,7 +58,7 @@
 						</h:selectManyCheckbox>
 					</c:if><br />
 				</c:forEach>
-				<ui:fragment rendered="#{not empty quest.questselected}" >			
+				<ui:fragment rendered="#{not empty elbow.questselected}" >			
 				<h:commandButton actionListener="#{elbow.safe(loginController)}" value="Safe"/>
 				</ui:fragment>
 				

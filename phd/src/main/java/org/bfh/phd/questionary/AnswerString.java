@@ -1,5 +1,8 @@
 package org.bfh.phd.questionary;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bfh.phd.interfaces.IAnswer;
 
 public class AnswerString implements IAnswer<String, String> {
@@ -8,6 +11,11 @@ public class AnswerString implements IAnswer<String, String> {
 	
 	public AnswerString(){
 		
+	}
+	public List<String> getTest(){
+		ArrayList<String> a = new ArrayList<String>();
+		a.add(answer);
+		return a;
 	}
 	
 	@Override
@@ -29,10 +37,4 @@ public class AnswerString implements IAnswer<String, String> {
 	public String toString(){;
 		return answer.toString();
 	}
-
-	@Override
-	public String getTyp() {
-		return "String";
-	}
-
 }

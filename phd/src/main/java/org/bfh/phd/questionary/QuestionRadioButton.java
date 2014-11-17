@@ -8,6 +8,7 @@ import org.bfh.phd.interfaces.IQuestion;
 
 public class QuestionRadioButton implements IQuestion <String, String> {
 	
+	private String type = "RadioButton";
 	private String question;
 	private List<String> answerPossibilities = new ArrayList<String>();
 	private List<String> answer = new ArrayList<String>();
@@ -61,5 +62,9 @@ public class QuestionRadioButton implements IQuestion <String, String> {
 	@Override
 	public void setAnswer(String s){
 		this.answer.add(s);
+	}
+	
+	public String getType(){
+		return type;
 	}
 }

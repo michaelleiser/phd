@@ -13,8 +13,7 @@ import org.bfh.phd.EntityManager;
 import org.bfh.phd.FilledQuestionnaire;
 import org.bfh.phd.LoginController;
 import org.bfh.phd.interfaces.IAnswer;
-import org.bfh.phd.interfaces.IQuestion;
-
+import org.bfh.phd.interfaces.IFilledQuestionnaire;
 
 @ManagedBean(name = "elbow", eager = true)
 @ViewScoped
@@ -22,11 +21,11 @@ public class Elbow implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	private static List<String> quests;
-	private static String questselected;
+	private String questselected;
 	private List<String> answerCheckbox;
 	private String answerString;
 	private String answerRadioButton;
-	private FilledQuestionnaire filledQuestionnaire = new FilledQuestionnaire();
+	private IFilledQuestionnaire filledQuestionnaire = new FilledQuestionnaire();
 	
 	public Elbow(){
 	}
@@ -35,41 +34,7 @@ public class Elbow implements Serializable{
 		EntityManager em = new EntityManager();
 		quests = em.getTemplateNames();
 	}
-	
-//	public int getId() {
-//		System.out.println(id);
-//		return id;
-//	}
-//	
-//	public void setId(int id) {
-//		System.out.println(id);
-//		this.id = id;
-//	}
-	
-//	public void addQuestion(IQuestion question) {
-//		questions.add(question);
-//	}
-//	
-//	public List<IQuestion> getQuestions() {
-//		return questions;
-//	}
-//	
-//	public void setQuestions(List<IQuestion> questions) {
-//		this.questions = questions;
-//	}
-//	
-//	public void addAnswer(IAnswer answer) {
-//		answers.add(answer);
-//	}
-//	
-//	public List<IAnswer> getAnswers() {
-//		return answers;
-//	}
-//	
-//	public void setAnswers(List<IAnswer> answers) {
-//		this.answers = answers;
-//	}
-	
+		
 	public void safe(LoginController lc){
 		filledQuestionnaire.setQuestionnaireName(questselected);
 		lc.addAnswer(filledQuestionnaire);

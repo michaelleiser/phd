@@ -1,13 +1,9 @@
 package org.bfh.phd;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -15,6 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 import org.bfh.phd.interfaces.IAnswer;
+import org.bfh.phd.interfaces.IFilledQuestionnaire;
 import org.bfh.phd.interfaces.ILoginController;
 import org.bfh.phd.interfaces.IQuestion;
 import org.bfh.phd.questionary.QuestionnairTools;
@@ -45,26 +42,26 @@ public class LoginController implements Serializable, ILoginController{
 	private EntityManager em;
 
 
-	private Logger log;
+//	private Logger log;
 	 
 	public LoginController() {
 		this.em = new EntityManager();
 //		initLogger(); TODO write the loggincontroller
 	}
 		
-	private void initLogger() {
-		log = Logger.getLogger(LoginController.class.getName());
-		FileHandler fh;
-		try {
-			fh = new FileHandler(new Tools().getLogPath(), true);
-			fh.setFormatter(new SimpleFormatter());
-			log.addHandler(fh);
-		} catch (SecurityException e) {
-			em.setExeption(e);
-		} catch (IOException e) {
-			em.setExeption(e);
-		}
-	}
+//	private void initLogger() {
+//		log = Logger.getLogger(LoginController.class.getName());
+//		FileHandler fh;
+//		try {
+//			fh = new FileHandler(new Tools().getLogPath(), true);
+//			fh.setFormatter(new SimpleFormatter());
+//			log.addHandler(fh);
+//		} catch (SecurityException e) {
+//			em.setExeption(e);
+//		} catch (IOException e) {
+//			em.setExeption(e);
+//		}
+//	}
 
 	public void setStaff(Staff s){
 		System.out.println("SET STAFF");
@@ -220,7 +217,7 @@ public class LoginController implements Serializable, ILoginController{
 		return null;
 	}
 	
-	public FilledQuestionnaire getFilledQuestion(){
+	public IFilledQuestionnaire getFilledQuestion(){
 		System.out.println(questionnaireId);
 		System.out.println(questionnaireName);
 		return em.getFilledQuestion(questionnaireId, questionnaireName);
@@ -483,7 +480,7 @@ public class LoginController implements Serializable, ILoginController{
 		return em.getTemplateNames();
 	}
 
-	public void addAnswer(FilledQuestionnaire f) {
+	public void addAnswer(IFilledQuestionnaire f) {
 		em.addAnswer(activePatient, f);
 	}
 

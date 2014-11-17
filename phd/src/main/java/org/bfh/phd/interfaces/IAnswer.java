@@ -4,12 +4,10 @@ import java.util.List;
 
 public interface IAnswer <A, B>  {
 	
-	A getAnswer();
+	public A getAnswer();
 	
-	void setAnswer(A o);
+	public void setAnswer(A o);
 
-	void addAnswer(B o);
-	
-	String getTyp();
+	public void addAnswer(B o);
 
 }

@@ -7,10 +7,8 @@ import java.util.Map;
 import org.bfh.phd.Department_Has_Staff;
 import org.bfh.phd.FilledQuestionnaire;
 import org.bfh.phd.Patient;
-import org.bfh.phd.PatientData;
 import org.bfh.phd.Questionnari;
 import org.bfh.phd.Staff;
-import org.bfh.phd.Tools;
 import org.bfh.phd.questionary.QuestionnairTools;
 
 /**
@@ -143,7 +141,7 @@ public interface IEntityManager {
 	 * @param questionnaireName is the name of the template, that questions we need. 
 	 * @return a list of filled questionnaires pairs
 	 */
-	public abstract FilledQuestionnaire getFilledQuestion(int id, String questionnaireName);
+	public abstract IFilledQuestionnaire getFilledQuestion(int id, String questionnaireName);
 
 	/** Search the Questionnaires from one person
 	 * @param id is the patient identification number
@@ -173,8 +171,7 @@ public interface IEntityManager {
 	 * @param nameOfTemplate
 	 * @param pos they are the possible answer for this question by String a empty String.
 	 */
-	public abstract void addQuestionnaireTemplate(String typ, String question,
-			String nameOfTemplate, List<String> pos, int fragenr);
+	public abstract void addQuestionnaireTemplate(String typ, String question, String nameOfTemplate, List<String> pos, int fragenr);
 
 	/**
 	 * Initialization of all Templates 
@@ -221,7 +218,7 @@ public interface IEntityManager {
 	 * @param activePatient is the patient that has a new questionnaire
 	 * @param f is an object with all answers and questionnaire information
 	 */
-	public void addAnswer(Patient activePatient, FilledQuestionnaire f);
+	public void addAnswer(Patient activePatient, IFilledQuestionnaire f);
 
 	/** Get all filled questionnaires from all departments
 	 * @return a collection of FilledQuestionnaires

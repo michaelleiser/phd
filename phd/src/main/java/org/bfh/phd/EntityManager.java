@@ -1,6 +1,5 @@
 package org.bfh.phd;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.util.Date;
@@ -19,6 +18,7 @@ import javax.faces.bean.SessionScoped;
 
 import org.bfh.phd.interfaces.IAnswer;
 import org.bfh.phd.interfaces.IEntityManager;
+import org.bfh.phd.interfaces.IFilledQuestionnaire;
 import org.bfh.phd.interfaces.IQuestion;
 import org.bfh.phd.questionary.AnswerCheckbox;
 import org.bfh.phd.questionary.AnswerRadioButton;
@@ -309,50 +309,26 @@ public class EntityManager implements IEntityManager, Serializable{
 		List<IAnswer> a = getAnswers(id);
 		FilledQuestionnaire f = new FilledQuestionnaire();
 		f.setQuestionnaireName(questionnaireName);
-//		List<Tools> list = new ArrayList<Tools>();
 		if(q.size()==a.size()){
 			for(int i = 0; i < a.size(); i++){
-//				Tools t = new Tools();
 				if(q.get(i) instanceof QuestionCheckbox){
 					AnswerCheckbox b = new AnswerCheckbox();
 					b.setAnswer(Arrays.asList(a.get(i).toString().split(",")));
 					f.addAnswers(b);
 					f.addQuestions(q.get(i));
 					System.out.println(q.get(i));
-//					Tools to = new Tools();
-//					to.setString(q.get(i).getQuestion());
-//					list.add(to);
-//					String b = a.get(i).toString();
-//					List<String> d = Arrays.asList(b.split(","));
-//					for(int c = 0; c < d.size(); c++){
-//					t = new Tools();
-//					System.out.println(d);
-//					t.setString(d.get(c));
-//					System.out.println(t.getA());
-//					list.add(t);
-//					}
 				}else if(q.get(i) instanceof QuestionRadioButton){
 					AnswerRadioButton b = new AnswerRadioButton();
 					b.setAnswer(a.get(i).toString());
 					f.addAnswers(b);
 					f.addQuestions(q.get(i));
 					System.out.println(q.get(i));
-//					Tools to = new Tools();
-//					to.setString(q.get(i).getQuestion());
-//					list.add(to);
-//					t.setString(a.get(i).toString());
-//					list.add(t);
 				}else if(q.get(i) instanceof QuestionString) {
 					AnswerString b = new AnswerString();
 					b.setAnswer(a.get(i).toString());
 					f.addAnswers(b);
 					f.addQuestions(q.get(i));
 					System.out.println(q.get(i));
-//					Tools to = new Tools();
-//					to.setString(q.get(i).getQuestion());
-//					list.add(to);
-//					t.setString(a.get(i).toString());
-//					list.add(t);
 				}else{}
 			}
 			String stm = "SELECT date FROM questionnaire q JOIN q_template_name tn ON q.template_name_id = tn.id WHERE answer_id = ?;";
@@ -374,37 +350,6 @@ public class EntityManager implements IEntityManager, Serializable{
 		return f;
 		}
 	
-//	public List<PatientData> getPatientDatas(int patientid) {
-//		List<PatientData> data = new ArrayList<PatientData>();
-//		init();
-//		String stm = "SELECT * FROM patientdata WHERE patient_patient_id=?;";
-//		try {
-//			pst = con.prepareStatement(stm);
-//			pst.setInt(1, patientid);
-//			pst.execute();
-//			rs = pst.getResultSet();
-//			while (rs.next()) {
-//				PatientData pd = new PatientData();
-//				pd.setPatientdata_id(rs.getInt("patientdata_id"));
-//				pd.setFirstdata(rs.getString("firstdata"));
-//				pd.setSeconddata(rs.getString("seconddata"));
-//				pd.setInserttime(rs.getDate("inserttime"));
-//				data.add(pd);
-//			}
-//			close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		} finally {
-//			close();
-//		}
-//		paginatorPatientData.setSize(data.size());
-//		return data;
-//	}
-
-	/**
-	 * @param patientdataid
-	 * @return
-	 */
 	/**
 	 * @param patientdataid
 	 * @return
@@ -435,9 +380,6 @@ public class EntityManager implements IEntityManager, Serializable{
 //		return list;
 //	}
 
-	/* (non-Javadoc)
-	 * @see org.bfh.phd.interfaces.IEntityManager#updateStaff(org.bfh.phd.Staff)
-	 */
 	@Override
 	public void updateStaff(Staff activeUser) {
 		init();
@@ -509,9 +451,6 @@ public class EntityManager implements IEntityManager, Serializable{
 		this.patientdata = patientdatas;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.bfh.phd.Interfacetest#searchQuestionnaris(int)
-	 */
 	@Override
 	public List<Questionnari> searchQuestionnaris(int id) {
 		init();
@@ -582,10 +521,7 @@ public class EntityManager implements IEntityManager, Serializable{
 //		paginatorPatientData.setSize(list.size());
 //		return list;
 //	}
-	
-	
-	
-	
+		
 	public List<PatientData> searchPatientDatas(){
 		List<PatientData> list = new ArrayList<PatientData>();
 		for(Patient p : patient){
@@ -718,7 +654,7 @@ public class EntityManager implements IEntityManager, Serializable{
 	 * @return the answer as a collection of Strings
 	 */
 	private List<String> getPossibleAnswers(int id) {
-		System.out.println("Entitimanager 684 is used");
+		System.out.println("Entitimanager 657 is used");
 		List<String> list = new ArrayList<String>();
 		String stm = "SELECT answer FROM posibilitis p JOIN pos_answer pa ON p.pos_id=pa.id WHERE p.id=?;";
 		try{
@@ -794,20 +730,19 @@ public class EntityManager implements IEntityManager, Serializable{
 		} finally {
 			close();
 		}
-//		Collections.reverse(answers); not used
 		return answers;
 	}
 	
-	private int getTyp(String quest) throws SQLException {
-		String stm = "SELECT id FROM typ WHERE typ='"+quest+"';";
-		pst = con.prepareStatement(stm);
-		pst.execute();
-		rs = pst.getResultSet();
-		if(rs.next()){
-			return rs.getInt("id");
-		}
-		return rs.getInt("id");
-	}
+//	private int getTyp(String quest) throws SQLException {
+//		String stm = "SELECT id FROM typ WHERE typ='"+quest+"';";
+//		pst = con.prepareStatement(stm);
+//		pst.execute();
+//		rs = pst.getResultSet();
+//		if(rs.next()){
+//			return rs.getInt("id");
+//		}
+//		return rs.getInt("id");
+//	}
 
 //	public List<Elbow> searchPatientData2(String op) {
 //		System.out.println("elbow");
@@ -1520,6 +1455,7 @@ public class EntityManager implements IEntityManager, Serializable{
 	 * 
 	 */
 	private void initQuestionnaire() {
+		init();
 		filledQuestionnaires = new ArrayList<FilledQuestionnaire>();
 		String stm = "SELECT answer_id, name FROM questionnaire q JOIN q_template_name tn ON q.template_name_id = tn.id;";
 		try {
@@ -1700,13 +1636,15 @@ public class EntityManager implements IEntityManager, Serializable{
 	
 	@SuppressWarnings("rawtypes")
 	// TODO
-	public void addAnswer(Patient activePatient, FilledQuestionnaire f) {
+	public void addAnswer(Patient activePatient, IFilledQuestionnaire f) {
 		init();
 		try{
 		int j = createQuestionnaireDataSet(activePatient.getPatientid(), getLastInsertID(), getTemplateNr(f.getQuestionnaireName()));
 		for(IAnswer a : f.getAnswers()){
 				int k = insertAnswer(a.toString());
-				insertDatasetToAnswer(j,k, typ.get(a.getTyp()));
+				int l;
+				if(a instanceof AnswerString){l = 1;}else if(a instanceof AnswerCheckbox){l = 2;}else{ l = 3;}
+				insertDatasetToAnswer(j,k, l);
 		}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1809,15 +1747,5 @@ public class EntityManager implements IEntityManager, Serializable{
 			}
 		}
 		return i;
-	}
-
-	public void setExeption(SecurityException e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setExeption(IOException e) {
-		// TODO Auto-generated method stub
-		
 	}
 }

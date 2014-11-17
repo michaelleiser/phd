@@ -7,6 +7,7 @@ import org.bfh.phd.interfaces.IQuestion;
 
 public class QuestionString implements IQuestion <String, String> {
 	
+	private String type = "String";
 	private String question;
 	private String answer;
 
@@ -28,7 +29,7 @@ public class QuestionString implements IQuestion <String, String> {
 
 	@Override
 	public void addAnswerPossibility(String o) {
-		this.answer = o;		
+		System.err.println("setAnswerPossibities not possible because its a String question. QuestionString Line 32");		
 	}
 
 	@Override
@@ -38,20 +39,18 @@ public class QuestionString implements IQuestion <String, String> {
 
 	@Override
 	public void setAnswerPossibilities(List <String> o) {
-		// TODO Auto-generated method stub	
+		System.err.println("setAnswerPossibities not possible because its a String question. QuestionString Line 40");
 	}
 
 	private int id;
 
 	@Override
 	public int getId() {
-		// TODO Auto-generated method stub
 		return id;
 	}
 
 	@Override
 	public void setId(int id) {
-		// TODO Auto-generated method stub
 		this.id = id;
 	}
 	
@@ -62,5 +61,9 @@ public class QuestionString implements IQuestion <String, String> {
 	@Override
 	public void setAnswer(String s){
 		this.answer = s;
+	}
+	
+	public String getType(){
+		return type;
 	}
 }

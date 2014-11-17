@@ -1,5 +1,8 @@
 package org.bfh.phd.questionary;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bfh.phd.interfaces.IAnswer;
 
 public class AnswerRadioButton implements IAnswer<String, String> {
@@ -9,6 +12,12 @@ public class AnswerRadioButton implements IAnswer<String, String> {
 	public AnswerRadioButton(){
 		
 	}
+	public List<String> getTest(){
+		ArrayList<String> a = new ArrayList<String>();
+		a.add(answer);
+		return a;
+	}
+	
 	
 	@Override
 	public String getAnswer() {
@@ -28,10 +37,5 @@ public class AnswerRadioButton implements IAnswer<String, String> {
 	@Override
 	public String toString(){;
 		return answer.toString();
-	}
-
-	@Override
-	public String getTyp() {
-		return "RadioButton";
 	}
 }
