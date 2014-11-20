@@ -28,20 +28,15 @@
 							<h:outputLabel>#{loginController.getStaff().getName()}</h:outputLabel>
 							
 							<h:outputLabel>New Password:</h:outputLabel>
-							<h:inputSecret id="newpass" required="true">
-								<f:validateLength minimum="2" maximum="10" />
-							</h:inputSecret>		
+							<h:inputSecret id="newpass" required="true" value="#{loginController.getStaff().password}"/>		
 							<h:outputLabel>Confirm Password:</h:outputLabel>
-							<h:inputSecret id="confpass" required="true">
-								<f:validateLength minimum="2" maximum="10" />
-							</h:inputSecret>		
+							<h:inputSecret id="confpass" required="true" />		
 
 							<h:outputLabel />	
 							<h:commandButton action="#{loginController.updateStaff(loginController.getStaff())}" value="Update Password" />
 
 						</h:panelGrid>
-						
-						<h:inputHidden id="hashedpassword" value="#{loginController.getStaff().password}"/>
+
 						<h:inputHidden id="encryptedprivatekey" value="#{loginController.getStaff().privateKey}"/>	
 						
 					</h:form>

@@ -66,6 +66,8 @@ function validation(){
 	var encrypted = encryptPersonalData(json);
 	document.getElementById("patientform:encryptedPersonalData").value = encrypted;
 
+	clearForm();
+	
 //	alert("finish");
 	return true;
 }
@@ -304,4 +306,20 @@ function forward(){
 	}
 	display();
 	return false;
+}
+
+/**
+ * Clear the patient form. Otherwise form entries would be sent in cleartext to the server.
+ */
+function clearForm(){
+	document.getElementById("patientform:firstname").value = " ";
+	document.getElementById("patientform:lastname").value = " ";
+	document.getElementById("patientform:street").value = " ";
+	document.getElementById("patientform:nr").value = " ";
+	document.getElementById("patientform:city").value = " ";
+	document.getElementById("patientform:zip").value = " ";
+	document.getElementById("patientform:telnumber").value = " ";
+	document.getElementById("patientform:gender:0").checked = true;
+	document.getElementById("patientform:gender:1").checked = true;
+	document.getElementById("patientform:birthday").value = " ";
 }

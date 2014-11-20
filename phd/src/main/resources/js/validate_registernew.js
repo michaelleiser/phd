@@ -32,7 +32,8 @@ function validation(){
 		}
 	}
 	
-	hashPassword(pass);
+	var hash = hashPassword(pass);
+	document.getElementById("registernewform:password").value = hash;
 	
 	/**
 	 * Just for doctors
@@ -59,10 +60,11 @@ function validation(){
  * Hash the password.
  * @param pass
  * 			to be hashed
+ * @returns
+ * 			the hashed password
  */
 function hashPassword(pass){
-	var hash = CryptoJS.SHA1(pass);
-	document.getElementById("registernewform:hashedpassword").value = hash;
+	return CryptoJS.SHA1(pass);
 }
 
 /**

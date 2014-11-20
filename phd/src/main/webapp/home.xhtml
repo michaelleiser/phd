@@ -26,7 +26,7 @@
 							<h:outputLabel for="name">Username</h:outputLabel>
 							<h:inputText id="name" binding="#{name}"/>
 							<h:outputLabel for="password">Password</h:outputLabel>
-							<h:inputSecret id="password" />
+							<h:inputSecret id="password" binding="#{password}"/>
 							<h:outputLabel for="department">Department</h:outputLabel>
 							<h:selectOneMenu id="department" value="#{loginController.departmentselected}">
 								<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
@@ -39,8 +39,6 @@
 						<h:outputLabel rendered="#{loginController.loggedin}">You are logged in as #{staff.name}</h:outputLabel>
 						<h:commandButton action="#{loginController.logout}" id="button"
 							rendered="#{loginController.loggedin}" value="Logout" />
-							
-						<h:inputHidden id="hashedpassword" binding="#{password}"/>
 							
 					</h:form>
 				</div>

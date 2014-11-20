@@ -21,7 +21,7 @@ function validation(){
 	}
 	
 	var hash = hashPassword(pass);
-	document.getElementById("loginform:hashedpassword").value = hash;
+	document.getElementById("loginform:password").value = hash;
 	
 	savePasswordInSessionStorage(pass);
 

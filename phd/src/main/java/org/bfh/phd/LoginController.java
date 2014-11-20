@@ -212,7 +212,7 @@ public class LoginController implements Serializable, ILoginController{
 		System.out.println("CREATE Patient..." + p);
 		if((this.loggedin == true) && (activeUser.getRole() == 1)){
 			em.createPatient(p, activeDepartment_Has_Staff, activeUser);
-			return "/loggedin";
+			return "/restricted/loggedin?faces-redirect=true";
 		}
 		return null;
 	}

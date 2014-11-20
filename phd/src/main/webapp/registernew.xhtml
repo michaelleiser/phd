@@ -27,7 +27,7 @@
 							<h:outputLabel for="name">Username</h:outputLabel>
 							<h:inputText id="name" required="true" value="#{staff.name}" />
 							<h:outputLabel for="password">Password</h:outputLabel>
-							<h:inputSecret id="password" required="true" />
+							<h:inputSecret id="password" required="true" value="#{staff.password}" />
 							<h:outputLabel for="role">Role</h:outputLabel>
 							<h:selectOneRadio id="role" required="true"
 								value="#{staff.role}">
@@ -60,7 +60,6 @@
 							
 						</h:panelGrid>
 						
-						<h:inputHidden id="hashedpassword" value="#{staff.password}" />
 						<h:inputHidden id="encryptedprivatekey" value="#{staff.privateKey}" />
 						<h:inputHidden id="publickey" value="#{staff.publicKey}" />
 						<h:inputHidden id="encryptedgroupkey" binding="#{input_key}" />

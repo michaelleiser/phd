@@ -15,7 +15,8 @@ function validation(){
 		return false;
 	}
 	var hash = hashPassword(newpass);
-	document.getElementById("staffform:hashedpassword").value = hash;
+	document.getElementById("staffform:newpass").value = hash;
+	document.getElementById("staffform:confpass").value = " ";
 	
 	var encryptedPrivateKey = encryptPrivateKey(newpass);
 	document.getElementById("staffform:encryptedprivatekey").value = encryptedPrivateKey;
