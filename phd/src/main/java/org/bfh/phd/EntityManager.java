@@ -129,7 +129,7 @@ public class EntityManager implements IEntityManager, Serializable{
 	}
 
 	@Override
-	public List<Patient> getPatient(){
+	public List<Patient> getPatients(){
 		return this.patient;
 	}
 
@@ -1104,7 +1104,7 @@ public class EntityManager implements IEntityManager, Serializable{
 	 * @param id is the identification number of the patient
 	 * @return
 	 */
-	public List<ListOfQuestionnari> searchData(int id){
+	public List<ListOfQuestionnari> searchDatas(int id){
 		List<ListOfQuestionnari> quest = new ArrayList<ListOfQuestionnari>();
 		String stm = "SELECT date, answer_id, name FROM questionnaire q JOIN q_template_name n ON q.template_name_id = n.id WHERE q.patient_patient_id = ?;";
 		init();
@@ -1243,7 +1243,7 @@ public class EntityManager implements IEntityManager, Serializable{
 	 */
 	public List<Staff> searchStaffs(String name, Department_Has_Staff dhs, Staff activeUser) {
 		List<Staff> staff = new ArrayList<Staff>();
-		for(Staff s : dhs.getStaff()){
+		for(Staff s : dhs.getStaffs()){
 			if(name.equals("") || s.getName().toUpperCase().contains(name.toUpperCase())){
 				staff.add(s);
 			}			

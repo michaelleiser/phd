@@ -39,7 +39,7 @@ public interface IDepartment_Has_Staff {
 	 * @return
 	 * 			a list of staffs of the department group
 	 */
-	public List<Staff> getStaff();
+	public List<Staff> getStaffs();
 
 	/**
 	 * @param staff
@@ -62,7 +62,7 @@ public interface IDepartment_Has_Staff {
 	 * @return
 	 * 			the selected staff if it exists or null if it does not exist
 	 */
-	public Staff getStaff(String name, String password);
+	public Staff getStaffs(String name, String password);
 
 	/**
 	 * @return

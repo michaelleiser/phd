@@ -147,73 +147,73 @@ var groupKey;
  * The decryption procedure is done in a web worker.
  */
 function decryptPersonalDataForSearchWebWorker() {
-	var time1 = new Date().getTime();
-	size = document.getElementById("patienttable").rows.length - 1;	// -1 because of the header row
-	groupKey = self.sessionStorage.groupKey;
-	patients = new Array();
-	visiblerows = new Array();
-	var encryptedData = [];
-	for(var i = 0 ; i < size ; i++){
-		var encrypted = document.getElementById("searchform:encdata" + i).value;
-		var obj = {row:i, data:encrypted};
-		encryptedData.push(obj);
-	}
-	var data = {size: size, groupKey: groupKey, encryptedData: encryptedData};
-    if(typeof(Worker) !== "undefined") {
-        if(typeof(worker) === "undefined") {
-            worker = new Worker("/phd/javax.faces.resource/worker.js.xhtml?ln=js");
-            worker.postMessage(data);
-        }
-        var j = 0;
-        worker.onmessage = function(evt) {
-        	var obj = evt.data;
-        	var i = obj.row;
-        	var data = obj.data;
-           	patients.push({"firstname":data.firstname, "lastname":data.lastname, "birthday":data.birthday});
-			document.getElementById("searchform:firstname" + i).innerHTML = data.firstname;
-			document.getElementById("searchform:lastname" + i).innerHTML = data.lastname;
-			document.getElementById("searchform:birthday" + i).innerHTML = data.birthday;
-			visiblerows.push(i);
-			j++;
-			if(j == size){
-				display();
-				var time2 = new Date().getTime();
-				console.log("TIME worker: " + (time2 - time1));
-			}
-        };
-    } else {
-    	console.log("Web Worker not supported");    
-    }
-//  display();
-//	patients.sort();		// TODO alphabetisch sortieren
+//	var time1 = new Date().getTime();
+//	size = document.getElementById("patienttable").rows.length - 1;	// -1 because of the header row
+//	groupKey = self.sessionStorage.groupKey;
+//	patients = new Array();
+//	visiblerows = new Array();
+//	var encryptedData = [];
+//	for(var i = 0 ; i < size ; i++){
+//		var encrypted = document.getElementById("searchform:encdata" + i).value;
+//		var obj = {row:i, data:encrypted};
+//		encryptedData.push(obj);
+//	}
+//	var data = {size: size, groupKey: groupKey, encryptedData: encryptedData};
+//    if(typeof(Worker) !== "undefined") {
+//        if(typeof(worker) === "undefined") {
+//            worker = new Worker("/phd/javax.faces.resource/worker.js.xhtml?ln=js");
+//            worker.postMessage(data);
+//        }
+//        var j = 0;
+//        worker.onmessage = function(evt) {
+//        	var obj = evt.data;
+//        	var i = obj.row;
+//        	var data = obj.data;
+//           	patients.push({"firstname":data.firstname, "lastname":data.lastname, "birthday":data.birthday});
+//			document.getElementById("searchform:firstname" + i).innerHTML = data.firstname;
+//			document.getElementById("searchform:lastname" + i).innerHTML = data.lastname;
+//			document.getElementById("searchform:birthday" + i).innerHTML = data.birthday;
+//			visiblerows.push(i);
+//			j++;
+//			if(j == size){
+//				display();
+//				var time2 = new Date().getTime();
+//				console.log("TIME worker: " + (time2 - time1));
+//			}
+//        };
+//    } else {
+//    	console.log("Web Worker not supported");    
+//    }
+////  display();
+////	patients.sort();		// TODO alphabetisch sortieren
 }
 
 /**
  * Decrypt the personal data of the patients and display the result set.
  */
 function decryptPersonalDataForSearch(){
-//	var time1 = new Date().getTime();
-//	size = document.getElementById("patienttable").rows.length - 1;	// -1 because of the header row
-//	groupKey = self.sessionStorage.groupKey;
-//	patients = new Array();
-//	visiblerows = new Array();
-//	for(var i = 0 ; i < size ; i++){
-//		var encrypted = document.getElementById("searchform:encdata" + i).value;
-//		var decrypted = CryptoJS.AES.decrypt(encrypted, groupKey);
-//		if(decrypted != ""){
-//			var json = decrypted.toString(CryptoJS.enc.Utf8);
-//			var patient = JSON.parse(json);
-//			patients.push({"firstname":patient["firstname"], "lastname":patient["lastname"], "birthday":patient["birthday"]});
-//			document.getElementById("searchform:firstname" + i).innerHTML = patients[i].firstname;
-//			document.getElementById("searchform:lastname" + i).innerHTML = patients[i].lastname;
-//			document.getElementById("searchform:birthday" + i).innerHTML = patients[i].birthday;
-//			visiblerows.push(i);
-//		}
-//	}
-//	display();
-//	var time2 = new Date().getTime();
-//	console.log("TIME direct: " + (time2 - time1));
-////	patients.sort();		// TODO alphabetisch sortieren
+	var time1 = new Date().getTime();
+	size = document.getElementById("patienttable").rows.length - 1;	// -1 because of the header row
+	groupKey = self.sessionStorage.groupKey;
+	patients = new Array();
+	visiblerows = new Array();
+	for(var i = 0 ; i < size ; i++){
+		var encrypted = document.getElementById("searchform:encdata" + i).value;
+		var decrypted = CryptoJS.AES.decrypt(encrypted, groupKey);
+		if(decrypted != ""){
+			var json = decrypted.toString(CryptoJS.enc.Utf8);
+			var patient = JSON.parse(json);
+			patients.push({"firstname":patient["firstname"], "lastname":patient["lastname"], "birthday":patient["birthday"]});
+			document.getElementById("searchform:firstname" + i).innerHTML = patients[i].firstname;
+			document.getElementById("searchform:lastname" + i).innerHTML = patients[i].lastname;
+			document.getElementById("searchform:birthday" + i).innerHTML = patients[i].birthday;
+			visiblerows.push(i);
+		}
+	}
+	display();
+	var time2 = new Date().getTime();
+	console.log("TIME direct: " + (time2 - time1));
+//	patients.sort();		// TODO alphabetisch sortieren
 }
 
 /**

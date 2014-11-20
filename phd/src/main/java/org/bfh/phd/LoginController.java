@@ -93,7 +93,7 @@ public class LoginController implements Serializable, ILoginController{
 	public String login(String name, String password) {
 		System.out.println("LOGIN");
 		if(activeDepartment_Has_Staff != null){
-			activeUser = activeDepartment_Has_Staff.getStaff(name, password);
+			activeUser = activeDepartment_Has_Staff.getStaffs(name, password);
 			if(activeUser != null && activeUser.getActivated()){
 				setLoggedin(true);			
 				return "/restricted/loggedin?faces-redirect=true";
@@ -123,7 +123,7 @@ public class LoginController implements Serializable, ILoginController{
 	@Override
 	public String registernew(Staff s) {
 		System.out.println("REGISTER NEW");
-		if(!this.activeDepartment_Has_Staff.getStaff().contains(s)){
+		if(!this.activeDepartment_Has_Staff.getStaffs().contains(s)){
 			boolean activated = false;
 			Staff ss = em.registernew(s, activated);
 			em.addToDepartment(this.departmentselected, ss);
@@ -160,7 +160,7 @@ public class LoginController implements Serializable, ILoginController{
 	
 	public List<ListOfQuestionnari> getPatientDatas(){
 		if((this.loggedin == true) && (this.activePatient != null)){
-		List<ListOfQuestionnari> l = em.searchData(this.activePatient.getPatientid());
+		List<ListOfQuestionnari> l = em.searchDatas(this.activePatient.getPatientid());
 			return l;
 		}
 		return null;
@@ -502,5 +502,8 @@ public class LoginController implements Serializable, ILoginController{
 ////		return null;
 ////	}
 
+	public List<FilledQuestionnaire> getFilledQuestionnaires(){
+		return em.getFilledQuestionnaires();
+	}
 	
 }

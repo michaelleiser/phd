@@ -19,7 +19,7 @@
 						<h:commandLink class="menuitem" action="#{navigation.redirectToNewPatient}" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Create a new Patient" />
 						<h:commandLink class="menuitem" action="#{navigation.redirectToSearchPatient}" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Search Patient and modify Patient Data" />
 						<h:commandLink class="menuitem" action="#{navigation.redirectToSearchPatientData}" value="Search Patient Data for Statistics" />
-						<h:commandLink class="menuitem" action="#{navigation.redirectToNewQuestionnaireTemplate}" value="Create new questionnaire template" />
+						<h:commandLink class="menuitem" action="#{navigation.redirectToNewQuestionnaireTemplate}" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Create new questionnaire template" />
 						<h:commandLink class="menuitem" action="#{navigation.redirectToModifyGroup}" rendered="#{loginController.loggedin and (loginController.getDepartment_Has_Staff().isOwner(loginController.getStaff()))}" value="Modify Group" />
 						
 						<h:commandLink class="menuitem" action="/restrictedfordoctor/searchPatient2" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Search Patient test" />

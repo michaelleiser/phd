@@ -61,7 +61,7 @@ public interface IEntityManager {
 	 * @return
 	 * 			a list of all patients
 	 */
-	public List<Patient> getPatient();
+	public List<Patient> getPatients();
 
 	/**
 	 * @param activeUser
