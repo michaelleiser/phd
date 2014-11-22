@@ -37,7 +37,7 @@
 							<h:outputLabel for="department">Department</h:outputLabel>
 							<h:selectOneMenu id="department" value="#{loginController.departmentselected}">
 								<f:selectItem itemLabel="ADD NEW" itemValue="" noSelectionOption="true" />
-								<f:selectItems value="#{loginController.departments}" var="c" itemValue="#{c}" itemLabel="#{c.name}" />
+								<f:selectItems value="#{loginController.departments}" var="department" itemValue="#{department}" itemLabel="#{department.name}" />
 								<f:ajax render="depname_l depname regnew regnewwithdep" event="valueChange" />
 							</h:selectOneMenu>
 							<h:panelGroup id="depname_l">

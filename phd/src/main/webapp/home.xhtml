@@ -30,7 +30,7 @@
 							<h:outputLabel for="department">Department</h:outputLabel>
 							<h:selectOneMenu id="department" value="#{loginController.departmentselected}">
 								<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
-								<f:selectItems value="#{loginController.departments}" var="c" itemValue="#{c}" itemLabel="#{c.name}"/>
+								<f:selectItems value="#{loginController.departments}" var="department" itemValue="#{departmnet}" itemLabel="#{department.name}"/>
 							</h:selectOneMenu>	
 							<h:outputLabel />
 							<h:commandButton action="#{loginController.login(name.value, password.value)}" value="Login" />

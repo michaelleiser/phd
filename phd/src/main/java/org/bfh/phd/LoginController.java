@@ -167,10 +167,13 @@ public class LoginController implements Serializable, ILoginController{
 	}
 	
 	@Override
-	public void updateStaff(Staff s){
+	public void updateStaff(Staff s, String secret){
 		System.out.println("update staff..." + s);
 		if(this.loggedin == true){
 			em.updateStaff(s);
+			if(s.getRole() == 1){
+				em.setGroupKey(s, activeDepartment_Has_Staff,  secret);	
+			}
 		}
 	}
 	
@@ -432,7 +435,9 @@ public class LoginController implements Serializable, ILoginController{
 		System.out.println("ACTIVATE Staff..." + s);
 		if(this.loggedin == true && activeDepartment_Has_Staff.getOwner().equals(activeUser)){
 			em.setActivateStaff(s, true);
-			em.setGroupKey(s, activeDepartment_Has_Staff,  secret);	
+			if(s.getRole() == 1){
+				em.setGroupKey(s, activeDepartment_Has_Staff,  secret);		
+			}
 		}
 	}
 	
@@ -441,7 +446,9 @@ public class LoginController implements Serializable, ILoginController{
 		System.out.println("DEACTIVATE Staff..." + s);
 		if(this.loggedin == true && activeDepartment_Has_Staff.getOwner().equals(activeUser)){
 			em.setActivateStaff(s, false);
-			em.setGroupKey(s, activeDepartment_Has_Staff, null);	
+			if(s.getRole() == 1){
+				em.setGroupKey(s, activeDepartment_Has_Staff, null);
+			}		
 		}
 	}
 

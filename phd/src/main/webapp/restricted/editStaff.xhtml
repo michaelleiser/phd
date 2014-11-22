@@ -18,6 +18,7 @@
 				
 					<h:outputScript library="js" name="CryptoJS/rollups/sha1.js" />
 					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />			
+					<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
 					<h:outputScript library="js" name="validate_staff.js" />	
 					
 					<h:form id="staffform" onsubmit="return validation();">
@@ -33,18 +34,14 @@
 							<h:inputSecret id="confpass" required="true" />		
 
 							<h:outputLabel />	
-							<h:commandButton action="#{loginController.updateStaff(loginController.getStaff())}" value="Update Password" />
+							<h:commandButton action="#{loginController.updateStaff(loginController.getStaff(), input_key.value)}" value="Update Password" />
 
 						</h:panelGrid>
 
 						<h:inputHidden id="encryptedprivatekey" value="#{loginController.getStaff().privateKey}"/>	
+						<h:inputHidden id="publickey" value="#{loginController.getStaff().publicKey}"/>	
+						<h:inputHidden id="encryptedgroupkey" binding="#{input_key}" />
 						
-					</h:form>
-				</div>
-				
-				<div class="formular">
-					<h:form onsubmit="return renew();">
-						<h:commandButton value="Renew Public Key Private Key"/>
 					</h:form>
 				</div>
 				

@@ -18,8 +18,18 @@ function validation(){
 	document.getElementById("staffform:newpass").value = hash;
 	document.getElementById("staffform:confpass").value = " ";
 	
-	var encryptedPrivateKey = encryptPrivateKey(newpass);
-	document.getElementById("staffform:encryptedprivatekey").value = encryptedPrivateKey;
+	/**
+	 * Just for doctors
+	 * Statisticians don't need a public key, private key and mustn't get the group key
+	 */
+	if(document.getElementById("loggedinform:role").innerHTML == 1){
+		generatePublicKeyAndEncryptedPrivateKey(newpass);
+		var crypt = new JSEncrypt();
+		crypt.setPublicKey(document.getElementById("staffform:publickey").value);
+		var groupKey = sessionStorage.groupKey;
+	    var encrypted =  crypt.encrypt(groupKey);
+	    document.getElementById("staffform:encryptedgroupkey").value = encrypted;
+	}
 	
 //	alert("finish");
 	return true;
@@ -37,6 +47,25 @@ function hashPassword(pass){
 }
 
 /**
+ * Generate a public key private key pair and encrypt the private key with the password.
+ * @param password
+ * 			to encrypt the private key with
+ */
+function generatePublicKeyAndEncryptedPrivateKey(password){
+	var crypt = new JSEncrypt();
+	crypt.getKey();
+	
+	privateKey = crypt.getPrivateKey();
+	publicKey = crypt.getPublicKey();
+	
+	var encryptedPrivateKey = CryptoJS.AES.encrypt(privateKey, password);
+	
+	document.getElementById("staffform:encryptedprivatekey").value = encryptedPrivateKey;
+	document.getElementById("staffform:publickey").value = publicKey;
+}
+
+/**
+ * Not used anymore!
  * Encrypt the private key with the specified password.
  * @param pass
  * 			to encrypt with
@@ -44,6 +73,6 @@ function hashPassword(pass){
  * 			the encrypted private key
  */
 function encryptPrivateKey(pass){
-	var encryptedPrivatekey = sessionStorage.privateKey;
-	return CryptoJS.AES.encrypt(encryptedPrivatekey, pass);
+	//var encryptedPrivatekey = sessionStorage.privateKey;
+	//return CryptoJS.AES.encrypt(encryptedPrivatekey, pass);
 }

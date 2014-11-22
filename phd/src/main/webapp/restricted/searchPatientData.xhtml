@@ -72,20 +72,20 @@
 						id="outputMessage123"
 						rows="#{entityManager.getPaginatorPatientData().pagesize}"
 						value="#{loginController.getPatientDatas()}" 
-						var="quests"
+						var="questionnaire"
 						headerClass="table-header"
 						rowClasses="table-odd-row,table-even-row">
 						<h:column>
 							<f:facet name="header">ID</f:facet>
-							<h:commandLink action="#{navigation.redirectToShowQuestionnaire}" value="#{quests.questId}">
-								<f:setPropertyActionListener target="#{loginController.patientid}" value="#{quests}" />
+							<h:commandLink action="#{navigation.redirectToShowQuestionnaire}" value="#{questionnaire.questId}">
+								<f:setPropertyActionListener target="#{loginController.patientid}" value="#{questionnaire}" />
 							</h:commandLink>
 						</h:column>
 						<h:column>
-							<f:facet name="header">Date</f:facet>#{quests.date}
+							<f:facet name="header">Date</f:facet>#{questionnaire.date}
 						</h:column>
 						<h:column>
-							<f:facet name="header">Typ of Questionnaire</f:facet>#{quests.typOfQuest}
+							<f:facet name="header">Typ of Questionnaire</f:facet>#{questionnaire.typOfQuest}
 						</h:column>
 						<f:facet name="footer">
 							<h:panelGroup>

@@ -70,8 +70,9 @@ public interface ILoginController {
 	 * Update a staff.
 	 * @param staff
 	 * 			to be updated
+	 * @param secret TODO
 	 */
-	public void updateStaff(Staff staff);
+	public void updateStaff(Staff staff, String secret);
 
 	/**
 	 * Create a new patient within a department group.

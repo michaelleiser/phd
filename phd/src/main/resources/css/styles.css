@@ -60,6 +60,17 @@ div#loggedinbox {
 	width: auto;
 }
 
+div#group {
+	border-color: #bbbbbb;
+	border-radius: 5px;
+	border-style: solid;
+	border-width: 1px;
+	box-shadow: 10px 10px 25px #666;
+	height: auto;
+	padding: 20px 20px 20px 20px;
+	width: auto;
+}
+
 div#patients {
 	border-color: #bbbbbb;
 	border-radius: 5px;
