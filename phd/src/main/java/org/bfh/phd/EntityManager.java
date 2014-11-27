@@ -345,7 +345,7 @@ public class EntityManager implements IEntityManager, Serializable{
 					AnswerRadioButton b = new AnswerRadioButton();
 					b.setAnswer(a.get(i).toString());
 					f.addAnswers(b);
-					q.get(i).setAnswer(b.asList());
+					q.get(i).setAnswer(b.getAnswer());
 					f.addQuestions(q.get(i));
 				}else if(q.get(i) instanceof QuestionString) {
 					AnswerString b = new AnswerString();

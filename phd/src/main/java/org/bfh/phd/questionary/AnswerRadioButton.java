@@ -18,7 +18,6 @@ public class AnswerRadioButton implements IAnswer<String, String> {
 		return a;
 	}
 	
-	
 	@Override
 	public String getAnswer() {
 		return answer;
