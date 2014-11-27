@@ -3,15 +3,18 @@ package org.bfh.phd.questionary;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.event.AjaxBehaviorEvent;
+
+import org.bfh.phd.LoginController;
 import org.bfh.phd.interfaces.IQuestion;
 
 
-public class QuestionRadioButton implements IQuestion <String, String> {
+public class QuestionRadioButton implements IQuestion <String, String, List<String>, String > {
 	
 	private String type = "RadioButton";
 	private String question;
 	private List<String> answerPossibilities = new ArrayList<String>();
-	private List<String> answer = new ArrayList<String>();
+	private String answer = "";
 
 	@Override
 	public String getQuestion() {
@@ -55,16 +58,25 @@ public class QuestionRadioButton implements IQuestion <String, String> {
 		this.id = id;
 	}
 
-	public List<String> getAnswer(){
+	public String getAnswer(){
 		return this.answer;
 	}
 	
-	@Override
 	public void setAnswer(String s){
-		this.answer.add(s);
+		this.answer = s;
 	}
 	
 	public String getType(){
 		return type;
+	}
+	
+//	public void setAnswer(final AjaxBehaviorEvent event) {
+//		System.out.println("aufruf");
+//		String s = event.getComponent().getAttributes().get("change").toString();
+//		System.out.println(s);
+//	}
+	
+	public void save(LoginController lc){
+		lc.updateAnswer(this);
 	}
 }

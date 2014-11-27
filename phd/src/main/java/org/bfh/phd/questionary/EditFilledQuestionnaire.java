@@ -1,5 +1,6 @@
 package org.bfh.phd.questionary;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,17 +13,30 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.bfh.phd.EntityManager;
+import org.bfh.phd.FilledQuestionnaire;
 import org.bfh.phd.LoginController;
+import org.bfh.phd.Patient;
 import org.bfh.phd.Questionnari;
+import org.bfh.phd.interfaces.IAnswer;
+import org.bfh.phd.interfaces.IFilledQuestionnaire;
 
 /**
  * @author leism3, koblt1
  *
  */
-@ManagedBean(name = "template", eager = true)
+@ManagedBean(name = "editFilledQuestionnaire", eager = true)
 @SessionScoped
-public class Template {
+public class EditFilledQuestionnaire implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private IFilledQuestionnaire fq;
+	private LoginController lc;
+	
+	
+	
 	private static int i = 1, x = 0;
 	private int eNumber = 0;
 	private QuestionnairTools eQuestion = new QuestionnairTools();
@@ -37,32 +51,30 @@ public class Template {
 	private List<String> answerRadioButton = new ArrayList<String>();
 	private List<String> answerCheckbox = new ArrayList<String>();
 	private static List<String> type;
-	private static List<String> templateName;
 	private static List<Integer> y;
 	private QuestionnairTools t = new QuestionnairTools();
 	private static EntityManager em;
 
-	static {
-		init();
+	public void nameListener(ActionEvent ev){
+		templateNameSelected = (String)ev.getComponent().getAttributes().get("name");
 	}
-
-	private static void init() {
-		em = new EntityManager();
-		templateName = em.getTemplateNames();
-		Map<String, Integer> map = em.getType();
-		type = new ArrayList<String>(map.keySet());
-		y = new ArrayList<Integer>();
-		for (int j = 1; j <= 10; j++) {
-			y.add(new Integer(j));
-		}
+	
+	public void setFc(IFilledQuestionnaire fq){
+		this.fq = fq;
 	}
-
+		
 	private void clear() {
 		name = templatename = questionString = answerString = "";
 		answerRadioButton.clear();
 		answerCheckbox.clear();
 		test.clear();
 		edit.clear();
+	}
+	
+	public IFilledQuestionnaire getFilledQuestionnaire(LoginController lc){
+		this.fq = lc.getFilledQuestion();
+		System.out.println("edit filled" + fq);
+		return fq;
 	}
 	
 	private void clearAnswer(){
@@ -93,14 +105,10 @@ public class Template {
 		clearAnswer();
 	}
 
-	public void safe(LoginController lc) {
-		int i = 1;
-		for (QuestionnairTools t : test) {
-			lc.addQuestionnaireTemplate(t.getType(), t.getQuestion(), templatename, t.getAnswer(), i);
-			i++;
+	public void safe() {
+		for (IAnswer a : fq.getAnswers()) {
+			System.out.println(a.getAnswer());
 		}
-		init();
-		clear();
 	}
 
 	public void saveAddEdit(LoginController lc) {
@@ -147,27 +155,24 @@ public class Template {
 	}
 
 	public void addCheckbox(final AjaxBehaviorEvent event) {
-		t.setQuestion(questionString);
-		t.setType("Checkbox");
-		for (String s : answerCheckbox) {
-			if (s != "") {
-				t.addPossibleAnswer(s);
-			}
-		}
-		if (event.getComponent().getAttributes().get("edit").equals("1")) {
-			t.setId(i);
-			eQuestion = t;
-
-		} else {
-			t.setId(i);
-			test.add(t);
-		}
-		i++;
-		answerCheckbox.clear();
-	}
-
-	public List<String> getTemplateNames() {
-		return templateName;
+		System.out.println(answerCheckbox);
+//		t.setQuestion(questionString);
+//		t.setType("Checkbox");
+//		for (String s : answerCheckbox) {
+//			if (s != "") {
+//				t.addPossibleAnswer(s);
+//			}
+//		}
+//		if (event.getComponent().getAttributes().get("edit").equals("1")) {
+//			t.setId(i);
+//			eQuestion = t;
+//
+//		} else {
+//			t.setId(i);
+//			test.add(t);
+//		}
+//		i++;
+//		answerCheckbox.clear();
 	}
 
 	public String templateNameChanged(ActionEvent evt) {
@@ -218,17 +223,20 @@ public class Template {
 		addRadioButton(answerRadioButton);
 	}
 
-	public String getAnswerCheckbox() {
-		return "";
+	public List<String> getAnswerCheckbox() {
+		List<String> s = new ArrayList<String>();
+ 		s.add("Blutverdünner");
+ 		System.out.println(s);
+		return s;
+	}
+	
+	public void setAnswerCheckbox(List<String> answerCheckbox) {
+		this.answerCheckbox = answerCheckbox;
 	}
 
-	public void setAnswerCheckbox(String answerCheckbox) {
-		addCheckBox(answerCheckbox);
-	}
-
-	private void addCheckBox(String s) {
-		this.answerCheckbox.add(s);
-	}
+//	private void addCheckBox(String s) {
+//		this.answerCheckbox.add(s);
+//	}
 
 	private void addRadioButton(String test) {
 		this.answerRadioButton.add(test);
@@ -288,6 +296,14 @@ public class Template {
 		eNumber = q.getId();
 		return null;
 	}
+	
+	public void setFilledQuestionnaire(){
+		;
+	}
+	
+	public IFilledQuestionnaire getFilledQuestionnaire(){
+		return fq;
+	}
 
 	public int getE() {
 		return eNumber;
@@ -332,5 +348,14 @@ public class Template {
 
 	public void setNumberselected(int k) {
 		this.x = k;
+	}
+	
+	public void setLc(LoginController lc){
+		this.lc = lc;
+		System.out.println(lc);
+	}
+	
+	public String getQuestselected() {
+		return templateNameSelected;
 	}
 }

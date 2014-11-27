@@ -64,5 +64,4 @@ public interface IFilledQuestionnaire {
 	 * @return a list with pairs of question and answer
 	 */
 	public abstract ArrayList<ArrayList<String>> getList();
-
 }

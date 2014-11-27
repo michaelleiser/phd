@@ -53,6 +53,7 @@ public class EntityManager implements IEntityManager, Serializable{
 
 	private Map<String, Integer> typ;
 	private String templatename = "";
+	private FilledQuestionnaire tmp;
 	
 	
 	private MyConnection mycon = null;
@@ -253,6 +254,28 @@ public class EntityManager implements IEntityManager, Serializable{
 //		return questions;
 		return null;
 	}
+	
+	public FilledQuestionnaire getFilledQuestionnaire2(int id){
+		for(FilledQuestionnaire fq : filledQuestionnaires){
+			if(fq.getId() == id){
+				tmp = fq;
+				return fq;
+			}
+		}
+		return null;
+	}
+	
+	public void updateAnswer(IQuestion iq){
+		for(int i = 0; i < tmp.getQuestions().size(); i++){
+			if(tmp.getQuestions().get(i).getQuestion() .equals(iq.getQuestion())){
+				tmp.getQuestions().get(i).setAnswer(iq.getAnswer());
+			}
+		}
+		System.out.println("schlaufe");
+		for(int i = 0; i< tmp.getQuestions().size(); i++ ){
+		System.out.println(tmp.getQuestions().get(i).getAnswer());
+		}
+	}
 		
 	/* (non-Javadoc)
 	 * @see org.bfh.phd.Interfacetest#getFilledQuestion2(int)
@@ -308,27 +331,28 @@ public class EntityManager implements IEntityManager, Serializable{
 		List<IQuestion> q = getQuestions(questionnaireName);
 		List<IAnswer> a = getAnswers(id);
 		FilledQuestionnaire f = new FilledQuestionnaire();
+		f.setId(id);
 		f.setQuestionnaireName(questionnaireName);
 		if(q.size()==a.size()){
 			for(int i = 0; i < a.size(); i++){
 				if(q.get(i) instanceof QuestionCheckbox){
 					AnswerCheckbox b = new AnswerCheckbox();
-					b.setAnswer(Arrays.asList(a.get(i).toString().split(",")));
+					b.setAnswer( Arrays.asList((a.get(i).toString().split(","))));
 					f.addAnswers(b);
+					q.get(i).setAnswer(b.getAnswer());
 					f.addQuestions(q.get(i));
-					System.out.println(q.get(i));
 				}else if(q.get(i) instanceof QuestionRadioButton){
 					AnswerRadioButton b = new AnswerRadioButton();
 					b.setAnswer(a.get(i).toString());
 					f.addAnswers(b);
+					q.get(i).setAnswer(b.asList());
 					f.addQuestions(q.get(i));
-					System.out.println(q.get(i));
 				}else if(q.get(i) instanceof QuestionString) {
 					AnswerString b = new AnswerString();
 					b.setAnswer(a.get(i).toString());
 					f.addAnswers(b);
+					q.get(i).setAnswer(b.getAnswer());
 					f.addQuestions(q.get(i));
-					System.out.println(q.get(i));
 				}else{}
 			}
 			String stm = "SELECT date FROM questionnaire q JOIN q_template_name tn ON q.template_name_id = tn.id WHERE answer_id = ?;";
@@ -344,7 +368,7 @@ public class EntityManager implements IEntityManager, Serializable{
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}finally {
-				close();
+//				close();
 			}			
 		}
 		return f;
@@ -649,12 +673,22 @@ public class EntityManager implements IEntityManager, Serializable{
 		return questions;
 	}
 	
+//	private String[] getPossibleAnswersAsArray(int id){
+//		List<String> s = getPossibleAnswers(id);
+//		String[] list = new String[s.size()];
+//		int i = 0;
+//		for(String t: s){
+//			list[i] = t;
+//			i++;
+//		}
+//		return list;
+//	}
+	
 	/** return the possible answers from the selected question
 	 * @param id the identifier key to find the possibilities into the database
 	 * @return the answer as a collection of Strings
 	 */
 	private List<String> getPossibleAnswers(int id) {
-		System.out.println("Entitimanager 657 is used");
 		List<String> list = new ArrayList<String>();
 		String stm = "SELECT answer FROM posibilitis p JOIN pos_answer pa ON p.pos_id=pa.id WHERE p.id=?;";
 		try{
@@ -668,6 +702,7 @@ public class EntityManager implements IEntityManager, Serializable{
 		} catch (SQLException e){
 			e.printStackTrace();
 		}finally{
+			close2();
 		}
 		return list;
 	}
@@ -677,7 +712,6 @@ public class EntityManager implements IEntityManager, Serializable{
 	 * @return the answer as a collection of Strings
 	 */
 	public List<String> getPossibilities(int id) {
-		System.out.println("Entitimanager 704 is used");
 		List<String> possibilities = new ArrayList<String>();
 		String stm = "SELECT * FROM posibilitis p INNER JOIN pos_answer a On p.pos_id = a.id WHERE p.id=?;";
 		try {
@@ -1021,6 +1055,7 @@ public class EntityManager implements IEntityManager, Serializable{
 		try {
 			pst.close();
 			con.close();
+			con2.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -1038,6 +1073,13 @@ public class EntityManager implements IEntityManager, Serializable{
 					e.printStackTrace();
 				}
 			}
+			if (con2 != null) {
+				try {
+					con2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	
@@ -1049,6 +1091,7 @@ public class EntityManager implements IEntityManager, Serializable{
 			rs.close();
 			pst.close();
 			con.close();
+			con2.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -1069,6 +1112,40 @@ public class EntityManager implements IEntityManager, Serializable{
 			if (con != null) {
 				try {
 					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (con2 != null) {
+				try {
+					con2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	/** Close the database connection with result set
+	 *
+	 */
+	private void close2() {
+		try {
+			rs2.close();
+			pst2.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs2 != null) {
+				try {
+					rs2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (pst2 != null) {
+				try {
+					pst2.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -1456,19 +1533,25 @@ public class EntityManager implements IEntityManager, Serializable{
 	 */
 	private void initQuestionnaire() {
 		init();
+		List<Integer> i = new ArrayList<Integer>();
+		List<String> s = new ArrayList<String>();
 		filledQuestionnaires = new ArrayList<FilledQuestionnaire>();
 		String stm = "SELECT answer_id, name FROM questionnaire q JOIN q_template_name tn ON q.template_name_id = tn.id;";
 		try {
-			pst = con.prepareStatement(stm);
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				filledQuestionnaires.add(getFilledQuestion(rs.getInt("answer_id"), rs.getString("name")));
+			pst2 = con2.prepareStatement(stm);
+			pst2.execute();
+			rs2 = pst2.getResultSet();
+			while (rs2.next()) {
+				i.add(rs2.getInt("answer_id"));
+				s.add(rs2.getString("name"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally  {
 			close();
+		}
+		for(int j = 0; j < i.size(); j++){
+			filledQuestionnaires.add(getFilledQuestion(i.get(j), s.get(j)));
 		}
 	}
 	
@@ -1510,7 +1593,6 @@ public class EntityManager implements IEntityManager, Serializable{
 			pst.execute();
 			rs = pst.getResultSet();
 				while (rs.next()) {
-					System.out.println();
 					QuestionnairTools q = new QuestionnairTools();
 					q.setId(rs.getInt("fragenr"));
 					q.setDbId(rs.getInt("id"));
@@ -1572,6 +1654,7 @@ public class EntityManager implements IEntityManager, Serializable{
 		pst = con.prepareStatement(stm);
 		pst.setInt(1, q.getDbId());
 		pst.execute();
+		close2();
 		close();
 	}
 
@@ -1607,6 +1690,7 @@ public class EntityManager implements IEntityManager, Serializable{
 			}
 		}
 		}
+		close2();
 		close();
 		}
 

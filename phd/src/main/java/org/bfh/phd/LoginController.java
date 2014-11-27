@@ -33,7 +33,6 @@ public class LoginController implements Serializable, ILoginController{
 	private PatientData activePatientData;
 	private int questionnaireId;
 	private String questionnaireName;
-	private String s = "knee";
 
 	private String departmentselected;
 	private Department_Has_Staff activeDepartment_Has_Staff;
@@ -221,15 +220,20 @@ public class LoginController implements Serializable, ILoginController{
 	}
 	
 	public IFilledQuestionnaire getFilledQuestion(){
-		System.out.println(questionnaireId);
-		System.out.println(questionnaireName);
-		return em.getFilledQuestion(questionnaireId, questionnaireName);
+		return em.getFilledQuestionnaire2(questionnaireId);
+	}
+	
+	public void updateAnswer(IQuestion iq){
+		System.out.println("answer");
+		System.out.println(iq.getAnswer());
+		
+		em.updateAnswer(iq);
 	}
 
-	@SuppressWarnings("rawtypes")
-	public List<IQuestion> getQuestions() {
-		return em.getQuestions(s);
-	}
+//	@SuppressWarnings("rawtypes")
+//	public List<IQuestion> getQuestions() {
+//		return em.getQuestions(s);
+//	}
 	
 	@SuppressWarnings("rawtypes")
 	public List<IQuestion> getQuestions(String s) {

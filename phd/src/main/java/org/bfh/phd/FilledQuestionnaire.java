@@ -11,6 +11,7 @@ import org.bfh.phd.interfaces.IQuestion;
 public class FilledQuestionnaire implements IFilledQuestionnaire {
 
 	private Date date;
+	private int id;
 	private String questionnaireName;
 	private List<IAnswer> answers = new ArrayList<IAnswer>();
 	private List<IQuestion> questions = new ArrayList<IQuestion>();
@@ -68,12 +69,25 @@ public class FilledQuestionnaire implements IFilledQuestionnaire {
 
 	@Override
 	public ArrayList<ArrayList<String>> getList(){
-		for(int i = 0; i<answers.size(); i++){
-			ArrayList<String> a = new ArrayList<String>();
-			a.add(questions.get(i).toString());
-			a.add(answers.get(i).toString());
-			list.add(a);
-		}
-		return list;
+//		for(int i = 0; i<answers.size(); i++){
+//			ArrayList<String> a = new ArrayList<String>();
+//			a.add(questions.get(i).toString());
+//			a.add(answers.get(i).toString());
+//			list.add(a);
+//		}
+//		return list;
+		return null;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public void save(LoginController lc){
+		System.out.println("save");
 	}
 }

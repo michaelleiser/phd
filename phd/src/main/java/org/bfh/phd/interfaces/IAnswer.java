@@ -1,7 +1,5 @@
 package org.bfh.phd.interfaces;
 
-import java.util.List;
-
 public interface IAnswer <A, B>  {
 	
 	public A getAnswer();
@@ -9,5 +7,4 @@ public interface IAnswer <A, B>  {
 	public void setAnswer(A o);
 
 	public void addAnswer(B o);
-
 }

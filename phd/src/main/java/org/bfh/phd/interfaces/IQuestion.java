@@ -1,8 +1,6 @@
 package org.bfh.phd.interfaces;
 
-import java.util.List;
-
-public interface IQuestion <A, B> {
+public interface IQuestion <A, B, C, D> {
 	
 	public int getId();
 	
@@ -14,9 +12,11 @@ public interface IQuestion <A, B> {
 	
 	public void addAnswerPossibility(String o);
 	
-	public List<String> getAnswerPossibilities();
+	public C getAnswerPossibilities();
 	
-	public void setAnswerPossibilities(List<String> o);
+	public void setAnswerPossibilities(C o);
+
+	public D getAnswer();
 	
-	public void setAnswer(String s);
+	public void setAnswer(D o);
 }

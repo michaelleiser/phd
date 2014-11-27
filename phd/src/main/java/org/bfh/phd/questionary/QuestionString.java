@@ -5,7 +5,7 @@ import java.util.List;
 import org.bfh.phd.interfaces.IQuestion;
 
 
-public class QuestionString implements IQuestion <String, String> {
+public class QuestionString implements IQuestion <String, String, String, String> {
 	
 	private String type = "String";
 	private String question;
@@ -32,16 +32,6 @@ public class QuestionString implements IQuestion <String, String> {
 		System.err.println("setAnswerPossibities not possible because its a String question. QuestionString Line 32");		
 	}
 
-	@Override
-	public List<String> getAnswerPossibilities() {
-		return null;
-	}
-
-	@Override
-	public void setAnswerPossibilities(List <String> o) {
-		System.err.println("setAnswerPossibities not possible because its a String question. QuestionString Line 40");
-	}
-
 	private int id;
 
 	@Override
@@ -58,12 +48,23 @@ public class QuestionString implements IQuestion <String, String> {
 		return this.answer;
 	}
 	
-	@Override
 	public void setAnswer(String s){
 		this.answer = s;
 	}
 	
 	public String getType(){
 		return type;
+	}
+
+	@Override
+	public String getAnswerPossibilities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setAnswerPossibilities(String o) {
+		// TODO Auto-generated method stub
+		
 	}
 }

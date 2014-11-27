@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:cc="http://java.sun.com/jsf/composite" >
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/resources/phd/common.xhtml">
+		<ui:define name="content">
+			<h1>
+				<h:outputText value="Edit Template" />
+			</h1>
+			
+			
+<h2>
+				<h:outputLabel id="firstname"></h:outputLabel><br />
+				<h:outputLabel id="lastname"></h:outputLabel><br />
+				<h:outputLabel id="birthday"></h:outputLabel><br />
+			</h2>
+			
+			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
+			<h:outputScript library="js" name="validate_patient.js" />
+	
+			<h:form id="formularform">
+			<c:set var="a" value="#{loginController.filledQuestion}"></c:set>
+				<c:forEach items="#{a.questions}" var="q">
+					<c:if test="#{q.type eq 'String'}">
+						<h:outputLabel>#{q.question}</h:outputLabel><br />
+						<h:inputText id="j_idt#{q.id}" value="#{q.answer}" >
+						<h:outputLabel>#{q.answer}</h:outputLabel>
+							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
+							<f:ajax event="change" execute="@this" listener="#{q.answer}" />
+						</h:inputText>
+					</c:if>
+					<c:if test="#{q.type eq 'RadioButton'}">
+						<h:outputLabel>#{q.question}</h:outputLabel>
+						<h:selectOneRadio value="#{q.answer}">
+							<f:ajax event="change" execute="@this" listener="#{q.save(loginController)}" />
+							<f:selectItems value="#{q.answerPossibilities}"/>
+						</h:selectOneRadio>
+					</c:if>
+					<c:if test="#{q.type eq 'Checkbox'}">
+						<h:outputLabel>#{q.question}</h:outputLabel>
+						<h:selectManyCheckbox value="#{q.answer}">
+								<f:ajax event="change" execute="@this" listener="#{q.save(loginController)}" />
+								<f:selectItems value="#{q.answerPossibilities}"/>
+						</h:selectManyCheckbox>
+					</c:if><br />
+				</c:forEach>
+				
+				<h:commandButton actionListener="#{a.save(loginController)}" value="Safe"/>
+				
+				<h:inputHidden id="encryptedPersonalData" value="#{loginController.activePatient.personalData}"/>
+				
+			</h:form>
+			
+			<h:outputScript type="text/javascript">
+			    decryptPersonalDataForFormular();
+     		</h:outputScript>
+     		
+
+				
+		</ui:define>
+	</ui:composition>
+
+this is not displayed
+	
+</h:body>
+</html>

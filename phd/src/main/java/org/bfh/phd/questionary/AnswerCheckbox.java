@@ -24,7 +24,7 @@ public class AnswerCheckbox implements IAnswer <List<String>, String> {
 
 	@Override
 	public void addAnswer(String s){
-		answer.add(s);
+//		answer.add(s);
 	}
 	
 	@Override

@@ -136,18 +136,19 @@ public class Navigation implements Serializable {
 	public String redirectToModifyGroup(){
 		return "/restrictedfordoctor/modifyGroup?faces-redirect=true";
 	}
-	
 	public String toNewQuestionnaireTemplate(){
 		return "/restricted/newTemplate";
 	}
 	public String redirectToNewQuestionnaireTemplate(){
 		return "/restricted/newTemplate?faces-redirect=true";
 	}
-	
 	public String toEditQuestionnaireTemplate(){
 		return "/restricted/editTemplate";
 	}
 	public String redirectToEditQuestionnaireTemplate(){
 		return "/restricted/editTemplate?faces-redirect=true";
 	}
+	public String redirectToEditFilledQuestionnaire(){
+		return "/restrictedfordoctor/editTemplate?faces-redirect=true";
+	}	
 }

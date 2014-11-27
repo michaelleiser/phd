@@ -23,7 +23,7 @@ public class AnswerRadioButton implements IAnswer<String, String> {
 	public String getAnswer() {
 		return answer;
 	}
-
+	
 	@Override
 	public void setAnswer(String l) {
 		answer = l;
@@ -37,5 +37,11 @@ public class AnswerRadioButton implements IAnswer<String, String> {
 	@Override
 	public String toString(){;
 		return answer.toString();
+	}
+	
+	public List<String> asList(){
+		List<String> s = new ArrayList<String>(); 
+		s.add(answer);
+		return s;
 	}
 }
