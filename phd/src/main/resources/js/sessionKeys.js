@@ -2,26 +2,17 @@
  * Store the public key, private key and group key in the session storage.
  * The private key is decrypted with the password of the user.
  * The group key is decrypted with the private key of the user.
+ * Alert if session storage is not supported.
  */
 function getSessionKeys() {
     if(typeof(Storage) !== "undefined") {
     	if(typeof(sessionStorage.privateKey) === "undefined"){
-//            sessionStorage.privateKey = document.getElementById("sessionkeysid:private").value;
             sessionStorage.publicKey = document.getElementById("sessionkeysid:public").value;
-                    
-//            var key = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');
-//            var iv = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');
-          
+            
             var encrypted = document.getElementById("sessionkeysid:private").value;
-//            alert(encrypted);
-//            var decrypted = CryptoJS.AES.decrypt(encrypted, key, {iv:iv, mode:CryptoJS.mode.CBC});
             var pass = sessionStorage.password;
             var decrypted = CryptoJS.AES.decrypt(encrypted, pass);
-
-//            alert(decrypted);
             var plaintext = decrypted.toString(CryptoJS.enc.Utf8);
-//            alert(plaintext);
-            
             sessionStorage.privateKey = plaintext; 
             
         	var ciphertext = document.getElementById("sessionkeysid:group").value;

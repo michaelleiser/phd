@@ -62,7 +62,7 @@ public class Department_Has_Staff implements Serializable, IDepartment_Has_Staff
 	}
 	
 	@Override
-	public Staff getStaffs(String name, String password) {
+	public Staff getStaff(String name, String password) {
 		for(Staff s : this.staff){
 			if(s.getName().equals(name) && s.getPassword().equals(password)){
 				return s;
@@ -72,12 +72,12 @@ public class Department_Has_Staff implements Serializable, IDepartment_Has_Staff
 	}
 	
 	@Override
-	public List<String> getEncryptedGroupKey() {
+	public List<String> getEncryptedGroupKeys() {
 		return encryptedGroupKey;
 	}
 
 	@Override
-	public void setEncryptedGroupKey(List<String> encryptedGroupKey) {
+	public void setEncryptedGroupKeys(List<String> encryptedGroupKey) {
 		this.encryptedGroupKey = encryptedGroupKey;
 	}
 	

@@ -73,18 +73,11 @@ function hashPassword(pass){
  * 			to encrypt the private key with
  */
 function generatePublicKeyAndEncryptedPrivateKey(password){
-//  var key = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');
-//  var iv = CryptoJS.enc.Hex.parse('00000000000000000000000000000000');
-
-	var crypt = new JSEncrypt();	// new JSEncrypt({default_key_size: 1024});
+	var crypt = new JSEncrypt();	// new JSEncrypt({default_key_size: 2048});
 	crypt.getKey();
-	
 	privateKey = crypt.getPrivateKey();
 	publicKey = crypt.getPublicKey();
-	
-//	var ciphertext = CryptoJS.AES.encrypt(privateKey, key, {iv:iv, mode:CryptoJS.mode.CBC});
 	var encryptedPrivateKey = CryptoJS.AES.encrypt(privateKey, password);
-	
 	document.getElementById("registernewform:encryptedprivatekey").value = encryptedPrivateKey;
 	document.getElementById("registernewform:publickey").value = publicKey;
 }
@@ -95,7 +88,6 @@ function generatePublicKeyAndEncryptedPrivateKey(password){
  * 			to encrypt the group key with
  */
 function generateEncryptedGroupKey(publicKey){
-//	var groupKey = "testgroupkey123";	// For testing
 //	var groupKey = CryptoJS.lib.WordArray.random(128/8);	// An alternative to window.crypto.getRandomValues()
 
 	var array = new Uint8Array(128/8);

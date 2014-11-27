@@ -32,11 +32,11 @@
 								<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
 								<f:selectItems value="#{loginController.departments}" var="department" itemValue="#{departmnet}" itemLabel="#{department.name}"/>
 							</h:selectOneMenu>	
-							<h:outputLabel />
+							<h:outputText />
 							<h:commandButton action="#{loginController.login(name.value, password.value)}" value="Login" />
 						</h:panelGrid>
 						<!-- could be deleted -->
-						<h:outputLabel rendered="#{loginController.loggedin}">You are logged in as #{staff.name}</h:outputLabel>
+						<h:outputText rendered="#{loginController.loggedin}">You are logged in as #{staff.name}</h:outputText>
 						<h:commandButton action="#{loginController.logout}" id="button"
 							rendered="#{loginController.loggedin}" value="Logout" />
 							

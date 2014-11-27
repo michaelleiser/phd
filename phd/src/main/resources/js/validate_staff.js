@@ -16,7 +16,7 @@ function validation(){
 	}
 	var hash = hashPassword(newpass);
 	document.getElementById("staffform:newpass").value = hash;
-	document.getElementById("staffform:confpass").value = " ";
+	document.getElementById("staffform:confpass").value = "x";
 	
 	/**
 	 * Just for doctors
@@ -31,7 +31,6 @@ function validation(){
 	    document.getElementById("staffform:encryptedgroupkey").value = encrypted;
 	}
 	
-//	alert("finish");
 	return true;
 }
 
@@ -54,25 +53,9 @@ function hashPassword(pass){
 function generatePublicKeyAndEncryptedPrivateKey(password){
 	var crypt = new JSEncrypt();
 	crypt.getKey();
-	
 	privateKey = crypt.getPrivateKey();
 	publicKey = crypt.getPublicKey();
-	
 	var encryptedPrivateKey = CryptoJS.AES.encrypt(privateKey, password);
-	
 	document.getElementById("staffform:encryptedprivatekey").value = encryptedPrivateKey;
 	document.getElementById("staffform:publickey").value = publicKey;
-}
-
-/**
- * Not used anymore!
- * Encrypt the private key with the specified password.
- * @param pass
- * 			to encrypt with
- * @returns
- * 			the encrypted private key
- */
-function encryptPrivateKey(pass){
-	//var encryptedPrivatekey = sessionStorage.privateKey;
-	//return CryptoJS.AES.encrypt(encryptedPrivatekey, pass);
 }

@@ -92,7 +92,7 @@ public class LoginController implements Serializable, ILoginController{
 	public String login(String name, String password) {
 		System.out.println("LOGIN");
 		if(activeDepartment_Has_Staff != null){
-			activeUser = activeDepartment_Has_Staff.getStaffs(name, password);
+			activeUser = activeDepartment_Has_Staff.getStaff(name, password);
 			if(activeUser != null && activeUser.getActivated()){
 				setLoggedin(true);			
 				return "/restricted/loggedin?faces-redirect=true";
@@ -105,7 +105,7 @@ public class LoginController implements Serializable, ILoginController{
 	public String logout(){
 		System.out.println("LOGOUT");
 		setLoggedin(false);
-		if(FacesContext.getCurrentInstance() != null){	// Just for JUnit
+		if(FacesContext.getCurrentInstance() != null){
 			FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		}
 		return "/home?faces-redirect=true";
@@ -401,7 +401,7 @@ public class LoginController implements Serializable, ILoginController{
 
 	
 	public List<Department> getDepartments(){
-		return new EntityManager().getDepartments();
+		return em.getDepartments();
 	}
 
 	public String getDepartmentselected() {

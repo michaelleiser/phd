@@ -32,17 +32,17 @@
 						<div class="table">
 						<table id="patienttable">
 							<tr id="rowheader">
-								<td><h:outputLabel>ID</h:outputLabel></td>
-								<td><h:outputLabel>Firstname</h:outputLabel></td>
-								<td><h:outputLabel>Lastname</h:outputLabel></td>
-								<td><h:outputLabel>Birthday</h:outputLabel></td>
+								<td><h:outputText>ID</h:outputText></td>
+								<td><h:outputText>Firstname</h:outputText></td>
+								<td><h:outputText>Lastname</h:outputText></td>
+								<td><h:outputText>Birthday</h:outputText></td>
 							</tr>
 							<c:forEach varStatus="status" items="#{loginController.searchPatients()}" var="patient">
 								<tr id="row#{status.index}">
-									<td class="table-column-id"><h:outputLabel id="id#{status.index}">#{patient.patientid}</h:outputLabel></td>
-									<td><h:outputLabel id="firstname#{status.index}"/></td>
-									<td><h:outputLabel id="lastname#{status.index}"/></td>
-									<td><h:outputLabel id="birthday#{status.index}" /></td>
+									<td class="table-column-id"><h:outputText id="id#{status.index}">#{patient.patientid}</h:outputText></td>
+									<td><h:outputText id="firstname#{status.index}"/></td>
+									<td><h:outputText id="lastname#{status.index}"/></td>
+									<td><h:outputText id="birthday#{status.index}" /></td>
 									<td><h:commandButton action="#{navigation.redirectToEditPatient}"
 										rendered="#{(loginController.writeAccess(patient))}"
 										value="Edit Patient">
@@ -60,15 +60,15 @@
 									<td><h:commandButton
 										action="#{loginController.setActivePatient(patient)}"
 										value="Patient Datas" /></td>
-									<td><h:outputLabel rendered="#{(loginController.isOwner(patient))}"
-										value="Owner"></h:outputLabel></td>
+									<td><h:outputText rendered="#{(loginController.isOwner(patient))}"
+										value="Owner"></h:outputText></td>
 									<td><f:facet name="header">enc data</f:facet>
 									<h:inputText id="encdata#{status.index}" value="#{patient.personalData}"/></td>
 								</tr>
 							</c:forEach>							
 						</table>
 						<h:commandButton id="backward" value="backward" onclick="return backward();"/>
-						<h:outputLabel id="pagenumber">1</h:outputLabel>
+						<h:outputText id="pagenumber">1</h:outputText>
 						<h:commandButton id="forward" value="forward" onclick="return forward();"/>
 						</div>
 					</h:form>
@@ -111,7 +111,7 @@
 										rendered="#{entityManager.getPaginatorPatientData().hasPrevious()}"
 										action="#{entityManager.getPaginatorPatientData().backward}"
 										value="&lt;&lt; Page #{entityManager.getPaginatorPatientData().pagenr - 1}" />
-									<h:outputLabel
+									<h:outputText
 										value="Page #{entityManager.getPaginatorPatientData().pagenr}" />
 									<h:commandButton
 										rendered="#{entityManager.getPaginatorPatientData().hasNext()}"

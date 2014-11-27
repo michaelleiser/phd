@@ -41,18 +41,18 @@
 								<f:ajax render="depname_l depname regnew regnewwithdep" event="valueChange" />
 							</h:selectOneMenu>
 							<h:panelGroup id="depname_l">
-								<h:outputLabel rendered="#{empty loginController.departmentselected}">Name</h:outputLabel>
+								<h:outputText rendered="#{empty loginController.departmentselected}">Name</h:outputText>
 							</h:panelGroup>
 							<h:panelGroup id="depname">
 								<h:inputText id="departmentname" value="#{department.name}" rendered="#{empty loginController.departmentselected}" />						
 							</h:panelGroup>
 							
-							<h:outputLabel />
+							<h:outputText />
 							<h:panelGroup id="regnew">
 								<h:commandButton action="#{loginController.registernew(staff)}" rendered="#{not empty loginController.departmentselected}"
 								value="Registernew" />
 							</h:panelGroup>
-							<h:outputLabel />
+							<h:outputText />
 							<h:panelGroup id="regnewwithdep">
 								<h:commandButton action="#{loginController.registernewWithDepartment(staff, department, input_key.value)}" rendered="#{empty loginController.departmentselected}"
 								value="RegisternewWithDep" />

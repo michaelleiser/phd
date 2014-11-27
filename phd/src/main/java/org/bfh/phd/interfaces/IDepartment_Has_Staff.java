@@ -62,19 +62,19 @@ public interface IDepartment_Has_Staff {
 	 * @return
 	 * 			the selected staff if it exists or null if it does not exist
 	 */
-	public Staff getStaffs(String name, String password);
+	public Staff getStaff(String name, String password);
 
 	/**
 	 * @return
 	 * 			the encrypted group keys from the staffs of the department group
 	 */
-	public List<String> getEncryptedGroupKey();
+	public List<String> getEncryptedGroupKeys();
 
 	/**
 	 * @param encryptedGroupKey
 	 * 			from the staffs of the department group
 	 */
-	public void setEncryptedGroupKey(List<String> encryptedGroupKey);
+	public void setEncryptedGroupKeys(List<String> encryptedGroupKey);
 
 	/**
 	 * Add an encrypted group key for a specified staff of the department group.

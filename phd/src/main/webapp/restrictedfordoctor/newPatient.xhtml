@@ -21,37 +21,37 @@
 					
 					<h:form id="patientform" onsubmit="return validation();">
 						<h:panelGrid columns="2">
-							<h:outputLabel>Firstname:</h:outputLabel>
+							<h:outputLabel for="firstname">Firstname:</h:outputLabel>
 							<h:inputText id="firstname" required="true" />
 							
-							<h:outputLabel>Lastname:</h:outputLabel>
+							<h:outputLabel for="lastname">Lastname:</h:outputLabel>
 							<h:inputText id="lastname" required="true" />
 					
-							<h:outputLabel>Street:</h:outputLabel>
+							<h:outputLabel for="street">Street:</h:outputLabel>
 							<h:inputText id="street" required="true" />
 		
-							<h:outputLabel>Nr:</h:outputLabel>
+							<h:outputLabel for="nr">Nr:</h:outputLabel>
 							<h:inputText id="nr" required="true" />
 		
-							<h:outputLabel>City:</h:outputLabel>
+							<h:outputLabel for="city">City:</h:outputLabel>
 							<h:inputText id="city" required="true" />
 	
-							<h:outputLabel>Zip:</h:outputLabel>
+							<h:outputLabel for="zip">Zip:</h:outputLabel>
 							<h:inputText id="zip" required="true" />
 	
-							<h:outputLabel>Telnumber:</h:outputLabel>
+							<h:outputLabel for="telnumber">Telnumber:</h:outputLabel>
 							<h:inputText id="telnumber" required="true" />
 
-							<h:outputLabel>Gender:</h:outputLabel>
+							<h:outputLabel for="gender">Gender:</h:outputLabel>
 							<h:selectOneRadio id="gender" required="true">
 								<f:selectItem itemLabel="Male" itemValue="male" />
 								<f:selectItem itemLabel="Female" itemValue="female" />
 							</h:selectOneRadio>
 
-							<h:outputLabel>Birthday (dd.mm.yyyy):</h:outputLabel>
+							<h:outputLabel for="birthday">Birthday (dd.mm.yyyy):</h:outputLabel>
 							<h:inputText id="birthday" required="true" />
 
-							<h:outputLabel />
+							<h:outputText />
 							<h:commandButton action="#{loginController.createPatient(patient)}" value="Add New Patient" />
 						
 						</h:panelGrid>

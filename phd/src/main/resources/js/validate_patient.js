@@ -61,14 +61,11 @@ function validation(){
 	
 	var myobj = {"firstname":firstname, "lastname":lastname, "street":street, "nr":nr, "city":city, "zip":zip, "telnumber":telnumber, "gender":gender, "birthday":birthday};
 	var json = JSON.stringify(myobj);
-//	alert(json);
-	
 	var encrypted = encryptPersonalData(json);
 	document.getElementById("patientform:encryptedPersonalData").value = encrypted;
 
 	clearForm();
-	
-//	alert("finish");
+
 	return true;
 }
 
@@ -90,10 +87,8 @@ function encryptPersonalData(data){
 function decryptPersonalData(){
 	var groupKey = sessionStorage.groupKey;
 	var encrypted = document.getElementById("patientform:encryptedPersonalData").value;
-//	alert(encrypted);
 	var decrypted = CryptoJS.AES.decrypt(encrypted, groupKey);
     var json = decrypted.toString(CryptoJS.enc.Utf8);
-//    alert(json);
 	var myobj = JSON.parse(json);
 
 	document.getElementById("patientform:firstname").value = myobj["firstname"];
@@ -117,16 +112,13 @@ function decryptPersonalData(){
  */
 function decryptPersonalDataForFormular(){
 	if(document.getElementById("formularform:encryptedPersonalData") == null){
-//		alert("null");
 		return;
 	}
-//	alert("not null");
 	var groupKey = sessionStorage.groupKey;
 	var encrypted = document.getElementById("formularform:encryptedPersonalData").value;
 	var decrypted = CryptoJS.AES.decrypt(encrypted, groupKey);
     var json = decrypted.toString(CryptoJS.enc.Utf8);
 	var myobj = JSON.parse(json);
-//	alert(myobj);
 	document.getElementById("firstname").innerHTML = myobj["firstname"];
 	document.getElementById("lastname").innerHTML = myobj["lastname"];
 	document.getElementById("birthday").innerHTML = myobj["birthday"];
@@ -171,7 +163,7 @@ function decryptPersonalDataForSearchWebWorker() {
 //        	var obj = evt.data;
 //        	var i = obj.row;
 //        	var data = obj.data;
-//           	patients.push({"firstname":data.firstname, "lastname":data.lastname, "birthday":data.birthday});
+//          patients.push({"id":data.id, "firstname":data.firstname, "lastname":data.lastname, "birthday":data.birthday});
 //			document.getElementById("searchform:firstname" + i).innerHTML = data.firstname;
 //			document.getElementById("searchform:lastname" + i).innerHTML = data.lastname;
 //			document.getElementById("searchform:birthday" + i).innerHTML = data.birthday;
@@ -205,7 +197,10 @@ function decryptPersonalDataForSearch(){
 		if(decrypted != ""){
 			var json = decrypted.toString(CryptoJS.enc.Utf8);
 			var patient = JSON.parse(json);
-			patients.push({"firstname":patient["firstname"], "lastname":patient["lastname"], "birthday":patient["birthday"]});
+			var id = document.getElementById("searchform:id" + i).innerHTML;
+			var writeable = "true";
+			var owner = "true";
+			patients.push({"id":id, "firstname":patient["firstname"], "lastname":patient["lastname"], "birthday":patient["birthday"], "writeable":writeable, "owner":owner});
 			document.getElementById("searchform:firstname" + i).innerHTML = patients[i].firstname;
 			document.getElementById("searchform:lastname" + i).innerHTML = patients[i].lastname;
 			document.getElementById("searchform:birthday" + i).innerHTML = patients[i].birthday;
@@ -216,6 +211,8 @@ function decryptPersonalDataForSearch(){
 	var time2 = new Date().getTime();
 	console.log("TIME direct: " + (time2 - time1));
 //	patients.sort();		// TODO alphabetisch sortieren
+	
+	sessionStorage.patients = JSON.stringify(patients);
 }
 
 /**
@@ -234,11 +231,9 @@ function filter(){
 		if((patients[i].firstname.toLowerCase().indexOf(filtername) > -1) ||
 			(patients[i].lastname.toLowerCase().indexOf(filtername) > -1)	){
 			document.getElementById("row" + i).style.display = "inherit";
-//			console.log("match: "+ patients[i].firstname  +  patients[i].lastname);
 			visiblerows.push(i);
 		}else{
 			document.getElementById("row" + i).style.display = "none";
-//			console.log("dismatch: "+ patients[i].firstname  +  patients[i].lastname);
 		}
 	}
 	display();
@@ -309,17 +304,41 @@ function forward(){
 }
 
 /**
- * Clear the patient form. Otherwise form entries would be sent in cleartext to the server.
+ * Clear the cleartext entries of the patient form. Otherwise the form entries would be sent in cleartext to the server.
  */
 function clearForm(){
-	document.getElementById("patientform:firstname").value = " ";
-	document.getElementById("patientform:lastname").value = " ";
-	document.getElementById("patientform:street").value = " ";
-	document.getElementById("patientform:nr").value = " ";
-	document.getElementById("patientform:city").value = " ";
-	document.getElementById("patientform:zip").value = " ";
-	document.getElementById("patientform:telnumber").value = " ";
+	document.getElementById("patientform:firstname").value = "x";
+	document.getElementById("patientform:lastname").value = "x";
+	document.getElementById("patientform:street").value = "x";
+	document.getElementById("patientform:nr").value = "x";
+	document.getElementById("patientform:city").value = "x";
+	document.getElementById("patientform:zip").value = "x";
+	document.getElementById("patientform:telnumber").value = "x";
 	document.getElementById("patientform:gender:0").checked = true;
 	document.getElementById("patientform:gender:1").checked = true;
-	document.getElementById("patientform:birthday").value = " ";
+	document.getElementById("patientform:birthday").value = "x";
+}
+
+
+
+
+
+
+
+
+function getPersonalDataForSearch(){
+	if(typeof(sessionStorage.patients) === "undefined"){
+		decryptPersonalDataForSearch();
+	}
+	var patients = JSON.parse(sessionStorage.patients);
+	visiblerows = new Array();
+	for(var i = 0 ; i < patients.length ; i++){
+		console.log(patients[i].id, patients[i].firstname, patients[i].lastname, patients[i].birthday, patients[i].writeable, patients[i].owner);
+//		patients.push({"firstname":patient["firstname"], "lastname":patient["lastname"], "birthday":patient["birthday"]});
+		document.getElementById("searchform:firstname" + i).innerHTML = patients[i].firstname;
+		document.getElementById("searchform:lastname" + i).innerHTML = patients[i].lastname;
+		document.getElementById("searchform:birthday" + i).innerHTML = patients[i].birthday;
+		visiblerows.push(i);
+	}
+	display();
 }

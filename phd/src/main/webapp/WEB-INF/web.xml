@@ -39,37 +39,30 @@
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
 	
+	<!-- JDBC Driver for MySQL -->
+	<context-param>
+		<param-name>JDBC-DRIVER</param-name>
+		<param-value>com.mysql.jdbc.Driver</param-value>
+	</context-param>
 
+	<!-- Session time out after 10min -->
+	<!-- Use secure cookies -->
+	<!-- Only use Cookies for session tracking (disable url tracking mode) -->
+	<session-config>
+		<session-timeout>10</session-timeout>
+		<cookie-config>
+			<secure>tru‌​e</secure>
+		</cookie-config>
+		<tracking-mode>COOKIE</tracking-mode>
+	</session-config>
 
-<context-param>
-<param-name>JDBC-DRIVER</param-name>
-<param-value>com.mysql.jdbc.Driver</param-value>
-</context-param>
+	<!-- Display home.xhtml when the view is expired -->
+	<error-page>
+		<exception-type>javax.faces.application.ViewExpiredException</exception-type>
+		<location>/home.xhtml</location>
+	</error-page>
 
-
-<session-config>
-<session-timeout>
-10
-</session-timeout>
-</session-config>
-
-
-<!-- This is just for testing. Uncomment when deploy. -->
-<!-- <error-page> -->
-<!-- 	<error-code>404</error-code> -->
-<!-- 	<location>/error.xhtml</location> -->
-<!-- </error-page> -->
-<!-- <error-page> -->
-<!-- 	<error-code>500</error-code> -->
-<!-- 	<location>/error.xhtml</location> -->
-<!-- </error-page> -->
-<error-page>
-	<exception-type>javax.faces.application.ViewExpiredException</exception-type>
-	<location>/home.xhtml</location>
-</error-page>
-
-
-<!-- Filter for users which are not logged in -->
+	<!-- Filter for users which are not logged in -->
     <filter>
         <filter-name>LoginFilter</filter-name>
         <filter-class>org.bfh.phd.filter.LoginFilter</filter-class>
@@ -78,7 +71,7 @@
         <filter-name>LoginFilter</filter-name>
         <url-pattern>/restricted/*</url-pattern>
     </filter-mapping>
-<!-- Filter for doctors which are not logged in -->
+	<!-- Filter for doctors which are not logged in -->
     <filter>
         <filter-name>LoginFilterDoctor</filter-name>
         <filter-class>org.bfh.phd.filter.LoginFilterDoctor</filter-class>
@@ -87,7 +80,7 @@
         <filter-name>LoginFilterDoctor</filter-name>
         <url-pattern>/restrictedfordoctor/*</url-pattern>
     </filter-mapping>
-<!-- Filter for statisticians which are not logged in -->
+	<!-- Filter for statisticians which are not logged in -->
     <filter>
         <filter-name>LoginFilterStatistician</filter-name>
         <filter-class>org.bfh.phd.filter.LoginFilterStatistician</filter-class>
@@ -96,7 +89,7 @@
         <filter-name>LoginFilterStatistician</filter-name>
         <url-pattern>/restrictedforstatistician/*</url-pattern>
     </filter-mapping>
-<!-- Filter for everything which should not be accessible by anyone -->    
+	<!-- Filter for everything which should not be accessible by anyone -->    
     <filter>
         <filter-name>LoginFilterInaccessible</filter-name>
         <filter-class>org.bfh.phd.filter.LoginFilterInaccessible</filter-class>

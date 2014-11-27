@@ -41,6 +41,7 @@ function hashPassword(pass){
 
 /**
  * Save the password in the session storage.
+ * Alert if session storage is not supported.
  * @param pass
  * 			to be stored
  */
