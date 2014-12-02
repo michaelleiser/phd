@@ -42,10 +42,10 @@ public interface IDepartment_Has_Staff {
 	public List<Staff> getStaffs();
 
 	/**
-	 * @param staff
+	 * @param staffs
 	 * 			list of staffs for the department group
 	 */
-	public void setStaff(List<Staff> staff);
+	public void setStaffs(List<Staff> staffs);
 
 	/**
 	 * Add a staff to the department group.
@@ -57,12 +57,10 @@ public interface IDepartment_Has_Staff {
 	/**
 	 * @param name
 	 * 			of the staff
-	 * @param password
-	 * 			of the staff
 	 * @return
 	 * 			the selected staff if it exists or null if it does not exist
 	 */
-	public Staff getStaff(String name, String password);
+	public Staff getStaff(String name);
 
 	/**
 	 * @return
@@ -71,10 +69,10 @@ public interface IDepartment_Has_Staff {
 	public List<String> getEncryptedGroupKeys();
 
 	/**
-	 * @param encryptedGroupKey
+	 * @param encryptedGroupKeys
 	 * 			from the staffs of the department group
 	 */
-	public void setEncryptedGroupKeys(List<String> encryptedGroupKey);
+	public void setEncryptedGroupKeys(List<String> encryptedGroupKeys);
 
 	/**
 	 * Add an encrypted group key for a specified staff of the department group.

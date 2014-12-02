@@ -17,13 +17,13 @@ public class Department_Has_Staff implements Serializable, IDepartment_Has_Staff
 	
 	private int department_has_staff_id;
 	private Department department;
-	private List<Staff> staff;
-	private List<String> encryptedGroupKey;
+	private List<Staff> staffs;
+	private List<String> encryptedGroupKeys;
 	private Staff owner;
 	
 	public Department_Has_Staff(){
-		this.staff = new ArrayList<Staff>();
-		this.encryptedGroupKey = new ArrayList<String>();
+		this.staffs = new ArrayList<Staff>();
+		this.encryptedGroupKeys = new ArrayList<String>();
 	}
 	
 	@Override
@@ -48,23 +48,23 @@ public class Department_Has_Staff implements Serializable, IDepartment_Has_Staff
 	
 	@Override
 	public List<Staff> getStaffs() {
-		return this.staff;
+		return this.staffs;
 	}
 
 	@Override
-	public void setStaff(List<Staff> staff) {
-		this.staff = staff;
+	public void setStaffs(List<Staff> staffs) {
+		this.staffs = staffs;
 	}
 	
 	@Override
 	public void addStaff(Staff staff) {
-		this.staff.add(staff);
+		this.staffs.add(staff);
 	}
 	
 	@Override
-	public Staff getStaff(String name, String password) {
-		for(Staff s : this.staff){
-			if(s.getName().equals(name) && s.getPassword().equals(password)){
+	public Staff getStaff(String name) {
+		for(Staff s : this.staffs){
+			if(s.getName().equals(name)){
 				return s;
 			}
 		}
@@ -73,23 +73,23 @@ public class Department_Has_Staff implements Serializable, IDepartment_Has_Staff
 	
 	@Override
 	public List<String> getEncryptedGroupKeys() {
-		return encryptedGroupKey;
+		return encryptedGroupKeys;
 	}
 
 	@Override
-	public void setEncryptedGroupKeys(List<String> encryptedGroupKey) {
-		this.encryptedGroupKey = encryptedGroupKey;
+	public void setEncryptedGroupKeys(List<String> encryptedGroupKeys) {
+		this.encryptedGroupKeys = encryptedGroupKeys;
 	}
 	
 	@Override
 	public void addEncryptedGroupKey(String key){
-		this.encryptedGroupKey.add(key);
+		this.encryptedGroupKeys.add(key);
 	}
 	
 	@Override
 	public String getEncryptedGroupKeyFromStaff(Staff staff){
-		int index = this.staff.indexOf(staff);
-		return this.encryptedGroupKey.get(index);
+		int index = this.staffs.indexOf(staff);
+		return this.encryptedGroupKeys.get(index);
 	}
 
 	@Override
@@ -109,12 +109,12 @@ public class Department_Has_Staff implements Serializable, IDepartment_Has_Staff
 	
 	@Override
 	public boolean isMember(Staff s){
-		return this.staff.contains(s);
+		return this.staffs.contains(s);
 	}
 	
 	@Override
 	public String toString(){
-		return this.department + " : " + this.staff + " : " + this.owner;
+		return this.department + " : " + this.staffs + " : " + this.owner;
 	}
 
 }

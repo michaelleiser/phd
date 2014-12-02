@@ -40,14 +40,14 @@ public class EntityManager implements IEntityManager, Serializable{
 	private static final long serialVersionUID = 1L;
 	
 
-	private List<Staff> staff;	
-	private List<Patient> patient;
-	private List<PatientData> patientdata;
+	private List<Staff> staffs;	
+	private List<Patient> patients;
+	private List<PatientData> patientdatas;
 	private List<Department> departments;
 	@SuppressWarnings("rawtypes")
 	private List<IQuestion> questions;
-	private List<String> operationtyp;
-	private List<String> error;
+	private List<String> operationtypes;
+	private List<String> errors;
 	private List<FilledQuestionnaire> filledQuestionnaires;
 
 
@@ -79,7 +79,7 @@ public class EntityManager implements IEntityManager, Serializable{
 
 	@Override
 	public List<Staff> getStaffs() {
-		return this.staff;
+		return this.staffs;
 	}
 	
 	@Override
@@ -89,7 +89,7 @@ public class EntityManager implements IEntityManager, Serializable{
 	
 	@Override
 	public Staff getStaff(int id) {
-		for(Staff s : this.staff){
+		for(Staff s : this.staffs){
 			if(s.getId() == id){
 				return s;
 			}
@@ -99,7 +99,7 @@ public class EntityManager implements IEntityManager, Serializable{
 	
 	@Override
 	public Staff getStaff(String name, String password) {
-		for(Staff s : this.staff){
+		for(Staff s : this.staffs){
 			if(s.getName().equals(name) && s.getPassword().equals(password)){
 				return s;
 			}
@@ -110,7 +110,7 @@ public class EntityManager implements IEntityManager, Serializable{
 	@Override
 	public List<Staff> getStaffs(String name) {
 		List<Staff> staff = new ArrayList<Staff>();
-		for(Staff s : this.staff){
+		for(Staff s : this.staffs){
 			if(name.equals("") || s.getName().contains(name)){
 				staff.add(s);
 			}
@@ -121,7 +121,7 @@ public class EntityManager implements IEntityManager, Serializable{
 	@Override
 	public List<Patient> getPatients(Staff activeUser){
 		List<Patient> list = new ArrayList<Patient>();
-		for(Patient p : this.patient){
+		for(Patient p : this.patients){
 			if(p.getReadaccess() || (p.getOwner().equals(activeUser))){
 				list.add(p);
 			}
@@ -131,12 +131,12 @@ public class EntityManager implements IEntityManager, Serializable{
 
 	@Override
 	public List<Patient> getPatients(){
-		return this.patient;
+		return this.patients;
 	}
 
 	@Override
 	public Patient getPatient(Staff activeUser, int patientid) {
-		for(Patient p : this.patient){
+		for(Patient p : this.patients){
 			if((p.getReadaccess() || (p.getOwner().equals(activeUser))) && (p.getPatientid() == patientid)){
 				return p;
 			}
@@ -148,7 +148,7 @@ public class EntityManager implements IEntityManager, Serializable{
 	public Staff registernew(Staff s, boolean activated) {
 		long l = 0;
 //		String stm1 = "SELECT * FROM staff WHERE name=?;";
-		String stm2 = "INSERT INTO staff(name, password, privateKey, publicKey, role_role_id, isActivated) VALUES(?, ?, ?, ?, ?, ?);";
+		String stm2 = "INSERT INTO staff(name, salt, password, privateKey, publicKey, role_role_id, isActivated) VALUES(?, ?, ?, ?, ?, ?, ?);";
 		init();
 		try {
 //			pst = con.prepareStatement(stm1);
@@ -160,11 +160,12 @@ public class EntityManager implements IEntityManager, Serializable{
 //			} else {
 				pst = con.prepareStatement(stm2, Statement.RETURN_GENERATED_KEYS);
 				pst.setString(1, s.getName());
-				pst.setString(2, s.getPassword());
-				pst.setString(3, s.getPrivateKey());
-				pst.setString(4, s.getPublicKey());
-				pst.setInt(5, s.getRole());
-				pst.setString(6, Boolean.toString(activated));
+				pst.setString(2, s.getSalt());
+				pst.setString(3, s.getPassword());
+				pst.setString(4, s.getPrivateKey());
+				pst.setString(5, s.getPublicKey());
+				pst.setInt(6, s.getRole());
+				pst.setString(7, Boolean.toString(activated));
 				pst.executeUpdate();
 				rs = pst.getGeneratedKeys();
 				if(rs.next()){
@@ -407,14 +408,15 @@ public class EntityManager implements IEntityManager, Serializable{
 	@Override
 	public void updateStaff(Staff activeUser) {
 		init();
-		String stm = "UPDATE staff SET name=?, password=?, privateKey=?, publicKey=? WHERE staff_id=?";
+		String stm = "UPDATE staff SET name=?, salt=?, password=?, privateKey=?, publicKey=? WHERE staff_id=?";
 		try {
 			pst = con.prepareStatement(stm);
 			pst.setString(1, activeUser.getName());
-			pst.setString(2, activeUser.getPassword());
-			pst.setString(3, activeUser.getPrivateKey());
-			pst.setString(4, activeUser.getPublicKey());
-			pst.setInt(5, activeUser.getId());
+			pst.setString(2, activeUser.getSalt());
+			pst.setString(3, activeUser.getPassword());
+			pst.setString(4, activeUser.getPrivateKey());
+			pst.setString(5, activeUser.getPublicKey());
+			pst.setInt(6, activeUser.getId());
 			pst.executeUpdate();
 			closeWithoutRs();
 		} catch (SQLException e) {
@@ -468,11 +470,11 @@ public class EntityManager implements IEntityManager, Serializable{
 //	}
 
 	public List<PatientData> getPatientdatas() {
-		return patientdata;
+		return patientdatas;
 	}
 
 	public void setPatientdatas(List<PatientData> patientdatas) {
-		this.patientdata = patientdatas;
+		this.patientdatas = patientdatas;
 	}
 
 	@Override
@@ -503,7 +505,7 @@ public class EntityManager implements IEntityManager, Serializable{
 	@Override
 	public List<Patient> searchPatients(Department_Has_Staff dhs, Staff activeUser) {
 		List<Patient> patient = new ArrayList<Patient>();
-		for(Patient p : this.patient){
+		for(Patient p : this.patients){
 			if(p.getDepartment().equals(dhs.getDepartment())){
 				if(p.getReadaccess() || (p.getOwner().equals(activeUser))){
 					patient.add(p);		
@@ -548,8 +550,8 @@ public class EntityManager implements IEntityManager, Serializable{
 		
 	public List<PatientData> searchPatientDatas(){
 		List<PatientData> list = new ArrayList<PatientData>();
-		for(Patient p : patient){
-			for(PatientData pd : p.getPatientData()){
+		for(Patient p : patients){
+			for(PatientData pd : p.getPatientDatas()){
 				if(true){
 					list.add(pd);
 				}
@@ -910,7 +912,7 @@ public class EntityManager implements IEntityManager, Serializable{
 
 	
 	private void initStaff() {
-		staff = new ArrayList<Staff>();
+		staffs = new ArrayList<Staff>();
 		String stm = "SELECT * FROM staff;";
 		init();
 		try {
@@ -921,12 +923,13 @@ public class EntityManager implements IEntityManager, Serializable{
 				Staff s = new Staff();
 				s.setId(rs.getInt("staff_id"));
 				s.setName(rs.getString("name"));
+				s.setSalt(rs.getString("salt"));
 				s.setPassword(rs.getString("password"));
 				s.setPrivateKey(rs.getString("privateKey"));
 				s.setPublicKey(rs.getString("publicKey"));
 				s.setRole(rs.getInt("role_role_id"));
 				s.setActivated(Boolean.parseBoolean(rs.getString("isActivated")));
-				staff.add(s);
+				staffs.add(s);
 			}
 			close();
 		} catch (SQLException e) {
@@ -940,7 +943,7 @@ public class EntityManager implements IEntityManager, Serializable{
 	 *
 	 */
 	private void initPatient() {
-		patient = new ArrayList<Patient>();
+		patients = new ArrayList<Patient>();
 		init();
 		String stm = "SELECT * FROM patient;";
 		try {
@@ -956,7 +959,7 @@ public class EntityManager implements IEntityManager, Serializable{
 				p.setOwner(this.getStaff(rs.getInt("staff_staff_id")));
 				p.setPersonalData(rs.getString("encryptedPersonalData"));
 				p.setDepartment(this.getDepartment(rs.getInt("department_department_id")));
-				patient.add(p);
+				patients.add(p);
 			}
 			close();
 		} catch (SQLException e) {
@@ -991,7 +994,7 @@ public class EntityManager implements IEntityManager, Serializable{
 	 * 
 	 */
 	private void initPatientData() {
-		patientdata = new ArrayList<PatientData>();
+		patientdatas = new ArrayList<PatientData>();
 //		init();
 //		String stm = "SELECT * FROM questionnaire;";
 //		try {
@@ -1510,7 +1513,7 @@ public class EntityManager implements IEntityManager, Serializable{
 	
 	@Override
 	public void initOperationTyp(){
-		operationtyp = new ArrayList<String>();
+		operationtypes = new ArrayList<String>();
 		init();
 		String stm = "SELECT name FROM q_template_name;";
 		try {
@@ -1518,7 +1521,7 @@ public class EntityManager implements IEntityManager, Serializable{
 			pst.execute();
 			rs = pst.getResultSet();
 			while(rs.next()){
-				operationtyp.add(rs.getString(1));
+				operationtypes.add(rs.getString(1));
 			}
 			close();
 		} catch (SQLException e) {
@@ -1561,7 +1564,7 @@ public class EntityManager implements IEntityManager, Serializable{
 	}
 	
 	public List<String> getTemplateNames(){
-		return operationtyp;
+		return operationtypes;
 	}
 	
 	//TODO test with hasmap ready to delet
@@ -1615,7 +1618,7 @@ public class EntityManager implements IEntityManager, Serializable{
 	}
 		
 	public void getS(){
-		for(String s : error){
+		for(String s : errors){
 		System.out.println(s);
 		}
 	}

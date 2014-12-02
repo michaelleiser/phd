@@ -25,7 +25,7 @@ public class Patient implements Serializable, IPatient {
 	private boolean writeaccess;
 	private boolean insertaccess;
 	
-	private List<PatientData> patientData = new ArrayList<PatientData>();
+	private List<PatientData> patientDatas = new ArrayList<PatientData>();
 
 	public Patient() {
 		
@@ -102,18 +102,18 @@ public class Patient implements Serializable, IPatient {
 	}
 
 	@Override
-	public List<PatientData> getPatientData() {
-		return this.patientData;
+	public List<PatientData> getPatientDatas() {
+		return this.patientDatas;
 	}
 
 	@Override
-	public void setPatientData(List<PatientData> patientData) {
-		this.patientData = patientData;
+	public void setPatientDatas(List<PatientData> patientDatas) {
+		this.patientDatas = patientDatas;
 	}
 	
 	@Override
 	public void addPatientData(PatientData patientData){
-		this.patientData.add(patientData);
+		this.patientDatas.add(patientData);
 	}
 
 	@Override

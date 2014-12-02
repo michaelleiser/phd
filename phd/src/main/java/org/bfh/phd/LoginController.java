@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import org.bfh.crypto.MYCRYPTO;
 import org.bfh.phd.interfaces.IAnswer;
 import org.bfh.phd.interfaces.IFilledQuestionnaire;
 import org.bfh.phd.interfaces.ILoginController;
@@ -45,6 +47,8 @@ public class LoginController implements Serializable, ILoginController{
 	 
 	public LoginController() {
 		this.em = new EntityManager();
+		this.nonce = UUID.randomUUID().toString();
+		
 //		initLogger(); TODO write the loggincontroller
 	}
 		
@@ -92,8 +96,8 @@ public class LoginController implements Serializable, ILoginController{
 	public String login(String name, String password) {
 		System.out.println("LOGIN");
 		if(activeDepartment_Has_Staff != null){
-			activeUser = activeDepartment_Has_Staff.getStaff(name, password);
-			if(activeUser != null && activeUser.getActivated()){
+			activeUser = activeDepartment_Has_Staff.getStaff(name);
+			if(activeUser != null && activeUser.getActivated() && password.equals(MYCRYPTO.SHA256(nonce + "" + activeUser.getPassword()))){
 				setLoggedin(true);			
 				return "/restricted/loggedin?faces-redirect=true";
 			}
@@ -515,6 +519,23 @@ public class LoginController implements Serializable, ILoginController{
 
 	public List<FilledQuestionnaire> getFilledQuestionnaires(){
 		return em.getFilledQuestionnaires();
+	}
+	
+	private String nonce;
+	
+	public String getNonce(){
+		return nonce;
+	}
+	
+	public void setNonce(String nonce){
+		this.nonce = nonce;
+	}
+
+	public String getSaltFromStaff(String name){
+		if(activeDepartment_Has_Staff != null && activeDepartment_Has_Staff.getStaff(name) != null){
+			return activeDepartment_Has_Staff.getStaff(name).getSalt();
+		}
+		return null;
 	}
 	
 }

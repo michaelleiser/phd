@@ -1,7 +1,7 @@
 function testsha(){
 	var plaintext = document.getElementById("shaid:testsha").value;
 	alert(plaintext);
-    var hashed = CryptoJS.SHA1(plaintext);
+    var hashed = CryptoJS.SHA256(plaintext);
     alert(hashed);
     document.getElementById("shaid:testshahash").value = hashed;
     alert("finishedhashing");

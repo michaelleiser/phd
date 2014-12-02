@@ -100,13 +100,13 @@ public interface IPatient {
 	 * @return
 	 * 			a list of data from the patient
 	 */
-	public List<PatientData> getPatientData();
+	public List<PatientData> getPatientDatas();
 
 	/**
-	 * @param patientData
+	 * @param patientDatas
 	 * 			a list of data for the patient
 	 */
-	public void setPatientData(List<PatientData> patientData);
+	public void setPatientDatas(List<PatientData> patientDatas);
 
 	/**
 	 * Add a new data entry for the patient.

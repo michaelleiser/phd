@@ -8,5 +8,3 @@ function clearSessionStorage() {
 		sessionStorage.removeItem(key);
 	}
 }
-
-// TODO clear indexed db

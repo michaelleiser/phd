@@ -16,7 +16,7 @@
 				</h1>
 				<div class="formular">
 				
-					<h:outputScript library="js" name="CryptoJS/rollups/sha1.js" />
+					<h:outputScript library="js" name="CryptoJS/rollups/sha256.js" />
 					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />			
 					<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
 					<h:outputScript library="js" name="validate_staff.js" />	
@@ -38,6 +38,7 @@
 
 						</h:panelGrid>
 
+						<h:inputHidden id="salt" value="#{loginController.getStaff().salt}" />
 						<h:inputHidden id="encryptedprivatekey" value="#{loginController.getStaff().privateKey}"/>	
 						<h:inputHidden id="publickey" value="#{loginController.getStaff().publicKey}"/>	
 						<h:inputHidden id="encryptedgroupkey" binding="#{input_key}" />

@@ -29,7 +29,19 @@ public interface IStaff {
 	 * 			of the staff
 	 */
 	public void setName(String name);
+	
+	/**
+	 * @return
+	 * 			salt of the staff
+	 */
+	public String getSalt();
 
+	/**
+	 * @param salt
+	 * 			of the staff
+	 */
+	public void setSalt(String salt);	
+	
 	/**
 	 * @return
 	 * 			password of the staff
@@ -89,6 +101,6 @@ public interface IStaff {
 	 * @param privateKey
 	 * 			part of the staff
 	 */
-	public void setPrivateKey(String privateKey);	
+	public void setPrivateKey(String privateKey);
 	
 }

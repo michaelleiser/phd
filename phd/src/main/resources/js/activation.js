@@ -29,13 +29,15 @@ function renewGroupKey(){
 
 /**
  * Generate a group key and encrypt it with the public key of the user.
+ * @param length
+ * 			of the (new) group key
  * @param publicKey
  * 			to encrypt the group key with
  */
-function generateEncryptedGroupKey(publicKey){
-//	var groupKey = CryptoJS.lib.WordArray.random(128/8);	// An alternative to window.crypto.getRandomValues()
+function generateEncryptedGroupKey(length, publicKey){
+//	var groupKey = CryptoJS.lib.WordArray.random(length/8);	// An alternative to window.crypto.getRandomValues()
 
-	var array = new Uint8Array(128/8);
+	var array = new Uint8Array(length/8);
 	window.crypto.getRandomValues(array);
 	var groupKey = "";
 	for (var i = 0; i < array.length; i++) {

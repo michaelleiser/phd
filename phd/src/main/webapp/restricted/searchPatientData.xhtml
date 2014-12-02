@@ -20,7 +20,7 @@
 			<h:form id="formularform">
 				<h:panelGrid columns="2">
 					<h:outputLabel value="Operation" />
-					<h:selectOneMenu onchange="submit()" value="#{quest.questselected}" actionListener="#{quest.questChanged}">
+					<h:selectOneMenu onchange="submit()" value="#{elbow.questselected}" actionListener="#{elbow.questChanged}">
 						<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
 						<f:selectItems value="#{loginController.templateNames}" />
 					</h:selectOneMenu>	
@@ -37,26 +37,26 @@
 			<hr />
 			
 			<h:form id="statistics">		
-				<c:forEach items="#{loginController.getQuestions(quest.questselected)}" var="q">
+				<c:forEach items="#{loginController.getQuestions(elbow.questselected)}" var="q">
 					<c:if test="#{q.type eq 'String'}">
 						<h:outputLabel>#{q.question}</h:outputLabel><br />
 						<h:inputText disabled="true" id="j_idt#{q.id}" value="#{elbow.answerString}" />
 					</c:if>
 					<c:if test="#{q.type eq 'RadioButton'}">
 						<h:outputLabel>#{q.question}</h:outputLabel>
-							<h:selectOneRadio disabled="true" id="j_idt#{q.id}" value="#{elbow.answerRadioButton}">
-								<c:forEach items="#{q.answerPossibilities}" var="p">
-									<f:selectItem itemLabel="#{p}" itemValue="#{p}" />
-								</c:forEach>
-							</h:selectOneRadio>
+						<h:selectOneRadio disabled="true" id="j_idt#{q.id}" value="#{elbow.answerRadioButton}">
+							<c:forEach items="#{q.answerPossibilities}" var="p">
+								<f:selectItem itemLabel="0x #{p}" itemValue="#{p}" />
+							</c:forEach>
+						</h:selectOneRadio>
 					</c:if>
 					<c:if test="#{q.type eq 'Checkbox'}">
 						<h:outputLabel>#{q.question}</h:outputLabel>
-							<h:selectManyCheckbox disabled="true" id="j_idt#{q.id}" value="#{elbow.answerCheckbox}">
-								<c:forEach items="#{q.answerPossibilities}" var="p">
-									<f:selectItem itemLabel="#{p}" itemValue="#{p}" />
-								</c:forEach>
-							</h:selectManyCheckbox>
+						<h:selectManyCheckbox disabled="true" id="j_idt#{q.id}" value="#{elbow.answerCheckbox}">
+							<c:forEach items="#{q.answerPossibilities}" var="p">
+								<f:selectItem itemLabel="0x #{p}" itemValue="#{p}" />
+							</c:forEach>
+						</h:selectManyCheckbox>
 					</c:if><br />
 				</c:forEach>
 			</h:form>
@@ -100,7 +100,7 @@
 							</h:panelGroup>
 						</f:facet>
 					</h:dataTable>				
-				</h:form>			
+				</h:form>
 			
 			<h:outputScript type="text/javascript">
 			    dostatistics();

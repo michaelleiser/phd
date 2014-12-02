@@ -30,6 +30,38 @@ public class MYCRYPTO {
 		return new String(Hex.encode(digest));
 	}
 	
+	public static String SHA256(String s){
+		Security.addProvider(new BouncyCastleProvider());
+		byte[] input = s.getBytes();
+		byte[] digest = null;
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-256", "BC");
+			md.update(input);
+			digest = md.digest();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (NoSuchProviderException e) {
+			e.printStackTrace();
+		}
+		return new String(Hex.encode(digest));
+	}
+	
+	public static String SHA512(String s){
+		Security.addProvider(new BouncyCastleProvider());
+		byte[] input = s.getBytes();
+		byte[] digest = null;
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-512", "BC");
+			md.update(input);
+			digest = md.digest();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (NoSuchProviderException e) {
+			e.printStackTrace();
+		}
+		return new String(Hex.encode(digest));
+	}
+	
 	public String AESencode(String s) {
 		// TODO Auto-generated method stub
 		return null;

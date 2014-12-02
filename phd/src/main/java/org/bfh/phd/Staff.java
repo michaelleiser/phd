@@ -11,6 +11,7 @@ public class Staff implements IStaff{
 	
 	private int id;
 	private String name;
+	private String salt;
 	private String password;
 	private int role;
 	private boolean isActivated;
@@ -42,6 +43,16 @@ public class Staff implements IStaff{
 		this.name = name;
 	}
 
+	@Override
+	public String getSalt(){
+		return this.salt;
+	}
+	
+	@Override
+	public void setSalt(String salt){
+		this.salt = salt;
+	}
+	
 	@Override
 	public String getPassword() {
 		return this.password;

@@ -16,7 +16,7 @@
 				</h1>
 				<div class="formular">
 				
-					<h:outputScript library="js" name="CryptoJS/rollups/sha1.js" />
+					<h:outputScript library="js" name="CryptoJS/rollups/sha256.js" />
 					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
 					<h:outputScript library="js" name="validate_login.js" />			
 				
@@ -24,13 +24,16 @@
 												
 						<h:panelGrid columns="2" rendered="#{!loginController.loggedin}">
 							<h:outputLabel for="name">Username</h:outputLabel>
-							<h:inputText id="name" binding="#{name}"/>
+							<h:inputText id="name" binding="#{name}">
+								<f:ajax event="change" render="salt"/>
+							</h:inputText>
 							<h:outputLabel for="password">Password</h:outputLabel>
 							<h:inputSecret id="password" binding="#{password}"/>
 							<h:outputLabel for="department">Department</h:outputLabel>
 							<h:selectOneMenu id="department" value="#{loginController.departmentselected}">
 								<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
-								<f:selectItems value="#{loginController.departments}" var="department" itemValue="#{departmnet}" itemLabel="#{department.name}"/>
+								<f:selectItems value="#{loginController.departments}" var="department" itemValue="#{department}" itemLabel="#{department.name}"/>
+								<f:ajax event="change" render="salt"/>
 							</h:selectOneMenu>	
 							<h:outputText />
 							<h:commandButton action="#{loginController.login(name.value, password.value)}" value="Login" />
@@ -39,8 +42,13 @@
 						<h:outputText rendered="#{loginController.loggedin}">You are logged in as #{staff.name}</h:outputText>
 						<h:commandButton action="#{loginController.logout}" id="button"
 							rendered="#{loginController.loggedin}" value="Logout" />
-							
+						
+						<h:inputHidden id="nonce" value="#{loginController.nonce}" />
+												
 					</h:form>
+					
+					<h:inputHidden id="salt" value="#{loginController.getSaltFromStaff(name.value)}"/>
+											
 				</div>
 				<div class="formular">
 					<h:form>

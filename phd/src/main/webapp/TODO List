@@ -18,14 +18,6 @@ navigation-rules statt navigatin class???
 
 jpa???
 
-was tun bei renew pk sk gk
+Renew GroupKey
 
-
-
----------------
-Crypto (aktueller stand)
----------------
-Password = SHA1 (TODO Nonces)
-PK SK = 1024 RSA
-GK = 128bit
-Patient = 256bit AES CBC (Passphrase = 256bit)
+Caching Patients in Storage

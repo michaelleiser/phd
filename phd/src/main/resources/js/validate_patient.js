@@ -1,5 +1,6 @@
 /**
  * Validate the patient data and encrypt it with the group key.
+ * Clear the form, otherwise formular data would be sent in cleartext to the server.
  * @returns
  * 			true if patient can be created
  */
@@ -70,7 +71,7 @@ function validation(){
 }
 
 /**
- * Encrypt the specified data.
+ * Encrypt the specified data with the group key.
  * @param data
  * 			to be encrypted
  * @returns
@@ -212,7 +213,7 @@ function decryptPersonalDataForSearch(){
 	console.log("TIME direct: " + (time2 - time1));
 //	patients.sort();		// TODO alphabetisch sortieren
 	
-	sessionStorage.patients = JSON.stringify(patients);
+	sessionStorage.patients = JSON.stringify(patients);	// TODO
 }
 
 /**
@@ -315,7 +316,6 @@ function clearForm(){
 	document.getElementById("patientform:zip").value = "x";
 	document.getElementById("patientform:telnumber").value = "x";
 	document.getElementById("patientform:gender:0").checked = true;
-	document.getElementById("patientform:gender:1").checked = true;
 	document.getElementById("patientform:birthday").value = "x";
 }
 

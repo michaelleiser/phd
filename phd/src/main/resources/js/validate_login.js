@@ -1,5 +1,8 @@
 /**
- * Validate the login credentials and hash the password of the user.
+ * Validate the login credentials and hash the password of the user according to the scheme h(nonce + h(salt + password)).
+ * The salt is retrieved from the server according to the username and departmentname.
+ * The nonce is generated and retrieved from the server.
+ * The password is then stored in the session storage.
  * @returns
  * 			true if login is accepted
  */
@@ -20,7 +23,9 @@ function validation(){
 		return false;
 	}
 	
-	var hash = hashPassword(pass);
+	var salt = document.getElementById("salt").value;
+	var nonce = document.getElementById("loginform:nonce").value;
+	var hash = hashPassword(nonce + "" + hashPassword(salt + "" + pass));
 	document.getElementById("loginform:password").value = hash;
 	
 	savePasswordInSessionStorage(pass);
@@ -36,7 +41,7 @@ function validation(){
  * 			the hashed password
  */
 function hashPassword(pass){
-	return CryptoJS.SHA1(pass);
+	return CryptoJS.SHA256(pass);
 }
 
 /**
