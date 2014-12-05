@@ -90,4 +90,12 @@ public class FilledQuestionnaire implements IFilledQuestionnaire {
 	public void save(LoginController lc){
 		System.out.println("save");
 	}
+	
+	public void saveFilledQuestionnaire(LoginController lc){
+		lc.saveFilledQuestionnaire();
+	}
+	
+	public void saveUpdate(LoginController lc){
+		lc.saveUpdate();
+	}
 }

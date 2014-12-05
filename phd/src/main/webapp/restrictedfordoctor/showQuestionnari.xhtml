@@ -20,12 +20,30 @@
 			
 			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
 			<h:outputScript library="js" name="validate_patient.js" />
-							
-			
-				
+
 			<h:form id="formularform">	
 			<h:inputHidden id="encryptedPersonalData" value="#{loginController.activePatient.personalData}"/>
 			</h:form>
+			
+			<div class="table">
+				<table id="patienttable">
+					<tr class="table-header" id="rowheader">
+						<th class="colid">Question</th>
+						<th class="colfirst">Answer</th>
+					</tr>
+					<c:forEach items="#{loginController.filledQuestion.questions}" var="quest" varStatus="status">
+						<tr id="row#{status.index}">
+							<td class="table-column-data">
+								<h:outputLabel>#{quest.question}</h:outputLabel>
+							</td>
+							<td class="table-column-data">
+								<ui:repeat var="answer" value="#{quest.answer}"><h:outputLabel>#{answer}</h:outputLabel></ui:repeat>
+							</td>		
+						</tr>
+					</c:forEach>							
+				</table>
+			</div>
+			
 			<h:form>
 			<h:commandButton action="#{navigation.redirectToEditFilledQuestionnaire}" actionListener="#{editFilledQuestionnaire.nameListener}" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Edit" >
 			</h:commandButton>

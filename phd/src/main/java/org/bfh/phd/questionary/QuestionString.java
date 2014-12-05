@@ -1,7 +1,6 @@
 package org.bfh.phd.questionary;
 
-import java.util.List;
-
+import org.bfh.phd.LoginController;
 import org.bfh.phd.interfaces.IQuestion;
 
 
@@ -9,7 +8,7 @@ public class QuestionString implements IQuestion <String, String, String, String
 	
 	private String type = "String";
 	private String question;
-	private String answer;
+	private String answer = "";
 
 
 	@Override
@@ -65,6 +64,11 @@ public class QuestionString implements IQuestion <String, String, String, String
 	@Override
 	public void setAnswerPossibilities(String o) {
 		// TODO Auto-generated method stub
-		
+	}
+	
+	public void save(LoginController lc){
+		System.out.println("save"+this);
+		System.out.println("save answer"+answer);
+		lc.updateAnswer(this);
 	}
 }

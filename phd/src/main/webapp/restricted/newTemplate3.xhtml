@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/resources/phd/common.xhtml">
+		<ui:define name="content">
+			<h1>
+				<h:outputText value="CVS Downloads" />
+			</h1>
+
+			<div id="templates">
+			
+				<h:outputScript library="js" name="validate_patient.js" />
+
+		<h:form>
+			<c:forEach items="#{loginController.templateNames}" var="template" varStatus="status">
+								<tr id="row#{status.index}">
+									<td class="table-column-id">
+										<h:commandLink  value="#{template}" action="#{fileDownloadBean.export}"><f:param name="template" value="#{template}"/></h:commandLink><br /> 
+									</td>
+								</tr>
+			</c:forEach>    
+        </h:form>
+        
+
+			</div>
+		</ui:define>
+	</ui:composition>
+
+this is not displayed
+	
+</h:body>
+</html>
