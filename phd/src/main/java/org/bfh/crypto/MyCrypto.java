@@ -8,9 +8,9 @@ import java.security.Security;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Hex;
 
-public class MYCRYPTO {
+public class MyCrypto {
 
-	public MYCRYPTO(){
+	public MyCrypto(){
 		
 	}
 	

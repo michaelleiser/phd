@@ -43,13 +43,7 @@
         	<artifactId>jstl</artifactId>
         	<version>1.2</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>org.bitbucket.b_c</groupId>
-			<artifactId>jose4j</artifactId>
-			<version>0.3.8</version>
-		</dependency>
-		
+
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
@@ -105,14 +99,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	
-	
-<!-- 	<distributionManagement> -->
-<!-- 		<repository> -->
-<!-- 			<id>mycompany - repo</id> -->
-<!-- 			<name>My Company Repo</name> -->
-<!-- 			<url>scp://repo.mycom.com/repo</url> -->
-<!-- 		</repository> -->
-<!-- 	</distributionManagement> -->
-	
 </project>

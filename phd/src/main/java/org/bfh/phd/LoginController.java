@@ -11,7 +11,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
-import org.bfh.crypto.MYCRYPTO;
+import org.bfh.crypto.MyCrypto;
 import org.bfh.phd.interfaces.IAnswer;
 import org.bfh.phd.interfaces.IFilledQuestionnaire;
 import org.bfh.phd.interfaces.ILoginController;
@@ -97,7 +97,7 @@ public class LoginController implements Serializable, ILoginController{
 		System.out.println("LOGIN");
 		if(activeDepartment_Has_Staff != null){
 			activeUser = activeDepartment_Has_Staff.getStaff(name);
-			if(activeUser != null && activeUser.getActivated() && password.equals(MYCRYPTO.SHA256(nonce + "" + activeUser.getPassword()))){
+			if(activeUser != null && activeUser.getActivated() && password.equals(MyCrypto.SHA256(nonce + "" + activeUser.getPassword()))){
 				setLoggedin(true);			
 				return "/restricted/loggedin?faces-redirect=true";
 			}

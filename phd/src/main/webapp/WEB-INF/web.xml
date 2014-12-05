@@ -71,7 +71,7 @@
         <filter-name>LoginFilter</filter-name>
         <url-pattern>/restricted/*</url-pattern>
     </filter-mapping>
-	<!-- Filter for doctors which are not logged in -->
+	<!-- Filter for doctors which are logged in -->
     <filter>
         <filter-name>LoginFilterDoctor</filter-name>
         <filter-class>org.bfh.phd.filter.LoginFilterDoctor</filter-class>
@@ -80,7 +80,7 @@
         <filter-name>LoginFilterDoctor</filter-name>
         <url-pattern>/restrictedfordoctor/*</url-pattern>
     </filter-mapping>
-	<!-- Filter for statisticians which are not logged in -->
+	<!-- Filter for statisticians which are logged in -->
     <filter>
         <filter-name>LoginFilterStatistician</filter-name>
         <filter-class>org.bfh.phd.filter.LoginFilterStatistician</filter-class>
