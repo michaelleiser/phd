@@ -17,7 +17,9 @@
 				<h:commandLink action="#{navigation.redirectToPagefortesting}" value="page for testing" />
 			</h:form>
 		
-		
+			<h:form>
+				<h:commandLink  action="#{navigation.toNewData}" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Create new questionnaire template" />
+			</h:form>
 			<h:form>
 				<h:commandLink action="#{navigation.redirectToFormular_1}" value="Formular" />
 			</h:form>

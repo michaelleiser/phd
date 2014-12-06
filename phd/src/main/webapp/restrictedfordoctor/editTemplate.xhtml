@@ -27,14 +27,13 @@
 			<h:outputScript library="js" name="validate_patient.js" />
 	
 			<h:form id="formularform">
-			<c:set var="a" value="#{loginController.filledQuestion}"></c:set>
+			<c:set var="a" value="#{loginController.filledQuestion}"> </c:set>
 				<c:forEach items="#{a.questions}" var="q">
 					<c:if test="#{q.type eq 'String'}">
 						<h:outputLabel>#{q.question}</h:outputLabel><br />
 						<h:inputText id="j_idt#{q.id}" value="#{q.answer}" >
-						<h:outputLabel>#{q.answer}</h:outputLabel>
 							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
-							<f:ajax event="change" execute="@this" listener="#{q.answer}" />
+							<f:ajax event="change" execute="@this" listener="#{q.save(loginController)}" />
 						</h:inputText>
 					</c:if>
 					<c:if test="#{q.type eq 'RadioButton'}">
@@ -53,10 +52,10 @@
 					</c:if><br />
 				</c:forEach>
 				
-				<h:commandButton actionListener="#{a.save(loginController)}" value="Safe"/>
+				<h:commandButton actionListener="#{a.saveUpdate(loginController)}" value="Safe"/>
 				
 				<h:inputHidden id="encryptedPersonalData" value="#{loginController.activePatient.personalData}"/>
-				
+
 			</h:form>
 			
 			<h:outputScript type="text/javascript">

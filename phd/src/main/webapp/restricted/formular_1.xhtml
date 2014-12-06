@@ -5,16 +5,19 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:cc="http://java.sun.com/jsf/composite" >
 <h:head>
 </h:head>
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
 			<h1>
-				<h:outputText value="#{msg['formular']}" />
+				<h:outputText value="Edit Template" />
 			</h1>
-			<h2>
+			
+			
+<h2>
 				<h:outputLabel id="firstname"></h:outputLabel><br />
 				<h:outputLabel id="lastname"></h:outputLabel><br />
 				<h:outputLabel id="birthday"></h:outputLabel><br />
@@ -25,51 +28,47 @@
 	
 			<h:form id="formularform">
 				<h:outputLabel>Operation</h:outputLabel><br />
-				<h:selectOneMenu onchange="submit()" value="#{elbow.questselected}" actionListener="#{elbow.questChanged}">
+				<h:selectOneMenu onchange="submit()" value="#{loginController.questselected}" actionListener="#{loginController.questChanged}">
 					<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
 					<f:selectItems value="#{loginController.templateNames}" />
-				</h:selectOneMenu>		
-				<br />
-				
-				<c:forEach items="#{loginController.getQuestions(elbow.questselected)}" var="q">
+				</h:selectOneMenu>	
+				<br/>
+			<c:set var="a" value="#{loginController.newQuestion}"></c:set>
+				<c:forEach items="#{a.questions}" var="q">
 					<c:if test="#{q.type eq 'String'}">
 						<h:outputLabel>#{q.question}</h:outputLabel><br />
-						<h:inputText id="j_idt#{q.id}" value="#{elbow.answerString}">
+						<h:inputText id="j_idt#{q.id}" value="#{q.answer}" >
 							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
-							<f:ajax event="change" execute="@this" listener="#{elbow.addString}" />
+							<f:ajax event="change" execute="@this" listener="#{q.save(loginController)}" />
 						</h:inputText>
 					</c:if>
 					<c:if test="#{q.type eq 'RadioButton'}">
 						<h:outputLabel>#{q.question}</h:outputLabel>
-						<h:selectOneRadio id="j_idt#{q.id}" value="#{elbow.answerRadioButton}">
-							<f:ajax event="change" execute="@this" listener="#{elbow.addRadioButton}" />
-							<c:forEach items="#{q.answerPossibilities}" var="p">
-								<f:selectItem itemLabel="#{p}" itemValue="#{p}" />
-							</c:forEach>
+						<h:selectOneRadio value="#{q.answer}">
+							<f:ajax event="change" execute="@this" listener="#{q.save(loginController)}" />
+							<f:selectItems value="#{q.answerPossibilities}"/>
 						</h:selectOneRadio>
 					</c:if>
 					<c:if test="#{q.type eq 'Checkbox'}">
 						<h:outputLabel>#{q.question}</h:outputLabel>
-						<h:selectManyCheckbox id="j_idt#{q.id}" value="#{elbow.answerCheckbox}">
-							<f:ajax event="change" execute="@this" listener="#{elbow.addCheckbox}" />
-							<c:forEach items="#{q.answerPossibilities}" var="p">
-								<f:selectItem itemLabel="#{p}" itemValue="#{p}" />
-							</c:forEach>
+						<h:selectManyCheckbox value="#{q.answer}">
+								<f:ajax event="change" execute="@this" listener="#{q.save(loginController)}" />
+								<f:selectItems value="#{q.answerPossibilities}"/>
 						</h:selectManyCheckbox>
 					</c:if><br />
 				</c:forEach>
-				<ui:fragment rendered="#{not empty elbow.questselected}" >			
-				<h:commandButton actionListener="#{elbow.safe(loginController)}" value="Safe"/>
-				</ui:fragment>
+				
+				<br/><h:commandButton actionListener="#{a.saveFilledQuestionnaire(loginController)}" value="Safe"/>
 				
 				<h:inputHidden id="encryptedPersonalData" value="#{loginController.activePatient.personalData}"/>
-				
 			</h:form>
 			
 			<h:outputScript type="text/javascript">
 			    decryptPersonalDataForFormular();
      		</h:outputScript>
-     					
+     		
+
+				
 		</ui:define>
 	</ui:composition>
 

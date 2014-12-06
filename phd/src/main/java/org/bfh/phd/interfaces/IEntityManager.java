@@ -216,9 +216,8 @@ public interface IEntityManager {
 	
 	/** Add all Answers to the database
 	 * @param activePatient is the patient that has a new questionnaire
-	 * @param f is an object with all answers and questionnaire information
 	 */
-	public void addAnswer(Patient activePatient, IFilledQuestionnaire f);
+	public void addAnswer(Patient activePatient);
 
 	/** Get all filled questionnaires from all departments
 	 * @return a collection of FilledQuestionnaires

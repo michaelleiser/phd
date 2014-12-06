@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
@@ -34,7 +35,7 @@ public class LoginController implements Serializable, ILoginController{
 	private Patient activePatient;
 	private PatientData activePatientData;
 	private int questionnaireId;
-	private String questionnaireName;
+	private String questionnaireName = "";
 
 	private String departmentselected;
 	private Department_Has_Staff activeDepartment_Has_Staff;
@@ -227,29 +228,42 @@ public class LoginController implements Serializable, ILoginController{
 		return em.getFilledQuestionnaire2(questionnaireId);
 	}
 	
-	public void updateAnswer(IQuestion iq){
-		System.out.println("answer");
-		System.out.println(iq.getAnswer());
-		
+	public IFilledQuestionnaire getNewQuestion(){
+		if(this.loggedin == true && activeUser.getRole() == 1){
+		return em.getEmptyQuestionnaire(questionnaireName);
+		}else{return null;}
+	}
+	
+	public void updateAnswer(@SuppressWarnings("rawtypes") IQuestion iq){
 		em.updateAnswer(iq);
 	}
-
-//	@SuppressWarnings("rawtypes")
-//	public List<IQuestion> getQuestions() {
-//		return em.getQuestions(s);
-//	}
 	
 	@SuppressWarnings("rawtypes")
 	public List<IQuestion> getQuestions(String s) {
 		return em.getQuestions(s);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public List<IAnswer> getAnswers(int i) {
 		return em.getAnswers(i);
 	}
 	
 	public void safe(ActionEvent evt){
 		System.out.println("->"+evt );
+	}
+	
+	public void saveUpdate(){
+		System.out.println("Save Update");
+		if(this.loggedin == true && activeUser.getRole() == 1){
+			em.updateQuestionnaireHasAnswer();
+		}
+	}
+	
+	public void saveFilledQuestionnaire(){
+		System.out.println("Save filledquestionnaire");
+		if(this.loggedin == true && activeUser.getRole() == 1 && questionnaireName != ""){
+			em.addAnswer(activePatient);
+		}
 	}
 
 	public Patient getActivePatient() {
@@ -495,8 +509,8 @@ public class LoginController implements Serializable, ILoginController{
 		return em.getTemplateNames();
 	}
 
-	public void addAnswer(IFilledQuestionnaire f) {
-		em.addAnswer(activePatient, f);
+	public void addAnswer() {
+		em.addAnswer(activePatient);
 	}
 
 	
@@ -521,6 +535,18 @@ public class LoginController implements Serializable, ILoginController{
 		return em.getFilledQuestionnaires();
 	}
 	
+	public String getQuestselected() {
+		return questionnaireName;
+	}
+
+	public void setQuestselected(String questselected) {
+		this.questionnaireName = questselected;
+	}
+	
+	public void questChanged(ActionEvent evt) {
+		UIComponent comp = evt.getComponent();
+		questionnaireName = (String) comp.getAttributes().get("value");
+	}
 	private String nonce;
 	
 	public String getNonce(){
