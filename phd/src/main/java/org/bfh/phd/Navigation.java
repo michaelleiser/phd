@@ -164,4 +164,11 @@ public class Navigation implements Serializable {
 	public String redirectToNewData(){
 		return "/restricted/downloads?faces-redirect=true";
 	}
+	
+	public String toRenewGroupKey(){
+		return "/restrictedfordoctor/renewGroupKey";
+	}
+	public String redirectToRenewGroupKey(){
+		return "/restrictedfordoctor/renewGroupKey?faces-redirect=true";
+	}
 }

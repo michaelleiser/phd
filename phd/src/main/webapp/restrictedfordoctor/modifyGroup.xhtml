@@ -83,8 +83,7 @@
 				
 				<div class="formular">
 					<h:form id="renewform">
-						<h:commandButton action="#{loginController.activateStaff(loginController.getStaff(), inputsecret2.value)}" onclick="return renewGroupKey();" value="Renew Group Key" />
-						<h:inputHidden binding="#{inputsecret2}" id="encryptedgroupkey" />
+						<h:commandButton action="#{navigation.redirectToRenewGroupKey}" value="Renew Group Key" />
 					</h:form>
 				</div>
 				

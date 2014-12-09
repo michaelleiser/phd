@@ -449,7 +449,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	@Override
 	public void updateStaff(Staff activeUser) {
 		init();
-		String stm = "UPDATE staff SET name=?, password=?, privateKey=?, publicKey=? WHERE staff_id=?";
+		String stm = "UPDATE staff SET name=?, salt=?, password=?, privateKey=?, publicKey=? WHERE staff_id=?";
 		try {
 			pst = con.prepareStatement(stm);
 			pst.setString(1, activeUser.getName());

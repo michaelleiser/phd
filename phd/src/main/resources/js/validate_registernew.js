@@ -43,7 +43,9 @@ function validation(){
 	 * Statisticians don't need a public key, private key and mustn't get the group key
 	 */
 	if(role0.checked){
-		generatePublicKeyAndEncryptedPrivateKey(2048, pass);
+		var pksk = generatePublicKeyAndEncryptedPrivateKey(2048, pass);
+		document.getElementById("registernewform:publickey").value = pksk[0];
+		document.getElementById("registernewform:encryptedprivatekey").value = pksk[1];
 		
 		/**
 		 * For new departments -> create an encrypted group key
@@ -51,7 +53,8 @@ function validation(){
 		 */
 		var publicKey = document.getElementById("registernewform:publickey").value;
 		if(departmentname != ""){
-			generateEncryptedGroupKey(256, publicKey);
+			var encryptedGroupKey = generateEncryptedGroupKey(256, publicKey);
+			document.getElementById("registernewform:encryptedgroupkey").value = encryptedGroupKey;
 		}
 	}
 
@@ -105,15 +108,16 @@ function hashPassword(pass){
  * 			of the public key private key
  * @param password
  * 			to encrypt the private key with
+ * @returns
+ * 			the public key and the encrypted private key
  */
 function generatePublicKeyAndEncryptedPrivateKey(length, password){
 	var crypt = new JSEncrypt({default_key_size: length});
 	crypt.getKey();
-	privateKey = crypt.getPrivateKey();
-	publicKey = crypt.getPublicKey();
+	var privateKey = crypt.getPrivateKey();
+	var publicKey = crypt.getPublicKey();
 	var encryptedPrivateKey = CryptoJS.AES.encrypt(privateKey, password);
-	document.getElementById("registernewform:encryptedprivatekey").value = encryptedPrivateKey;
-	document.getElementById("registernewform:publickey").value = publicKey;
+	return [publicKey, encryptedPrivateKey];
 }
 
 /**
@@ -122,14 +126,14 @@ function generatePublicKeyAndEncryptedPrivateKey(length, password){
  * 			of the group key
  * @param publicKey
  * 			to encrypt the group key with
+ * @returns
+ * 			the encrypted group key
  */
 function generateEncryptedGroupKey(length, publicKey){
 	var groupKey = generateRandomValue(length);
-
 	var crypt = new JSEncrypt();
 	crypt.getKey();
-	
 	crypt.setPublicKey(publicKey);
 	var encryptedGroupKey = crypt.encrypt(groupKey);
-	document.getElementById("registernewform:encryptedgroupkey").value = encryptedGroupKey;
+	return encryptedGroupKey;
 }

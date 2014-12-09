@@ -3,7 +3,9 @@ package org.bfh.phd;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.faces.bean.ManagedBean;
@@ -18,6 +20,9 @@ import org.bfh.phd.interfaces.IFilledQuestionnaire;
 import org.bfh.phd.interfaces.ILoginController;
 import org.bfh.phd.interfaces.IQuestion;
 import org.bfh.phd.questionary.QuestionnairTools;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 
 /**
@@ -564,4 +569,38 @@ public class LoginController implements Serializable, ILoginController{
 		return null;
 	}
 	
+	// TODO renew staff keys only when activated in javascript!!!!
+	public void renew(String key, String staffs, String patients) throws ParseException{
+		if(this.loggedin == true){
+			// update my key
+			this.activateStaff(this.activeUser, key);
+
+			// update groups
+			JSONParser parser = new JSONParser();
+			Object o = parser.parse(staffs);
+			JSONObject json = (JSONObject) o;
+			Set hm = json.keySet();
+			for (Iterator i = hm.iterator(); i.hasNext();) {
+				int id = Integer.parseInt((String) i.next());
+				Staff s = em.getStaff(id);
+				if (s.getActivated()) {
+					String key2 = (String) json.get("" + id);
+					this.activateStaff(s, key2);
+				}
+			}
+
+			// update patients
+			JSONParser parser2 = new JSONParser();
+			Object o2 = parser2.parse(patients);
+			JSONObject json2 = (JSONObject) o2;
+			Set hm2 = json2.keySet();
+			for (Iterator i = hm2.iterator(); i.hasNext();) {
+				int id = Integer.parseInt((String) i.next());
+				Patient p = em.getPatient(this.activeUser, id);
+				String personalData = (String) json2.get("" + id);
+				p.setPersonalData(personalData);
+				this.updatePatient(p);
+			}
+		}
+	}
 }

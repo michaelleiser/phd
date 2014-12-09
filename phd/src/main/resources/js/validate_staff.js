@@ -27,7 +27,10 @@ function validation(){
 	 * Statisticians don't need a public key, private key and mustn't get the group key
 	 */
 	if(document.getElementById("loggedinform:role").innerHTML == 1){
-		generatePublicKeyAndEncryptedPrivateKey(2048, newpass);
+		var pksk = generatePublicKeyAndEncryptedPrivateKey(2048, newpass);
+		document.getElementById("staffform:publickey").value = pksk[0];
+		document.getElementById("staffform:encryptedprivatekey").value = pksk[1];
+		
 		var crypt = new JSEncrypt();
 		crypt.setPublicKey(document.getElementById("staffform:publickey").value);
 		var groupKey = sessionStorage.groupKey;
@@ -50,24 +53,6 @@ function generateSalt(length){
 }
 
 /**
- * Generates a random value with the specified length.
- * @param length
- * 			in bits
- * @returns
- * 			the random value
- */
-function generateRandomValue(length){
-//	var groupKey = CryptoJS.lib.WordArray.random(length/8);	// An alternative to window.crypto.getRandomValues()
-	var array = new Uint8Array(length/8);
-	window.crypto.getRandomValues(array);
-	var groupKey = "";
-	for (var i = 0; i < array.length; i++) {
-		groupKey = groupKey + String.fromCharCode(array[i]);
-	}
-	return groupKey;
-}
-
-/**
  * Hash the password.
  * @param pass
  * 			to be hashed
@@ -84,13 +69,14 @@ function hashPassword(pass){
  * 			of the public key private key
  * @param password
  * 			to encrypt the private key with
+ * @returns
+ * 			the public key and the encrypted private key
  */
 function generatePublicKeyAndEncryptedPrivateKey(length, password){
 	var crypt = new JSEncrypt({default_key_size: length});
 	crypt.getKey();
-	privateKey = crypt.getPrivateKey();
-	publicKey = crypt.getPublicKey();
+	var privateKey = crypt.getPrivateKey();
+	var publicKey = crypt.getPublicKey();
 	var encryptedPrivateKey = CryptoJS.AES.encrypt(privateKey, password);
-	document.getElementById("staffform:encryptedprivatekey").value = encryptedPrivateKey;
-	document.getElementById("staffform:publickey").value = publicKey;
+	return [publicKey, encryptedPrivateKey];
 }
