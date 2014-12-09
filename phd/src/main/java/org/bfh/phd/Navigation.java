@@ -159,9 +159,9 @@ public class Navigation implements Serializable {
 	}	
 	
 	public String toNewData(){
-		return "/restricted/newTemplate3";
+		return "/restricted/downloads";
 	}
 	public String redirectToNewData(){
-		return "/restricted/newTemplate3?faces-redirect=true";
+		return "/restricted/downloads?faces-redirect=true";
 	}
 }

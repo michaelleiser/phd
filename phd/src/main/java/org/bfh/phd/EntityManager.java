@@ -61,7 +61,8 @@ public class EntityManager implements IEntityManager, Serializable {
 	private Connection con = null, con2 = null;
 	private PreparedStatement pst = null, pst2 = null;
 	private ResultSet rs = null, rs2 = null;
-
+	private boolean newTemplate = false;
+	
 	// private PaginatorPatient paginatorPatient = new PaginatorPatient();
 	private PaginatorPatientData paginatorPatientData = new PaginatorPatientData();
 	private PaginatorGroup paginatorGroup = new PaginatorGroup();
@@ -309,6 +310,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		} finally {
 			close();
 		}
+		newTemplate = true;
 		initQuestionnaire();
 	}
 
@@ -1118,6 +1120,9 @@ public class EntityManager implements IEntityManager, Serializable {
 	 */
 	private void init() {
 		con = mycon.getConnection();
+	}
+	
+	private void init2(){
 		con2 = mycon.getConnection();
 	}
 
@@ -1129,7 +1134,6 @@ public class EntityManager implements IEntityManager, Serializable {
 		try {
 			pst.close();
 			con.close();
-			con2.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -1147,13 +1151,6 @@ public class EntityManager implements IEntityManager, Serializable {
 					e.printStackTrace();
 				}
 			}
-			if (con2 != null) {
-				try {
-					con2.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 	}
 
@@ -1166,7 +1163,6 @@ public class EntityManager implements IEntityManager, Serializable {
 			rs.close();
 			pst.close();
 			con.close();
-			con2.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -1191,6 +1187,27 @@ public class EntityManager implements IEntityManager, Serializable {
 					e.printStackTrace();
 				}
 			}
+		}
+	}
+
+	/**
+	 * Close the database connection without result set
+	 *
+	 */
+	private void closeWithoutRs2() {
+		try {
+			pst2.close();
+			con2.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (pst2 != null) {
+				try {
+					pst2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 			if (con2 != null) {
 				try {
 					con2.close();
@@ -1209,6 +1226,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		try {
 			rs2.close();
 			pst2.close();
+			con2.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -1222,6 +1240,13 @@ public class EntityManager implements IEntityManager, Serializable {
 			if (pst2 != null) {
 				try {
 					pst2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (con2 != null) {
+				try {
+					con2.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -1262,7 +1287,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	 */
 	public List<ListOfQuestionnari> searchDatas(int id) {
 		List<ListOfQuestionnari> quest = new ArrayList<ListOfQuestionnari>();
-		String stm = "SELECT date, answer_id, name FROM questionnaire q JOIN q_template_name n ON q.template_name_id = n.id WHERE q.patient_patient_id = ?;";
+		String stm = "SELECT date, answer_id, name FROM questionnaire q JOIN q_template_name n ON q.template_name_id = n.id WHERE q.patient_patient_id = ? ORDER BY date DESC;";
 		init();
 		try {
 			pst = con.prepareStatement(stm);
@@ -1637,7 +1662,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	 * 
 	 */
 	private void initQuestionnaire() {
-		init();
+		init2();
 		List<Integer> i = new ArrayList<Integer>();
 		List<String> s = new ArrayList<String>();
 		filledQuestionnaires = new ArrayList<FilledQuestionnaire>();
@@ -1653,7 +1678,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close();
+			close2();
 		}
 		for (int j = 0; j < i.size(); j++) {
 			filledQuestionnaires.add(getFilledQuestion(i.get(j), s.get(j)));
@@ -1666,7 +1691,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	 */
 	private void initEmptyQuestionnaire() {
 		emptyQuestionnaires = new HashMap<String, FilledQuestionnaire>();
-		for (String s : operationtyp) {
+		for (String s : operationtypes) {
 			emptyQuestionnaires.put(s, getEmptyQuestionnaires(s));
 		}
 	}
@@ -1744,6 +1769,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	@Override
 	public void deletTemplateQuestion(QuestionnairTools q) throws SQLException {
 		init();
+		init2();
 		String stm = "DELETE FROM question2 WHERE id=?;";
 		if (q.getType() != "String") {
 			String stm1 = "SELECT pos_id FROM question2 WHERE id=?;";
@@ -1775,7 +1801,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		pst = con.prepareStatement(stm);
 		pst.setInt(1, q.getDbId());
 		pst.execute();
-		close2();
+		closeWithoutRs2();
 		close();
 		initEmptyQuestionnaire();
 	}
@@ -1783,6 +1809,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	@Override
 	public void editQuestion(QuestionnairTools q) throws SQLException {
 		init();
+		init2();
 		String stm = "UPDATE question2 SET question=? WHERE id=?;";
 		String stm1 = "SELECT pos_id FROM question2 WHERE id=?;";
 		String stm2 = "SELECT pos_id FROM posibilitis WHERE id=?;";
@@ -1812,8 +1839,9 @@ public class EntityManager implements IEntityManager, Serializable {
 				}
 			}
 		}
-		close2();
+		closeWithoutRs2();
 		close();
+		newTemplate = true;
 		initEmptyQuestionnaire();
 	}
 
@@ -1943,6 +1971,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	 * @throws SQLException
 	 */
 	private int getLastInsertID() throws SQLException {
+		init2();
 		int i = 1;
 		String stm = "SELECT MAX(id) FROM questionnair_has_answer;";
 		pst2 = con2.prepareStatement(stm);
@@ -1953,11 +1982,13 @@ public class EntityManager implements IEntityManager, Serializable {
 				i += rs2.getInt(1);
 			}
 		}
+		close2();
 		return i;
 	}
 
 	@Override
 	public int insertAnswer(String a) throws SQLException {
+		init2();
 		int i = 1;
 		String stm = "SELECT id FROM answer WHERE answer = ?;";
 		String stm2 = "INSERT INTO answer (answer) VALUES ('" + a + "');";
@@ -1975,6 +2006,7 @@ public class EntityManager implements IEntityManager, Serializable {
 				i = rs2.getInt(1);
 			}
 		}
+		close2();
 		return i;
 	}
 
@@ -2007,27 +2039,31 @@ public class EntityManager implements IEntityManager, Serializable {
 		long starttime = System.currentTimeMillis();
 		long endtime;
 		
+		if(newTemplate){
 		File f = new File(System.getProperty("user.dir"));
 
 		File directory = new File(f.getParentFile(), "/webapps/phd/csv/");
 
 		try {
+			// erstellen des directory wenn nicht vorhanden
 			if(!directory.isDirectory()){
 				directory.mkdirs();
 				if(!directory.isDirectory()){
-					System.out.println("nicht erstellt");
 				}else{
-					System.out.println("erstellt");
 				}
 			}else{}
-			
-			for (int i = 0; i < operationtyp.size(); i++) {
-				String name = operationtyp.get(i);
+			FileWriter totalwriter = new FileWriter(new File(directory + "/total.txt"));
+			for (int i = 0; i < operationtypes.size(); i++) {
+				String name = operationtypes.get(i);
+
 				File csv = new File(directory + "/" + name.replace(" ", "_") + ".txt");
 				FileWriter writer = new FileWriter(csv);
 
 				FilledQuestionnaire eq = emptyQuestionnaires.get(name);
 				for (IQuestion iq : eq.getQuestions()) {
+					totalwriter.append(name + "\n\n");
+					totalwriter.append(iq.getQuestion());
+					totalwriter.append(";");
 					writer.append(iq.getQuestion());
 					writer.append(";");
 				}
@@ -2038,25 +2074,33 @@ public class EntityManager implements IEntityManager, Serializable {
 							String s = answer.toString();
 							s.replace("[", "");
 							s.replace("]", "");
+							totalwriter.append("\"" + s + "\"");
+							totalwriter.append(";");
 							writer.append("\"" + s + "\"");
 							writer.append(";");
 						}
+						totalwriter.append("\n");
 						writer.append("\n");
 					}
+					totalwriter.append("\n\n\n");
 				}
+				totalwriter.flush();
+				totalwriter.close();
 				writer.flush();
 				writer.close();
 			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		endtime = System.currentTimeMillis();
 		System.err.println("Das erstellen der CSVs hat "
 				+ (endtime - starttime) + "[ms] benötigt");
+		}
 	}
 
 	public boolean isLegalTemplate(String template) {
-		for(String s: operationtyp){
+		for(String s: operationtypes){
 			if(s.equals(template)){
 				return true;
 			}
