@@ -34,15 +34,13 @@
 								<th class="colfirst">Firstname</th>
 								<th class="collast">Lastname</th>
 								<th class="colbirth">Birthday</th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
 							</tr>
 							<c:forEach items="#{loginController.searchPatients()}" var="patient" varStatus="status">
 								<tr id="row#{status.index}">
 									<td class="table-column-id">
-										<h:outputText id="id#{status.index}">#{patient.patientid}</h:outputText>
+										<h:commandLink action="#{navigation.redirectToEditPatient}" id="id#{status.index}" value="#{patient.patientid}">
+											<f:setPropertyActionListener target="#{loginController.activePatient}" value="#{patient}" />
+										</h:commandLink>
 									</td>
 									<td class="table-column-data">
 										<h:outputText id="firstname#{status.index}"/>
@@ -54,19 +52,7 @@
 										<h:outputText id="birthday#{status.index}" />
 									</td>
 									<td class="table-column-button">
-										<h:commandButton action="#{navigation.redirectToEditPatient}"
-											rendered="#{(loginController.writeAccess(patient))}"
-											value="Edit Patient">
-											<f:setPropertyActionListener target="#{loginController.activePatient}" value="#{patient}" />
-										</h:commandButton>
-										<h:commandButton action="#{navigation.redirectToEditPatient}"
-											rendered="#{not (loginController.writeAccess(patient)) and (loginController.readAccess(patient))}"
-											value="Show Patient">
-											<f:setPropertyActionListener target="#{loginController.activePatient}" value="#{patient}" />
-										</h:commandButton>
-									</td>
-									<td class="table-column-button">
-										<h:commandButton action="#{loginController.setActivePatient(patient)}" value="Patient Datas" />
+										<h:commandButton action="#{loginController.setActivePatient(patient)}" id="patientdatas#{status.index}" onclick="return highlight(this);" value="Patient Datas" />
 									</td>
 									<td class="table-column-data">
 										<h:outputText rendered="#{(loginController.isOwner(patient))}" value="Owner" />
@@ -87,13 +73,13 @@
 				<hr />
 				
 				<div id="patientdatas">
-					<h2>
-						<h:outputText id="firstname"></h:outputText>
-						<h:outputText id="lastname"></h:outputText>
-						<h:outputText id="birthday"></h:outputText>
-					</h2>
+					<div id="patientheader">
+						<h:outputText class="patientheader" id="firstname"></h:outputText>
+						<h:outputText class="patientheader" id="lastname"></h:outputText>
+						<h:outputText class="patientheader" id="birthday"></h:outputText>
+					</div>
 					
-					<h:form id="fomularform" rendered="#{not empty loginController.activePatient}">
+					<h:form id="formularform" rendered="#{not empty loginController.activePatient}">
 						<h:commandButton action="#{navigation.redirectToFormular}"
 							rendered="#{loginController.insertAccess(loginController.activePatient)}"
 							value="insert a new entry" />
@@ -104,7 +90,8 @@
 							value="#{loginController.getPatientDatas()}" 
 							var="questionnaire"
 							headerClass="table-header"
-							rowClasses="table-odd-row,table-even-row">
+							rowClasses="table-odd-row,table-even-row"
+							columnClasses="table-column-id,table-column-data,table-column-data">
 							<h:column>
 								<f:facet name="header">ID</f:facet>
 								<h:commandLink action="#{navigation.redirectToShowQuestionnaire}" value="#{questionnaire.questId}">
@@ -112,10 +99,15 @@
 								</h:commandLink>
 							</h:column>
 							<h:column>
-								<f:facet name="header">Date</f:facet>#{questionnaire.date}
+								<f:facet name="header">Date</f:facet>
+								<h:outputText value="#{questionnaire.date}"/>
+								
 							</h:column>
 							<h:column>
-								<f:facet name="header">Typ of Questionnaire</f:facet>#{questionnaire.typOfQuest}
+								<f:facet name="header">Typ of Questionnaire</f:facet>
+								<h:outputText value="#{questionnaire.typOfQuest}"/>
+								
+							
 							</h:column>
 							<f:facet name="footer">
 								<h:panelGroup>
@@ -136,15 +128,7 @@
 					</h:form>
 				</div>
 			</div>
-<!--
-			<h:outputScript type="text/javascript">
-			    getPersonalDataForSearch();
-     		</h:outputScript>			
---><!--
-			<h:outputScript type="text/javascript">
-			    decryptPersonalDataForSearchWebWorker();
-     		</h:outputScript>
---> 
+
 			<h:outputScript type="text/javascript">
 			    decryptPersonalDataForSearch();
      		</h:outputScript>

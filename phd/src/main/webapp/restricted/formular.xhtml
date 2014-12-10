@@ -12,16 +12,16 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
+	
 			<h1>
-				<h:outputText value="Edit Template" />
+				<h:outputText value="#{msg['newquestionnaire']}" />
 			</h1>
 			
-			
-<h2>
-				<h:outputLabel id="firstname"></h:outputLabel><br />
-				<h:outputLabel id="lastname"></h:outputLabel><br />
-				<h:outputLabel id="birthday"></h:outputLabel><br />
-			</h2>
+			<div id="patientheader">
+				<h:outputText class="patientheader" id="firstname"></h:outputText>
+				<h:outputText class="patientheader" id="lastname"></h:outputText>
+				<h:outputText class="patientheader" id="birthday"></h:outputText>
+			</div>
 			
 			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
 			<h:outputScript library="js" name="validate_patient.js" />
@@ -66,9 +66,7 @@
 			<h:outputScript type="text/javascript">
 			    decryptPersonalDataForFormular();
      		</h:outputScript>
-     		
-
-				
+	
 		</ui:define>
 	</ui:composition>
 

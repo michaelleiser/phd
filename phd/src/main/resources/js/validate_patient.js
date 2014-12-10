@@ -321,24 +321,10 @@ function clearForm(){
 
 
 
-
-
-
-
-
-function getPersonalDataForSearch(){
-	if(typeof(sessionStorage.patients) === "undefined"){
-		decryptPersonalDataForSearch();
-	}
-	var patients = JSON.parse(sessionStorage.patients);
-	visiblerows = new Array();
-	for(var i = 0 ; i < patients.length ; i++){
-		console.log(patients[i].id, patients[i].firstname, patients[i].lastname, patients[i].birthday, patients[i].writeable, patients[i].owner);
-//		patients.push({"firstname":patient["firstname"], "lastname":patient["lastname"], "birthday":patient["birthday"]});
-		document.getElementById("searchform:firstname" + i).innerHTML = patients[i].firstname;
-		document.getElementById("searchform:lastname" + i).innerHTML = patients[i].lastname;
-		document.getElementById("searchform:birthday" + i).innerHTML = patients[i].birthday;
-		visiblerows.push(i);
-	}
-	display();
+function highlight(element){
+	var elementid = element.id;
+	console.log(elementid);
+	return true;
 }
+
+

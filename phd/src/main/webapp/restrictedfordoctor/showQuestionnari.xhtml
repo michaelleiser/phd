@@ -10,13 +10,16 @@
 	<h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
-			<h1>Questionnari</h1>
 			
-			<h2>
-				<h:outputLabel id="firstname"></h:outputLabel><br />
-				<h:outputLabel id="lastname"></h:outputLabel><br />
-				<h:outputLabel id="birthday"></h:outputLabel><br />
-			</h2>
+			<h1>
+				<h:outputText value="#{msg['questionnaire']}" />
+			</h1>
+			
+			<div id="patientheader">
+				<h:outputText class="patientheader" id="firstname"></h:outputText>
+				<h:outputText class="patientheader" id="lastname"></h:outputText>
+				<h:outputText class="patientheader" id="birthday"></h:outputText>
+			</div>
 			
 			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
 			<h:outputScript library="js" name="validate_patient.js" />
@@ -47,10 +50,12 @@
 			<h:form>
 			<h:commandButton action="#{navigation.redirectToEditFilledQuestionnaire}" actionListener="#{editFilledQuestionnaire.nameListener}" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Edit" >
 			</h:commandButton>
-			</h:form>			
+			</h:form>
+				
 			<h:outputScript type="text/javascript">
 			    decryptPersonalDataForFormular();
      		</h:outputScript>
+		
 		</ui:define>
 	</ui:composition>
    </h:body>

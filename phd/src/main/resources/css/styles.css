@@ -1,7 +1,6 @@
 body {
     background-color: #eeeeee;
 	font-family: Helvetica;
-    text-shadow: 5px 5px 5px #999;
 	width: 1024px;
 }
 
@@ -92,10 +91,12 @@ div#patientdatas {
 	padding: 20px 20px 20px 20px;
 	width: auto;
 }
-div#filter{
+
+.patientheader{
+	padding: 10px 10px 10px 10px;
+	font-size: x-large;
+	font-weight: bold;
 }
-
-
 
 .table{
 	

@@ -1,5 +1,3 @@
-Password gehasht und mit Nonce
-
 Activate Deactivate bzw login nach registernew geht erst nach einem ein ausloggen bzw session cookie löschen
 
 diverse filter für statistiker seite
@@ -17,7 +15,5 @@ datenbank automatisch füllen
 navigation-rules statt navigatin class???
 
 jpa???
-
-Renew GroupKey
 
 Caching Patients in Storage

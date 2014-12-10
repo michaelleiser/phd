@@ -110,10 +110,10 @@ public class Navigation implements Serializable {
 	}
 	
 	public String toFormular(){
-		return "/restricted/formular_1";
+		return "/restricted/formular";
 	}
 	public String redirectToFormular(){
-		return "/restricted/formular_1?faces-redirect=true";
+		return "/restricted/formular?faces-redirect=true";
 	}
 	
 	public String toShowQuestionnaire(){
@@ -130,11 +130,11 @@ public class Navigation implements Serializable {
 		return "/restrictedfordoctor/editQuestionnari?faces-redirect=true";
 	}
 	
-	public String toModifyGroup(){
-		return "/restrictedfordoctor/modifyGroup";
+	public String toEditGroup(){
+		return "/restrictedfordoctor/editGroup";
 	}
-	public String redirectToModifyGroup(){
-		return "/restrictedfordoctor/modifyGroup?faces-redirect=true";
+	public String redirectToEditGroup(){
+		return "/restrictedfordoctor/editGroup?faces-redirect=true";
 	}
 	
 	public String toNewQuestionnaireTemplate(){
