@@ -24,24 +24,24 @@
 					
 					<h:form id="registernewform" onsubmit="return validation();">
 						<h:panelGrid columns="2">
-							<h:outputLabel for="name">Username</h:outputLabel>
+							<h:outputLabel for="name" value="Username" />
 							<h:inputText id="name" required="true" value="#{staff.name}" />
-							<h:outputLabel for="password">Password</h:outputLabel>
+							<h:outputLabel for="password" value="Password" />
 							<h:inputSecret id="password" required="true" value="#{staff.password}" />
-							<h:outputLabel for="role">Role</h:outputLabel>
+							<h:outputLabel for="role" value="Role"/>
 							<h:selectOneRadio id="role" required="true"
 								value="#{staff.role}">
 								<f:selectItem id="roledoctor" itemLabel="Doctor" itemValue="1" />
 								<f:selectItem id="rolestatistician" itemLabel="Statistician" itemValue="2" />
 							</h:selectOneRadio>
-							<h:outputLabel for="department">Department</h:outputLabel>
+							<h:outputLabel for="department" value="Department"/>
 							<h:selectOneMenu id="department" value="#{loginController.departmentselected}">
 								<f:selectItem itemLabel="ADD NEW" itemValue="" noSelectionOption="true" />
 								<f:selectItems value="#{loginController.departments}" var="department" itemValue="#{department}" itemLabel="#{department.name}" />
 								<f:ajax render="depname_l depname regnew regnewwithdep" event="valueChange" />
 							</h:selectOneMenu>
 							<h:panelGroup id="depname_l">
-								<h:outputText rendered="#{empty loginController.departmentselected}">Name</h:outputText>
+								<h:outputText rendered="#{empty loginController.departmentselected}" value="Name" />
 							</h:panelGroup>
 							<h:panelGroup id="depname">
 								<h:inputText id="departmentname" value="#{department.name}" rendered="#{empty loginController.departmentselected}" />						

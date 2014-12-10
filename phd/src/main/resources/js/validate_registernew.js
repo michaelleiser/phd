@@ -57,8 +57,7 @@ function validation(){
 			document.getElementById("registernewform:encryptedgroupkey").value = encryptedGroupKey;
 		}
 	}
-
-//	alert("finish");
+	
 	return true;
 }
 

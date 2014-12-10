@@ -569,13 +569,13 @@ public class LoginController implements Serializable, ILoginController{
 		return null;
 	}
 	
-	// TODO renew staff keys only when activated in javascript!!!!
 	public void renew(String key, String staffs, String patients) throws ParseException{
 		if(this.loggedin == true){
-			// update my key
+			
+			// update own key
 			this.activateStaff(this.activeUser, key);
 
-			// update groups
+			// update staff keys
 			JSONParser parser = new JSONParser();
 			Object o = parser.parse(staffs);
 			JSONObject json = (JSONObject) o;

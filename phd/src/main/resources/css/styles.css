@@ -3,14 +3,16 @@ body {
 	font-family: Helvetica;
 	width: 1024px;
 }
-
-div#header{
+a {
+	text-decoration: none;
+}
+div#header {
 	padding: 20px 20px 20px 20px;
 }
-div#content{
+div#content {
 	padding: 20px 20px 20px 20px;
 }
-div#footer{
+div#footer {
 	padding: 20px 20px 20px 20px;
 }
 
@@ -19,7 +21,6 @@ div#headerlanguages {
 }
 .headerlanguage {
 	padding: 10px 10px 10px 10px;
-	text-decoration: none;
 }
 
 div#menu {
@@ -33,14 +34,12 @@ div#menu {
 	font-size: 25px;
 	margin: 20px;
 	padding: 10px 10px 10px 10px;
-	text-decoration: none;
 	transition: background 0.3s linear 0s;
 }
 .menuitem:hover {
     background-color: #ff0000;
     border-radius: 5px;
 }
-
 
 div#loggedinbox {
 	float: right;
@@ -59,29 +58,7 @@ div#loggedinbox {
 	width: auto;
 }
 
-div#group {
-	border-color: #bbbbbb;
-	border-radius: 5px;
-	border-style: solid;
-	border-width: 1px;
-	box-shadow: 10px 10px 25px #666;
-	height: auto;
-	padding: 20px 20px 20px 20px;
-	width: auto;
-}
-
-div#patients {
-	border-color: #bbbbbb;
-	border-radius: 5px;
-	border-style: solid;
-	border-width: 1px;
-	box-shadow: 10px 10px 25px #666;
-	height: auto;
-	padding: 20px 20px 20px 20px;
-	width: auto;
-}
-
-div#patientdatas {
+.box {
 	border-color: #bbbbbb;
 	border-radius: 5px;
 	border-style: solid;
@@ -102,7 +79,6 @@ div#patientdatas {
 	
 }
 .table-header {
-/* 	background-color: #BBBBFF; */
 	padding: 10px 10px 10px 10px;
 }
 .table-odd-row {
@@ -128,4 +104,7 @@ div#patientdatas {
 }
 .table-column-hidden {
 	background-color: #eeeeee;
+}
+.tableid {
+	color: #000000;
 }

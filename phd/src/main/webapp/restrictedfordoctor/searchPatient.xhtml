@@ -15,7 +15,7 @@
 				<h1>
 					<h:outputText value="#{msg['searchpatient']}" />
 				</h1>
-				<div id="patients">
+				<div class="box">
 					
 					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
 					<h:outputScript library="js" name="validate_patient.js" />
@@ -38,7 +38,7 @@
 							<c:forEach items="#{loginController.searchPatients()}" var="patient" varStatus="status">
 								<tr id="row#{status.index}">
 									<td class="table-column-id">
-										<h:commandLink action="#{navigation.redirectToEditPatient}" id="id#{status.index}" value="#{patient.patientid}">
+										<h:commandLink action="#{navigation.redirectToEditPatient}" class="tableid" id="id#{status.index}" value="#{patient.patientid}">
 											<f:setPropertyActionListener target="#{loginController.activePatient}" value="#{patient}" />
 										</h:commandLink>
 									</td>
@@ -52,7 +52,7 @@
 										<h:outputText id="birthday#{status.index}" />
 									</td>
 									<td class="table-column-button">
-										<h:commandButton action="#{loginController.setActivePatient(patient)}" id="patientdatas#{status.index}" onclick="return highlight(this);" value="Patient Datas" />
+										<h:commandButton action="#{loginController.setActivePatient(patient)}" id="patientdatas#{status.index}" value="Patient Datas" />
 									</td>
 									<td class="table-column-data">
 										<h:outputText rendered="#{(loginController.isOwner(patient))}" value="Owner" />
@@ -64,7 +64,7 @@
 							</c:forEach>							
 						</table>
 						<h:commandButton id="backward" onclick="return backward();" value="backward" />
-						<h:outputText>Page </h:outputText><h:outputText id="pagenumber">1</h:outputText>
+						<h:outputText id="pagenumber" value="Page 1" />
 						<h:commandButton id="forward" onclick="return forward();" value="forward" />
 						</div>
 					</h:form>
@@ -72,7 +72,7 @@
 				
 				<hr />
 				
-				<div id="patientdatas">
+				<div class="box">
 					<div id="patientheader">
 						<h:outputText class="patientheader" id="firstname"></h:outputText>
 						<h:outputText class="patientheader" id="lastname"></h:outputText>
@@ -94,7 +94,7 @@
 							columnClasses="table-column-id,table-column-data,table-column-data">
 							<h:column>
 								<f:facet name="header">ID</f:facet>
-								<h:commandLink action="#{navigation.redirectToShowQuestionnaire}" value="#{questionnaire.questId}">
+								<h:commandLink action="#{navigation.redirectToShowQuestionnaire}" class="tableid" value="#{questionnaire.questId}">
 									<f:setPropertyActionListener target="#{loginController.patientid}" value="#{questionnaire}" />
 								</h:commandLink>
 							</h:column>
@@ -104,7 +104,7 @@
 								
 							</h:column>
 							<h:column>
-								<f:facet name="header">Typ of Questionnaire</f:facet>
+								<f:facet name="header">Type of questionnaire</f:facet>
 								<h:outputText value="#{questionnaire.typOfQuest}"/>
 								
 							

@@ -22,10 +22,10 @@
 		
 			<div id="loggedinbox">
 				<h:form id="loggedinform">
-					<h:outputText rendered="#{loginController.loggedin}">You are logged in</h:outputText><br />
-					<h:commandLink rendered="#{loginController.loggedin}" action="#{navigation.redirectToEditStaff}" value="#{(loginController.getStaff()).getName()}" /><br />
-					<h:outputLabel id="role" rendered="#{loginController.loggedin}">#{(loginController.getStaff()).getRole()}</h:outputLabel><br />
-					<h:outputText rendered="#{loginController.loggedin}">#{loginController.getDepartment_Has_Staff().getDepartment().getName()}</h:outputText><br />
+					<h:outputText rendered="#{loginController.loggedin}" value="You are logged in"/><br />
+					<h:commandLink id="activestaff" rendered="#{loginController.loggedin}" action="#{navigation.redirectToEditStaff}" value="#{(loginController.getStaff()).getName()}" /><br />
+					<h:outputText id="role" rendered="#{loginController.loggedin}" value="#{(loginController.getStaff()).getRole()}"/><br />
+					<h:outputText rendered="#{loginController.loggedin}" value="#{loginController.getDepartment_Has_Staff().getDepartment().getName()}"/><br />
 				</h:form>
 				<h:form id="logoutform" onsubmit="return clearSessionStorage();">
 					<h:commandButton action="#{loginController.logout}" rendered="#{loginController.loggedin}" value="Logout" />

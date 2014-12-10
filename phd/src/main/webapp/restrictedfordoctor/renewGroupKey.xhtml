@@ -15,46 +15,12 @@
 				<h1>
 					<h:outputText value="#{msg['renewgroupkey']}" />
 				</h1>
-				
-					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
-					<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
-					<h:outputScript library="js" name="activation.js" />
-					
-					<h:form id="staffform" >
-						<div class="table">
-							<h:dataTable id="stafftable" value="#{loginController.searchStaffsInGroup('')}" var="staff" >
-								<h:column>
-									<h:inputHidden id="id" value="#{staff.id}" />
-								</h:column>
-								<h:column>
-									<h:inputHidden id="publicKey" value="#{staff.publicKey}" />
-								</h:column>
-								<h:column>
-									<h:inputHidden id="activated" value="#{staff.getActivated()}"/>
-								</h:column>	
-							</h:dataTable>
-						</div>
-					</h:form>
-
-					<h:form id="patientform">			
-						<div class="table">
-							<table id="patienttable">
-
-								<c:forEach items="#{loginController.searchPatients()}" var="patient" varStatus="status">
-									<tr id="row#{status.index}">
-										<td>
-											<h:inputHidden id="id#{status.index}" value="#{patient.patientid}" />
-										</td>
-										<td>
-											<h:inputHidden id="encdata#{status.index}" value="#{patient.personalData}" />
-										</td>
-									</tr>
-								</c:forEach>							
-							</table>
-						</div>
-					</h:form>
-
-				<div class="formular">
+		
+				<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
+				<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
+				<h:outputScript library="js" name="activation.js" />
+		
+				<div class="box">
 					<h:form id="renewform">
 						<h:commandButton action="#{loginController.renew(renewGroupKey.value, renewStaff.value, renewPatient.value)}" onclick="return renewGroupKey();" value="Renew Group Key" />
 						<h:inputHidden binding="#{renewGroupKey}" id="renewGroupKey" />
@@ -62,6 +28,39 @@
 						<h:inputHidden binding="#{renewPatient}" id="renewPatient" />
 					</h:form>
 				</div>
+		
+				<h:form id="staffform" >
+					<div class="table">
+						<h:dataTable id="stafftable" value="#{loginController.searchStaffsInGroup('')}" var="staff" >
+							<h:column>
+								<h:inputHidden id="id" value="#{staff.id}" />
+							</h:column>
+							<h:column>
+								<h:inputHidden id="publicKey" value="#{staff.publicKey}" />
+							</h:column>
+							<h:column>
+								<h:inputHidden id="activated" value="#{staff.getActivated()}"/>
+							</h:column>	
+						</h:dataTable>
+					</div>
+				</h:form>
+
+				<h:form id="patientform">			
+					<div class="table">
+						<table id="patienttable">
+							<c:forEach items="#{loginController.searchPatients()}" var="patient" varStatus="status">
+								<tr id="row#{status.index}">
+									<td>
+										<h:inputHidden id="id#{status.index}" value="#{patient.patientid}" />
+									</td>
+									<td>
+										<h:inputHidden id="encdata#{status.index}" value="#{patient.personalData}" />
+									</td>
+								</tr>
+							</c:forEach>							
+						</table>
+					</div>
+				</h:form>	
 
 			</div>
 		</ui:define>

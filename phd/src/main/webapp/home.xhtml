@@ -23,13 +23,13 @@
 					<h:form id="loginform" onsubmit="return validation();">
 												
 						<h:panelGrid columns="2" rendered="#{!loginController.loggedin}">
-							<h:outputLabel for="name">Username</h:outputLabel>
+							<h:outputLabel for="name" value="Username" />
 							<h:inputText id="name" binding="#{name}">
 								<f:ajax event="change" render="salt"/>
 							</h:inputText>
-							<h:outputLabel for="password">Password</h:outputLabel>
+							<h:outputLabel for="password" value="Password" />
 							<h:inputSecret id="password" binding="#{password}"/>
-							<h:outputLabel for="department">Department</h:outputLabel>
+							<h:outputLabel for="department" value="Department" />
 							<h:selectOneMenu id="department" value="#{loginController.departmentselected}">
 								<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
 								<f:selectItems value="#{loginController.departments}" var="department" itemValue="#{department}" itemLabel="#{department.name}"/>
@@ -38,11 +38,7 @@
 							<h:outputText />
 							<h:commandButton action="#{loginController.login(name.value, password.value)}" value="Login" />
 						</h:panelGrid>
-						<!-- could be deleted -->
-						<h:outputText rendered="#{loginController.loggedin}">You are logged in as #{staff.name}</h:outputText>
-						<h:commandButton action="#{loginController.logout}" id="button"
-							rendered="#{loginController.loggedin}" value="Logout" />
-						
+
 						<h:inputHidden id="nonce" value="#{loginController.nonce}" />
 												
 					</h:form>

@@ -126,7 +126,6 @@ function decryptPersonalDataForFormular(){
 }
 
 
-
 var pagenr = 1;
 var pagesize = 10;
 var size = 0;
@@ -142,7 +141,6 @@ var groupKey;
  * The decryption procedure is done in a web worker.
  */
 function decryptPersonalDataForSearchWebWorker() {
-//	var time1 = new Date().getTime();
 //	size = document.getElementById("patienttable").rows.length - 1;	// -1 because of the header row
 //	groupKey = self.sessionStorage.groupKey;
 //	patients = new Array();
@@ -172,8 +170,6 @@ function decryptPersonalDataForSearchWebWorker() {
 //			j++;
 //			if(j == size){
 //				display();
-//				var time2 = new Date().getTime();
-//				console.log("TIME worker: " + (time2 - time1));
 //			}
 //        };
 //    } else {
@@ -187,7 +183,6 @@ function decryptPersonalDataForSearchWebWorker() {
  * Decrypt the personal data of the patients and display the result set.
  */
 function decryptPersonalDataForSearch(){
-	var time1 = new Date().getTime();
 	size = document.getElementById("patienttable").rows.length - 1;	// -1 because of the header row
 	groupKey = self.sessionStorage.groupKey;
 	patients = new Array();
@@ -209,10 +204,7 @@ function decryptPersonalDataForSearch(){
 		}
 	}
 	display();
-	var time2 = new Date().getTime();
-	console.log("TIME direct: " + (time2 - time1));
-//	patients.sort();		// TODO alphabetisch sortieren
-	
+
 	sessionStorage.patients = JSON.stringify(patients);	// TODO
 }
 
@@ -222,9 +214,8 @@ function decryptPersonalDataForSearch(){
  * 			false to avoid reloading the page
  */
 function filter(){
-	var time1 = new Date().getTime();
 	pagenr = 1;
-	document.getElementById("searchform:pagenumber").innerHTML = pagenr;
+	document.getElementById("searchform:pagenumber").innerHTML = "Page " + pagenr;
 	first = 0;
 	visiblerows = new Array();
 	var filtername = document.getElementById("searchform:filter").value.toLowerCase();
@@ -238,8 +229,6 @@ function filter(){
 		}
 	}
 	display();
-	var time2 = new Date().getTime();
-	console.log("TIME Filter: " + (time2 - time1));
 	return false;
 }
 
@@ -283,7 +272,7 @@ function backward(){
 		if(first < 0){
 			first = 0;
 		}
-		document.getElementById("searchform:pagenumber").innerHTML = pagenr;
+		document.getElementById("searchform:pagenumber").innerHTML = "Page " + pagenr;
 	}
 	display();
 	return false;
@@ -298,7 +287,7 @@ function forward(){
 	if(pagenr < visiblerows.length/pagesize){
 		pagenr++;
 		first = first + pagesize;
-		document.getElementById("searchform:pagenumber").innerHTML = pagenr;
+		document.getElementById("searchform:pagenumber").innerHTML = "Page " + pagenr;
 	}
 	display();
 	return false;
@@ -318,13 +307,3 @@ function clearForm(){
 	document.getElementById("patientform:gender:0").checked = true;
 	document.getElementById("patientform:birthday").value = "x";
 }
-
-
-
-function highlight(element){
-	var elementid = element.id;
-	console.log(elementid);
-	return true;
-}
-
-

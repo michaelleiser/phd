@@ -31,11 +31,11 @@ function renewGroupKey(){
 	
 	var newGroupKey = sessionStorage.groupKey;
 	
-	var renewStaff = generateRenewStaff(newGroupKey);
-	document.getElementById("renewform:renewStaff").value = renewStaff;
+	var newStaff = renewStaff(newGroupKey);
+	document.getElementById("renewform:renewStaff").value = newStaff;
 	
-	var renewPatient = generateRenewPatient(oldGroupKey, newGroupKey);
-	document.getElementById("renewform:renewPatient").value = renewPatient;
+	var newPatient = renewPatient(oldGroupKey, newGroupKey);
+	document.getElementById("renewform:renewPatient").value = newPatient;
 }
 
 /**
@@ -68,7 +68,7 @@ function generateEncryptedGroupKey(length, publicKey){
  * @returns
  * 			a json string of all the staff's encrypted group keys
  */
-function generateRenewStaff(newGroupKey){
+function renewStaff(newGroupKey){
 	var obj = {};
 	var size = document.getElementById("staffform:stafftable").rows.length;
 	var crypt = new JSEncrypt();
@@ -96,7 +96,7 @@ function generateRenewStaff(newGroupKey){
  * @returns
  * 			a json string of all the patient's personal data
  */
-function generateRenewPatient(oldGroupKey, newGroupKey){
+function renewPatient(oldGroupKey, newGroupKey){
 	var obj = {};
 	var size = document.getElementById("patienttable").rows.length;
 	for(var i = 0 ; i < size ; i++){

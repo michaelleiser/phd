@@ -15,7 +15,7 @@
 				<h1>
 					<h:outputText value="#{msg['modifygroup']}" />
 				</h1>
-				<div id="group">
+				<div class="box">
 				
 					<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
 					<h:outputScript library="js" name="activation.js" />
@@ -39,11 +39,11 @@
 
 								<h:column>
 									<f:facet name="header">ID</f:facet>
-									<h:outputText>#{staff.id}</h:outputText>
+									<h:outputText class="tableid" value="#{staff.id}" />
 								</h:column>
 								<h:column>
 									<f:facet name="header">Name</f:facet>
-									<h:outputText>#{staff.name}</h:outputText>
+									<h:outputText value="#{staff.name}" />
 								</h:column>
 	
 								<h:column>
@@ -81,7 +81,7 @@
 					</h:form>
 				</div>
 				
-				<div class="formular">
+				<div class="box">
 					<h:form id="renewform">
 						<h:commandButton action="#{navigation.redirectToRenewGroupKey}" value="Renew Group Key" />
 					</h:form>

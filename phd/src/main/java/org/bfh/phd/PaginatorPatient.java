@@ -1,9 +1,9 @@
-package org.bfh.phd;
-
-import org.bfh.phd.interfaces.IPaginator;
-
-public class PaginatorPatient {
-	
+//package org.bfh.phd;
+//
+//import org.bfh.phd.interfaces.IPaginator;
+//
+//public class PaginatorPatient implements IPaginator{
+//	
 //	private static int pagesize = 10;
 //	private static int pagenr = 1;
 //	private static int first = 0;
@@ -76,5 +76,5 @@ public class PaginatorPatient {
 //		this.first = this.first + this.pagesize;
 //		this.pagenr++;
 //	}
-	
-}
+//	
+//}
