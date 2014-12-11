@@ -47,7 +47,7 @@ public class LoginController implements Serializable, ILoginController{
 	
 	private Date to;
 	private EntityManager em;
-	private DownloadManager dm;
+//	private DownloadManager dm;
 
 
 //	private Logger log;
@@ -604,18 +604,18 @@ public class LoginController implements Serializable, ILoginController{
 			}
 		}
 	}
-		public void export(){
-		System.out.println(FacesContext.getCurrentInstance()
-				.getExternalContext().getRequestParameterMap().get("lc"));
-		String template = FacesContext.getCurrentInstance()
-				.getExternalContext().getRequestParameterMap().get("template");
-		if(this.loggedin == true && activeUser.getRole() == 2 || this.loggedin == true && activeUser.getRole() == 1){
-		try {
-			dm.export(template);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		}
-	}
+//		public void export(){
+//		System.out.println(FacesContext.getCurrentInstance()
+//				.getExternalContext().getRequestParameterMap().get("lc"));
+//		String template = FacesContext.getCurrentInstance()
+//				.getExternalContext().getRequestParameterMap().get("template");
+//		if(this.loggedin == true && activeUser.getRole() == 2 || this.loggedin == true && activeUser.getRole() == 1){
+//		try {
+//			dm.export(template);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		}
+//	}
 	
 }
