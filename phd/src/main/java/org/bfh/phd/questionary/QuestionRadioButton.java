@@ -13,6 +13,7 @@ public class QuestionRadioButton implements IQuestion <String, String, List<Stri
 	
 	private String type = "RadioButton";
 	private String question;
+	private int dbId;
 	private List<String> answerPossibilities = new ArrayList<String>();
 	private String answer = "";
 
@@ -78,5 +79,10 @@ public class QuestionRadioButton implements IQuestion <String, String, List<Stri
 	
 	public void save(LoginController lc){
 		lc.updateAnswer(this);
+	}
+
+	@Override
+	public int getDBid() {
+		return this.dbId;
 	}
 }

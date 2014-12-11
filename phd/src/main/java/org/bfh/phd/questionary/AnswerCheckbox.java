@@ -8,6 +8,7 @@ import org.bfh.phd.interfaces.IAnswer;
 public class AnswerCheckbox implements IAnswer <List<String>, String> {
 	
 	private List<String> answer = new ArrayList<String>();
+	private int db;
 	
 	public AnswerCheckbox(){	
 	}
@@ -34,5 +35,15 @@ public class AnswerCheckbox implements IAnswer <List<String>, String> {
 
 	public String getAnswersAsString() {
 		return answer.toString();
+	}
+
+	@Override
+	public int getDb() {
+		return db;
+	}
+
+	@Override
+	public void setDb(int db) {
+		this.db = db;
 	}
 }

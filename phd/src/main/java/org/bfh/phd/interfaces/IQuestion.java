@@ -19,4 +19,6 @@ public interface IQuestion <A, B, C, D> {
 	public D getAnswer();
 	
 	public void setAnswer(D o);
+
+	public int getDBid();
 }

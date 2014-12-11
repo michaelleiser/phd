@@ -1,6 +1,7 @@
 package org.bfh.phd.interfaces;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +24,12 @@ public interface IFilledQuestionnaire {
 	/** Get the current day from the Questionnaire.
 	 * @return the date of creating the questionnaire
 	 */
-	public abstract Date getDate();
+	public abstract Timestamp getDate();
 
 	/** Set the Date of creating questionnaire.
 	 * @param date insert the date of creating
 	 */
-	public abstract void setDate(Date date);
+	public abstract void setDate(Timestamp date);
 
 	/** Get all questions of this questionnaire.
 	 * @return a list of questions

@@ -19,7 +19,7 @@
 			
 				<h:outputScript library="js" name="validate_patient.js" />
 
-		<h:form>
+		<h:form id="export">
 			<c:forEach items="#{loginController.templateNames}" var="template" varStatus="status">
 								<tr id="row#{status.index}">
 									<td class="table-column-id">
@@ -27,7 +27,7 @@
 									</td>
 								</tr>
 			</c:forEach>    
-			<br /><h:commandLink  value="#Total" action="#{fileDownloadBean.export}"><f:param name="template" value="total"/></h:commandLink><br />
+			<br /><h:commandLink  value="Total" action="#{loginController.export}"><f:param name="template" value="total"/><f:param name="#{loginController}" value="lc"/></h:commandLink><br />
         </h:form>
         
 

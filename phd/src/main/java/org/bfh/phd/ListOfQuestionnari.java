@@ -1,5 +1,6 @@
 package org.bfh.phd;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.faces.bean.ManagedBean;
@@ -10,7 +11,7 @@ import javax.faces.bean.RequestScoped;
 public class ListOfQuestionnari {
 
 	private int questId;
-	private Date date;
+	private Timestamp date;
 	private String typOfQuest;
 	
 	public ListOfQuestionnari(){
@@ -24,11 +25,11 @@ public class ListOfQuestionnari {
 		this.questId = questId;
 	}
 
-	public Date getDate() {
+	public Timestamp getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(Timestamp date) {
 		this.date = date;
 	}
 
