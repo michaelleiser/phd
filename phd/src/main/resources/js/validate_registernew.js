@@ -12,9 +12,14 @@ function validation(){
 		window.alert("Input a valid name!");
 		return false;
 	}
-	var pass = document.getElementById("registernewform:password").value;
-	if(!pass.match(/^[A-Za-z0-9]+$/)){
+	var newpass = document.getElementById("registernewform:newpass").value;
+	if(!newpass.match(/^[A-Za-z0-9]+$/)){
 		window.alert("Input a valid password!");
+		return false;
+	}
+	var confpass = document.getElementById("registernewform:confpass").value;
+	if(confpass != newpass){
+		window.alert("Password 1 and 2 are not equal");
 		return false;
 	}
 	var role0 = document.getElementById("registernewform:role:0");
@@ -34,16 +39,17 @@ function validation(){
 	}
 	
 	var salt = generateSalt(128);
-	var hash = hashPassword(salt + "" + pass);
+	var hash = hashPassword(salt + "" + newpass);
 	document.getElementById("registernewform:salt").value = salt;
-	document.getElementById("registernewform:password").value = hash;
+	document.getElementById("registernewform:newpass").value = hash;
+	document.getElementById("registernewform:confpass").value = "x";
 	
 	/**
 	 * Just for doctors
 	 * Statisticians don't need a public key, private key and mustn't get the group key
 	 */
 	if(role0.checked){
-		var pksk = generatePublicKeyAndEncryptedPrivateKey(2048, pass);
+		var pksk = generatePublicKeyAndEncryptedPrivateKey(2048, newpass);
 		document.getElementById("registernewform:publickey").value = pksk[0];
 		document.getElementById("registernewform:encryptedprivatekey").value = pksk[1];
 		

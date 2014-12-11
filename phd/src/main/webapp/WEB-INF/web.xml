@@ -7,7 +7,7 @@
 
 	<display-name>HelloWorld</display-name>
 
-	<!-- Change to "Production" when you are ready to deploy -->
+	<!-- Change "Development" to "Production" when you are ready to deploy -->
 	<context-param>
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
 		<param-value>Development</param-value>
@@ -55,6 +55,12 @@
 		</cookie-config>
 		<tracking-mode>COOKIE</tracking-mode>
 	</session-config>
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/error.xhtml</location>
+	</error-page>
+
 
 	<!-- Display home.xhtml when the view is expired -->
 	<error-page>
