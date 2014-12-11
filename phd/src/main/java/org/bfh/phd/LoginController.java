@@ -450,7 +450,7 @@ public class LoginController implements Serializable, ILoginController{
 
 	public List<Staff> searchStaffsInGroup(String name) {
 		System.out.println("SEARCHING Staff..." + name);
-		if(this.loggedin == true && activeUser.getRole() == 1){
+		if(this.loggedin == true){
 			List<Staff> l = em.searchStaffs(name, activeDepartment_Has_Staff, activeUser);
 			return l;
 		}

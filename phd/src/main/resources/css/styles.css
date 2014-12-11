@@ -32,7 +32,7 @@ div#menu {
 	color: #000000;
 	display: block;
 	font-size: 25px;
-	margin: 20px;
+	margin: 20px 0px 0px 0px;
 	padding: 10px 10px 10px 10px;
 	transition: background 0.3s linear 0s;
 }
@@ -70,8 +70,8 @@ div#loggedinbox {
 }
 
 .patientheader{
-	padding: 10px 10px 10px 10px;
-	font-size: x-large;
+	padding: 5px 5px 5px 5px;
+	font-size: 25px;
 	font-weight: bold;
 }
 

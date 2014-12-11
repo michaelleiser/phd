@@ -131,10 +131,10 @@ public class Navigation implements Serializable {
 	}
 	
 	public String toEditGroup(){
-		return "/restrictedfordoctor/editGroup";
+		return "/restricted/editGroup";
 	}
 	public String redirectToEditGroup(){
-		return "/restrictedfordoctor/editGroup?faces-redirect=true";
+		return "/restricted/editGroup?faces-redirect=true";
 	}
 	
 	public String toNewQuestionnaireTemplate(){
