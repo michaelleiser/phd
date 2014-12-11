@@ -9,6 +9,7 @@ public class QuestionString implements IQuestion <String, String, String, String
 	private String type = "String";
 	private String question;
 	private String answer = "";
+	private static int dbId;
 
 
 	@Override
@@ -70,5 +71,10 @@ public class QuestionString implements IQuestion <String, String, String, String
 		System.out.println("save"+this);
 		System.out.println("save answer"+answer);
 		lc.updateAnswer(this);
+	}
+
+	@Override
+	public int getDBid() {
+		return dbId;
 	}
 }

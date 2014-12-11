@@ -7,4 +7,8 @@ public interface IAnswer <A, B>  {
 	public void setAnswer(A o);
 
 	public void addAnswer(B o);
+
+	public void setDb(int db);
+	
+	public int getDb();
 }

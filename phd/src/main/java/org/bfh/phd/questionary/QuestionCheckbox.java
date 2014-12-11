@@ -14,6 +14,8 @@ import org.bfh.phd.interfaces.IQuestion;
 public class QuestionCheckbox implements IQuestion <String, String, List<String>, List<String>> {
 	
 	private String question;
+	private int id;
+	private static int dbId;
 	private List<String> answerPossibilities = new ArrayList<String>();
 	private List<String> answer = new ArrayList<String>();
 	private String type = "Checkbox";
@@ -41,8 +43,6 @@ public class QuestionCheckbox implements IQuestion <String, String, List<String>
 	public List<String> getAnswerPossibilities() {
 		return answerPossibilities;
 	}
-	
-	private int id;
 
 	@Override
 	public int getId() {
@@ -74,5 +74,10 @@ public class QuestionCheckbox implements IQuestion <String, String, List<String>
 	
 	public void save(LoginController lc){
 		lc.updateAnswer(this);
+	}
+
+	@Override
+	public int getDBid() {
+		return dbId;
 	}
 }

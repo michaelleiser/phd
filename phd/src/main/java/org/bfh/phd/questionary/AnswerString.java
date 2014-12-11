@@ -8,6 +8,7 @@ import org.bfh.phd.interfaces.IAnswer;
 public class AnswerString implements IAnswer<String, String> {
 	
 	private String answer = "";
+	private int db;
 	
 	public AnswerString(){
 		
@@ -36,5 +37,13 @@ public class AnswerString implements IAnswer<String, String> {
 	@Override
 	public String toString(){;
 		return answer.toString();
+	}
+	@Override
+	public void setDb(int db) {
+		this.db = db;
+	}
+	@Override
+	public int getDb() {
+		return db;
 	}
 }

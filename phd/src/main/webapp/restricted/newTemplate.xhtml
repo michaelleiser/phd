@@ -23,7 +23,7 @@
 					<c:if test="#{template.isEmpty()}">
 						<h:outputLabel>Fragebogentitel:</h:outputLabel>
 						<br />
-						<h:inputText id="name" value="#{template.name}"><f:validateRegex pattern="([A-Za-z0-9,.\-!?])+"/></h:inputText>
+						<h:inputText id="name" value="#{template.name}"><f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/></h:inputText>
 						<br />
 						<br />
 						<h:commandButton action="#{template.nameToTemp}" value=" neues Template erstellen "/>
@@ -69,7 +69,7 @@
 						<h:outputLabel>Bitte geben sie die gewünschte Frage ein:</h:outputLabel>
 						<br />
 						<h:inputText value="#{template.questionString}">
-							<f:validateRegex pattern="([A-Za-z0-9,.\-!?])+"/>
+							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
 							<f:ajax event="change" execute="@this"
 								listener="#{template.addString}" />
 							<f:attribute name="edit" value="0" />
@@ -81,7 +81,7 @@
 						<h:outputLabel>Bitte geben sie die gewünschte Fragen ein:</h:outputLabel>
 						<br />
 						<h:inputText value="#{template.questionString}">
-							<f:validateRegex pattern="([A-Za-z0-9,.\-!?])+"/>
+							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
 							<f:ajax event="change" execute="@this"
 								listener="#{template.addQuestion}" />
 						</h:inputText>
@@ -100,14 +100,14 @@
 						<c:set var="a" value="#{template.numberselected}" />
 						<c:forEach begin="2" end="#{a}">
 							<h:inputText value="#{template.answerRadioButton}">
-								<f:validateRegex pattern="([A-Za-z0-9,.\-!?])+"/>
+								<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
 								<f:ajax event="change" execute="@this"
 									listener="#{template.addAnswer}" />
 							</h:inputText>
 							<br />
 						</c:forEach>
 						<h:inputText value="#{template.answerRadioButton}">
-							<f:validateRegex pattern="([A-Za-z0-9,.\-!?])+"/>
+							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
 							<f:ajax event="change" execute="@this"
 								listener="#{template.addRadioButton}" />
 							<f:attribute name="edit" value="0" />
@@ -118,7 +118,7 @@
 						<h:outputLabel>Bitte geben sie die gewünschte Frage ein:</h:outputLabel>
 						<br />
 						<h:inputText value="#{template.questionString}">
-							<f:validateRegex pattern="([A-Za-z0-9,.\-!?])+"/>
+							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
 							<f:ajax event="change" execute="@this"
 								listener="#{template.addQuestion}" />
 						</h:inputText>
@@ -137,14 +137,14 @@
 						<c:set var="a" value="#{template.numberselected}" />
 						<c:forEach begin="2" end="#{a}">
 							<h:inputText value="#{template.answerCheckbox}">
-								<f:validateRegex pattern="([A-Za-z0-9,.\-!?])+"/>
+								<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
 								<f:ajax event="change" execute="@this"
 									listener="#{template.addAnswer}" />
 							</h:inputText>
 							<br />
 						</c:forEach>
 						<h:inputText value="#{template.answerCheckbox}">
-							<f:validateRegex pattern="([A-Za-z0-9,.\-!?])+"/>
+							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
 							<f:ajax event="change" execute="@this"
 								listener="#{template.addCheckbox}" />
 							<f:attribute name="edit" value="0" />

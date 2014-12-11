@@ -79,6 +79,23 @@
 						<h:outputText class="patientheader" id="birthday"></h:outputText>
 					</div>
 					
+				<div id="patientdatas">
+					<div id="patientname" >
+				
+								<h2>
+									<h:outputLabel id="firstname"></h:outputLabel><br />
+									<h:outputLabel id="lastname"></h:outputLabel><br />
+									<h:outputLabel id="birthday"></h:outputLabel>
+								</h2>
+			
+									<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
+									<h:outputScript library="js" name="validate_patient.js" />
+									
+									<h:form id="formularform">	
+									<h:inputHidden id="encryptedPersonalData" value="#{loginController.activePatient.personalData}"/>
+									</h:form>
+					</div>
+					<div id="quests">
 					<h:form id="formularform" rendered="#{not empty loginController.activePatient}">
 						<h:commandButton action="#{navigation.redirectToFormular}"
 							rendered="#{loginController.insertAccess(loginController.activePatient)}"

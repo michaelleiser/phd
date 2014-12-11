@@ -1,6 +1,6 @@
 package org.bfh.phd;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +10,7 @@ import org.bfh.phd.interfaces.IQuestion;
 
 public class FilledQuestionnaire implements IFilledQuestionnaire {
 
-	private Date date;
+	private Timestamp date;
 	private int id;
 	private String questionnaireName;
 	private List<IAnswer> answers = new ArrayList<IAnswer>();
@@ -28,12 +28,12 @@ public class FilledQuestionnaire implements IFilledQuestionnaire {
 	}
 
 	@Override
-	public Date getDate() {
+	public Timestamp getDate() {
 		return date;
 	}
 
 	@Override
-	public void setDate(Date date) {
+	public void setDate(Timestamp date) {
 		this.date = date;
 	}
 

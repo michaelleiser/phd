@@ -8,6 +8,7 @@ import org.bfh.phd.interfaces.IAnswer;
 public class AnswerRadioButton implements IAnswer<String, String> {
 	
 	private String answer = "";
+	private int db;
 	
 	public AnswerRadioButton(){
 		
@@ -42,5 +43,13 @@ public class AnswerRadioButton implements IAnswer<String, String> {
 		List<String> s = new ArrayList<String>(); 
 		s.add(answer);
 		return s;
+	}
+	@Override
+	public void setDb(int db) {
+		this.db = db;		
+	}
+	@Override
+	public int getDb() {
+		return db;
 	}
 }
