@@ -35,7 +35,7 @@ public interface ILoginController {
 	 * @return
 	 * 			the newly created staff
 	 */
-	public String registernew(Staff staff);
+	public String registerNew(Staff staff);
 
 	/**
 	 * Register a new staff in a new department.
@@ -48,7 +48,7 @@ public interface ILoginController {
 	 * @return
 	 * 			the newly created staff
 	 */
-	public String registernewWithDepartment(Staff staff, Department department, String groupKey);
+	public String registerNewWithDepartment(Staff staff, Department department, String groupKey);
 
 	/**
 	 * Activate a staff within a department group and provide the group key to decrypt patient information.

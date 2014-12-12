@@ -22,9 +22,8 @@
 		
 			<div id="loggedinbox">
 				<h:form id="loggedinform">
-					<h:outputText rendered="#{loginController.loggedin}" value="You are logged in"/><br />
+					<h:outputText rendered="#{loginController.loggedin}" value="#{msg['youareloggedin']}" /><br />
 					<h:commandLink id="activestaff" rendered="#{loginController.loggedin}" action="#{navigation.redirectToEditStaff}" value="#{(loginController.getStaff()).getName()}" /><br />
-					<h:outputText id="role" rendered="#{loginController.loggedin}" value="#{(loginController.getStaff()).getRole()}"/><br />
 					<h:outputText rendered="#{loginController.loggedin}" value="#{loginController.getDepartment_Has_Staff().getDepartment().getName()}"/><br />
 				</h:form>
 				<h:form id="logoutform" onsubmit="return clearSessionStorage();">

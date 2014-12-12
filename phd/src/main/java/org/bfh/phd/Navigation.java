@@ -46,18 +46,11 @@ public class Navigation implements Serializable {
 		return "/restricted/searchPatientData?faces-redirect=true";
 	}
 	
-	public String toPagefortesting(){
-		return "/pagefortesting";
+	public String toRegisterNew(){
+		return "/registerNew";
 	}
-	public String redirectToPagefortesting(){
-		return "/pagefortesting?faces-redirect=true";
-	}
-	
-	public String toRegisternew(){
-		return "/registernew";
-	}
-	public String redirectToRegisternew(){
-		return "/registernew?faces-redirect=true";
+	public String redirectToRegisterNew(){
+		return "/registerNew?faces-redirect=true";
 	}
 	
 	public String toPublic(){

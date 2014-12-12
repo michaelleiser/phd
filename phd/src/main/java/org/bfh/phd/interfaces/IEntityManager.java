@@ -82,7 +82,7 @@ public interface IEntityManager {
 	 * @return
 	 * 			the registered staff
 	 */
-	public Staff registernew(Staff staff, boolean admin);
+	public Staff registerNew(Staff staff, boolean admin);
 
 	/**
 	 * Update the active user.

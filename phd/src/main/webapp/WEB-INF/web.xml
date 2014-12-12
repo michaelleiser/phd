@@ -56,11 +56,10 @@
 		<tracking-mode>COOKIE</tracking-mode>
 	</session-config>
 
+	<!-- Display error.xhtml on incorrect request/response -->
 	<error-page>
-		<error-code>404</error-code>
 		<location>/error.xhtml</location>
 	</error-page>
-
 
 	<!-- Display home.xhtml when the view is expired -->
 	<error-page>

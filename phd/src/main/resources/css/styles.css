@@ -75,17 +75,6 @@ div#loggedinbox {
 	font-weight: bold;
 }
 
-
-div#patientdatas {
-	border-color: #bbbbbb;
-	border-radius: 5px;
-	border-style: solid;
-	border-width: 1px;
-	box-shadow: 10px 10px 25px #666;
-	height: auto;
-	padding: 20px 20px 20px 20px;
-	width: auto;
-}
 div#patientname {
 	border-color: #bbbbbb;
 	border-radius: 5px;
@@ -99,6 +88,7 @@ div#patientname {
 	width: auto;
 	float:right;
 }
+
 div#quests {
 	border-color: #bbbbbb;
 	border-radius: 5px;
@@ -112,10 +102,6 @@ div#quests {
 	padding: 20px 20px 20px 20px;
 	width: auto;
 }
-div#filter{
-}
-
-
 
 .table{
 	

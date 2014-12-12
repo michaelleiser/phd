@@ -54,12 +54,12 @@
 							
 							<h:outputText />
 							<h:panelGroup id="regnew">
-								<h:commandButton action="#{loginController.registernew(staff)}" rendered="#{not empty loginController.departmentselected}"
+								<h:commandButton action="#{loginController.registerNew(staff)}" rendered="#{not empty loginController.departmentselected}"
 								value="Register new" />
 							</h:panelGroup>
 							<h:outputText />
 							<h:panelGroup id="regnewwithdep">
-								<h:commandButton action="#{loginController.registernewWithDepartment(staff, department, input_key.value)}" rendered="#{empty loginController.departmentselected}"
+								<h:commandButton action="#{loginController.registerNewWithDepartment(staff, department, input_key.value)}" rendered="#{empty loginController.departmentselected}"
 								value="Register new" />
 							</h:panelGroup>			
 							

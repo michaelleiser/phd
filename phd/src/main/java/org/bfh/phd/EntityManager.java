@@ -141,7 +141,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	@Override
-	public Staff registernew(Staff s, boolean activated) {
+	public Staff registerNew(Staff s, boolean activated) {
 		long l = 0;
 		String stm2 = "INSERT INTO staff(name, salt, password, privateKey, publicKey, role_role_id, isActivated) VALUES(?, ?, ?, ?, ?, ?, ?);";
 		init();

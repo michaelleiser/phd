@@ -131,21 +131,21 @@ public class LoginController implements Serializable, ILoginController{
 	}
 
 	@Override
-	public String registernew(Staff s) {
+	public String registerNew(Staff s) {
 		System.out.println("REGISTER NEW");
 		if(!this.activeDepartment_Has_Staff.getStaffs().contains(s)){
 			boolean activated = false;
-			Staff ss = em.registernew(s, activated);
+			Staff ss = em.registerNew(s, activated);
 			em.addToDepartment(this.departmentselected, ss);
 		}
 		return "/home?faces-redirect=true";
 	}
 	@Override
-	public String registernewWithDepartment(Staff s, Department d, String key) {
+	public String registerNewWithDepartment(Staff s, Department d, String key) {
 		System.out.println("REGISTER NEW");
 		if(!em.getDepartments().contains(d)){
 			boolean activated = true;
-			Staff ss = em.registernew(s, activated);
+			Staff ss = em.registerNew(s, activated);
 			em.createDepartment(d, ss, key);
 		}
 		return "/home?faces-redirect=true";
@@ -193,22 +193,6 @@ public class LoginController implements Serializable, ILoginController{
 		if(this.loggedin == true){
 			em.updatePatient(p, activeUser);
 		}
-	}
-	
-	public void updatePatientData(PatientData pd){
-//		System.out.println("update pateint data..." + pd);
-//		if(this.loggedin == true){		// TODO rW access
-//			em.updatePatientData(pd);
-//		}
-	}
-	
-	public List<ListOfQuestionnari> searchPatientDatas(String op){		// TODO
-//		System.out.println("SEARCHING Patient Data..." + op + from + "--" + to);
-//		if(this.loggedin == true){
-//			List<ListOfQuestionnari> l = em.searchPatientDatas(op, from , to);
-//			return l;
-//		}
-		return null;
 	}
 
 	public List<Patient> searchPatients() {
@@ -376,52 +360,6 @@ public class LoginController implements Serializable, ILoginController{
 		}
 	}
 	
-	
-	
-
-	
-//	public String getEncryptedData(String s){
-//		MYCRYPTO aes = new MYCRYPTO();
-//		String encrypted = null;
-//		try {
-//			encrypted = aes.AESencode(s);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return encrypted;
-//	}
-//	public String getEncryptedData(){
-//		String message = "This is encrypted session key ;)";
-//		return this.getEncryptedData(message);
-//	}
-//	
-//	public String getDecryptedData(String s){
-//		MYCRYPTO aes = new MYCRYPTO();
-//		String decrypted = null;
-//		try {
-//			decrypted = aes.AESdecode(s);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return decrypted;
-//	}
-//	public void getDecryptedData(){
-//		if(in != null){
-//			getDecryptedData(in);
-//		}
-//	}
-//	
-//	public String getIn() {
-//		return in;
-//	}
-//
-//	public void setIn(String in) {
-//		this.in = in;
-//	}
-//
-//	private String in;
-	
-
 
 	
 	public List<Department> getDepartments(){
@@ -519,24 +457,6 @@ public class LoginController implements Serializable, ILoginController{
 		em.addAnswer(activePatient);
 	}
 
-	
-//	String pub = "-----BEGIN PUBLIC KEY-----MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCSCF1HymTdYHQAoBcBmvt/dRbcevoqV1RlEIryp+R95pBhA3tqZv8Qv6w3AyFi0DPrquREc6bUywCZ7sJE7JstQOP3ETSDxSvqtvGTaogtll7icgxTexA+sLt28E7E4TIcvZqXweQ8XneW62yDDlk5yhcG9xTZT1289d66YbvH7wIDAQAB-----END PUBLIC KEY-----";
-//	String priv = "-----BEGIN RSA PRIVATE KEY-----MIICWwIBAAKBgQCSCF1HymTdYHQAoBcBmvt/dRbcevoqV1RlEIryp+R95pBhA3tqZv8Qv6w3AyFi0DPrquREc6bUywCZ7sJE7JstQOP3ETSDxSvqtvGTaogtll7icgxTexA+sLt28E7E4TIcvZqXweQ8XneW62yDDlk5yhcG9xTZT1289d66YbvH7wIDAQABAoGAPcTt9/TjT0SCLNWKhbJRmSsk3WPjN0+zMgCaVWOw4ZRKE88OQAaK80GwDaD0WUCqBZBGd7HXqoCno3T7lX3jcNBDPr4D88BwyDLpmQgkPk5qCQ3pgwQYOaXsEYnA9Apr6VZtdBqjO3u94oiuWGv1XYdEgfWF6BysEE0nDbD7/OkCQQDDFZDdYFZh+OQn97Wc2CmI3BaLWHikxXUJ/I093YQKZRO26opKW29ZQMDjvGaMitIoxSh6gCp2TfU23JyYgMM1AkEAv6HEW91lVoYuBZ5NmnDRQ51qk0dYf+qGlhkPOq4TeVET5tRNxxuy7D+6CK1bwQCjVkbgo1mcYc0DKUxk1r5/EwJAUTgoUNJsBGwP6UfrF7qzSCSBSlByIf+HY7n+v9P6xi0g0RXCr4Rzzk/0PpxQgZDGQG0dFitIAmsgfU/J7oAlRQJAKrhTX+9hMgLDq7j4r99Kp3omUiLrlcigrEF15az85mSuvRzDIgoIvyYNwPV0qPgNcaRnW8MUW7EqbUB8kmrxRQJAM1VdxBYVlZfKo/iAHaiziQcax27VA7p12N7+xp4lJLGInK5YYdGJrkNE04BBZiYtfWBSPseuFET95RMS56iWVQ==-----END RSA PRIVATE KEY-----";
-//	
-////	public String getEncryptedRSAData(String plaintext){
-////		PublicKey publicKey = pub;
-////		
-////	    byte[] cipherText = CopyOfRSA.encrypt(plaintext, publicKey);
-////		return null;
-////	}
-////
-////	public String getDecryptedRSAData(String ciphertext){
-////		PrivateKey privateKey = priv;
-////		
-////		String plaintext = CopyOfRSA.decrypt(ciphertext, privateKey);
-////		return null;
-////	}
-
 	public List<FilledQuestionnaire> getFilledQuestionnaires(){
 		return em.getFilledQuestionnaires();
 	}
@@ -573,10 +493,10 @@ public class LoginController implements Serializable, ILoginController{
 	public void renew(String key, String staffs, String patients) throws ParseException{
 		if(this.loggedin == true){
 			
-			// update own key
+			// update my own key
 			this.activateStaff(this.activeUser, key);
 
-			// update staff keys
+			// update staff's keys
 			JSONParser parser = new JSONParser();
 			Object o = parser.parse(staffs);
 			JSONObject json = (JSONObject) o;
@@ -590,7 +510,7 @@ public class LoginController implements Serializable, ILoginController{
 				}
 			}
 
-			// update patients
+			// update patient's personal data
 			JSONParser parser2 = new JSONParser();
 			Object o2 = parser2.parse(patients);
 			JSONObject json2 = (JSONObject) o2;
