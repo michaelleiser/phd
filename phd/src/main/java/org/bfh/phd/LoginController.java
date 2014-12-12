@@ -497,30 +497,34 @@ public class LoginController implements Serializable, ILoginController{
 			this.activateStaff(this.activeUser, key);
 
 			// update staff's keys
-			JSONParser parser = new JSONParser();
-			Object o = parser.parse(staffs);
-			JSONObject json = (JSONObject) o;
-			Set hm = json.keySet();
-			for (Iterator i = hm.iterator(); i.hasNext();) {
-				int id = Integer.parseInt((String) i.next());
-				Staff s = em.getStaff(id);
-				if (s.getActivated()) {
-					String key2 = (String) json.get("" + id);
-					this.activateStaff(s, key2);
+			if(staffs != ""){
+				JSONParser parser = new JSONParser();
+				Object obj = parser.parse(staffs);
+				JSONObject json = (JSONObject) obj;
+				Set set = json.keySet();
+				for (Iterator i = set.iterator(); i.hasNext();) {
+					int id = Integer.parseInt((String) i.next());
+					Staff s = em.getStaff(id);
+					if (s.getActivated()) {
+						String key2 = (String) json.get("" + id);
+						this.activateStaff(s, key2);
+					}
 				}
 			}
 
 			// update patient's personal data
-			JSONParser parser2 = new JSONParser();
-			Object o2 = parser2.parse(patients);
-			JSONObject json2 = (JSONObject) o2;
-			Set hm2 = json2.keySet();
-			for (Iterator i = hm2.iterator(); i.hasNext();) {
-				int id = Integer.parseInt((String) i.next());
-				Patient p = em.getPatient(this.activeUser, id);
-				String personalData = (String) json2.get("" + id);
-				p.setPersonalData(personalData);
-				this.updatePatient(p);
+			if(patients != ""){
+				JSONParser parser = new JSONParser();
+				Object obj = parser.parse(patients);
+				JSONObject json = (JSONObject) obj;
+				Set set = json.keySet();
+				for (Iterator i = set.iterator(); i.hasNext();) {
+					int id = Integer.parseInt((String) i.next());
+					Patient p = em.getPatient(this.activeUser, id);
+					String personalData = (String) json.get("" + id);
+					p.setPersonalData(personalData);
+					this.updatePatient(p);
+				}
 			}
 		}
 	}
