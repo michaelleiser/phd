@@ -85,7 +85,7 @@ public class LoginController implements Serializable, ILoginController{
 	
 	public List<Staff> getStaffs(){
 		System.out.println("GET STAFFS");
-		if(this.loggedin == true){
+		if(this.loggedin){
 			return em.getStaffs();
 		}
 		return null;
@@ -93,7 +93,7 @@ public class LoginController implements Serializable, ILoginController{
 	
 	public List<Staff> getStaffs(String name){
 		System.out.println("GET STAFFS name");
-		if(this.loggedin == true){
+		if(this.loggedin){
 			return em.getStaffs(name);
 		}
 		return null;
@@ -153,7 +153,7 @@ public class LoginController implements Serializable, ILoginController{
 		
 	public Patient getPatient(int patientid){
 		System.out.println("GetPatient " + patientid);
-		if((this.loggedin == true) && (activeUser.getRole() == 1)){
+		if(this.loggedin && (activeUser.getRole() == 1)){
 			return em.getPatient(activeUser, patientid);
 		}
 		return null;
@@ -161,7 +161,7 @@ public class LoginController implements Serializable, ILoginController{
 
 	public List<Patient> getPatients(){
 		System.out.println("GetPatients");
-		if((this.loggedin == true) && (activeUser.getRole() == 1)){
+		if(this.loggedin && (activeUser.getRole() == 1)){
 			List<Patient> l = em.getPatients(activeUser);
 			return l;
 		}
@@ -169,7 +169,7 @@ public class LoginController implements Serializable, ILoginController{
 	}
 	
 	public List<ListOfQuestionnari> getPatientDatas(){
-		if((this.loggedin == true) && (this.activePatient != null)){
+		if(this.loggedin && (this.activePatient != null)){
 		List<ListOfQuestionnari> l = em.searchDatas(this.activePatient.getPatientid());
 			return l;
 		}
@@ -179,7 +179,7 @@ public class LoginController implements Serializable, ILoginController{
 	@Override
 	public void updateStaff(Staff s, String secret){
 		System.out.println("update staff..." + s);
-		if(this.loggedin == true){
+		if(this.loggedin){
 			em.updateStaff(s);
 			if(s.getRole() == 1){
 				em.setGroupKey(s, activeDepartment_Has_Staff,  secret);	
@@ -190,14 +190,14 @@ public class LoginController implements Serializable, ILoginController{
 	@Override
 	public void updatePatient(Patient p){
 		System.out.println("update patient..." + p);
-		if(this.loggedin == true){
+		if(this.loggedin){
 			em.updatePatient(p, activeUser);
 		}
 	}
 
 	public List<Patient> searchPatients() {
 		System.out.println("SEARCHING Patient...");
-		if(this.loggedin == true && activeUser.getRole() == 1){
+		if(this.loggedin && (activeUser.getRole() == 1)){
 			List<Patient> l = em.searchPatients(activeDepartment_Has_Staff, activeUser);
 			return l;
 		}
@@ -207,7 +207,7 @@ public class LoginController implements Serializable, ILoginController{
 	@Override
 	public String createPatient(Patient p) {
 		System.out.println("CREATE Patient..." + p);
-		if((this.loggedin == true) && (activeUser.getRole() == 1)){
+		if(this.loggedin && (activeUser.getRole() == 1)){
 			em.createPatient(p, activeDepartment_Has_Staff, activeUser);
 			return "/restricted/loggedin?faces-redirect=true";
 		}
@@ -219,7 +219,7 @@ public class LoginController implements Serializable, ILoginController{
 	}
 	
 	public IFilledQuestionnaire getNewQuestion(){
-		if(this.loggedin == true && activeUser.getRole() == 1){
+		if(this.loggedin && (activeUser.getRole() == 1)){
 		return em.getEmptyQuestionnaire(questionnaireName);
 		}else{return null;}
 	}
@@ -244,41 +244,41 @@ public class LoginController implements Serializable, ILoginController{
 	
 	public void saveUpdate(){
 		System.out.println("Save Update");
-		if(this.loggedin == true && activeUser.getRole() == 1){
+		if(this.loggedin && (activeUser.getRole() == 1)){
 			em.updateQuestionnaireHasAnswer();
 		}
 	}
 	
 	public void saveFilledQuestionnaire(){
 		System.out.println("Save filledquestionnaire");
-		if(this.loggedin == true && activeUser.getRole() == 1 && questionnaireName != ""){
+		if(this.loggedin && (activeUser.getRole() == 1) && (!questionnaireName.equals(""))){
 			em.addAnswer(activePatient);
 		}
 	}
 
 	public Patient getActivePatient() {
 		System.out.println("ActivePatient");
-		if(this.loggedin == true && activeUser.getRole() == 1){
+		if(this.loggedin && (activeUser.getRole() == 1)){
 			return activePatient;
 		}
 		return null;
 	}
 
 	public void setActivePatient(Patient activePatient) {
-		if(this.loggedin == true && activeUser.getRole() == 1){
+		if(this.loggedin && (activeUser.getRole() == 1)){
 			this.activePatient = activePatient;
 		}
 	}
 
 	public PatientData getActivePatientData() {
-		if(this.loggedin == true){
+		if(this.loggedin){
 			return activePatientData;
 		}
 		return null;
 	}
 
 	public void setActivePatientData(PatientData activePatientData) {
-		if(this.loggedin == true){
+		if(this.loggedin){
 			this.activePatientData = activePatientData;
 		}
 	}
@@ -302,7 +302,7 @@ public class LoginController implements Serializable, ILoginController{
 
 	public boolean isOwner(Patient p){
 		System.out.println("IsOwner");
-		if(this.loggedin == true && activeUser.getRole() == 1){
+		if(this.loggedin && (activeUser.getRole() == 1)){
 			return em.isOwner(p, activeUser);
 		}
 		return false;
@@ -314,7 +314,7 @@ public class LoginController implements Serializable, ILoginController{
 
 	public boolean readAccess(Patient p){
 		System.out.println("ReadAccess");
-		if(this.loggedin == true && activeUser.getRole() == 1){
+		if(this.loggedin && (activeUser.getRole() == 1)){
 			return em.readaccess(p, activeUser);
 		}
 		return false;
@@ -322,7 +322,7 @@ public class LoginController implements Serializable, ILoginController{
 	
 	public boolean writeAccess(Patient p){
 		System.out.println("WriteAccess");
-		if(this.loggedin == true && activeUser.getRole() == 1){
+		if(this.loggedin && (activeUser.getRole() == 1)){
 			return em.writeaccess(p, activeUser);
 		}
 		return false;
@@ -330,7 +330,7 @@ public class LoginController implements Serializable, ILoginController{
 	
 	public boolean insertAccess(Patient p){
 		System.out.println("InsertAccess");
-		if(this.loggedin == true && activeUser.getRole() == 1){
+		if(this.loggedin && (activeUser.getRole() == 1)){
 			return em.insertaccess(p, activeUser);
 		}
 		return false;
@@ -355,7 +355,7 @@ public class LoginController implements Serializable, ILoginController{
 	}
 	
 	public void addQuestionnaireTemplate(String typ,String question,String nameOfTemplate,List<String> pos, int fragenr){
-		if(this.loggedin == true && activeUser.getRole() == 1){
+		if(this.loggedin && (activeUser.getRole() == 1)){
 		em.addQuestionnaireTemplate(typ, question, nameOfTemplate, pos, fragenr);
 		}
 	}
@@ -389,7 +389,7 @@ public class LoginController implements Serializable, ILoginController{
 
 	public List<Staff> searchStaffsInGroup(String name) {
 		System.out.println("SEARCHING Staff..." + name);
-		if(this.loggedin == true){
+		if(this.loggedin){
 			List<Staff> l = em.searchStaffs(name, activeDepartment_Has_Staff, activeUser);
 			return l;
 		}
@@ -399,7 +399,7 @@ public class LoginController implements Serializable, ILoginController{
 	@Override
 	public void activateStaff(Staff s, String secret){
 		System.out.println("ACTIVATE Staff..." + s);
-		if(this.loggedin == true && activeDepartment_Has_Staff.getOwner().equals(activeUser)){
+		if(this.loggedin && activeDepartment_Has_Staff.getOwner().equals(activeUser)){
 			em.setActivateStaff(s, true);
 			if(s.getRole() == 1){
 				em.setGroupKey(s, activeDepartment_Has_Staff,  secret);		
@@ -410,7 +410,7 @@ public class LoginController implements Serializable, ILoginController{
 	@Override
 	public void deactivateStaff(Staff s){
 		System.out.println("DEACTIVATE Staff..." + s);
-		if(this.loggedin == true && activeDepartment_Has_Staff.getOwner().equals(activeUser)){
+		if(this.loggedin && activeDepartment_Has_Staff.getOwner().equals(activeUser)){
 			em.setActivateStaff(s, false);
 			if(s.getRole() == 1){
 				em.setGroupKey(s, activeDepartment_Has_Staff, null);
@@ -419,14 +419,14 @@ public class LoginController implements Serializable, ILoginController{
 	}
 
 	public List<QuestionnairTools> getTemplate(String name) {
-		if(this.loggedin == true && activeUser.getRole() == 1){
+		if(this.loggedin && (activeUser.getRole() == 1)){
 		return em.getTemplate(name);
 		}
 		return null;
 	}
 
 	public void deletTemplateQuestion(QuestionnairTools q) {
-		if(this.loggedin == true && activeUser.getRole() == 1){
+		if(this.loggedin && (activeUser.getRole() == 1)){
 		try {
 			em.deletTemplateQuestion(q);
 		} catch (SQLException e) {
@@ -436,7 +436,7 @@ public class LoginController implements Serializable, ILoginController{
 	}
 
 	public void editQuestion(QuestionnairTools q) {
-		if(this.loggedin == true && activeUser.getRole() == 1){
+		if(this.loggedin && (activeUser.getRole() == 1)){
 		try {
 			em.editQuestion(q);
 		} catch (SQLException e) {
@@ -491,13 +491,13 @@ public class LoginController implements Serializable, ILoginController{
 	}
 	
 	public void renew(String key, String staffs, String patients) throws ParseException{
-		if(this.loggedin == true){
+		if(this.loggedin){
 			
 			// update my own key
 			this.activateStaff(this.activeUser, key);
 
 			// update staff's keys
-			if(staffs != ""){
+			if(!staffs.equals("")){
 				JSONParser parser = new JSONParser();
 				Object obj = parser.parse(staffs);
 				JSONObject json = (JSONObject) obj;
@@ -513,7 +513,7 @@ public class LoginController implements Serializable, ILoginController{
 			}
 
 			// update patient's personal data
-			if(patients != ""){
+			if(!patients.equals("")){
 				JSONParser parser = new JSONParser();
 				Object obj = parser.parse(patients);
 				JSONObject json = (JSONObject) obj;
@@ -533,7 +533,7 @@ public class LoginController implements Serializable, ILoginController{
 //				.getExternalContext().getRequestParameterMap().get("lc"));
 //		String template = FacesContext.getCurrentInstance()
 //				.getExternalContext().getRequestParameterMap().get("template");
-//		if(this.loggedin == true && activeUser.getRole() == 2 || this.loggedin == true && activeUser.getRole() == 1){
+//		if(this.loggedin && activeUser.getRole() == 2 || this.loggedin && activeUser.getRole() == 1){
 //		try {
 //			dm.export(template);
 //		} catch (Exception e) {

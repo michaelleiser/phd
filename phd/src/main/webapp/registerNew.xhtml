@@ -25,7 +25,9 @@
 					<h:form id="registernewform" onsubmit="return validation();">
 						<h:panelGrid columns="2">
 							<h:outputLabel for="name" value="Username" />
-							<h:inputText id="name" required="true" value="#{staff.name}" />
+							<h:inputText id="name" required="true" value="#{staff.name}">
+								<f:validateRegex pattern="([A-Za-z0-9@.])+"/>
+							</h:inputText>
 							<h:outputLabel for="newpass" value="New Password" />
 							<h:inputSecret id="newpass" required="true" value="#{staff.password}" />
 							
@@ -49,7 +51,9 @@
 								<h:outputText rendered="#{empty loginController.departmentselected}" value="Name" />
 							</h:panelGroup>
 							<h:panelGroup id="depname">
-								<h:inputText id="departmentname" value="#{department.name}" rendered="#{empty loginController.departmentselected}" />						
+								<h:inputText id="departmentname" value="#{department.name}" rendered="#{empty loginController.departmentselected}">
+									<f:validateRegex pattern="([A-Za-z])+"/>								
+								</h:inputText>						
 							</h:panelGroup>
 							
 							<h:outputText />

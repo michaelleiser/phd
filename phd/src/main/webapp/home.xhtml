@@ -25,6 +25,7 @@
 						<h:panelGrid columns="2" rendered="#{!loginController.loggedin}">
 							<h:outputLabel for="name" value="Username" />
 							<h:inputText id="name" binding="#{name}">
+								<f:validateRegex pattern="([A-Za-z0-9@.])+"/>
 								<f:ajax event="change" render="salt"/>
 							</h:inputText>
 							<h:outputLabel for="password" value="Password" />

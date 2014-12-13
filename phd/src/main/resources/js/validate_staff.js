@@ -6,8 +6,8 @@
  */
 function validation(){
 	var newpass = document.getElementById("staffform:newpass").value;
-	if(!newpass.match(/^[A-Za-z0-9]+$/)){
-		window.alert("Input a valid password!");
+	if(!newpass.match(/^(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)){
+		window.alert("Password must be longer than 8 characters and must contain upper case, lower case letters, digits and special characters (!@#$%^&*)");
 		return false;
 	}
 	var confpass = document.getElementById("staffform:confpass").value;

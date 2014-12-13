@@ -8,13 +8,13 @@
  */
 function validation(){
 	var name = document.getElementById("registernewform:name").value;
-	if(!name.match(/^[A-Za-z]+$/)){
-		window.alert("Input a valid name!");
+	if(!name.match(/^[A-Za-z0-9@.]+$/)){
+		window.alert("Input a valid name");
 		return false;
 	}
 	var newpass = document.getElementById("registernewform:newpass").value;
-	if(!newpass.match(/^[A-Za-z0-9]+$/)){
-		window.alert("Input a valid password!");
+	if(!newpass.match(/^(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)){
+		window.alert("Password must be longer than 8 characters and must contain upper case, lower case letters, digits and special characters (!@#$%^&*)");
 		return false;
 	}
 	var confpass = document.getElementById("registernewform:confpass").value;
