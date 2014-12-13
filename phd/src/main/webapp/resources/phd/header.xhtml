@@ -10,7 +10,10 @@
 	<ui:composition>
 		<h:outputStylesheet library="css" name="styles.css" />
 		<div id="header">
-		<h:outputScript library="js" name="logout.js" />			
+
+			<c:set var="securitytoken" value="#{loginController.nonce}" scope="request"/>
+
+			<h:outputScript library="js" name="logout.js" />			
 		
 			<div id="headerlanguages">
 				<h:form>
