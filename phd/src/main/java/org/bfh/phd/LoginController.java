@@ -171,7 +171,7 @@ public class LoginController implements Serializable, ILoginController{
 	
 	public List<ListOfQuestionnari> getPatientDatas(){
 		if(this.loggedin && (this.activePatient != null)){
-		List<ListOfQuestionnari> l = em.searchDatas(this.activePatient.getPatientid());
+			List<ListOfQuestionnari> l = em.searchDatas(this.activePatient.getPatientid());
 			return l;
 		}
 		return null;

@@ -26,7 +26,7 @@ function validation(){
 	 * Just for doctors
 	 * Statisticians don't need a public key, private key and mustn't get the group key
 	 */
-	if(document.getElementById("loggedinform:role").innerHTML == 1){
+	if(document.getElementById("role").value == 1){
 		var pksk = generatePublicKeyAndEncryptedPrivateKey(2048, newpass);
 		document.getElementById("staffform:publickey").value = pksk[0];
 		document.getElementById("staffform:encryptedprivatekey").value = pksk[1];

@@ -74,7 +74,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		initPatient();
 		initOperationTyp();
 		initTyp();
-		initQuestionnaire();
+//		initQuestionnaire();
 		initEmptyQuestionnaire();
 	}
 

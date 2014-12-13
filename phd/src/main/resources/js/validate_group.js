@@ -71,6 +71,9 @@ function generateEncryptedGroupKey(length, publicKey){
 function renewStaff(newGroupKey){
 	var obj = {};
 	var size = document.getElementById("staffform:stafftable").rows.length;
+	if(size == 0 || document.getElementById("staffform:stafftable:0:id") == null){
+		return "";
+	}
 	var crypt = new JSEncrypt();
 	for(var i = 0 ; i < size ; i++){
 		var activated = document.getElementById("staffform:stafftable:"+i+":activated").value;
@@ -99,6 +102,9 @@ function renewStaff(newGroupKey){
 function renewPatient(oldGroupKey, newGroupKey){
 	var obj = {};
 	var size = document.getElementById("patienttable").rows.length;
+	if(size == 0){
+		return "";
+	}
 	for(var i = 0 ; i < size ; i++){
 		var id = document.getElementById("patientform:id"+i).value;
 		var encrypted = document.getElementById("patientform:encdata"+i).value;
