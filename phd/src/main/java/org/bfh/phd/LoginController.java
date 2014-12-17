@@ -377,9 +377,10 @@ public class LoginController implements Serializable, ILoginController{
 
 	public void setDepartmentselected(String departmentselected) {
 		this.departmentselected = departmentselected;
-		for(Department d : this.getDepartments()){
-			if(d.getName().equals(departmentselected)){
-				Department_Has_Staff dhs = em.getDepartment_Has_Staff(d);
+		List<Department_Has_Staff> list = em.get_Department_Has_Staffs();
+		for(Iterator i = list.iterator() ; i.hasNext() ; ){
+			Department_Has_Staff dhs = (Department_Has_Staff) i.next();
+			if(dhs.getDepartment().getName().equals(departmentselected)){
 				this.setDepartment_Has_Staff(dhs);
 			}
 		}

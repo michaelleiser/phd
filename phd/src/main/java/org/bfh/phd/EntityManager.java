@@ -44,6 +44,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private List<Staff> staffs;	
+	private List<Department_Has_Staff> department_Has_Staffs;
 	private List<Patient> patients;
 	private List<PatientData> patientdatas;
 	private List<Department> departments;
@@ -71,6 +72,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		mycon = new MyConnection();
 		initDepartment();
 		initStaff();
+		initDepartment_Has_Staff();
 		initPatient();
 		initOperationTyp();
 		initTyp();
@@ -1014,7 +1016,8 @@ public class EntityManager implements IEntityManager, Serializable {
 		} finally {
 			closeWithoutRs();
 		}
-		initStaff(); // TODO Da sonst nicht geupdated wird nach dem insert
+		initStaff();
+		initDepartment_Has_Staff(); // TODO Da sonst nicht geupdated wird nach dem insert
 	}
 
 	/**
@@ -1048,6 +1051,18 @@ public class EntityManager implements IEntityManager, Serializable {
 			close();
 		}
 		return dhs;
+	}
+	
+	public List<Department_Has_Staff> get_Department_Has_Staffs(){
+		return this.department_Has_Staffs;
+	}
+	
+	public void initDepartment_Has_Staff(){
+		this.department_Has_Staffs = new ArrayList<Department_Has_Staff>();
+		for(Department d: this.departments){
+			Department_Has_Staff dhs = getDepartment_Has_Staff(d);
+			this.department_Has_Staffs.add(dhs);
+		}
 	}
 
 	private Department getDepartment(int i) {
