@@ -76,7 +76,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		initPatient();
 		initOperationTyp();
 		initTyp();
-//		initQuestionnaire();
+		initQuestionnaire();
 		initEmptyQuestionnaire();
 	}
 
@@ -776,6 +776,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	 *
 	 */
 	private void close2() {
+		if(rs2 != null){
 		try {
 			rs2.close();
 			pst2.close();
@@ -804,6 +805,7 @@ public class EntityManager implements IEntityManager, Serializable {
 					e.printStackTrace();
 				}
 			}
+		}
 		}
 	}
 
