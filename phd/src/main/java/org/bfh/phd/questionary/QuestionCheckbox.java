@@ -11,7 +11,7 @@ import org.bfh.phd.LoginController;
 import org.bfh.phd.interfaces.IQuestion;
 
 
-public class QuestionCheckbox implements IQuestion <String, String, List<String>, List<String>> {
+public class QuestionCheckbox implements IQuestion <List<String>, List<String>> {
 	
 	private String question;
 	private int id;

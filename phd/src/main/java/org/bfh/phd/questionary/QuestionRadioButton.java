@@ -9,7 +9,7 @@ import org.bfh.phd.LoginController;
 import org.bfh.phd.interfaces.IQuestion;
 
 
-public class QuestionRadioButton implements IQuestion <String, String, List<String>, String > {
+public class QuestionRadioButton implements IQuestion <List<String>, String > {
 	
 	private String type = "RadioButton";
 	private String question;

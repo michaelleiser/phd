@@ -1,7 +1,6 @@
 package org.bfh.phd.interfaces;
 
 import java.util.List;
-
 import org.bfh.phd.Department;
 import org.bfh.phd.PatientData;
 import org.bfh.phd.Staff;

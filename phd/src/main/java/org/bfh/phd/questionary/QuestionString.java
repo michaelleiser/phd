@@ -4,7 +4,7 @@ import org.bfh.phd.LoginController;
 import org.bfh.phd.interfaces.IQuestion;
 
 
-public class QuestionString implements IQuestion <String, String, String, String> {
+public class QuestionString implements IQuestion <String, String> {
 	
 	private String type = "String";
 	private String question;
