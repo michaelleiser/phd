@@ -44,7 +44,8 @@ public class DownloadManager implements Serializable{
 					"attachment;filename="+ template +".csv");
 			try {
 				ServletOutputStream out = response.getOutputStream();
-				StringBuffer sb = generateCsvFileBuffer(template);
+				StringBuffer sb = new StringBuffer();
+				sb.append(em.getCSV(template));
 
 				InputStream in = new ByteArrayInputStream(sb.toString()
 						.getBytes("UTF-8"));
@@ -67,35 +68,23 @@ public class DownloadManager implements Serializable{
 	}
 
 	// TODO Anstelle file auslesen direkt senden
-	private StringBuffer generateCsvFileBuffer(String template) {
-		StringBuffer writer = new StringBuffer();
-		File f = new File(System.getProperty("user.dir"));
-		File file = new File(f.getParentFile(), "/webapps/phd/csv/" + template + ".csv");
-		try {
-			FileReader fileReader = new FileReader(file);
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			String ln;
-			while ((ln = bufferedReader.readLine()) != null) {
-				writer.append(ln + "\n");
-			}
-			fileReader.close();
-		} catch (Exception e) {
-		} finally {
-		}
-		return writer;
-	}
+//	private StringBuffer generateCsvFileBuffer(String template) {
+//		StringBuffer writer = new StringBuffer();
+//		writer.append();
+//		return writer;
+//	}
 
-	private String getPath() {
-		Properties prop = new Properties();
-		String propFile = "config.properties";
-		InputStream input = Patient.class.getClassLoader().getResourceAsStream(
-				propFile);
-		try {
-			prop.load(input);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		String path = prop.getProperty("PATH");
-		return path;
-	}
+//	private String getPath() {
+//		Properties prop = new Properties();
+//		String propFile = "config.properties";
+//		InputStream input = Patient.class.getClassLoader().getResourceAsStream(
+//				propFile);
+//		try {
+//			prop.load(input);
+//		} catch (IOException e1) {
+//			e1.printStackTrace();
+//		}
+//		String path = prop.getProperty("PATH");
+//		return path;
+//	}
 }

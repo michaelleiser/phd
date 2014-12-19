@@ -53,6 +53,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	private List<String> errors;
 	private List<FilledQuestionnaire> filledQuestionnaires;
 	private HashMap<String, FilledQuestionnaire> emptyQuestionnaires;
+	private HashMap<String, String> csvs;
 
 	private Map<String, Integer> typ;
 	private String templatename = "";
@@ -1609,63 +1610,43 @@ public class EntityManager implements IEntityManager, Serializable {
 		long starttime = System.currentTimeMillis();
 		long endtime;
 		
+		String total = "";
+		String questionnaire = "";
+		
 		if(newTemplate){
-		File f = new File(System.getProperty("user.dir"));
 
-		File directory = new File(f.getParentFile(), "/webapps/phd/csv/");
-		try {
-			// erstellen des directory wenn nicht vorhanden
-			if(!directory.isDirectory()){
-				directory.mkdirs();
-				if(!directory.isDirectory()){
-				}else{
-					directory.mkdirs();
-				}
-			}else{}
-			FileWriter totalwriter = new FileWriter(new File(directory + "/total.csv"));
 			for (int i = 0; i < operationtypes.size(); i++) {
 				String name = operationtypes.get(i);
-				File csv = new File(directory + "/" + name.replace(" ", "_") + ".csv");
-				FileWriter writer = new FileWriter(csv);
-				totalwriter.append(name + "\n\n");
+				total += name + "\n\n";
 				FilledQuestionnaire eq = emptyQuestionnaires.get(name);
 				for (IQuestion iq : eq.getQuestions()) {
-					totalwriter.append(iq.getQuestion());
-					totalwriter.append(";");
-					writer.append(iq.getQuestion());
-					writer.append(";");
+					total += iq.getQuestion() + ";";
+					questionnaire += iq.getQuestion() + ";";
 				}
-				totalwriter.append("\n");
-				writer.append("\n");
+				total += "\n";
+				questionnaire += "\n";
 				for (IFilledQuestionnaire fq : filledQuestionnaires) {
 					if (fq.getQuestionnaireName().equals(name)) {
 						for (IAnswer answer : fq.getAnswers()) {
 							String s = answer.toString();
 							s.replace("[", "");
 							s.replace("]", "");
-							totalwriter.append("\"" + s + "\"");
-							totalwriter.append(";");
-							writer.append("\"" + s + "\"");
-							writer.append(";");
+							total += "\"" + s + "\";";
+							questionnaire += "\"" + s + "\";";
 						}
-						totalwriter.append("\n");
-						writer.append("\n");
+						total += "\n";
+						questionnaire += "\n";
 					}
 				}
-				writer.flush();
-				writer.close();
+				csvs.put(templatename, questionnaire);
 			}
-			totalwriter.flush();
-			totalwriter.close();
+			csvs.put("total", total);
 			
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		endtime = System.currentTimeMillis();
 		System.err.println("Das erstellen der CSVs hat "
 				+ (endtime - starttime) + "[ms] benötigt");
 		newTemplate = false;
-		}
 	}
 
 	public boolean isLegalTemplate(String template) {
@@ -1687,5 +1668,9 @@ public class EntityManager implements IEntityManager, Serializable {
 	public List<IQuestion> getFilledQuestion2(int id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Object getCSV(String template) {
+		return csvs.get(template);
 	}
 }
