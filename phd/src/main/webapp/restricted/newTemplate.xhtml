@@ -11,155 +11,162 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
-			<h1>
-				<h:outputText value="#{msg['newtemplate']}" />
-			</h1>
+		
+			<div id="content">
+			
+				<h1>
+					<h:outputText value="#{msg['newtemplate']}" />
+				</h1>
 
-			<div id="templates">
+				<div class="box">
 
-				<h:form>
-					<c:if test="#{template.isEmpty()}">
-						<h:outputLabel for="title" value="Questionnaire title" />
-						<br />
-						<h:inputText id="title" value="#{template.name}">
-							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
-						</h:inputText>
-						<br />
-						<br />
-						<h:commandButton action="#{template.nameToTemp}" value="Create a new template"/>
+					<h:form>
+						<c:if test="#{template.isEmpty()}">
+							<h:outputLabel for="title" value="Questionnaire title" />
+							<br />
+							<h:inputText id="title" value="#{template.name}">
+								<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
+							</h:inputText>
+							<br />
+							<br />
+							<h:commandButton action="#{template.nameToTemp}" value="Create a new template"/>
+						</c:if>
+						<c:if test="#{template.notEmpty}">
+							<h2>
+								<h:outputText value="#{template.name}" />
+							</h2>
 					</c:if>
-					<c:if test="#{template.notEmpty}">
-						<h:outputText value="#{template.name}"></h:outputText>
-					</c:if>
-				</h:form>
-
-				<h:dataTable id="outputMessage" value="#{template.question}"
-					var="questions" headerClass="table-header"
-					rowClasses="table-odd-row,table-even-row"
-					columnClasses="table-column-id,table-column-data,table-column-data,table-column-data,table-column-button,table-column-button,table-column-button">
-					<c:if test="#{template.templateEmpty}">
-						<h:column>
-							<f:facet name="header">Question number</f:facet>#{questions.id}
+					</h:form>
+	
+					<h:dataTable id="outputMessage" value="#{template.question}"
+						var="questions" headerClass="table-header"
+						rowClasses="table-odd-row,table-even-row"
+						columnClasses="table-column-id,table-column-data,table-column-data,table-column-data,table-column-button,table-column-button,table-column-button">
+						<c:if test="#{template.templateEmpty}">
+							<h:column>
+								<f:facet name="header">Question number</f:facet>#{questions.id}
+							</h:column>
+							<h:column>
+								<f:facet name="header">Question</f:facet>#{questions.question}
+							</h:column>
+							<h:column>
+								<f:facet name="header">Possible answers</f:facet>
+								<ui:repeat var="answer" value="#{questions.answer}">#{answer}<br />
+								</ui:repeat>
 						</h:column>
-						<h:column>
-							<f:facet name="header">Question</f:facet>#{questions.question}
-						</h:column>
-						<h:column>
-							<f:facet name="header">Possible answers</f:facet>
-							<ui:repeat var="answer" value="#{questions.answer}">#{answer}<br />
-							</ui:repeat>
-						</h:column>
-					</c:if>
-				</h:dataTable>
-				<br />
+						</c:if>
+					</h:dataTable>
+					<br />
 
-				<h:form>
-					<h:outputText value="Question type"/>
-					<br />
-					<h:selectOneMenu onchange="submit()"
-						value="#{template.typeselected}"
-						actionListener="#{template.typeChanged}">
-						<f:selectItem itemLabel="SELECT" itemValue=""
-							noSelectionOption="true" />
-						<f:selectItems value="#{template.types}" />
-					</h:selectOneMenu>
-					<br />
-					<br />
-					<c:if test="#{template.typeselected eq 'String'}">
-						<h:outputText value="Please enter a question"/>
-						<br />
-						<h:inputTextarea value="#{template.questionString}">
-							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
-							<f:ajax event="change" execute="@this"
-								listener="#{template.addString}" />
-							<f:attribute name="edit" value="0" />
-						</h:inputTextarea>
-						<br />
-						<br />
-					</c:if>
-					<c:if test="#{template.typeselected eq 'RadioButton'}">
-						<h:outputText value="Please enter a question"/>
-						<br />
-						<h:inputTextarea value="#{template.questionString}">
-							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
-							<f:ajax event="change" execute="@this"
-								listener="#{template.addQuestion}" />
-						</h:inputTextarea>
-						<br />
-						<br />
-						<h:outputText value="Number of answers"/>
+					<h:form>
+						<h:outputText value="Question type"/>
 						<br />
 						<h:selectOneMenu onchange="submit()"
-							value="#{template.numberselected}"
-							actionListener="#{template.numberChanged}">
+							value="#{template.typeselected}"
+							actionListener="#{template.typeChanged}">
 							<f:selectItem itemLabel="SELECT" itemValue=""
-								noSelectionOption="false" />
-							<f:selectItems value="#{template.i}" />
+								noSelectionOption="true" />
+							<f:selectItems value="#{template.types}" />
 						</h:selectOneMenu>
 						<br />
-						<c:set var="a" value="#{template.numberselected}" />
-						<c:forEach begin="2" end="#{a}">
+						<br />
+						<c:if test="#{template.typeselected eq 'String'}">
+							<h:outputText value="Please enter a question"/>
+							<br />
+							<h:inputTextarea value="#{template.questionString}">
+								<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
+								<f:ajax event="change" execute="@this"
+									listener="#{template.addString}" />
+								<f:attribute name="edit" value="0" />
+							</h:inputTextarea>
+							<br />
+							<br />
+						</c:if>
+						<c:if test="#{template.typeselected eq 'RadioButton'}">
+							<h:outputText value="Please enter a question"/>
+							<br />
+							<h:inputTextarea value="#{template.questionString}">
+								<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
+								<f:ajax event="change" execute="@this"
+									listener="#{template.addQuestion}" />
+							</h:inputTextarea>
+							<br />
+							<br />
+							<h:outputText value="Number of answers"/>
+							<br />
+							<h:selectOneMenu onchange="submit()"
+								value="#{template.numberselected}"
+								actionListener="#{template.numberChanged}">
+								<f:selectItem itemLabel="SELECT" itemValue=""
+									noSelectionOption="false" />
+								<f:selectItems value="#{template.i}" />
+							</h:selectOneMenu>
+							<br />
+							<c:set var="a" value="#{template.numberselected}" />
+							<c:forEach begin="2" end="#{a}">
+								<h:inputText value="#{template.answerRadioButton}">
+									<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
+									<f:ajax event="change" execute="@this"
+										listener="#{template.addAnswer}" />
+								</h:inputText>
+								<br />
+							</c:forEach>
 							<h:inputText value="#{template.answerRadioButton}">
 								<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
 								<f:ajax event="change" execute="@this"
-									listener="#{template.addAnswer}" />
+									listener="#{template.addRadioButton}" />
+								<f:attribute name="edit" value="0" />
 							</h:inputText>
 							<br />
-						</c:forEach>
-						<h:inputText value="#{template.answerRadioButton}">
-							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
-							<f:ajax event="change" execute="@this"
-								listener="#{template.addRadioButton}" />
-							<f:attribute name="edit" value="0" />
-						</h:inputText>
-						<br />
-					</c:if>
-					<c:if test="#{template.typeselected eq 'Checkbox'}">
-						<h:outputText value="Please enter a question"/>
-						<br />
-						<h:inputTextarea value="#{template.questionString}">
-							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
-							<f:ajax event="change" execute="@this"
-								listener="#{template.addQuestion}" />
-						</h:inputTextarea>
-						<br />
-						<br />
-						<h:outputText value="Number of answers"/>
-						<br />
-						<h:selectOneMenu onchange="submit()"
-							value="#{template.numberselected}"
-							actionListener="#{template.numberChanged}">
-							<f:selectItem itemLabel="SELECT" itemValue=""
-								noSelectionOption="false" />
-							<f:selectItems value="#{template.i}" />
-						</h:selectOneMenu>
-						<br />
-						<c:set var="a" value="#{template.numberselected}" />
-						<c:forEach begin="2" end="#{a}">
+						</c:if>
+						<c:if test="#{template.typeselected eq 'Checkbox'}">
+							<h:outputText value="Please enter a question"/>
+							<br />
+							<h:inputTextarea value="#{template.questionString}">
+								<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
+								<f:ajax event="change" execute="@this"
+									listener="#{template.addQuestion}" />
+							</h:inputTextarea>
+							<br />
+							<br />
+							<h:outputText value="Number of answers"/>
+							<br />
+							<h:selectOneMenu onchange="submit()"
+								value="#{template.numberselected}"
+								actionListener="#{template.numberChanged}">
+								<f:selectItem itemLabel="SELECT" itemValue=""
+									noSelectionOption="false" />
+								<f:selectItems value="#{template.i}" />
+							</h:selectOneMenu>
+							<br />
+							<c:set var="a" value="#{template.numberselected}" />
+							<c:forEach begin="2" end="#{a}">
+								<h:inputText value="#{template.answerCheckbox}">
+									<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
+									<f:ajax event="change" execute="@this"
+										listener="#{template.addAnswer}" />
+								</h:inputText>
+								<br />
+							</c:forEach>
 							<h:inputText value="#{template.answerCheckbox}">
 								<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
 								<f:ajax event="change" execute="@this"
-									listener="#{template.addAnswer}" />
+									listener="#{template.addCheckbox}" />
+								<f:attribute name="edit" value="0" />
 							</h:inputText>
 							<br />
-						</c:forEach>
-						<h:inputText value="#{template.answerCheckbox}">
-							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
-							<f:ajax event="change" execute="@this"
-								listener="#{template.addCheckbox}" />
-							<f:attribute name="edit" value="0" />
-						</h:inputText>
+						</c:if>
+
 						<br />
-					</c:if>
+						<h:commandButton actionListener="#{template.add}"
+							value="Add new question"/>
+						<br />
+						<h:commandButton actionListener="#{template.save(loginController)}"
+							action="#{navigation.redirectToLoggedin}" value="Save template"/>
 
-					<br />
-					<h:commandButton actionListener="#{template.add}"
-						value="Add new question"/>
-					<br />
-					<h:commandButton actionListener="#{template.save(loginController)}"
-						action="#{navigation.redirectToLoggedin}" value="Save template"/>
-
-				</h:form>
+					</h:form>
+				</div>
+			
 			</div>
 		</ui:define>
 	</ui:composition>
