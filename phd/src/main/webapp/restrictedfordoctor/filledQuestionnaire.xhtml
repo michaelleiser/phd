@@ -16,48 +16,52 @@
 			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
 			<h:outputScript library="js" name="validate_patient.js" />
 			
-			<h1>
-				<h:outputText value="#{msg['filledquestionnaire']}" />
-			</h1>
+			<div id="content">
 			
-			<div class="box">
+				<h1>
+					<h:outputText value="#{msg['filledquestionnaire']}" />
+				</h1>
 			
-				<div id="patientheader">
-					<h:outputText class="patientheader" id="firstname"></h:outputText>
-					<h:outputText class="patientheader" id="lastname"></h:outputText>
-					<h:outputText class="patientheader" id="birthday"></h:outputText>
-				</div>
+				<div class="box">
+			
+					<div id="patientheader">
+						<h:outputText class="patientheader" id="firstname"></h:outputText>
+						<h:outputText class="patientheader" id="lastname"></h:outputText>
+						<h:outputText class="patientheader" id="birthday"></h:outputText>
+					</div>
 
-				<h:form id="formularform">	
-					<h:inputHidden id="encryptedPersonalData" value="#{loginController.activePatient.personalData}"/>
-				</h:form>
+					<h:form id="formularform">	
+						<h:inputHidden id="encryptedPersonalData" value="#{loginController.activePatient.personalData}"/>
+					</h:form>
 			
-				<div class="table">
-					<table id="patienttable">
-						<tr class="table-header" id="rowheader">
-							<th class="colid">Question</th>
-							<th class="colfirst">Answer</th>
-						</tr>
-						<c:forEach items="#{loginController.filledQuestion.questions}" var="quest" varStatus="status">
-							<tr id="row#{status.index}">
-								<td class="table-column-data">
-									<h:outputText value="#{quest.question}" />
-								</td>
-								<td class="table-column-data">
-									<ui:repeat var="answer" value="#{quest.answer}">
-										<h:outputText value="#{answer}" />
-									</ui:repeat>
-								</td>		
+					<div class="table">
+						<table id="patienttable">
+							<tr class="table-header" id="rowheader">
+								<th class="colid">Question</th>
+								<th class="colfirst">Answer</th>
 							</tr>
-						</c:forEach>							
-					</table>
+							<c:forEach items="#{loginController.filledQuestion.questions}" var="quest" varStatus="status">
+								<tr id="row#{status.index}">
+									<td class="table-column-data">
+										<h:outputText value="#{quest.question}" />
+									</td>
+									<td class="table-column-data">
+										<ui:repeat var="answer" value="#{quest.answer}">
+											<h:outputText value="#{answer}" />
+										</ui:repeat>
+									</td>		
+								</tr>
+							</c:forEach>							
+						</table>
+					</div>
+			
+					<h:form>
+						<h:commandButton action="#{navigation.redirectToEditQuestionnaire}" actionListener="#{editFilledQuestionnaire.nameListener}" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Edit" />
+					</h:form>
+			
 				</div>
-			
-				<h:form>
-					<h:commandButton action="#{navigation.redirectToEditQuestionnaire}" actionListener="#{editFilledQuestionnaire.nameListener}" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Edit" />
-				</h:form>
-			
-			</div>
+				
+			</div>	
 				
 			<h:outputScript type="text/javascript">
 			    decryptPersonalDataForFormular();

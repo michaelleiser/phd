@@ -16,65 +16,69 @@
 			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
 			<h:outputScript library="js" name="validate_patient.js" />
 	
-			<h1>
-				<h:outputText value="#{msg['newquestionnaire']}" />
-			</h1>
-			
-			<div class="box">		
+			<div id="content">
 	
-				<div id="patientheader">
-					<h:outputText class="patientheader" id="firstname" />
-					<h:outputText class="patientheader" id="lastname" />
-					<h:outputText class="patientheader" id="birthday" />
-				</div>
+				<h1>
+					<h:outputText value="#{msg['newquestionnaire']}" />
+				</h1>
+			
+				<div class="box">		
+	
+					<div id="patientheader">
+						<h:outputText class="patientheader" id="firstname" />
+						<h:outputText class="patientheader" id="lastname" />
+						<h:outputText class="patientheader" id="birthday" />
+					</div>
 					
-				<h:form id="formularform">
-					<h:outputText value="Operation" /><br />
-					<h:selectOneMenu onchange="submit()" value="#{loginController.questselected}" actionListener="#{loginController.questChanged}">
-						<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
-						<f:selectItems value="#{loginController.templateNames}" />
-					</h:selectOneMenu>
+					<h:form id="formularform">
+						<h:outputText value="Operation" /><br />
+						<h:selectOneMenu onchange="submit()" value="#{loginController.questselected}" actionListener="#{loginController.questChanged}">
+							<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{loginController.templateNames}" />
+						</h:selectOneMenu>
 
-					<c:set var="a" value="#{loginController.newQuestion}" />
-					<c:forEach items="#{a.questions}" var="q">
-					
-						<c:if test="#{q.type eq 'String'}">
-							<div class="question">
-								<h:outputLabel for="j_idt#{q.id}" value="#{q.question}"/><br />
-								<h:inputText id="j_idt#{q.id}" value="#{q.answer}" >
-									<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+" />
-									<f:ajax event="change" execute="@this" listener="#{q.save(loginController)}" />
-								</h:inputText>
-							</div>
-						</c:if>
-					
-						<c:if test="#{q.type eq 'RadioButton'}">
-							<div class="question">
-								<h:outputLabel for="j_idt#{q.id}" value="#{q.question}" />
-								<h:selectOneRadio id="j_idt#{q.id}" value="#{q.answer}">
-									<f:ajax event="change" execute="@this" listener="#{q.save(loginController)}" />
-									<f:selectItems value="#{q.answerPossibilities}" />
-								</h:selectOneRadio>
-							</div>
-						</c:if>
-					
-						<c:if test="#{q.type eq 'Checkbox'}">
-							<div class="question">
-								<h:outputLabel for="j_idt#{q.id}" value="#{q.question}" />
-								<h:selectManyCheckbox id="j_idt#{q.id}" value="#{q.answer}">
-									<f:ajax event="change" execute="@this" listener="#{q.save(loginController)}" />
-									<f:selectItems value="#{q.answerPossibilities}" />
-								</h:selectManyCheckbox>
-							</div>
-						</c:if>
+						<c:set var="a" value="#{loginController.newQuestion}" />
+						<c:forEach items="#{a.questions}" var="q">
 						
-					</c:forEach>
-				
-					<h:commandButton actionListener="#{a.saveFilledQuestionnaire(loginController)}" rendered="#{not empty loginController.questselected}" value="Save" />
+							<c:if test="#{q.type eq 'String'}">
+								<div class="question">
+									<h:outputLabel for="j_idt#{q.id}" value="#{q.question}"/><br />
+									<h:inputText id="j_idt#{q.id}" value="#{q.answer}" >
+										<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+" />
+										<f:ajax event="change" execute="@this" listener="#{q.save(loginController)}" />
+									</h:inputText>
+								</div>
+							</c:if>
 					
-					<h:inputHidden id="encryptedPersonalData" value="#{loginController.activePatient.personalData}" />
+							<c:if test="#{q.type eq 'RadioButton'}">
+								<div class="question">
+									<h:outputLabel for="j_idt#{q.id}" value="#{q.question}" />
+									<h:selectOneRadio id="j_idt#{q.id}" value="#{q.answer}">
+										<f:ajax event="change" execute="@this" listener="#{q.save(loginController)}" />
+										<f:selectItems value="#{q.answerPossibilities}" />
+									</h:selectOneRadio>
+								</div>
+							</c:if>
+					
+							<c:if test="#{q.type eq 'Checkbox'}">
+								<div class="question">
+									<h:outputLabel for="j_idt#{q.id}" value="#{q.question}" />
+									<h:selectManyCheckbox id="j_idt#{q.id}" value="#{q.answer}">
+										<f:ajax event="change" execute="@this" listener="#{q.save(loginController)}" />
+										<f:selectItems value="#{q.answerPossibilities}" />
+									</h:selectManyCheckbox>
+								</div>
+							</c:if>
+						
+						</c:forEach>
 				
-				</h:form>
+						<h:commandButton actionListener="#{a.saveFilledQuestionnaire(loginController)}" rendered="#{not empty loginController.questselected}" value="Save" />
+					
+						<h:inputHidden id="encryptedPersonalData" value="#{loginController.activePatient.personalData}" />
+				
+					</h:form>
+				</div>
+			
 			</div>
 			
 			<h:outputScript type="text/javascript">
