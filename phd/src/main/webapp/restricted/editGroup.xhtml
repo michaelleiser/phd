@@ -11,15 +11,16 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
+		
+			<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
+			<h:outputScript library="js" name="validate_group.js" />
+			
 			<div id="content">
 				<h1>
 					<h:outputText value="#{msg['modifygroup']}" />
 				</h1>
 				<div class="box">
-				
-					<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
-					<h:outputScript library="js" name="validate_group.js" />
-					
+									
 					<h:form id="groupform" >
 						<div id="filter">
 							<h:inputText binding="#{input1}" id="staffid"></h:inputText>

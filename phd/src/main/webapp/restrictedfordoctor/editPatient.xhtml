@@ -10,14 +10,16 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
+							
+			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
+			<h:outputScript library="js" name="validate_patient.js" />
+					
 			<div id="content">
 				<h1>
 					<h:outputText value="#{msg['editpatient']}" />
 				</h1>
 				<div class="formular">
 				
-					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
-					<h:outputScript library="js" name="validate_patient.js" />
 					<h:form action="#{navigation.redirectToLoggedin}" id="patientform" onsubmit="return validation();">
 					
 						<h:panelGrid columns="2">

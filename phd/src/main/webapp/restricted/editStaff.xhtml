@@ -10,17 +10,18 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
+					
+			<h:outputScript library="js" name="CryptoJS/rollups/sha256.js" />
+			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />			
+			<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
+			<h:outputScript library="js" name="validate_staff.js" />		
+		
 			<div id="content">
 				<h1>
 					<h:outputText value="#{msg['editstaff']}" />
 				</h1>
 				<div class="formular">
-				
-					<h:outputScript library="js" name="CryptoJS/rollups/sha256.js" />
-					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />			
-					<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
-					<h:outputScript library="js" name="validate_staff.js" />	
-					
+									
 					<h:form id="staffform" onsubmit="return validation();">
 						<h:panelGrid columns="2">
 							<h:outputText value="Staff id" />

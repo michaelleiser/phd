@@ -93,7 +93,7 @@ public class Template {
 		clearAnswer();
 	}
 
-	public void safe(LoginController lc) {
+	public void save(LoginController lc) {
 		int i = 1;
 		for (QuestionnairTools t : test) {
 			lc.addQuestionnaireTemplate(t.getType(), t.getQuestion(), templatename, t.getAnswer(), i);

@@ -12,21 +12,21 @@
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
 			<h1>
-				<h:outputText value="#{msg['formular']}" />
+				<h:outputText value="#{msg['newtemplate']}" />
 			</h1>
 
 			<div id="templates">
 
-				<h:outputScript library="js" name="validate_patient.js" />
-
 				<h:form>
 					<c:if test="#{template.isEmpty()}">
-						<h:outputLabel>Fragebogentitel:</h:outputLabel>
+						<h:outputLabel for="title" value="Questionnaire title" />
 						<br />
-						<h:inputText id="name" value="#{template.name}"><f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/></h:inputText>
+						<h:inputText id="title" value="#{template.name}">
+							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
+						</h:inputText>
 						<br />
 						<br />
-						<h:commandButton action="#{template.nameToTemp}" value=" neues Template erstellen "/>
+						<h:commandButton action="#{template.nameToTemp}" value="Create a new template"/>
 					</c:if>
 					<c:if test="#{template.notEmpty}">
 						<h:outputText value="#{template.name}"></h:outputText>
@@ -39,13 +39,13 @@
 					columnClasses="table-column-id,table-column-data,table-column-data,table-column-data,table-column-button,table-column-button,table-column-button">
 					<c:if test="#{template.templateEmpty}">
 						<h:column>
-							<f:facet name="header">Questionnumber</f:facet>#{questions.id}
-				</h:column>
+							<f:facet name="header">Question number</f:facet>#{questions.id}
+						</h:column>
 						<h:column>
 							<f:facet name="header">Question</f:facet>#{questions.question}
-				</h:column>
+						</h:column>
 						<h:column>
-							<f:facet name="header">Posibleanswer</f:facet>
+							<f:facet name="header">Possible answers</f:facet>
 							<ui:repeat var="answer" value="#{questions.answer}">#{answer}<br />
 							</ui:repeat>
 						</h:column>
@@ -54,7 +54,7 @@
 				<br />
 
 				<h:form>
-					<h:outputLabel>Fragetyp</h:outputLabel>
+					<h:outputText value="Question type"/>
 					<br />
 					<h:selectOneMenu onchange="submit()"
 						value="#{template.typeselected}"
@@ -66,28 +66,28 @@
 					<br />
 					<br />
 					<c:if test="#{template.typeselected eq 'String'}">
-						<h:outputLabel>Bitte geben sie die gewünschte Frage ein:</h:outputLabel>
+						<h:outputText value="Please enter a question"/>
 						<br />
-						<h:inputText value="#{template.questionString}">
+						<h:inputTextarea value="#{template.questionString}">
 							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
 							<f:ajax event="change" execute="@this"
 								listener="#{template.addString}" />
 							<f:attribute name="edit" value="0" />
-						</h:inputText>
+						</h:inputTextarea>
 						<br />
 						<br />
 					</c:if>
 					<c:if test="#{template.typeselected eq 'RadioButton'}">
-						<h:outputLabel>Bitte geben sie die gewünschte Fragen ein:</h:outputLabel>
+						<h:outputText value="Please enter a question"/>
 						<br />
-						<h:inputText value="#{template.questionString}">
+						<h:inputTextarea value="#{template.questionString}">
 							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
 							<f:ajax event="change" execute="@this"
 								listener="#{template.addQuestion}" />
-						</h:inputText>
+						</h:inputTextarea>
 						<br />
 						<br />
-						<h:outputLabel>Anzahl Antworten:</h:outputLabel>
+						<h:outputText value="Number of answers"/>
 						<br />
 						<h:selectOneMenu onchange="submit()"
 							value="#{template.numberselected}"
@@ -115,16 +115,16 @@
 						<br />
 					</c:if>
 					<c:if test="#{template.typeselected eq 'Checkbox'}">
-						<h:outputLabel>Bitte geben sie die gewünschte Frage ein:</h:outputLabel>
+						<h:outputText value="Please enter a question"/>
 						<br />
-						<h:inputText value="#{template.questionString}">
+						<h:inputTextarea value="#{template.questionString}">
 							<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
 							<f:ajax event="change" execute="@this"
 								listener="#{template.addQuestion}" />
-						</h:inputText>
+						</h:inputTextarea>
 						<br />
 						<br />
-						<h:outputLabel>Anzahl Antworten:</h:outputLabel>
+						<h:outputText value="Number of answers"/>
 						<br />
 						<h:selectOneMenu onchange="submit()"
 							value="#{template.numberselected}"
@@ -154,10 +154,10 @@
 
 					<br />
 					<h:commandButton actionListener="#{template.add}"
-						value=" add new Question "/>
+						value="Add new question"/>
 					<br />
-					<h:commandButton actionListener="#{template.safe(loginController)}"
-						action="#{navigation.redirectToLoggedin}" value="Safe Template"/>
+					<h:commandButton actionListener="#{template.save(loginController)}"
+						action="#{navigation.redirectToLoggedin}" value="Save template"/>
 
 				</h:form>
 			</div>

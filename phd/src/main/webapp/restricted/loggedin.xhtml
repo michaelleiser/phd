@@ -10,6 +10,11 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
+					
+			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
+			<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
+			<h:outputScript library="js" name="sessionKeys.js" />
+		
 			<div id="content">
 				<h1>
 					<h:outputText value="#{msg['loggedin']}" />
@@ -17,8 +22,8 @@
 				<div id="menu">
 					<h:form id="menuform">
 						<h:commandLink class="menuitem" action="#{navigation.redirectToNewPatient}" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Create a new patient" />
-						<h:commandLink class="menuitem" action="#{navigation.redirectToSearchPatient}" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Search patient and modify patient data" />
-						<h:commandLink class="menuitem" action="#{navigation.redirectToDownloads}" value="CVS for statistics" />
+						<h:commandLink class="menuitem" action="#{navigation.redirectToSearchPatient}" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Search patients and edit patient datas" />
+						<h:commandLink class="menuitem" action="#{navigation.redirectToDownloads}" value="Download CSV for statistics" />
 						<h:commandLink class="menuitem" action="#{navigation.redirectToNewQuestionnaireTemplate}" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Create a new questionnaire template" />
 						<h:commandLink class="menuitem" action="#{navigation.redirectToEditGroup}" rendered="#{loginController.loggedin and (loginController.getDepartment_Has_Staff().isOwner(loginController.getStaff()))}" value="Edit group" />
 					</h:form>
@@ -26,10 +31,6 @@
 			</div>
 				
 			<!-- automatically load public private key in session storage -->			
-			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
-			<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
-			
-			<h:outputScript library="js" name="sessionKeys.js" />
 			<h:form id="sessionkeysid">
 				<h:inputHidden id="private" value="#{loginController.getStaff().getPrivateKey()}" />
 				<h:inputHidden id="public" value="#{loginController.getStaff().getPublicKey()}" />

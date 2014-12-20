@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:cc="http://java.sun.com/jsf/composite">
+	<h:body>
+	<ui:composition template="/resources/phd/common.xhtml">
+		<ui:define name="content">
+			
+			<h1>
+				<h:outputText value="#{msg['filledquestionnaire']}" />
+			</h1>
+			
+			<div class="box">
+			
+				<div id="patientheader">
+					<h:outputText class="patientheader" id="firstname"></h:outputText>
+					<h:outputText class="patientheader" id="lastname"></h:outputText>
+					<h:outputText class="patientheader" id="birthday"></h:outputText>
+				</div>
+
+				<h:form id="formularform">	
+					<h:inputHidden id="encryptedPersonalData" value="#{loginController.activePatient.personalData}"/>
+				</h:form>
+			
+				<div class="table">
+					<table id="patienttable">
+						<tr class="table-header" id="rowheader">
+							<th class="colid">Question</th>
+							<th class="colfirst">Answer</th>
+						</tr>
+						<c:forEach items="#{loginController.filledQuestion.questions}" var="quest" varStatus="status">
+							<tr id="row#{status.index}">
+								<td class="table-column-data">
+									<h:outputText value="#{quest.question}" />
+								</td>
+								<td class="table-column-data">
+									<ui:repeat var="answer" value="#{quest.answer}">
+										<h:outputText value="#{answer}" />
+									</ui:repeat>
+								</td>		
+							</tr>
+						</c:forEach>							
+					</table>
+				</div>
+			
+				<h:form>
+					<h:commandButton action="#{navigation.redirectToEditQuestionnaire}" actionListener="#{editFilledQuestionnaire.nameListener}" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Edit" />
+				</h:form>
+			
+			</div>
+				
+			<h:outputScript type="text/javascript">
+			    decryptPersonalDataForFormular();
+     		</h:outputScript>
+		
+		</ui:define>
+	</ui:composition>
+   </h:body>
+</html>

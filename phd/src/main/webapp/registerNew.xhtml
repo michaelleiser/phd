@@ -11,17 +11,18 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
+		
+			<h:outputScript library="js" name="CryptoJS/rollups/sha256.js" />
+			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
+			<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
+			<h:outputScript library="js" name="validate_registernew.js" />		
+		
 			<div id="content">
 				<h1>
 					<h:outputText value="#{msg['registernew']}" />
 				</h1>
 				<div class="formular">
-				
-					<h:outputScript library="js" name="CryptoJS/rollups/sha256.js" />
-					<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
-					<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
-					<h:outputScript library="js" name="validate_registernew.js" />
-					
+									
 					<h:form id="registernewform" onsubmit="return validation();">
 						<h:panelGrid columns="2">
 							<h:outputLabel for="name" value="Username" />
@@ -32,8 +33,7 @@
 							<h:inputSecret id="newpass" required="true" value="#{staff.password}" />
 							
 							<h:outputLabel for="confpass" value="Confirm Password" />
-							<h:inputSecret id="confpass" required="true" />
-							
+							<h:inputSecret id="confpass" required="true" />							
 							
 							<h:outputLabel for="role" value="Role"/>
 							<h:selectOneRadio id="role" required="true"

@@ -12,24 +12,27 @@
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
 			<h1>
-				<h:outputText value="CVS Downloads" />
+				<h:outputText value="CSV Downloads" />
 			</h1>
 
 			<div id="templates">
 			
-				<h:outputScript library="js" name="validate_patient.js" />
-
-		<h:form id="export">
-			<c:forEach items="#{loginController.templateNames}" var="template" varStatus="status">
-								<tr id="row#{status.index}">
-									<td class="table-column-id">
-										<h:commandLink  value="#{template}" action="#{loginController.export}"><f:param name="template" value="#{template}"/></h:commandLink><br /> 
-									</td>
-								</tr>
-			</c:forEach>    
-			<br /><h:commandLink  value="Total" action="#{loginController.export}"><f:param name="template" value="total"/></h:commandLink><br />
-        </h:form>
-        
+				<h:form id="export">
+					<c:forEach items="#{loginController.templateNames}" var="template" varStatus="status">
+						<tr id="row#{status.index}">
+							<td class="table-column-id">
+								<h:commandLink  value="#{template}" action="#{loginController.export}">
+									<f:param name="template" value="#{template}"/>
+								</h:commandLink>
+							</td>
+						</tr>
+						<br />
+					</c:forEach>
+					<br />
+				<h:commandLink  value="Total" action="#{loginController.export}">
+					<f:param name="template" value="total"/>
+				</h:commandLink>
+        	</h:form>
 
 			</div>
 		</ui:define>

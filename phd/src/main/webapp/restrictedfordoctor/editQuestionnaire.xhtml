@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:cc="http://java.sun.com/jsf/composite" >
+<h:head>
+</h:head>
+<h:body>
+	<ui:composition template="/resources/phd/common.xhtml">
+		<ui:define name="content">
+		
+			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
+			<h:outputScript library="js" name="validate_patient.js" />
+		
+			<h1>
+				<h:outputText value="#{msg['editquestionnaire']}" />
+			</h1>
+			
+			<div class="box">
+			
+				<div id="patientheader">
+					<h:outputText class="patientheader" id="firstname"></h:outputText>
+					<h:outputText class="patientheader" id="lastname"></h:outputText>
+					<h:outputText class="patientheader" id="birthday"></h:outputText>
+				</div>
+					
+				<h:form id="formularform">
+				<c:set var="a" value="#{loginController.filledQuestion}"> </c:set>
+					<c:forEach items="#{a.questions}" var="q">
+						<c:if test="#{q.type eq 'String'}">
+							<h:outputLabel for="j_idt#{q.id}" value="#{q.question}"/><br />
+							<h:inputText id="j_idt#{q.id}" value="#{q.answer}" >
+								<f:validateRegex pattern="([A-Za-z0-9 ,.\-!?])+"/>
+								<f:ajax event="change" execute="@this" listener="#{q.save(loginController)}" />
+							</h:inputText>
+						</c:if>
+						<c:if test="#{q.type eq 'RadioButton'}">
+							<h:outputLabel for="j_idt#{q.id}" value="#{q.question}" />
+							<h:selectOneRadio id="j_idt#{q.id}" value="#{q.answer}">
+								<f:ajax event="change" execute="@this" listener="#{q.save(loginController)}" />
+								<f:selectItems value="#{q.answerPossibilities}"/>
+							</h:selectOneRadio>
+						</c:if>
+						<c:if test="#{q.type eq 'Checkbox'}">
+							<h:outputLabel for="j_idt#{q.id}" value="#{q.question}"/>
+							<h:selectManyCheckbox id="j_idt#{q.id}" value="#{q.answer}">
+									<f:ajax event="change" execute="@this" listener="#{q.save(loginController)}" />
+									<f:selectItems value="#{q.answerPossibilities}"/>
+							</h:selectManyCheckbox>
+						</c:if><br />
+					</c:forEach>
+					
+					<h:commandButton actionListener="#{a.saveUpdate(loginController)}" value="Save"/>
+				
+					<h:inputHidden id="encryptedPersonalData" value="#{loginController.activePatient.personalData}"/>
+
+				</h:form>
+			
+			</div>
+			
+			<h:outputScript type="text/javascript">
+			    decryptPersonalDataForFormular();
+     		</h:outputScript>
+				
+		</ui:define>
+	</ui:composition>
+
+this is not displayed
+	
+</h:body>
+</html>

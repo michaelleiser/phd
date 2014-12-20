@@ -11,15 +11,16 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
+		
+			<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
+			<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
+			<h:outputScript library="js" name="validate_group.js" />
+		
 			<div id="content">
 				<h1>
 					<h:outputText value="#{msg['renewgroupkey']}" />
 				</h1>
-		
-				<h:outputScript library="js" name="CryptoJS/rollups/aes.js" />
-				<h:outputScript library="js" name="JSEncrypt/bin/jsencrypt.min.js" />
-				<h:outputScript library="js" name="validate_group.js" />
-		
+				
 				<div class="box">
 					<h:form id="renewform">
 						<h:commandButton action="#{loginController.renew(renewGroupKey.value, renewStaff.value, renewPatient.value)}" onclick="return renewGroupKey();" value="Renew Group Key" />
