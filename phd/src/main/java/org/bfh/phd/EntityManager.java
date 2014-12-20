@@ -53,7 +53,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	private List<String> errors;
 	private List<FilledQuestionnaire> filledQuestionnaires;
 	private HashMap<String, FilledQuestionnaire> emptyQuestionnaires;
-	private HashMap<String, String> csvs;
+	private HashMap<String, String> csvs = new HashMap<String, String>();
 
 	private Map<String, Integer> typ;
 	private String templatename = "";
