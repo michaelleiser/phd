@@ -69,7 +69,11 @@ div#loggedinbox {
 	width: auto;
 }
 
-.patientheader{
+div#patientheader {
+	margin: 0px 0px 20px 0px;
+}
+
+.patientheader {
 	padding: 0px 10px 0px 0px;
 	font-size: 25px;
 	font-weight: bold;
@@ -103,7 +107,11 @@ div#quests {
 	width: auto;
 }
 
-.table{
+.question {
+	padding: 10px 0px 10px 0px;
+}
+
+.table {
 	
 }
 .table-header {

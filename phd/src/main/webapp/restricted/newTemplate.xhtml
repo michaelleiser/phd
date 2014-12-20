@@ -35,7 +35,7 @@
 							<h2>
 								<h:outputText value="#{template.name}" />
 							</h2>
-					</c:if>
+						</c:if>
 					</h:form>
 	
 					<h:dataTable id="outputMessage" value="#{template.question}"
@@ -44,14 +44,18 @@
 						columnClasses="table-column-id,table-column-data,table-column-data,table-column-data,table-column-button,table-column-button,table-column-button">
 						<c:if test="#{template.templateEmpty}">
 							<h:column>
-								<f:facet name="header">Question number</f:facet>#{questions.id}
+								<f:facet name="header">Number</f:facet>
+								<h:outputText value="#{questions.id}" />
 							</h:column>
 							<h:column>
-								<f:facet name="header">Question</f:facet>#{questions.question}
+								<f:facet name="header">Question</f:facet>
+								<h:outputText value="#{questions.question}" />
 							</h:column>
 							<h:column>
 								<f:facet name="header">Possible answers</f:facet>
-								<ui:repeat var="answer" value="#{questions.answer}">#{answer}<br />
+								<ui:repeat var="answer" value="#{questions.answer}">
+									<h:outputText value="#{answer}" />
+									<br />
 								</ui:repeat>
 						</h:column>
 						</c:if>
