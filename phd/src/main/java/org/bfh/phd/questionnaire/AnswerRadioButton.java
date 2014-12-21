@@ -1,4 +1,4 @@
-package org.bfh.phd.questionary;
+package org.bfh.phd.questionnaire;
 
 import java.util.ArrayList;
 import java.util.List;

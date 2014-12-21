@@ -20,7 +20,7 @@ import org.bfh.phd.interfaces.IAnswer;
 import org.bfh.phd.interfaces.IFilledQuestionnaire;
 import org.bfh.phd.interfaces.ILoginController;
 import org.bfh.phd.interfaces.IQuestion;
-import org.bfh.phd.questionary.QuestionnairTools;
+import org.bfh.phd.questionnaire.QuestionnaireTools;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -39,7 +39,6 @@ public class LoginController implements Serializable, ILoginController{
 
 	private Staff activeUser;
 	private Patient activePatient;
-	private PatientData activePatientData;
 	private int questionnaireId;
 	private String questionnaireName = "";
 
@@ -173,9 +172,9 @@ public class LoginController implements Serializable, ILoginController{
 		return null;
 	}
 	
-	public List<ListOfQuestionnari> getPatientDatas(){
+	public List<ListOfQuestionnaire> getPatientDatas(){
 		if(this.loggedin && (this.activePatient != null) && checkToken()){
-			List<ListOfQuestionnari> l = em.searchDatas(this.activePatient.getPatientid());
+			List<ListOfQuestionnaire> l = em.searchDatas(this.activePatient.getPatientid());
 			return l;
 		}
 		return null;
@@ -274,19 +273,6 @@ public class LoginController implements Serializable, ILoginController{
 			this.activePatient = activePatient;
 		}
 	}
-
-	public PatientData getActivePatientData() {
-		if(this.loggedin && checkToken()){
-			return activePatientData;
-		}
-		return null;
-	}
-
-	public void setActivePatientData(PatientData activePatientData) {
-		if(this.loggedin && checkToken()){
-			this.activePatientData = activePatientData;
-		}
-	}
 	
 	private Date from;
 	public Date getFrom() {
@@ -342,12 +328,12 @@ public class LoginController implements Serializable, ILoginController{
 	}
 	
 	
-	public void setPatientid(ListOfQuestionnari list){
+	public void setPatientid(ListOfQuestionnaire list){
 		this.questionnaireId = list.getQuestId();
 		this.questionnaireName = list.getTypOfQuest();
 	}
 
-	public ListOfQuestionnari getPatientid(){
+	public ListOfQuestionnaire getPatientid(){
 		return null;
 	}
 
@@ -424,14 +410,14 @@ public class LoginController implements Serializable, ILoginController{
 		}
 	}
 
-	public List<QuestionnairTools> getTemplate(String name) {
+	public List<QuestionnaireTools> getTemplate(String name) {
 		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
 		return em.getTemplate(name);
 		}
 		return null;
 	}
 
-	public void deletTemplateQuestion(QuestionnairTools q) {
+	public void deletTemplateQuestion(QuestionnaireTools q) {
 		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
 		try {
 			em.deletTemplateQuestion(q);
@@ -441,7 +427,7 @@ public class LoginController implements Serializable, ILoginController{
 		}
 	}
 
-	public void editQuestion(QuestionnairTools q) {
+	public void editQuestion(QuestionnaireTools q) {
 		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
 		try {
 			em.editQuestion(q);

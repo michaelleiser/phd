@@ -31,10 +31,10 @@
 			</div>
 				
 			<!-- automatically load public private key in session storage -->			
-			<h:form id="sessionkeysid">
-				<h:inputHidden id="private" value="#{loginController.getStaff().getPrivateKey()}" />
-				<h:inputHidden id="public" value="#{loginController.getStaff().getPublicKey()}" />
-				<h:inputHidden id="group" value="#{loginController.getDepartment_Has_Staff().getEncryptedGroupKeyFromStaff(loginController.getStaff())}"/>
+			<h:form id="sessionkeys">
+				<h:inputHidden id="privateKey" value="#{loginController.getStaff().getPrivateKey()}" />
+				<h:inputHidden id="publicKey" value="#{loginController.getStaff().getPublicKey()}" />
+				<h:inputHidden id="groupKey" value="#{loginController.getDepartment_Has_Staff().getEncryptedGroupKeyFromStaff(loginController.getStaff())}"/>
 			</h:form>
 			<h:outputScript type="text/javascript">
 			    getSessionKeys();

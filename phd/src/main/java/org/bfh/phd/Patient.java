@@ -1,8 +1,6 @@
 package org.bfh.phd;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -25,8 +23,6 @@ public class Patient implements Serializable, IPatient {
 	private boolean writeaccess;
 	private boolean insertaccess;
 	
-	private List<PatientData> patientDatas = new ArrayList<PatientData>();
-
 	public Patient() {
 		
 	}
@@ -100,22 +96,7 @@ public class Patient implements Serializable, IPatient {
 	public void setInsertaccess(boolean insertaccess) {
 		this.insertaccess = insertaccess;
 	}
-
-	@Override
-	public List<PatientData> getPatientDatas() {
-		return this.patientDatas;
-	}
-
-	@Override
-	public void setPatientDatas(List<PatientData> patientDatas) {
-		this.patientDatas = patientDatas;
-	}
 	
-	@Override
-	public void addPatientData(PatientData patientData){
-		this.patientDatas.add(patientData);
-	}
-
 	@Override
 	public String toString(){
 		return this.patientid + " : " + this.personalData;

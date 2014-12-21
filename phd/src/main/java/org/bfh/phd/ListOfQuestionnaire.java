@@ -8,13 +8,13 @@ import javax.faces.bean.RequestScoped;
 
 @ManagedBean(name = "quests", eager = true)
 @RequestScoped
-public class ListOfQuestionnari {
+public class ListOfQuestionnaire {
 
 	private int questId;
 	private Timestamp date;
 	private String typOfQuest;
 	
-	public ListOfQuestionnari(){
+	public ListOfQuestionnaire(){
 		
 	}
 	

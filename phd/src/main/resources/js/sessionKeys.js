@@ -7,15 +7,15 @@
 function getSessionKeys() {
     if(typeof(Storage) !== "undefined") {
     	if(typeof(sessionStorage.privateKey) === "undefined"){
-            sessionStorage.publicKey = document.getElementById("sessionkeysid:public").value;
+            sessionStorage.publicKey = document.getElementById("sessionkeys:publicKey").value;
             
-            var encrypted = document.getElementById("sessionkeysid:private").value;
+            var encrypted = document.getElementById("sessionkeys:privateKey").value;
             var pass = sessionStorage.password;
             var decrypted = CryptoJS.AES.decrypt(encrypted, pass);
             var plaintext = decrypted.toString(CryptoJS.enc.Utf8);
             sessionStorage.privateKey = plaintext; 
             
-        	var ciphertext = document.getElementById("sessionkeysid:group").value;
+        	var ciphertext = document.getElementById("sessionkeys:groupKey").value;
         	var crypt = new JSEncrypt();
         	crypt.setPrivateKey(sessionStorage.privateKey);
             var decrypted = crypt.decrypt(ciphertext);

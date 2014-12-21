@@ -1,11 +1,11 @@
-package org.bfh.phd.questionary;
+package org.bfh.phd.questionnaire;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.event.ValueChangeEvent;
 
-public class QuestionnairTools {
+public class QuestionnaireTools {
 	private int id = 0;
 	private int dbId = 0;
 	private String question;

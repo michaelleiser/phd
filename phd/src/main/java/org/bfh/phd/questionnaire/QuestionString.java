@@ -1,4 +1,4 @@
-package org.bfh.phd.questionary;
+package org.bfh.phd.questionnaire;
 
 import org.bfh.phd.LoginController;
 import org.bfh.phd.interfaces.IQuestion;

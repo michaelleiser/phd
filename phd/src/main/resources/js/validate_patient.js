@@ -147,7 +147,7 @@ function decryptPersonalDataForSearchWebWorker() {
 //	visiblerows = new Array();
 //	var encryptedData = [];
 //	for(var i = 0 ; i < size ; i++){
-//		var encrypted = document.getElementById("searchform:encdata" + i).value;
+//		var encrypted = document.getElementById("searchform:encryptedPersonalData" + i).value;
 //		var obj = {row:i, data:encrypted};
 //		encryptedData.push(obj);
 //	}
@@ -188,7 +188,7 @@ function decryptPersonalDataForSearch(){
 	patients = new Array();
 	visiblerows = new Array();
 	for(var i = 0 ; i < size ; i++){
-		var encrypted = document.getElementById("searchform:encdata" + i).value;
+		var encrypted = document.getElementById("searchform:encryptedPersonalData" + i).value;
 		var decrypted = CryptoJS.AES.decrypt(encrypted, groupKey);
 		if(decrypted != ""){
 			var json = decrypted.toString(CryptoJS.enc.Utf8);

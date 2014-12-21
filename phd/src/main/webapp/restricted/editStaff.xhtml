@@ -35,14 +35,14 @@
 							<h:inputSecret id="confpass" required="true" />		
 
 							<h:outputText />	
-							<h:commandButton action="#{loginController.updateStaff(loginController.getStaff(), input_key.value)}" value="Update Password" />
+							<h:commandButton action="#{loginController.updateStaff(loginController.getStaff(), groupKey.value)}" value="Update Password" />
 
 						</h:panelGrid>
 
 						<h:inputHidden id="salt" value="#{loginController.getStaff().salt}" />
-						<h:inputHidden id="encryptedprivatekey" value="#{loginController.getStaff().privateKey}"/>	
-						<h:inputHidden id="publickey" value="#{loginController.getStaff().publicKey}"/>	
-						<h:inputHidden id="encryptedgroupkey" binding="#{input_key}" />
+						<h:inputHidden id="encryptedPrivateKey" value="#{loginController.getStaff().privateKey}"/>	
+						<h:inputHidden id="publicKey" value="#{loginController.getStaff().publicKey}"/>	
+						<h:inputHidden id="encryptedGroupKey" binding="#{groupKey}" />
 						
 					</h:form>
 				</div>

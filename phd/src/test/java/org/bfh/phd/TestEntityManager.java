@@ -9,10 +9,10 @@ import java.util.Map;
 
 import javax.sound.midi.SysexMessage;
 
-import org.bfh.phd.questionary.AnswerCheckbox;
-import org.bfh.phd.questionary.AnswerRadioButton;
-import org.bfh.phd.questionary.AnswerString;
-import org.bfh.phd.questionary.QuestionString;
+import org.bfh.phd.questionnaire.AnswerCheckbox;
+import org.bfh.phd.questionnaire.AnswerRadioButton;
+import org.bfh.phd.questionnaire.AnswerString;
+import org.bfh.phd.questionnaire.QuestionString;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

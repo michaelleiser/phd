@@ -36,8 +36,7 @@
 							<h:inputSecret id="confpass" required="true" />							
 							
 							<h:outputLabel for="role" value="Role"/>
-							<h:selectOneRadio id="role" required="true"
-								value="#{staff.role}">
+							<h:selectOneRadio id="role" required="true" value="#{staff.role}">
 								<f:selectItem id="roledoctor" itemLabel="Doctor" itemValue="1" />
 								<f:selectItem id="rolestatistician" itemLabel="Statistician" itemValue="2" />
 							</h:selectOneRadio>
@@ -58,21 +57,19 @@
 							
 							<h:outputText />
 							<h:panelGroup id="regnew">
-								<h:commandButton action="#{loginController.registerNew(staff)}" rendered="#{not empty loginController.departmentselected}"
-								value="Register new" />
+								<h:commandButton action="#{loginController.registerNew(staff)}" rendered="#{not empty loginController.departmentselected}" value="Register new" />
 							</h:panelGroup>
 							<h:outputText />
 							<h:panelGroup id="regnewwithdep">
-								<h:commandButton action="#{loginController.registerNewWithDepartment(staff, department, input_key.value)}" rendered="#{empty loginController.departmentselected}"
-								value="Register new" />
+								<h:commandButton action="#{loginController.registerNewWithDepartment(staff, department, groupKey.value)}" rendered="#{empty loginController.departmentselected}" value="Register new" />
 							</h:panelGroup>			
 							
 						</h:panelGrid>
 						
 						<h:inputHidden id="salt" value="#{staff.salt}"/>
-						<h:inputHidden id="encryptedprivatekey" value="#{staff.privateKey}" />
-						<h:inputHidden id="publickey" value="#{staff.publicKey}" />
-						<h:inputHidden id="encryptedgroupkey" binding="#{input_key}" />
+						<h:inputHidden id="encryptedPrivateKey" value="#{staff.privateKey}" />
+						<h:inputHidden id="publicKey" value="#{staff.publicKey}" />
+						<h:inputHidden id="encryptedGroupKey" binding="#{groupKey}" />
 					
 					</h:form>
 				</div>

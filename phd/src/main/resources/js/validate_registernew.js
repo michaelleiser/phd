@@ -50,17 +50,17 @@ function validation(){
 	 */
 	if(role0.checked){
 		var pksk = generatePublicKeyAndEncryptedPrivateKey(2048, newpass);
-		document.getElementById("registernewform:publickey").value = pksk[0];
-		document.getElementById("registernewform:encryptedprivatekey").value = pksk[1];
+		document.getElementById("registernewform:publicKey").value = pksk[0];
+		document.getElementById("registernewform:encryptedPrivateKey").value = pksk[1];
 		
 		/**
 		 * For new departments -> create an encrypted group key
 		 * For existing departments -> encrypted group key is generated in activation process
 		 */
-		var publicKey = document.getElementById("registernewform:publickey").value;
+		var publicKey = document.getElementById("registernewform:publicKey").value;
 		if(departmentname != ""){
 			var encryptedGroupKey = generateEncryptedGroupKey(256, publicKey);
-			document.getElementById("registernewform:encryptedgroupkey").value = encryptedGroupKey;
+			document.getElementById("registernewform:encryptedGroupKey").value = encryptedGroupKey;
 		}
 	}
 	

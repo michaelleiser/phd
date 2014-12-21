@@ -28,14 +28,14 @@ function validation(){
 	 */
 	if(document.getElementById("role").value == 1){
 		var pksk = generatePublicKeyAndEncryptedPrivateKey(2048, newpass);
-		document.getElementById("staffform:publickey").value = pksk[0];
-		document.getElementById("staffform:encryptedprivatekey").value = pksk[1];
+		document.getElementById("staffform:publicKey").value = pksk[0];
+		document.getElementById("staffform:encryptedPrivateKey").value = pksk[1];
 		
 		var crypt = new JSEncrypt();
-		crypt.setPublicKey(document.getElementById("staffform:publickey").value);
+		crypt.setPublicKey(document.getElementById("staffform:publicKey").value);
 		var groupKey = sessionStorage.groupKey;
 	    var encrypted =  crypt.encrypt(groupKey);
-	    document.getElementById("staffform:encryptedgroupkey").value = encrypted;
+	    document.getElementById("staffform:encryptedGroupKey").value = encrypted;
 	}
 	
 	return true;

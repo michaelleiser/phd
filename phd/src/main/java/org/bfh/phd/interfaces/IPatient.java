@@ -1,8 +1,6 @@
 package org.bfh.phd.interfaces;
 
-import java.util.List;
 import org.bfh.phd.Department;
-import org.bfh.phd.PatientData;
 import org.bfh.phd.Staff;
 
 /**
@@ -95,23 +93,4 @@ public interface IPatient {
 	 */
 	public void setInsertaccess(boolean insertaccess);
 	
-	/**
-	 * @return
-	 * 			a list of data from the patient
-	 */
-	public List<PatientData> getPatientDatas();
-
-	/**
-	 * @param patientDatas
-	 * 			a list of data for the patient
-	 */
-	public void setPatientDatas(List<PatientData> patientDatas);
-
-	/**
-	 * Add a new data entry for the patient.
-	 * @param patientData
-	 * 			a data entry
-	 */
-	public void addPatientData(PatientData patientData);
-
 }

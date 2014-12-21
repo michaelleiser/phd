@@ -1,21 +1,24 @@
-package org.bfh.phd.questionary;
+package org.bfh.phd.questionnaire;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.faces.event.AjaxBehaviorEvent;
 
+import org.bfh.phd.EntityManager;
 import org.bfh.phd.LoginController;
 import org.bfh.phd.interfaces.IQuestion;
 
 
-public class QuestionRadioButton implements IQuestion <List<String>, String > {
+public class QuestionCheckbox implements IQuestion <List<String>, List<String>> {
 	
-	private String type = "RadioButton";
 	private String question;
-	private int dbId;
+	private int id;
+	private static int dbId;
 	private List<String> answerPossibilities = new ArrayList<String>();
-	private String answer = "";
+	private List<String> answer = new ArrayList<String>();
+	private String type = "Checkbox";
 
 	@Override
 	public String getQuestion() {
@@ -37,17 +40,9 @@ public class QuestionRadioButton implements IQuestion <List<String>, String > {
 		answerPossibilities.add(o);
 	}
 
-	@Override
 	public List<String> getAnswerPossibilities() {
 		return answerPossibilities;
 	}
-
-	@Override
-	public void setAnswerPossibilities(List<String> o) {
-		answerPossibilities = o;
-	}
-	
-	private int id;
 
 	@Override
 	public int getId() {
@@ -59,23 +54,23 @@ public class QuestionRadioButton implements IQuestion <List<String>, String > {
 		this.id = id;
 	}
 
-	public String getAnswer(){
-		return this.answer;
-	}
-	
-	public void setAnswer(String s){
-		this.answer = s;
-	}
-	
-	public String getType(){
+	public String getType() {
 		return type;
 	}
+
+	@Override
+	public List<String> getAnswer() {
+		return answer;
+	}
 	
-//	public void setAnswer(final AjaxBehaviorEvent event) {
-//		System.out.println("aufruf");
-//		String s = event.getComponent().getAttributes().get("change").toString();
-//		System.out.println(s);
-//	}
+	@Override
+	public void setAnswerPossibilities(List<String> o) {
+		this.answerPossibilities = o;		
+	}
+
+	public void setAnswer(List<String> s) {
+		this.answer = s;
+	}
 	
 	public void save(LoginController lc){
 		lc.updateAnswer(this);
@@ -83,6 +78,6 @@ public class QuestionRadioButton implements IQuestion <List<String>, String > {
 
 	@Override
 	public int getDBid() {
-		return this.dbId;
+		return dbId;
 	}
 }

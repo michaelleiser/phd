@@ -25,13 +25,13 @@ import org.bfh.phd.interfaces.IAnswer;
 import org.bfh.phd.interfaces.IEntityManager;
 import org.bfh.phd.interfaces.IFilledQuestionnaire;
 import org.bfh.phd.interfaces.IQuestion;
-import org.bfh.phd.questionary.AnswerCheckbox;
-import org.bfh.phd.questionary.AnswerRadioButton;
-import org.bfh.phd.questionary.AnswerString;
-import org.bfh.phd.questionary.QuestionCheckbox;
-import org.bfh.phd.questionary.QuestionRadioButton;
-import org.bfh.phd.questionary.QuestionString;
-import org.bfh.phd.questionary.QuestionnairTools;
+import org.bfh.phd.questionnaire.AnswerCheckbox;
+import org.bfh.phd.questionnaire.AnswerRadioButton;
+import org.bfh.phd.questionnaire.AnswerString;
+import org.bfh.phd.questionnaire.QuestionCheckbox;
+import org.bfh.phd.questionnaire.QuestionRadioButton;
+import org.bfh.phd.questionnaire.QuestionString;
+import org.bfh.phd.questionnaire.QuestionnaireTools;
 
 /**
  * @author leism3, koblt1
@@ -46,7 +46,6 @@ public class EntityManager implements IEntityManager, Serializable {
 	private List<Staff> staffs;	
 	private List<Department_Has_Staff> department_Has_Staffs;
 	private List<Patient> patients;
-	private List<PatientData> patientdatas;
 	private List<Department> departments;
 	private List<IQuestion> questions;
 	private List<String> operationtypes;
@@ -325,20 +324,20 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 
-	public List<PatientData> getPatientdatas() {
-		return patientdatas;
-	}
-
-	public void setPatientdatas(List<PatientData> patientdatas) {
-		this.patientdatas = patientdatas;
-	}
+//	public List<PatientData> getPatientdatas() {
+//		return patientdatas;
+//	}
+//
+//	public void setPatientdatas(List<PatientData> patientdatas) {
+//		this.patientdatas = patientdatas;
+//	}
 
 	@Override
-	public List<Questionnari> searchQuestionnaris(int id) {
+	public List<Questionnaire> searchQuestionnaris(int id) {
 		//TODO used?
 		System.out.println("entity 336");
 		init();
-		ArrayList<Questionnari> questionnaris = new ArrayList<Questionnari>();
+		ArrayList<Questionnaire> questionnaris = new ArrayList<Questionnaire>();
 		String stm1 = "SELECT * FROM quest LEFT JOIN op ON quest.op_id = op.id WHERE patient_id="
 				+ id + ";";
 		try {
@@ -346,7 +345,7 @@ public class EntityManager implements IEntityManager, Serializable {
 			pst.execute();
 			rs = pst.getResultSet();
 			while (rs.next()) {
-				Questionnari q = new Questionnari();
+				Questionnaire q = new Questionnaire();
 				q.setDate(rs.getDate("date"));
 				q.setOp(rs.getString("opart"));
 				q.setId(rs.getInt("quest_id"));
@@ -374,18 +373,6 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 		// paginatorPatient.setSize(patient.size());
 		return patient;
-	}
-
-	public List<PatientData> searchPatientDatas() {
-		List<PatientData> list = new ArrayList<PatientData>();
-		for(Patient p : patients){
-			for(PatientData pd : p.getPatientDatas()){
-				if(true){
-					list.add(pd);
-				}
-			}
-		}
-		return list;
 	}
 
 	@Override
@@ -833,8 +820,8 @@ public class EntityManager implements IEntityManager, Serializable {
 	 *            is the identification number of the patient
 	 * @return
 	 */
-	public List<ListOfQuestionnari> searchDatas(int id) {
-		List<ListOfQuestionnari> quest = new ArrayList<ListOfQuestionnari>();
+	public List<ListOfQuestionnaire> searchDatas(int id) {
+		List<ListOfQuestionnaire> quest = new ArrayList<ListOfQuestionnaire>();
 		String stm = "SELECT date, answer_id, name FROM questionnaire q JOIN questionnaire_template_name n ON q.template_name_id = n.id WHERE q.patient_patient_id = ? ORDER BY date DESC;";
 		init();
 		try {
@@ -843,7 +830,7 @@ public class EntityManager implements IEntityManager, Serializable {
 			pst.execute();
 			rs = pst.getResultSet();
 			while (rs.next()) {
-				ListOfQuestionnari list = new ListOfQuestionnari();
+				ListOfQuestionnaire list = new ListOfQuestionnaire();
 				list.setDate(rs.getTimestamp("date"));
 				list.setQuestId(rs.getInt("answer_id"));
 				list.setTypOfQuest(rs.getString("name"));
@@ -1292,9 +1279,9 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	@Override
-	public List<QuestionnairTools> getTemplate(String name) {
+	public List<QuestionnaireTools> getTemplate(String name) {
 		init();
-		List<QuestionnairTools> quest = new ArrayList<QuestionnairTools>();
+		List<QuestionnaireTools> quest = new ArrayList<QuestionnaireTools>();
 		String stm = "SELECT fragenr, q.id, name, pos_id, question, typ FROM question_has_template t  join questionnaire_template_name n On n.id=t.id join question q On t.question_id=q.id join question_typ ty On q.type_id=ty.id WHERE name = ? ORDER BY fragenr;";
 		try {
 			pst = con.prepareStatement(stm);
@@ -1302,7 +1289,7 @@ public class EntityManager implements IEntityManager, Serializable {
 			pst.execute();
 			rs = pst.getResultSet();
 			while (rs.next()) {
-				QuestionnairTools q = new QuestionnairTools();
+				QuestionnaireTools q = new QuestionnaireTools();
 				q.setId(rs.getInt("fragenr"));
 				q.setDbId(rs.getInt("id"));
 				q.setQuestion(rs.getString("question"));
@@ -1330,7 +1317,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	@Override
-	public void deletTemplateQuestion(QuestionnairTools q) throws SQLException {
+	public void deletTemplateQuestion(QuestionnaireTools q) throws SQLException {
 		init();
 		init2();
 		String stm = "DELETE FROM question WHERE id=?;";
@@ -1370,7 +1357,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	@Override
-	public void editQuestion(QuestionnairTools q) throws SQLException {
+	public void editQuestion(QuestionnaireTools q) throws SQLException {
 		init();
 		init2();
 		String stm = "UPDATE question SET question=? WHERE id=?;";

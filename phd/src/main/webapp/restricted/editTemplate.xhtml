@@ -11,99 +11,134 @@
 <h:body>
 	<ui:composition template="/resources/phd/common.xhtml">
 		<ui:define name="content">
-			<h1>
-				<h:outputText value="Edit Template" />
-			</h1>
+		
+			<div id="content">
+		
+				<h1>
+					<h:outputText value="Edit Template" />
+				</h1>
 					
-			<h:form>			
-				<h:outputLabel>Template that you need to edit.</h:outputLabel><br />
-				<h:selectOneMenu onchange="submit()" value="#{template.templateNameselected}" actionListener="#{template.templateNameChanged}">
-					<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
-					<f:selectItems value="#{template.templateNames}" />
-				</h:selectOneMenu>		
-				<br /><br />
-			</h:form>
+				<div class="box">
+					
+					<h:form>			
+						<h:outputLabel value="Template that you need to edit" /><br />
+						<h:selectOneMenu onchange="submit()" value="#{template.templateNameselected}" actionListener="#{template.templateNameChanged}">
+							<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
+							<f:selectItems value="#{template.templateNames}" />
+						</h:selectOneMenu>		
+						<br /><br />
+					</h:form>
 
-		<h:form>
-				<c:if test="#{template.e != 0}">
-				<h:outputLabel>Fragetyp</h:outputLabel><br />
-				<h:selectOneMenu onchange="submit()" value="#{type.typeselected}" actionListener="#{type.typeChanged}">
-					<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
-					<f:selectItems value="#{type.types}" />
-				</h:selectOneMenu>		
-				<br /><br />
-				<c:if test="#{type.typeselected eq 'String'}">
-					<h:outputLabel>Bitte geben sie die gewünschte Frage ein:</h:outputLabel><br />
-					<h:inputText value="#{template.questionString}"><f:ajax event="change" execute="@this" listener="#{template.addString}" /><f:attribute name="edit" value="1"/></h:inputText><br /><br />
-				</c:if>
-				<c:if test="#{type.typeselected eq 'RadioButton'}">
-					<h:outputLabel>Bitte geben sie die gewünschte Fragen ein:</h:outputLabel><br />
-					<h:inputText value="#{template.questionString}"><f:ajax event="change" execute="@this" listener="#{template.addQuestion}" /><f:attribute name="edit" value="1"/></h:inputText><br /><br />
-					<h:outputLabel>Anzahl Antworten:</h:outputLabel><br />
-							<h:selectOneMenu onchange="submit()" value="#{type.numberselected}" actionListener="#{type.numberChanged}">
-							<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="false" />
-							<f:selectItems value="#{type.i}" />
-							</h:selectOneMenu><br />
-						<c:set var="a" value="#{type.numberselected}"/>
-						<c:forEach begin="2" end="#{a}">
-						<h:inputText value="#{template.answerRadioButton}"><f:ajax event="change" execute="@this" listener="#{template.addAnswer}" /></h:inputText>	<br />
-						</c:forEach>
-						<h:inputText value="#{template.answerRadioButton}"><f:ajax event="change" execute="@this" listener="#{template.addRadioButton}" /><f:attribute name="edit" value="1"/></h:inputText><br />	
-				</c:if>
-				<c:if test="#{type.typeselected eq 'Checkbox'}">
-					<h:outputLabel>Bitte geben sie die gewünschte Frage ein:</h:outputLabel><br />
-					<h:inputText value="#{template.questionString}"><f:ajax event="change" execute="@this" listener="#{template.addQuestion}" /></h:inputText><br /><br />
-					<h:outputLabel>Anzahl Antworten:</h:outputLabel><br />
-							<h:selectOneMenu onchange="submit()" value="#{type.numberselected}" actionListener="#{type.numberChanged}">
-							<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="false" />
-							<f:selectItems value="#{type.i}" />
-							</h:selectOneMenu><br />
-						<c:set var="a" value="#{type.numberselected}"/>
-						<c:forEach begin="2" end="#{a}">
-						<h:inputText value="#{template.answerCheckbox}"><f:ajax event="change" execute="@this" listener="#{template.addAnswer}" /></h:inputText><br />	
-						</c:forEach>
-						<h:inputText value="#{template.answerCheckbox}" ><f:ajax event="change" execute="@this" listener="#{template.addCheckbox}"/><f:attribute name="edit" value="1"/></h:inputText><br />	
-				</c:if>		
-				<br /><h:commandButton actionListener="#{template.saveAddEdit(loginController)}" value="Add question to Questionnaire"></h:commandButton>
-				</c:if>	
-			</h:form>		
+					<h:form>
+						<c:if test="#{template.e != 0}">
+							<h:outputLabel value="Question type" /><br />
+							<h:selectOneMenu onchange="submit()" value="#{type.typeselected}" actionListener="#{type.typeChanged}">
+								<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
+								<f:selectItems value="#{type.types}" />
+							</h:selectOneMenu>		
+							<br /><br />
+							<c:if test="#{type.typeselected eq 'String'}">
+								<h:outputLabel value="Please enter a question" /><br />
+								<h:inputText value="#{template.questionString}">
+									<f:ajax event="change" execute="@this" listener="#{template.addString}" />
+									<f:attribute name="edit" value="1"/>
+								</h:inputText>
+								<br /><br />
+							</c:if>
+							<c:if test="#{type.typeselected eq 'RadioButton'}">
+								<h:outputLabel value="Please enter a question" /><br />
+								<h:inputText value="#{template.questionString}">
+									<f:ajax event="change" execute="@this" listener="#{template.addQuestion}" />
+									<f:attribute name="edit" value="1"/>
+								</h:inputText>
+								<br /><br />
+								<h:outputLabel value="Number of answers" /><br />
+								<h:selectOneMenu onchange="submit()" value="#{type.numberselected}" actionListener="#{type.numberChanged}">
+									<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="false" />
+									<f:selectItems value="#{type.i}" />
+								</h:selectOneMenu><br />
+								<c:set var="a" value="#{type.numberselected}" />
+								<c:forEach begin="2" end="#{a}">
+									<h:inputText value="#{template.answerRadioButton}">
+										<f:ajax event="change" execute="@this" listener="#{template.addAnswer}" />
+									</h:inputText>	<br />
+								</c:forEach>
+								<h:inputText value="#{template.answerRadioButton}">
+									<f:ajax event="change" execute="@this" listener="#{template.addRadioButton}" />
+									<f:attribute name="edit" value="1"/>
+								</h:inputText><br />	
+							</c:if>
+							<c:if test="#{type.typeselected eq 'Checkbox'}">
+								<h:outputLabel value="Please enter a question" /><br />
+								<h:inputText value="#{template.questionString}">
+									<f:ajax event="change" execute="@this" listener="#{template.addQuestion}" />
+								</h:inputText><br /><br />
+								<h:outputLabel value="Number of answers" /><br />
+								<h:selectOneMenu onchange="submit()" value="#{type.numberselected}" actionListener="#{type.numberChanged}">
+									<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="false" />
+									<f:selectItems value="#{type.i}" />
+								</h:selectOneMenu><br />
+								<c:set var="a" value="#{type.numberselected}" />
+								<c:forEach begin="2" end="#{a}">
+									<h:inputText value="#{template.answerCheckbox}">
+										<f:ajax event="change" execute="@this" listener="#{template.addAnswer}" />
+									</h:inputText><br />	
+								</c:forEach>
+								<h:inputText value="#{template.answerCheckbox}">
+									<f:ajax event="change" execute="@this" listener="#{template.addCheckbox}" />
+									<f:attribute name="edit" value="1" />
+								</h:inputText><br />	
+							</c:if>		
+							<br />
+							<h:commandButton actionListener="#{template.saveAddEdit(loginController)}" value="Add question to Questionnaire" />
+						</c:if>	
+					</h:form>		
 
-			<h:form>
-			<h:dataTable
-			id="outputMessage"
-			value="#{template.templates}"
-			var="questions" 
-			headerClass="table-header"
-			rowClasses="table-odd-row,table-even-row"
-			columnClasses="table-column-data,table-column-data,table-column-data,table-column-data,table-column-data,table-column-button,table-column-button,table-column-button,table-column-button">
-
-				<h:column>
-					<h:commandLink action="#{template.editAction(questions)}" rendered="#{not questions.editable}"><h:graphicImage value="/images/edit.png"></h:graphicImage></h:commandLink>
-					<h:commandLink action="#{template.addAction(questions)}" rendered="#{not questions.editable}"><h:graphicImage value="/images/new.png"></h:graphicImage></h:commandLink>
-					<h:commandButton action="#{template.deletQuestion(loginController, questions)}" image="/images/delete.png"/>
+					<h:form>
+						<h:dataTable
+							id="outputMessage"
+							value="#{template.templates}"
+							var="questions" 
+							headerClass="table-header"
+							rowClasses="table-odd-row,table-even-row"
+							columnClasses="table-column-data,table-column-data,table-column-data,table-column-data,table-column-data,table-column-button,table-column-button,table-column-button,table-column-button">
+	
+							<h:column>
+								<h:commandLink action="#{template.editAction(questions)}" rendered="#{not questions.editable}">
+									<h:graphicImage value="/images/edit.png" />
+								</h:commandLink>
+								<h:commandLink action="#{template.addAction(questions)}" rendered="#{not questions.editable}">
+									<h:graphicImage value="/images/new.png" />
+								</h:commandLink>
+								<h:commandButton action="#{template.deletQuestion(loginController, questions)}" image="/images/delete.png" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">Questionnumber</f:facet>
+								<h:outputText value="#{questions.id}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">Question</f:facet>
+								<h:inputText value="#{questions.question}" rendered="#{questions.editable}" />
+								<h:outputText value="#{questions.question}" rendered="#{not questions.editable}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">Type</f:facet>
+								<h:outputText value="#{questions.type}" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">Possibleanswer</f:facet>
+								<ui:repeat var="answer" value="#{questions.answer}">
+									<h:inputText value="#{answer}" valueChangeListener="#{questions.changeAnswer}" rendered="#{questions.editable}" />
+									<h:outputText value="#{answer}" rendered="#{not questions.editable}" />
+									<br />
+								</ui:repeat>
+							</h:column>
+						</h:dataTable>
+						<h:commandButton action="#{template.saveEdit(loginController)}" value="save" />
+					</h:form>
 				
-				</h:column>
-				<h:column>
-					<f:facet name="header">Questionnumber</f:facet>	#{questions.id}
-				</h:column>
-				<h:column>
-					<f:facet name="header">Question</f:facet>
-					<h:inputText value="#{questions.question}" rendered="#{questions.editable}"/>
-					<h:outputText value="#{questions.question}" rendered="#{not questions.editable}"/>
-				</h:column>
-				<h:column>
-					<f:facet name="header">Type</f:facet>#{questions.type}
-				</h:column>
-				<h:column>
-					<f:facet name="header">Posibleanswer</f:facet>
-					<ui:repeat var="answer" value="#{questions.answer}">
-					<h:inputText value="#{answer}" valueChangeListener="#{questions.changeAnswer}" rendered="#{questions.editable}"/>
-					<h:outputText value="#{answer}" rendered="#{not questions.editable}"/><br /></ui:repeat>
-				</h:column>
-			</h:dataTable>
-			<h:commandButton action="#{template.saveEdit(loginController)}" value="save" />
-		</h:form>
-				
+				</div>
+			</div>
 		</ui:define>
 	</ui:composition>
 

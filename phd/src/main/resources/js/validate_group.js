@@ -14,7 +14,7 @@ function encryptGroupKey(element){
 	var groupKey = sessionStorage.groupKey;
 
     var encrypted =  crypt.encrypt(groupKey);
-    document.getElementById(substr + "encsecret").value = encrypted;
+    document.getElementById(substr + "encryptedGroupKey").value = encrypted;
 }
 
 /**
@@ -107,7 +107,7 @@ function renewPatient(oldGroupKey, newGroupKey){
 	}
 	for(var i = 0 ; i < size ; i++){
 		var id = document.getElementById("patientform:id"+i).value;
-		var encrypted = document.getElementById("patientform:encdata"+i).value;
+		var encrypted = document.getElementById("patientform:encryptedData"+i).value;
 		var decrypted = CryptoJS.AES.decrypt(encrypted, oldGroupKey);
 		var encryptednew = CryptoJS.AES.encrypt(decrypted, newGroupKey);
 		obj[id] = ""+encryptednew;

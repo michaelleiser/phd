@@ -11,15 +11,15 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.bfh.phd.interfaces.IAnswer;
-import org.bfh.phd.questionary.AnswerCheckbox;
-import org.bfh.phd.questionary.AnswerRadioButton;
-import org.bfh.phd.questionary.AnswerString;
+import org.bfh.phd.questionnaire.AnswerCheckbox;
+import org.bfh.phd.questionnaire.AnswerRadioButton;
+import org.bfh.phd.questionnaire.AnswerString;
 
 
 
 @ManagedBean(name = "questionnaridata", eager = true)
 @SessionScoped
-public class Questionnari implements Serializable {
+public class Questionnaire implements Serializable {
 	
 	private EntityManager em = new EntityManager();
 	
@@ -41,7 +41,7 @@ public class Questionnari implements Serializable {
 		return this.id;
 	}
 	
-	public List<Questionnari> getListOfQuestionnaris(){
+	public List<Questionnaire> getListOfQuestionnaris(){
 		return em.searchQuestionnaris(patient);
 	}
 

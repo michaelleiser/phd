@@ -7,9 +7,9 @@ import java.util.Map;
 import org.bfh.phd.Department_Has_Staff;
 import org.bfh.phd.FilledQuestionnaire;
 import org.bfh.phd.Patient;
-import org.bfh.phd.Questionnari;
+import org.bfh.phd.Questionnaire;
 import org.bfh.phd.Staff;
-import org.bfh.phd.questionary.QuestionnairTools;
+import org.bfh.phd.questionnaire.QuestionnaireTools;
 
 /**
  * @author leism3, koblt1
@@ -147,7 +147,7 @@ public interface IEntityManager {
 	 * @param id is the patient identification number
 	 * @return a list of Questionnaire data set
 	 */
-	public abstract List<Questionnari> searchQuestionnaris(int id);
+	public abstract List<Questionnaire> searchQuestionnaris(int id);
 
 	/**
 	 * Search all questions to an template
@@ -187,19 +187,19 @@ public interface IEntityManager {
 	 * @param name is the templatename that Questionnaire we search
 	 * @return a complete Questionnaire
 	 */
-	public List<QuestionnairTools> getTemplate(String name);
+	public List<QuestionnaireTools> getTemplate(String name);
 
 	/** delete a question from a template
 	 * @param q is the template question
 	 * @throws SQLException
 	 */
-	public void deletTemplateQuestion(QuestionnairTools q) throws SQLException;
+	public void deletTemplateQuestion(QuestionnaireTools q) throws SQLException;
 
 	/** edit a question from a template
 	 * @param q is the template question
 	 * @throws SQLException
 	 */
-	public void editQuestion(QuestionnairTools q) throws SQLException;
+	public void editQuestion(QuestionnaireTools q) throws SQLException;
 
 	/** insert a answer into the database
 	 * @param a is the answer string 

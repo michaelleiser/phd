@@ -8,13 +8,14 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 <body>
 	<ui:composition>
+
 		<h:outputStylesheet library="css" name="styles.css" />
+		<h:outputScript library="js" name="logout.js" />	
+
+		<c:set var="securitytoken" value="#{loginController.nonce}" scope="request"/>
+		
 		<div id="header">
 
-			<c:set var="securitytoken" value="#{loginController.nonce}" scope="request"/>
-
-			<h:outputScript library="js" name="logout.js" />			
-		
 			<div id="headerlanguages">
 				<h:form>
 					<ui:repeat value="#{languagecontrollertest.getCountries().keySet().toArray()}" var="language">
@@ -53,6 +54,7 @@
 					</h:form>
 				</c:if>
 			</div>
+			
 		</div>
 		<hr />
 	</ui:composition>

@@ -23,7 +23,7 @@
 									
 					<h:form id="groupform" >
 						<div id="filter">
-							<h:inputText binding="#{input1}" id="staffid"></h:inputText>
+							<h:inputText binding="#{staffname}" id="staffid"></h:inputText>
 							<h:commandButton value="Filter Staff">
 								<f:ajax execute="staffid" render="outputMessage" />
 							</h:commandButton>
@@ -32,7 +32,7 @@
 							<h:dataTable first="#{entityManager.getPaginatorGroup().first}"
 								id="outputMessage"
 								rows="#{entityManager.getPaginatorGroup().pagesize}"
-								value="#{loginController.searchStaffsInGroup(input1.value)}"
+								value="#{loginController.searchStaffsInGroup(staffname.value)}"
 								var="staff" 
 								headerClass="table-header"
 								rowClasses="table-odd-row,table-even-row"
@@ -48,13 +48,13 @@
 								</h:column>
 	
 								<h:column>
-									<h:commandButton action="#{loginController.activateStaff(staff, inputsecret.value)}"
-										id="act" 
+									<h:commandButton action="#{loginController.activateStaff(staff, groupKey.value)}"
+										id="activate" 
 										onclick="return encryptGroupKey(this);"
 										rendered="#{!(staff.getActivated())}" 
 										value="Activate" />
 									<h:commandButton action="#{loginController.deactivateStaff(staff)}"
-										id="deact" 
+										id="deactivate" 
 										rendered="#{staff.getActivated()}" 
 										value="Deactivate" />
 								</h:column>
@@ -62,7 +62,7 @@
 									<h:inputHidden id="publicKey" value="#{staff.publicKey}" />
 								</h:column>
 								<h:column>
-									<h:inputHidden id="encsecret" binding="#{inputsecret}" />
+									<h:inputHidden id="encryptedGroupKey" binding="#{groupKey}" />
 								</h:column>
 								
 								<f:facet name="footer">

@@ -18,7 +18,7 @@
 					<h:outputText value="CSV Downloads" />
 				</h1>
 
-				<div id="box">
+				<div class="box">
 			
 					<h:form id="export">
 						<c:forEach items="#{loginController.templateNames}" var="template" varStatus="status">
@@ -29,15 +29,16 @@
 									</h:commandLink>
 								</td>
 							</tr>
-							<br />
+							<hr />
 						</c:forEach>
-						<br />
 						<h:commandLink  value="Total" action="#{loginController.export}">
 							<f:param name="template" value="total"/>
 						</h:commandLink>
         			</h:form>
+        			
 				</div>
 			</div>
+			
 		</ui:define>
 	</ui:composition>
 
