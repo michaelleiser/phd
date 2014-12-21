@@ -417,7 +417,7 @@ public class LoginController implements Serializable, ILoginController{
 		return null;
 	}
 
-	public void deletTemplateQuestion(QuestionnaireTools q) {
+	public void deleteTemplateQuestion(QuestionnaireTools q) {
 		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
 		try {
 			em.deletTemplateQuestion(q);

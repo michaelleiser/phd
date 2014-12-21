@@ -21,7 +21,7 @@
 				<div class="box">
 					
 					<h:form>			
-						<h:outputLabel value="Template that you need to edit" /><br />
+						<h:outputText value="Choose template to edit" /><br />
 						<h:selectOneMenu onchange="submit()" value="#{template.templateNameselected}" actionListener="#{template.templateNameChanged}">
 							<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
 							<f:selectItems value="#{template.templateNames}" />
@@ -31,28 +31,28 @@
 
 					<h:form>
 						<c:if test="#{template.e != 0}">
-							<h:outputLabel value="Question type" /><br />
+							<h:outputText value="Question type" /><br />
 							<h:selectOneMenu onchange="submit()" value="#{type.typeselected}" actionListener="#{type.typeChanged}">
 								<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="true" />
 								<f:selectItems value="#{type.types}" />
 							</h:selectOneMenu>		
 							<br /><br />
 							<c:if test="#{type.typeselected eq 'String'}">
-								<h:outputLabel value="Please enter a question" /><br />
-								<h:inputText value="#{template.questionString}">
+								<h:outputText value="Please enter a question" /><br />
+								<h:inputTextarea value="#{template.questionString}">
 									<f:ajax event="change" execute="@this" listener="#{template.addString}" />
 									<f:attribute name="edit" value="1"/>
-								</h:inputText>
+								</h:inputTextarea>
 								<br /><br />
 							</c:if>
 							<c:if test="#{type.typeselected eq 'RadioButton'}">
-								<h:outputLabel value="Please enter a question" /><br />
-								<h:inputText value="#{template.questionString}">
+								<h:outputText value="Please enter a question" /><br />
+								<h:inputTextarea value="#{template.questionString}">
 									<f:ajax event="change" execute="@this" listener="#{template.addQuestion}" />
 									<f:attribute name="edit" value="1"/>
-								</h:inputText>
+								</h:inputTextarea>
 								<br /><br />
-								<h:outputLabel value="Number of answers" /><br />
+								<h:outputText value="Number of answers" /><br />
 								<h:selectOneMenu onchange="submit()" value="#{type.numberselected}" actionListener="#{type.numberChanged}">
 									<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="false" />
 									<f:selectItems value="#{type.i}" />
@@ -69,11 +69,11 @@
 								</h:inputText><br />	
 							</c:if>
 							<c:if test="#{type.typeselected eq 'Checkbox'}">
-								<h:outputLabel value="Please enter a question" /><br />
-								<h:inputText value="#{template.questionString}">
+								<h:outputText value="Please enter a question" /><br />
+								<h:inputTextarea value="#{template.questionString}">
 									<f:ajax event="change" execute="@this" listener="#{template.addQuestion}" />
-								</h:inputText><br /><br />
-								<h:outputLabel value="Number of answers" /><br />
+								</h:inputTextarea><br /><br />
+								<h:outputText value="Number of answers" /><br />
 								<h:selectOneMenu onchange="submit()" value="#{type.numberselected}" actionListener="#{type.numberChanged}">
 									<f:selectItem itemLabel="SELECT" itemValue="" noSelectionOption="false" />
 									<f:selectItems value="#{type.i}" />
@@ -105,15 +105,15 @@
 	
 							<h:column>
 								<h:commandLink action="#{template.editAction(questions)}" rendered="#{not questions.editable}">
-									<h:graphicImage value="/images/edit.png" />
+									<h:graphicImage alt="edit" value="/images/edit.png" />
 								</h:commandLink>
 								<h:commandLink action="#{template.addAction(questions)}" rendered="#{not questions.editable}">
-									<h:graphicImage value="/images/new.png" />
+									<h:graphicImage alt="new" value="/images/new.png" />
 								</h:commandLink>
-								<h:commandButton action="#{template.deletQuestion(loginController, questions)}" image="/images/delete.png" />
+								<h:commandButton action="#{template.deleteQuestion(loginController, questions)}" image="/images/delete.png" />
 							</h:column>
 							<h:column>
-								<f:facet name="header">Questionnumber</f:facet>
+								<f:facet name="header">Number</f:facet>
 								<h:outputText value="#{questions.id}" />
 							</h:column>
 							<h:column>
@@ -126,7 +126,7 @@
 								<h:outputText value="#{questions.type}" />
 							</h:column>
 							<h:column>
-								<f:facet name="header">Possibleanswer</f:facet>
+								<f:facet name="header">Possible answers</f:facet>
 								<ui:repeat var="answer" value="#{questions.answer}">
 									<h:inputText value="#{answer}" valueChangeListener="#{questions.changeAnswer}" rendered="#{questions.editable}" />
 									<h:outputText value="#{answer}" rendered="#{not questions.editable}" />

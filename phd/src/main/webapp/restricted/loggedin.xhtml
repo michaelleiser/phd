@@ -23,8 +23,9 @@
 					<h:form id="menuform">
 						<h:commandLink class="menuitem" action="#{navigation.redirectToNewPatient}" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Create a new patient" />
 						<h:commandLink class="menuitem" action="#{navigation.redirectToSearchPatient}" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Search patients and edit patient datas" />
-						<h:commandLink class="menuitem" action="#{navigation.redirectToDownloads}" value="Download CSV for statistics" />
-						<h:commandLink class="menuitem" action="#{navigation.redirectToNewQuestionnaireTemplate}" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Create a new questionnaire template" />
+						<h:commandLink class="menuitem" action="#{navigation.redirectToDownloads}" rendered="#{loginController.loggedin}" value="Download CSV for statistics" />
+						<h:commandLink class="menuitem" action="#{navigation.redirectToNewQuestionnaireTemplate}" rendered="#{loginController.loggedin}" value="Create a new questionnaire template" />
+						<h:commandLink class="menuitem" action="#{navigation.redirectToEditQuestionnaireTemplate}" rendered="#{loginController.loggedin}" value="Edit a questionnaire template" />
 						<h:commandLink class="menuitem" action="#{navigation.redirectToEditGroup}" rendered="#{loginController.loggedin and (loginController.getDepartment_Has_Staff().isOwner(loginController.getStaff()))}" value="Edit group" />
 					</h:form>
 				</div>

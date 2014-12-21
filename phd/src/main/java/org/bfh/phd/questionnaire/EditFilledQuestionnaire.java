@@ -269,7 +269,7 @@ public class EditFilledQuestionnaire implements Serializable {
 	}
 
 	public void deletQuestion(LoginController lc, QuestionnaireTools q) {
-		lc.deletTemplateQuestion(q);
+		lc.deleteTemplateQuestion(q);
 		setTemplates();
 	}
 

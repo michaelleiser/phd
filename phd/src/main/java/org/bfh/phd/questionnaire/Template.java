@@ -260,12 +260,12 @@ public class Template {
 		System.out.println("edit Question");
 	}
 
-	public void deletQuestion(LoginController lc, QuestionnaireTools q) {
-		lc.deletTemplateQuestion(q);
+	public void deleteQuestion(LoginController lc, QuestionnaireTools q) {
+		lc.deleteTemplateQuestion(q);
 		setTemplates();
 	}
 
-	public void deletTemplate(LoginController lc) {
+	public void deleteTemplate(LoginController lc) {
 		System.out.println("not implemented");
 	}
 
