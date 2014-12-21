@@ -81,6 +81,253 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	@Override
+	public Staff registerNew(Staff s, boolean activated) {
+		long l = 0;
+		String stm = "INSERT INTO staff(name, salt, password, privateKey, publicKey, role_role_id, isActivated) VALUES(?, ?, ?, ?, ?, ?, ?);";
+		init();
+		try {
+			pst = con.prepareStatement(stm, Statement.RETURN_GENERATED_KEYS);
+			pst.setString(1, s.getName());
+			pst.setString(2, s.getSalt());
+			pst.setString(3, s.getPassword());
+			pst.setString(4, s.getPrivateKey());
+			pst.setString(5, s.getPublicKey());
+			pst.setInt(6, s.getRole());
+			pst.setString(7, Boolean.toString(activated));
+			pst.executeUpdate();
+			rs = pst.getGeneratedKeys();
+			if(rs.next()){
+				l = rs.getLong(1);
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		initStaff(); // TODO Da sonst nicht geupdated wird nach dem insert
+		return this.getStaff((int) l);
+	}
+
+	/**
+	 * Activate or deactivate a staff member
+	 * @param s
+	 *            is the staff member
+	 * @param b
+	 *            activate = true / deactivate = false
+	 */
+	public void setActivateStaff(Staff s, boolean b) {
+		String stm = "UPDATE staff SET isActivated=? WHERE staff_id=?;";
+		init();
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setString(1, Boolean.toString(b));
+			pst.setInt(2, s.getId());
+			pst.execute();
+			rs = pst.getResultSet();
+			closeWithoutRs();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeWithoutRs();
+		}
+		initStaff();
+		initDepartment_Has_Staff(); // TODO Da sonst nicht geupdated wird nach dem insert
+	}
+
+	/**
+	 * @param s
+	 * @param dhs
+	 * @param secret
+	 */
+	public void setGroupKey(Staff s, Department_Has_Staff dhs, String secret) {
+		String stm = "UPDATE department_has_staff SET encryptedKey=? WHERE department_department_id=? AND staff_staff_id=?;";
+		init();
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setString(1, secret);
+			pst.setInt(2, dhs.getDepartment_has_staff_id());
+			pst.setInt(3, s.getId());
+			pst.execute();
+			rs = pst.getResultSet();
+			closeWithoutRs();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeWithoutRs();
+		}
+		// initStaff(); // TODO Da sonst nicht geupdated wird nach dem insert
+	}
+
+	/**
+	 * @param d
+	 * @return
+	 */
+	public Department_Has_Staff getDepartment_Has_Staff(Department d) {
+		Department_Has_Staff dhs = new Department_Has_Staff();
+		init();
+		String stm = "SELECT * FROM department_has_staff WHERE department_department_id=?;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setInt(1, d.getDepartment_id());
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+				dhs.setDepartment_has_staff_id(rs
+						.getInt("department_department_id"));
+				dhs.setDepartment(d);
+				dhs.addStaff(this.getStaff(rs.getInt("staff_staff_id")));
+				dhs.addEncryptedGroupKey(rs.getString("encryptedKey"));
+				if (Boolean.parseBoolean(rs.getString("owner"))) {
+					dhs.setOwner(this.getStaff(rs.getInt("staff_staff_id")));
+				}
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		return dhs;
+	}
+
+	public List<Department_Has_Staff> get_Department_Has_Staffs() {
+		return this.department_Has_Staffs;
+	}
+
+	private Department getDepartment(int i) {
+		for(Department d : this.departments) {
+			if(d.getDepartment_id() == i) {
+				return d;
+			}
+		}
+		return null;
+	}
+
+	public List<Department> getDepartments() {
+		return this.departments;
+	}
+
+	/**
+	 * Create a new department.
+	 * @param d
+	 * 				
+	 * @param s
+	 *            is the staff member they create the department
+	 * @param key
+	 */
+	public void createDepartment(Department d, Staff s, String key) {
+		String stm1 = "SELECT * FROM department WHERE name=?;";
+		String stm2 = "INSERT INTO department(name) VALUES(?);";
+		String stm3 = "INSERT INTO department_has_staff(department_department_id, staff_staff_id, owner, encryptedKey) VALUES(?,?,?,?);";
+		init();
+		try {
+			pst = con.prepareStatement(stm1);
+			pst.setString(1, d.getName());
+			pst.execute();
+			rs = pst.getResultSet();
+			if (rs.next()) {
+				// Department already exists
+			} else {
+				pst = con.prepareStatement(stm2,
+						Statement.RETURN_GENERATED_KEYS);
+				pst.setString(1, d.getName());
+				pst.executeUpdate();
+				rs = pst.getGeneratedKeys();
+				int id = 0;
+				if (rs.next()) {
+					id = rs.getInt(1);
+				}
+				pst = con.prepareStatement(stm3);
+				pst.setInt(1, id);
+				pst.setInt(2, s.getId());
+				pst.setString(3, "true");
+				pst.setString(4, key);
+				pst.executeUpdate();
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		initDepartment(); // TODO Da sonst nicht geupdated wird nach dem insert
+	}
+
+	/**
+	 * Add a new staff member to a department.
+	 * @param name
+	 *            is the name of the department
+	 * @param s
+	 *            is the staff member
+	 */
+	public void addToDepartment(String name, Staff s) {
+		String stm1 = "SELECT * FROM department WHERE name=?;";
+		@SuppressWarnings("unused")
+		String stm2 = "INSERT INTO department(name) VALUES(?);";
+		String stm3 = "INSERT INTO department_has_staff(department_department_id, staff_staff_id, owner) VALUES(?,?,?);";
+		init();
+		try {
+			pst = con.prepareStatement(stm1);
+			pst.setString(1, name);
+			pst.execute();
+			rs = pst.getResultSet();
+			if (rs.next()) {
+				pst = con.prepareStatement(stm3);
+				pst.setInt(1, rs.getInt("department_id"));
+				pst.setInt(2, s.getId());
+				pst.setString(3, "false");
+				// pst.setString(4, "encryptedKey"); // Not necessary yet, written in activation process
+				pst.executeUpdate();
+			} else {
+				// Department does not exist
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		initDepartment(); // TODO Da sonst nicht geupdated wird nach dem insert
+	}
+
+	@Override
+	public List<Staff> getStaffs() {
+		return this.staffs;
+	}
+
+	@Override
+	public List<Staff> getStaffs(String name) {
+		List<Staff> staff = new ArrayList<Staff>();
+		for(Staff s : this.staffs){
+			if(name.equals("") || s.getName().contains(name)){
+				staff.add(s);
+			}
+		}
+		return staff;
+	}
+
+	/**
+	 * @param name
+	 * @param dhs
+	 * @param staff
+	 * @return
+	 */
+	public List<Staff> searchStaffsInGroup(String name, Department_Has_Staff dhs,
+			Staff staff) {
+		List<Staff> staffs = new ArrayList<Staff>();
+		for (Staff s : dhs.getStaffs()) {
+			if (name.equals("")
+					|| s.getName().toUpperCase().contains(name.toUpperCase())) {
+				staffs.add(s);
+			}
+		}
+		staffs.remove(staff);
+		paginatorGroup.setSize(staffs.size());
+		return staffs;
+	}
+
+	@Override
 	public Staff getStaff(int id) {
 		for(Staff s : this.staffs){
 			if(s.getId() == id){
@@ -101,19 +348,29 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	@Override
-	public List<Staff> getStaffs() {
-		return this.staffs;
+	public void updateStaff(Staff s) {
+		init();
+		String stm = "UPDATE staff SET name=?, salt=?, password=?, privateKey=?, publicKey=? WHERE staff_id=?";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setString(1, s.getName());
+			pst.setString(2, s.getSalt());
+			pst.setString(3, s.getPassword());
+			pst.setString(4, s.getPrivateKey());
+			pst.setString(5, s.getPublicKey());
+			pst.setInt(6, s.getId());
+			pst.executeUpdate();
+			closeWithoutRs();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeWithoutRs();
+		}
 	}
 
 	@Override
-	public List<Staff> getStaffs(String name) {
-		List<Staff> staff = new ArrayList<Staff>();
-		for(Staff s : this.staffs){
-			if(name.equals("") || s.getName().contains(name)){
-				staff.add(s);
-			}
-		}
-		return staff;
+	public List<Patient> getPatients() {
+		return this.patients;
 	}
 
 	@Override
@@ -128,8 +385,18 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	@Override
-	public List<Patient> getPatients() {
-		return this.patients;
+	public List<Patient> searchPatients(Department_Has_Staff dhs,
+			Staff s) {
+		List<Patient> patient = new ArrayList<Patient>();
+		for(Patient p : this.patients){
+			if(p.getDepartment().equals(dhs.getDepartment())){
+				if(p.getReadaccess() || (p.getOwner().equals(s))){
+					patient.add(p);		
+				}		
+			}
+		}
+		// paginatorPatient.setSize(patient.size());
+		return patient;
 	}
 
 	@Override
@@ -143,33 +410,47 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	@Override
-	public Staff registerNew(Staff s, boolean activated) {
-		long l = 0;
-		String stm2 = "INSERT INTO staff(name, salt, password, privateKey, publicKey, role_role_id, isActivated) VALUES(?, ?, ?, ?, ?, ?, ?);";
+	public void createPatient(Patient p, Department_Has_Staff dhs, Staff s) {
+		String stm = "INSERT INTO patient(readaccess, writeaccess, insertaccess, staff_staff_id, encryptedPersonalData, department_department_id) VALUES(?, ?, ?, ?, ?, ?);";
 		init();
 		try {
-				pst = con.prepareStatement(stm2, Statement.RETURN_GENERATED_KEYS);
-				pst.setString(1, s.getName());
-				pst.setString(2, s.getSalt());
-				pst.setString(3, s.getPassword());
-				pst.setString(4, s.getPrivateKey());
-				pst.setString(5, s.getPublicKey());
-				pst.setInt(6, s.getRole());
-				pst.setString(7, Boolean.toString(activated));
-				pst.executeUpdate();
-				rs = pst.getGeneratedKeys();
-				if(rs.next()){
-					l = rs.getLong(1);
-				}
-//			}
-			close();
+			pst = con.prepareStatement(stm);
+			pst.setString(1, "false");
+			pst.setString(2, "false");
+			pst.setString(3, "false");
+			pst.setInt(4, s.getId());
+			pst.setString(5, p.getPersonalData());
+			pst.setInt(6, dhs.getDepartment().getDepartment_id());
+			pst.executeUpdate();
+			closeWithoutRs();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			close();
+			closeWithoutRs();
 		}
-		initStaff(); // TODO Da sonst nicht geupdated wird nach dem insert
-		return this.getStaff((int) l);
+		initPatient(); // TODO da sonst nicht geupdated wird nach dem insert
+	}
+
+	@Override
+	public void updatePatient(Patient p, Staff s) {
+		if (this.writeaccess(p, s)) {
+			init();
+			String stm = "UPDATE patient SET readaccess=?, writeaccess=?, insertaccess=?, encryptedPersonalData=? WHERE patient_id=?";
+			try {
+				pst = con.prepareStatement(stm);
+				pst.setString(1, Boolean.toString(p.getReadaccess()));
+				pst.setString(2, Boolean.toString(p.getWriteaccess()));
+				pst.setString(3, Boolean.toString(p.getInsertaccess()));
+				pst.setString(4, p.getPersonalData());
+				pst.setInt(5, p.getPatientid());
+				pst.executeUpdate();
+				closeWithoutRs();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				closeWithoutRs();
+			}
+		}
 	}
 
 	@Override
@@ -280,49 +561,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		return f;
 	}
 
-	@Override
-	public void updateStaff(Staff activeUser) {
-		init();
-		String stm = "UPDATE staff SET name=?, salt=?, password=?, privateKey=?, publicKey=? WHERE staff_id=?";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setString(1, activeUser.getName());
-			pst.setString(2, activeUser.getSalt());
-			pst.setString(3, activeUser.getPassword());
-			pst.setString(4, activeUser.getPrivateKey());
-			pst.setString(5, activeUser.getPublicKey());
-			pst.setInt(6, activeUser.getId());
-			pst.executeUpdate();
-			closeWithoutRs();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			closeWithoutRs();
-		}
-	}
-
-	@Override
-	public void updatePatient(Patient p, Staff activeUser) {
-		if (this.writeaccess(p, activeUser)) {
-			init();
-			String stm = "UPDATE patient SET readaccess=?, writeaccess=?, insertaccess=?, encryptedPersonalData=? WHERE patient_id=?";
-			try {
-				System.out.println("jfkdlsajf");
-				pst = con.prepareStatement(stm);
-				pst.setString(1, Boolean.toString(p.getReadaccess()));
-				pst.setString(2, Boolean.toString(p.getWriteaccess()));
-				pst.setString(3, Boolean.toString(p.getInsertaccess()));
-				pst.setString(4, p.getPersonalData());
-				pst.setInt(5, p.getPatientid());
-				pst.executeUpdate();
-				closeWithoutRs();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				closeWithoutRs();
-			}
-		}
-	}
+	
 
 //	public List<PatientData> getPatientdatas() {
 //		return patientdatas;
@@ -358,46 +597,6 @@ public class EntityManager implements IEntityManager, Serializable {
 			close();
 		}
 		return questionnaris;
-	}
-
-	@Override
-	public List<Patient> searchPatients(Department_Has_Staff dhs,
-			Staff activeUser) {
-		List<Patient> patient = new ArrayList<Patient>();
-		for(Patient p : this.patients){
-			if(p.getDepartment().equals(dhs.getDepartment())){
-				if(p.getReadaccess() || (p.getOwner().equals(activeUser))){
-					patient.add(p);		
-				}		
-			}
-		}
-		// paginatorPatient.setSize(patient.size());
-		return patient;
-	}
-
-	@Override
-	public void createPatient(Patient p, Department_Has_Staff dhs,
-			Staff activeUser) {
-		if ((activeUser != null) && (activeUser.getRole() == 1)) {
-			String stm2 = "INSERT INTO patient(readaccess, writeaccess, insertaccess, staff_staff_id, encryptedPersonalData, department_department_id) VALUES(?, ?, ?, ?, ?, ?);";
-			init();
-			try {
-				pst = con.prepareStatement(stm2);
-				pst.setString(1, "false");
-				pst.setString(2, "false");
-				pst.setString(3, "false");
-				pst.setInt(4, activeUser.getId());
-				pst.setString(5, p.getPersonalData());
-				pst.setInt(6, dhs.getDepartment().getDepartment_id());
-				pst.executeUpdate();
-				closeWithoutRs();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				closeWithoutRs();
-			}
-			initPatient(); // TODO da sonst nicht geupdated wird nach dem insert
-		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -542,276 +741,6 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 		return answers;
 	}
-	
-	private void initStaff() {
-		staffs = new ArrayList<Staff>();
-		String stm = "SELECT * FROM staff;";
-		init();
-		try {
-			pst = con.prepareStatement(stm);
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				Staff s = new Staff();
-				s.setId(rs.getInt("staff_id"));
-				s.setName(rs.getString("name"));
-				s.setSalt(rs.getString("salt"));
-				s.setPassword(rs.getString("password"));
-				s.setPrivateKey(rs.getString("privateKey"));
-				s.setPublicKey(rs.getString("publicKey"));
-				s.setRole(rs.getInt("role_role_id"));
-				s.setActivated(Boolean.parseBoolean(rs.getString("isActivated")));
-				staffs.add(s);
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-	}
-
-	/**
-	 * Initialization of all patients
-	 *
-	 */
-	private void initPatient() {
-		patients = new ArrayList<Patient>();
-		init();
-		String stm = "SELECT * FROM patient;";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				Patient p = new Patient();
-				p.setPatientid(rs.getInt("patient_id"));
-				p.setReadaccess(Boolean.parseBoolean(rs.getString("readaccess")));
-				p.setWriteaccess(Boolean.parseBoolean(rs
-						.getString("writeaccess")));
-				p.setInsertaccess(Boolean.parseBoolean(rs
-						.getString("insertaccess")));
-				p.setOwner(this.getStaff(rs.getInt("staff_staff_id")));
-				p.setPersonalData(rs.getString("encryptedPersonalData"));
-				p.setDepartment(this.getDepartment(rs
-						.getInt("department_department_id")));
-				patients.add(p);
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-	}
-
-	/**
-	 * Initialization of all question types
-	 *
-	 */
-	private void initTyp() {
-		typ = new HashMap<String, Integer>();
-		String stm = "SELECT * FROM question_typ";
-		init();
-		try {
-			pst = con.prepareStatement(stm);
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				typ.put(rs.getString("typ"), rs.getInt("id"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-	}
-
-	public boolean isOwner(Patient patient, Staff activeUser) {
-		if (patient.getOwner().equals(activeUser)) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean readaccess(Patient p, Staff activeUser) {
-		if (isOwner(p, activeUser)) {
-			return true;
-		}
-		return p.getReadaccess();
-	}
-
-	public boolean writeaccess(Patient p, Staff activeUser) {
-		if (isOwner(p, activeUser)) {
-			return true;
-		}
-		return p.getWriteaccess();
-	}
-
-	public boolean insertaccess(Patient p, Staff activeUser) {
-		if (isOwner(p, activeUser)) {
-			return true;
-		}
-		return p.getInsertaccess();
-	}
-
-	/**
-	 * Initialization of the two database connections
-	 *
-	 */
-	private void init() {
-		con = mycon.getConnection();
-	}
-	
-	private void init2(){
-		con2 = mycon.getConnection();
-	}
-
-	/**
-	 * Close the database connection without result set
-	 *
-	 */
-	private void closeWithoutRs() {
-		try {
-			pst.close();
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (pst != null) {
-				try {
-					pst.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
-	/**
-	 * Close the database connection with result set
-	 *
-	 */
-	private void close() {
-		try {
-			rs.close();
-			pst.close();
-			con.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (pst != null) {
-				try {
-					pst.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
-	/**
-	 * Close the database connection without result set
-	 *
-	 */
-	private void closeWithoutRs2() {
-		try {
-			pst2.close();
-			con2.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (pst2 != null) {
-				try {
-					pst2.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (con2 != null) {
-				try {
-					con2.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
-	/**
-	 * Close the database connection with result set
-	 *
-	 */
-	private void close2() {
-		if(rs2 != null){
-		try {
-			rs2.close();
-			pst2.close();
-			con2.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if (rs2 != null) {
-				try {
-					rs2.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (pst2 != null) {
-				try {
-					pst2.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (con2 != null) {
-				try {
-					con2.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		}
-	}
-
-	public PaginatorPatientData getPaginatorPatientData() {
-		return paginatorPatientData;
-	}
-
-	public void setPaginatorPatientData(PaginatorPatientData p) {
-		this.paginatorPatientData = p;
-	}
-
-	public PaginatorGroup getPaginatorGroup() {
-		return paginatorGroup;
-	}
-
-	public void setPaginatorGroup(PaginatorGroup p) {
-		this.paginatorGroup = p;
-	}
 
 	/**
 	 * Search all questionnaires from one patient
@@ -843,252 +772,6 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 		paginatorPatientData.setSize(quest.size());
 		return quest;
-	}
-
-	public List<Department> getDepartments() {
-		return this.departments;
-	}
-
-	/**
-	 * Initialization of all departments
-	 * 
-	 */
-	private void initDepartment() {
-		departments = new ArrayList<Department>();
-		init();
-		String stm = "SELECT * FROM department;";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				Department d = new Department();
-				d.setDepartment_id(rs.getInt("department_id"));
-				d.setName(rs.getString("name"));
-				departments.add(d);
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-	}
-
-	/**
-	 * Create a new department
-	 * 
-	 * @param d
-	 * @param s
-	 *            is the staff member they create the department
-	 * @param key
-	 */
-	public void createDepartment(Department d, Staff s, String key) {
-		String stm1 = "SELECT * FROM department WHERE name=?;";
-		String stm2 = "INSERT INTO department(name) VALUES(?);";
-		String stm3 = "INSERT INTO department_has_staff(department_department_id, staff_staff_id, owner, encryptedKey) VALUES(?,?,?,?);";
-		init();
-		try {
-			pst = con.prepareStatement(stm1);
-			pst.setString(1, d.getName());
-			pst.execute();
-			rs = pst.getResultSet();
-			if (rs.next()) {
-				// Department already exists
-			} else {
-				pst = con.prepareStatement(stm2,
-						Statement.RETURN_GENERATED_KEYS);
-				pst.setString(1, d.getName());
-				pst.executeUpdate();
-				rs = pst.getGeneratedKeys();
-				int id = 0;
-				if (rs.next()) {
-					id = rs.getInt(1);
-				}
-				pst = con.prepareStatement(stm3);
-				pst.setInt(1, id);
-				pst.setInt(2, s.getId());
-				pst.setString(3, "true");
-				pst.setString(4, key);
-				pst.executeUpdate();
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		initDepartment(); // TODO Da sonst nicht geupdated wird nach dem insert
-	}
-
-	/**
-	 * Add a new staff member to a department
-	 * 
-	 * @param name
-	 *            is the name of the department
-	 * @param s
-	 *            is the staff member
-	 */
-	public void addToDepartment(String name, Staff s) {
-		String stm1 = "SELECT * FROM department WHERE name=?;";
-		@SuppressWarnings("unused")
-		String stm2 = "INSERT INTO department(name) VALUES(?);";
-		String stm3 = "INSERT INTO department_has_staff(department_department_id, staff_staff_id, owner) VALUES(?,?,?);";
-		init();
-		try {
-			pst = con.prepareStatement(stm1);
-			pst.setString(1, name);
-			pst.execute();
-			rs = pst.getResultSet();
-			if (rs.next()) {
-				pst = con.prepareStatement(stm3);
-				pst.setInt(1, rs.getInt("department_id"));
-				pst.setInt(2, s.getId());
-				pst.setString(3, "false");
-				// pst.setString(4, "encryptedKey"); // Not necessary yet,
-				// written in activation process
-				pst.executeUpdate();
-			} else {
-				// Department does not exist
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		initDepartment(); // TODO Da sonst nicht geupdated wird nach dem insert
-	}
-
-	/**
-	 * @param name
-	 * @param dhs
-	 * @param activeUser
-	 * @return
-	 */
-	public List<Staff> searchStaffs(String name, Department_Has_Staff dhs,
-			Staff activeUser) {
-		List<Staff> staff = new ArrayList<Staff>();
-		for (Staff s : dhs.getStaffs()) {
-			if (name.equals("")
-					|| s.getName().toUpperCase().contains(name.toUpperCase())) {
-				staff.add(s);
-			}
-		}
-		staff.remove(activeUser);
-		paginatorGroup.setSize(staff.size());
-		return staff;
-	}
-
-	/**
-	 * Activate or deactivate a staff member
-	 * 
-	 * @param s
-	 *            is the staff member
-	 * @param b
-	 *            activate = true / deactivate = false
-	 */
-	public void setActivateStaff(Staff s, boolean b) {
-		String stm = "UPDATE staff SET isActivated=? WHERE staff_id=?;";
-		init();
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setString(1, Boolean.toString(b));
-			pst.setInt(2, s.getId());
-			pst.execute();
-			rs = pst.getResultSet();
-			// if(rs.next()) {
-			// return;
-			// }
-			closeWithoutRs();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			closeWithoutRs();
-		}
-		initStaff();
-		initDepartment_Has_Staff(); // TODO Da sonst nicht geupdated wird nach dem insert
-	}
-
-	/**
-	 * @param d
-	 * @return
-	 */
-	public Department_Has_Staff getDepartment_Has_Staff(Department d) {
-		Department_Has_Staff dhs = new Department_Has_Staff();
-		init();
-		String stm = "SELECT * FROM department_has_staff WHERE department_department_id=?;";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setInt(1, d.getDepartment_id());
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				dhs.setDepartment_has_staff_id(rs
-						.getInt("department_department_id"));
-				dhs.setDepartment(d);
-				dhs.addStaff(this.getStaff(rs.getInt("staff_staff_id")));
-				dhs.addEncryptedGroupKey(rs.getString("encryptedKey"));
-				if (Boolean.parseBoolean(rs.getString("owner"))) {
-					dhs.setOwner(this.getStaff(rs.getInt("staff_staff_id")));
-					;
-				}
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-		return dhs;
-	}
-	
-	public List<Department_Has_Staff> get_Department_Has_Staffs(){
-		return this.department_Has_Staffs;
-	}
-	
-	public void initDepartment_Has_Staff(){
-		this.department_Has_Staffs = new ArrayList<Department_Has_Staff>();
-		for(Department d: this.departments){
-			Department_Has_Staff dhs = getDepartment_Has_Staff(d);
-			this.department_Has_Staffs.add(dhs);
-		}
-	}
-
-	private Department getDepartment(int i) {
-		for (Department d : this.departments) {
-			if (d.getDepartment_id() == i) {
-				return d;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * @param s
-	 * @param dhs
-	 * @param secret
-	 */
-	public void setGroupKey(Staff s, Department_Has_Staff dhs, String secret) {
-		String stm = "UPDATE department_has_staff SET encryptedKey=? WHERE department_department_id=? AND staff_staff_id=?;";
-		init();
-		try {
-			pst = con.prepareStatement(stm);
-			pst.setString(1, secret);
-			pst.setInt(2, dhs.getDepartment_has_staff_id());
-			pst.setInt(3, s.getId());
-			pst.execute();
-			rs = pst.getResultSet();
-			// if(rs.next()) {
-			// return;
-			// }
-			closeWithoutRs();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			closeWithoutRs();
-		}
-		// initStaff(); // TODO Da sonst nicht geupdated wird nach dem insert
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -1184,66 +867,6 @@ public class EntityManager implements IEntityManager, Serializable {
 			pst.execute();
 		}
 		return i;
-	}
-
-	@Override
-	public void initOperationTyp() {
-		operationtypes = new ArrayList<String>();
-		init();
-		String stm = "SELECT name FROM questionnaire_template_name;";
-		try {
-			pst = con.prepareStatement(stm);
-			pst.execute();
-			rs = pst.getResultSet();
-			while (rs.next()) {
-				operationtypes.add(rs.getString(1));
-			}
-			close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close();
-		}
-	}
-
-	/**
-	 * Initialization of all filled questionnaires
-	 * 
-	 */
-	private void initQuestionnaire() {
-		init2();
-		List<Integer> i = new ArrayList<Integer>();
-		List<String> s = new ArrayList<String>();
-		filledQuestionnaires = new ArrayList<FilledQuestionnaire>();
-		String stm = "SELECT answer_id, name FROM questionnaire q JOIN questionnaire_template_name tn ON q.template_name_id = tn.id;";
-		try {
-			pst2 = con2.prepareStatement(stm);
-			pst2.execute();
-			rs2 = pst2.getResultSet();
-			while (rs2.next()) {
-				i.add(rs2.getInt("answer_id"));
-				s.add(rs2.getString("name"));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			close2();
-		}
-		for (int j = 0; j < i.size(); j++) {
-			FilledQuestionnaire f = getFilledQuestion(i.get(j), s.get(j));
-			filledQuestionnaires.add(f);
-		}
-	}
-
-	/**
-	 * Initialization of all filled questionnaires
-	 * 
-	 */
-	private void initEmptyQuestionnaire() {
-		emptyQuestionnaires = new HashMap<String, FilledQuestionnaire>();
-		for (String s : operationtypes) {
-			emptyQuestionnaires.put(s, getEmptyQuestionnaires(s));
-		}
 	}
 
 	public FilledQuestionnaire getEmptyQuestionnaire(String s) {
@@ -1592,6 +1215,15 @@ public class EntityManager implements IEntityManager, Serializable {
 		return f;
 	}
 
+	public boolean isLegalTemplate(String template) {
+		for(String s: operationtypes){
+			if(s.equals(template)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@SuppressWarnings("rawtypes")
 	public void generateCsvFiles() {
 		long starttime = System.currentTimeMillis();
@@ -1601,7 +1233,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		String questionnaire = "";
 		
 		if(newTemplate){
-
+	
 			for (int i = 0; i < operationtypes.size(); i++) {
 				String name = operationtypes.get(i);
 				total += name + "\n\n";
@@ -1636,28 +1268,372 @@ public class EntityManager implements IEntityManager, Serializable {
 		newTemplate = false;
 	}
 
-	public boolean isLegalTemplate(String template) {
-		for(String s: operationtypes){
-			if(s.equals(template)){
-				return true;
+	public Object getCSV(String template) {
+		return csvs.get(template);
+	}
+
+	/**
+	 * Initialization of all departments
+	 * 
+	 */
+	private void initDepartment() {
+		departments = new ArrayList<Department>();
+		init();
+		String stm = "SELECT * FROM department;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+				Department d = new Department();
+				d.setDepartment_id(rs.getInt("department_id"));
+				d.setName(rs.getString("name"));
+				departments.add(d);
 			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
+
+	private void initStaff() {
+		staffs = new ArrayList<Staff>();
+		String stm = "SELECT * FROM staff;";
+		init();
+		try {
+			pst = con.prepareStatement(stm);
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+				Staff s = new Staff();
+				s.setId(rs.getInt("staff_id"));
+				s.setName(rs.getString("name"));
+				s.setSalt(rs.getString("salt"));
+				s.setPassword(rs.getString("password"));
+				s.setPrivateKey(rs.getString("privateKey"));
+				s.setPublicKey(rs.getString("publicKey"));
+				s.setRole(rs.getInt("role_role_id"));
+				s.setActivated(Boolean.parseBoolean(rs.getString("isActivated")));
+				staffs.add(s);
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
+
+	private void initDepartment_Has_Staff() {
+		this.department_Has_Staffs = new ArrayList<Department_Has_Staff>();
+		for(Department d: this.departments) {
+			Department_Has_Staff dhs = getDepartment_Has_Staff(d);
+			this.department_Has_Staffs.add(dhs);
+		}
+	}
+
+	/**
+	 * Initialization of all patients
+	 *
+	 */
+	private void initPatient() {
+		patients = new ArrayList<Patient>();
+		init();
+		String stm = "SELECT * FROM patient;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+				Patient p = new Patient();
+				p.setPatientid(rs.getInt("patient_id"));
+				p.setReadaccess(Boolean.parseBoolean(rs.getString("readaccess")));
+				p.setWriteaccess(Boolean.parseBoolean(rs
+						.getString("writeaccess")));
+				p.setInsertaccess(Boolean.parseBoolean(rs
+						.getString("insertaccess")));
+				p.setOwner(this.getStaff(rs.getInt("staff_staff_id")));
+				p.setPersonalData(rs.getString("encryptedPersonalData"));
+				p.setDepartment(this.getDepartment(rs
+						.getInt("department_department_id")));
+				patients.add(p);
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
+
+	@Override
+	public void initOperationTyp() {
+		operationtypes = new ArrayList<String>();
+		init();
+		String stm = "SELECT name FROM questionnaire_template_name;";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+				operationtypes.add(rs.getString(1));
+			}
+			close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
+
+	/**
+	 * Initialization of all question types
+	 *
+	 */
+	private void initTyp() {
+		typ = new HashMap<String, Integer>();
+		String stm = "SELECT * FROM question_typ";
+		init();
+		try {
+			pst = con.prepareStatement(stm);
+			pst.execute();
+			rs = pst.getResultSet();
+			while (rs.next()) {
+				typ.put(rs.getString("typ"), rs.getInt("id"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+	}
+
+	/**
+	 * Initialization of all filled questionnaires
+	 * 
+	 */
+	private void initQuestionnaire() {
+		init2();
+		List<Integer> i = new ArrayList<Integer>();
+		List<String> s = new ArrayList<String>();
+		filledQuestionnaires = new ArrayList<FilledQuestionnaire>();
+		String stm = "SELECT answer_id, name FROM questionnaire q JOIN questionnaire_template_name tn ON q.template_name_id = tn.id;";
+		try {
+			pst2 = con2.prepareStatement(stm);
+			pst2.execute();
+			rs2 = pst2.getResultSet();
+			while (rs2.next()) {
+				i.add(rs2.getInt("answer_id"));
+				s.add(rs2.getString("name"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close2();
+		}
+		for (int j = 0; j < i.size(); j++) {
+			FilledQuestionnaire f = getFilledQuestion(i.get(j), s.get(j));
+			filledQuestionnaires.add(f);
+		}
+	}
+
+	/**
+	 * Initialization of all filled questionnaires
+	 * 
+	 */
+	private void initEmptyQuestionnaire() {
+		emptyQuestionnaires = new HashMap<String, FilledQuestionnaire>();
+		for (String s : operationtypes) {
+			emptyQuestionnaires.put(s, getEmptyQuestionnaires(s));
+		}
+	}
+
+	/**
+	 * Initialization of the two database connections
+	 *
+	 */
+	private void init() {
+		con = mycon.getConnection();
+	}
+
+	private void init2(){
+		con2 = mycon.getConnection();
+	}
+
+	/**
+	 * Close the database connection with result set
+	 *
+	 */
+	private void close() {
+		try {
+			rs.close();
+			pst.close();
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (pst != null) {
+				try {
+					pst.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	/**
+	 * Close the database connection with result set
+	 *
+	 */
+	private void close2() {
+		if(rs2 != null){
+		try {
+			rs2.close();
+			pst2.close();
+			con2.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (rs2 != null) {
+				try {
+					rs2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (pst2 != null) {
+				try {
+					pst2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (con2 != null) {
+				try {
+					con2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		}
+	}
+
+	/**
+	 * Close the database connection without result set
+	 *
+	 */
+	private void closeWithoutRs() {
+		try {
+			pst.close();
+			con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (pst != null) {
+				try {
+					pst.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	/**
+	 * Close the database connection without result set
+	 *
+	 */
+	private void closeWithoutRs2() {
+		try {
+			pst2.close();
+			con2.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (pst2 != null) {
+				try {
+					pst2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (con2 != null) {
+				try {
+					con2.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	public boolean isOwner(Patient p, Staff s) {
+		if (p.getOwner().equals(s)) {
+			return true;
 		}
 		return false;
 	}
 
-	@Override
-	public List<IQuestion> getQuestionnaris2(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean readaccess(Patient p, Staff s) {
+		if (isOwner(p, s)) {
+			return true;
+		}
+		return p.getReadaccess();
 	}
 
-	@Override
-	public List<IQuestion> getFilledQuestion2(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean writeaccess(Patient p, Staff s) {
+		if (isOwner(p, s)) {
+			return true;
+		}
+		return p.getWriteaccess();
 	}
 
-	public Object getCSV(String template) {
-		return csvs.get(template);
+	public boolean insertaccess(Patient p, Staff s) {
+		if (isOwner(p, s)) {
+			return true;
+		}
+		return p.getInsertaccess();
 	}
+
+	public PaginatorPatientData getPaginatorPatientData() {
+		return paginatorPatientData;
+	}
+
+	public void setPaginatorPatientData(PaginatorPatientData p) {
+		this.paginatorPatientData = p;
+	}
+
+	public PaginatorGroup getPaginatorGroup() {
+		return paginatorGroup;
+	}
+
+	public void setPaginatorGroup(PaginatorGroup p) {
+		this.paginatorGroup = p;
+	}
+
 }

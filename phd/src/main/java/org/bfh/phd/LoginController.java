@@ -35,6 +35,7 @@ import org.json.simple.parser.ParseException;
 public class LoginController implements Serializable, ILoginController{
 
 	private static final long serialVersionUID = 1L;
+	private String nonce;
 	private boolean loggedin = false;
 
 	private Staff activeUser;
@@ -45,6 +46,7 @@ public class LoginController implements Serializable, ILoginController{
 	private String departmentselected;
 	private Department_Has_Staff activeDepartment_Has_Staff;
 	
+	private Date from;
 	private Date to;
 	private EntityManager em;
 	private DownloadManager dm;
@@ -74,32 +76,6 @@ public class LoginController implements Serializable, ILoginController{
 //		}
 //	}
 
-	public void setStaff(Staff s){
-		System.out.println("SET STAFF");
-		this.activeUser = s;
-	}
-	
-	public Staff getStaff(){
-		System.out.println("GET STAFF");
-		return this.activeUser;
-	}
-	
-	public List<Staff> getStaffs(){
-		System.out.println("GET STAFFS");
-		if(this.loggedin && checkToken()){
-			return em.getStaffs();
-		}
-		return null;
-	}
-	
-	public List<Staff> getStaffs(String name){
-		System.out.println("GET STAFFS name");
-		if(this.loggedin && checkToken()){
-			return em.getStaffs(name);
-		}
-		return null;
-	}
-	
 	@Override
 	public String login(String name, String password) {
 		System.out.println("LOGIN");
@@ -125,14 +101,6 @@ public class LoginController implements Serializable, ILoginController{
 		}
 		return null;
 	}
-	
-	public boolean getLoggedin(){
-		return this.loggedin;
-	}
-	
-	private void setLoggedin(boolean loggedin){
-		this.loggedin = loggedin;
-	}
 
 	@Override
 	public String registerNew(Staff s) {
@@ -144,6 +112,7 @@ public class LoginController implements Serializable, ILoginController{
 		}
 		return "/home?faces-redirect=true";
 	}
+
 	@Override
 	public String registerNewWithDepartment(Staff s, Department d, String key) {
 		System.out.println("REGISTER NEW");
@@ -154,15 +123,112 @@ public class LoginController implements Serializable, ILoginController{
 		}
 		return "/home?faces-redirect=true";
 	}
-		
-	public Patient getPatient(int patientid){
-		System.out.println("GetPatient " + patientid);
-		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
-			return em.getPatient(activeUser, patientid);
+
+	@Override
+	public void activateStaff(Staff s, String groupKey){
+		System.out.println("ACTIVATE Staff..." + s);
+		if(this.loggedin && activeDepartment_Has_Staff.getOwner().equals(activeUser) && checkToken()){
+			em.setActivateStaff(s, true);
+			if(s.getRole() == 1){
+				em.setGroupKey(s, activeDepartment_Has_Staff,  groupKey);		
+			}
+		}
+	}
+
+	@Override
+	public void deactivateStaff(Staff s){
+		System.out.println("DEACTIVATE Staff..." + s);
+		if(this.loggedin && activeDepartment_Has_Staff.getOwner().equals(activeUser) && checkToken()){
+			em.setActivateStaff(s, false);
+			if(s.getRole() == 1){
+				em.setGroupKey(s, activeDepartment_Has_Staff, null);
+			}		
+		}
+	}
+
+	public void renew(String key, String staffs, String patients) throws ParseException{
+		if(this.loggedin && checkToken()){
+			
+			// update my own key
+			this.activateStaff(this.activeUser, key);
+	
+			// update staff's keys
+			if(!staffs.equals("")){
+				JSONParser parser = new JSONParser();
+				Object obj = parser.parse(staffs);
+				JSONObject json = (JSONObject) obj;
+				Set set = json.keySet();
+				for (Iterator i = set.iterator(); i.hasNext();) {
+					int id = Integer.parseInt((String) i.next());
+					Staff s = em.getStaff(id);
+					if (s.getActivated()) {
+						String key2 = (String) json.get("" + id);
+						this.activateStaff(s, key2);
+					}
+				}
+			}
+	
+			// update patient's personal data
+			if(!patients.equals("")){
+				JSONParser parser = new JSONParser();
+				Object obj = parser.parse(patients);
+				JSONObject json = (JSONObject) obj;
+				Set set = json.keySet();
+				for (Iterator i = set.iterator(); i.hasNext();) {
+					int id = Integer.parseInt((String) i.next());
+					Patient p = em.getPatient(this.activeUser, id);
+					String personalData = (String) json.get("" + id);
+					p.setPersonalData(personalData);
+					this.updatePatient(p);
+				}
+			}
+		}
+	}
+	
+	public List<Department> getDepartments(){
+		return em.getDepartments();
+	}
+
+	@Override
+	public List<Staff> getStaffs(){
+		System.out.println("GET STAFFS");
+		if(this.loggedin && checkToken()){
+			return em.getStaffs();
+		}
+		return null;
+	}
+	
+	@Override
+	public List<Staff> getStaffs(String name){
+		System.out.println("GET STAFFS name");
+		if(this.loggedin && checkToken()){
+			return em.getStaffs(name);
+		}
+		return null;
+	}
+	
+	@Override
+	public List<Staff> searchStaffsInGroup(String name) {
+		System.out.println("SEARCHING Staff..." + name);
+		if(this.loggedin && checkToken()){
+			List<Staff> l = em.searchStaffsInGroup(name, activeDepartment_Has_Staff, activeUser);
+			return l;
 		}
 		return null;
 	}
 
+	@Override
+	public void updateStaff(Staff s, String groupKey){
+		System.out.println("update staff..." + s);
+		if(this.loggedin && checkToken()){
+			em.updateStaff(s);
+			if(s.getRole() == 1){
+				em.setGroupKey(s, activeDepartment_Has_Staff,  groupKey);	
+			}
+		}
+	}
+
+	@Override
 	public List<Patient> getPatients(){
 		System.out.println("GetPatients");
 		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
@@ -172,38 +238,20 @@ public class LoginController implements Serializable, ILoginController{
 		return null;
 	}
 	
-	public List<ListOfQuestionnaire> getPatientDatas(){
-		if(this.loggedin && (this.activePatient != null) && checkToken()){
-			List<ListOfQuestionnaire> l = em.searchDatas(this.activePatient.getPatientid());
-			return l;
-		}
-		return null;
-	}
-	
 	@Override
-	public void updateStaff(Staff s, String secret){
-		System.out.println("update staff..." + s);
-		if(this.loggedin && checkToken()){
-			em.updateStaff(s);
-			if(s.getRole() == 1){
-				em.setGroupKey(s, activeDepartment_Has_Staff,  secret);	
-			}
-		}
-	}
-	
-	@Override
-	public void updatePatient(Patient p){
-		System.out.println("update patient..." + p);
-		if(this.loggedin && checkToken()){
-			em.updatePatient(p, activeUser);
-		}
-	}
-
 	public List<Patient> searchPatients() {
 		System.out.println("SEARCHING Patient...");
 		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
 			List<Patient> l = em.searchPatients(activeDepartment_Has_Staff, activeUser);
 			return l;
+		}
+		return null;
+	}
+
+	public Patient getPatient(int patientid){
+		System.out.println("GetPatient " + patientid);
+		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
+			return em.getPatient(activeUser, patientid);
 		}
 		return null;
 	}
@@ -214,6 +262,22 @@ public class LoginController implements Serializable, ILoginController{
 		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
 			em.createPatient(p, activeDepartment_Has_Staff, activeUser);
 			return "/restricted/loggedin?faces-redirect=true";
+		}
+		return null;
+	}
+
+	@Override
+	public void updatePatient(Patient p){
+		System.out.println("update patient..." + p);
+		if(this.loggedin && checkToken()){
+			em.updatePatient(p, activeUser);
+		}
+	}
+
+	public List<ListOfQuestionnaire> getPatientDatas(){
+		if(this.loggedin && (this.activePatient != null) && checkToken()){
+			List<ListOfQuestionnaire> l = em.searchDatas(this.activePatient.getPatientid());
+			return l;
 		}
 		return null;
 	}
@@ -260,74 +324,6 @@ public class LoginController implements Serializable, ILoginController{
 		}
 	}
 
-	public Patient getActivePatient() {
-		System.out.println("ActivePatient");
-		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
-			return activePatient;
-		}
-		return null;
-	}
-
-	public void setActivePatient(Patient activePatient) {
-		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
-			this.activePatient = activePatient;
-		}
-	}
-	
-	private Date from;
-	public Date getFrom() {
-		return from;
-	}
-
-	public void setFrom(Date from) {
-		this.from = from;
-	}
-
-	public Date getTo() {
-		return to;
-	}
-
-	public void setTo(Date to) {
-		this.to = to;
-	}
-
-	public boolean isOwner(Patient p){
-		System.out.println("IsOwner");
-		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
-			return em.isOwner(p, activeUser);
-		}
-		return false;
-	}
-	
-	public boolean isOwnerOfGroup(Staff s){
-		return activeDepartment_Has_Staff.getOwner().equals(s);
-	}
-
-	public boolean readAccess(Patient p){
-		System.out.println("ReadAccess");
-		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
-			return em.readaccess(p, activeUser);
-		}
-		return false;
-	}
-	
-	public boolean writeAccess(Patient p){
-		System.out.println("WriteAccess");
-		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
-			return em.writeaccess(p, activeUser);
-		}
-		return false;
-	}
-	
-	public boolean insertAccess(Patient p){
-		System.out.println("InsertAccess");
-		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
-			return em.insertaccess(p, activeUser);
-		}
-		return false;
-	}
-	
-	
 	public void setPatientid(ListOfQuestionnaire list){
 		this.questionnaireId = list.getQuestId();
 		this.questionnaireName = list.getTypOfQuest();
@@ -353,63 +349,6 @@ public class LoginController implements Serializable, ILoginController{
 	
 
 	
-	public List<Department> getDepartments(){
-		return em.getDepartments();
-	}
-
-	public String getDepartmentselected() {
-		return this.departmentselected;
-	}
-
-	public void setDepartmentselected(String departmentselected) {
-		this.departmentselected = departmentselected;
-		List<Department_Has_Staff> list = em.get_Department_Has_Staffs();
-		for(Iterator i = list.iterator() ; i.hasNext() ; ){
-			Department_Has_Staff dhs = (Department_Has_Staff) i.next();
-			if(dhs.getDepartment().getName().equals(departmentselected)){
-				this.setDepartment_Has_Staff(dhs);
-			}
-		}
-	}
-
-	public Department_Has_Staff getDepartment_Has_Staff(){
-		return this.activeDepartment_Has_Staff;
-	}
-	public void setDepartment_Has_Staff(Department_Has_Staff activeDepartment_Has_Staff){
-		this.activeDepartment_Has_Staff = activeDepartment_Has_Staff;
-	}
-
-	public List<Staff> searchStaffsInGroup(String name) {
-		System.out.println("SEARCHING Staff..." + name);
-		if(this.loggedin && checkToken()){
-			List<Staff> l = em.searchStaffs(name, activeDepartment_Has_Staff, activeUser);
-			return l;
-		}
-		return null;
-	}
-	
-	@Override
-	public void activateStaff(Staff s, String secret){
-		System.out.println("ACTIVATE Staff..." + s);
-		if(this.loggedin && activeDepartment_Has_Staff.getOwner().equals(activeUser) && checkToken()){
-			em.setActivateStaff(s, true);
-			if(s.getRole() == 1){
-				em.setGroupKey(s, activeDepartment_Has_Staff,  secret);		
-			}
-		}
-	}
-	
-	@Override
-	public void deactivateStaff(Staff s){
-		System.out.println("DEACTIVATE Staff..." + s);
-		if(this.loggedin && activeDepartment_Has_Staff.getOwner().equals(activeUser) && checkToken()){
-			em.setActivateStaff(s, false);
-			if(s.getRole() == 1){
-				em.setGroupKey(s, activeDepartment_Has_Staff, null);
-			}		
-		}
-	}
-
 	public List<QuestionnaireTools> getTemplate(String name) {
 		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
 		return em.getTemplate(name);
@@ -465,8 +404,17 @@ public class LoginController implements Serializable, ILoginController{
 		UIComponent comp = evt.getComponent();
 		questionnaireName = (String) comp.getAttributes().get("value");
 	}
-	private String nonce;
-	
+	public void export() {
+		String template = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("template");
+		if (this.loggedin && ((activeUser.getRole() == 2) || (activeUser.getRole() == 1)) && checkToken()) {
+			try {
+				dm.export(template);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public String getNonce(){
 		return nonce;
 	}
@@ -482,43 +430,12 @@ public class LoginController implements Serializable, ILoginController{
 		return null;
 	}
 	
-	public void renew(String key, String staffs, String patients) throws ParseException{
-		if(this.loggedin && checkToken()){
-			
-			// update my own key
-			this.activateStaff(this.activeUser, key);
+	public boolean getLoggedin(){
+		return this.loggedin;
+	}
 
-			// update staff's keys
-			if(!staffs.equals("")){
-				JSONParser parser = new JSONParser();
-				Object obj = parser.parse(staffs);
-				JSONObject json = (JSONObject) obj;
-				Set set = json.keySet();
-				for (Iterator i = set.iterator(); i.hasNext();) {
-					int id = Integer.parseInt((String) i.next());
-					Staff s = em.getStaff(id);
-					if (s.getActivated()) {
-						String key2 = (String) json.get("" + id);
-						this.activateStaff(s, key2);
-					}
-				}
-			}
-
-			// update patient's personal data
-			if(!patients.equals("")){
-				JSONParser parser = new JSONParser();
-				Object obj = parser.parse(patients);
-				JSONObject json = (JSONObject) obj;
-				Set set = json.keySet();
-				for (Iterator i = set.iterator(); i.hasNext();) {
-					int id = Integer.parseInt((String) i.next());
-					Patient p = em.getPatient(this.activeUser, id);
-					String personalData = (String) json.get("" + id);
-					p.setPersonalData(personalData);
-					this.updatePatient(p);
-				}
-			}
-		}
+	private void setLoggedin(boolean loggedin){
+		this.loggedin = loggedin;
 	}
 	
 	private boolean checkToken() {
@@ -528,15 +445,108 @@ public class LoginController implements Serializable, ILoginController{
 		return this.nonce.equals(token);
 	}
 
-	public void export() {
-		String template = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("template");
-		if (this.loggedin && ((activeUser.getRole() == 2) || (activeUser.getRole() == 1)) && checkToken()) {
-			try {
-				dm.export(template);
-			} catch (Exception e) {
-				e.printStackTrace();
+	public void setActiveUser(Staff s){
+		System.out.println("SET ACTIVE USER");
+		this.activeUser = s;
+	}
+	
+	public Staff getActiveUser(){
+		System.out.println("GET ACTIVE USER");
+		return this.activeUser;
+	}
+
+	public Patient getActivePatient() {
+		System.out.println("ActivePatient");
+		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
+			return activePatient;
+		}
+		return null;
+	}
+
+	public void setActivePatient(Patient activePatient) {
+		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
+			this.activePatient = activePatient;
+		}
+	}
+
+	public String getDepartmentselected() {
+		return this.departmentselected;
+	}
+
+	public void setDepartmentselected(String departmentselected) {
+		this.departmentselected = departmentselected;
+		List<Department_Has_Staff> list = em.get_Department_Has_Staffs();
+		for(Iterator i = list.iterator() ; i.hasNext() ; ){
+			Department_Has_Staff dhs = (Department_Has_Staff) i.next();
+			if(dhs.getDepartment().getName().equals(departmentselected)){
+				this.setDepartment_Has_Staff(dhs);
 			}
 		}
+	}
+
+	public Department_Has_Staff getDepartment_Has_Staff(){
+		return this.activeDepartment_Has_Staff;
+	}
+
+	public void setDepartment_Has_Staff(Department_Has_Staff activeDepartment_Has_Staff){
+		this.activeDepartment_Has_Staff = activeDepartment_Has_Staff;
+	}
+
+	@Override
+	public boolean isOwnerOfGroup(){
+		return activeDepartment_Has_Staff.getOwner().equals(activeUser);
+	}
+
+	@Override
+	public boolean isOwner(Patient p){
+		System.out.println("IsOwner");
+		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
+			return em.isOwner(p, activeUser);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean readAccess(Patient p){
+		System.out.println("ReadAccess");
+		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
+			return em.readaccess(p, activeUser);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean writeAccess(Patient p){
+		System.out.println("WriteAccess");
+		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
+			return em.writeaccess(p, activeUser);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean insertAccess(Patient p){
+		System.out.println("InsertAccess");
+		if(this.loggedin && (activeUser.getRole() == 1) && checkToken()){
+			return em.insertaccess(p, activeUser);
+		}
+		return false;
+	}
+
+	public Date getFrom() {
+		return from;
+	}
+
+	public void setFrom(Date from) {
+		this.from = from;
+	}
+
+	public Date getTo() {
+		return to;
+	}
+
+	public void setTo(Date to) {
+		this.to = to;
 	}
 
 }

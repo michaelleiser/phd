@@ -18,16 +18,35 @@ import org.bfh.phd.questionnaire.QuestionnaireTools;
 public interface IEntityManager {
 
 	/**
+	 * Register a new staff and returns the new staff.
+	 * @param staff
+	 * 			to be registered
+	 * @param admin
+	 * 			if is admin
+	 * @return
+	 * 			the registered staff
+	 */
+	public Staff registerNew(Staff staff, boolean admin);
+
+	/**
 	 * @return
 	 * 			a list of all staffs
 	 */
 	public List<Staff> getStaffs();
 
 	/**
+	 * @param name
+	 * 			to filter the return list
+	 * @return
+	 * 			a list of all staffs that contain the filter name
+	 */
+	public List<Staff> getStaffs(String name);
+
+	/**
 	 * @param id
 	 * 			of the staff
 	 * @return
-	 * 			a staff with the specified id
+	 * 			a staff with the specified id or null if it does not exist
 	 */
 	public Staff getStaff(int id);
 
@@ -42,26 +61,35 @@ public interface IEntityManager {
 	public Staff getStaff(String name, String password);
 
 	/**
-	 * @param name
-	 * 			to filter the return list
-	 * @return
-	 * 			a list of all staffs that contain the name
+	 * Update the staff.
+	 * @param staff
+	 * 			to be updated
 	 */
-	public List<Staff> getStaffs(String name);
-
-	/**
-	 * @param activeUser
-	 * 			the active user
-	 * @return
-	 * 			a list of all patients readable by the active user
-	 */
-	public List<Patient> getPatients(Staff activeUser);
+	public void updateStaff(Staff staff);
 
 	/**
 	 * @return
 	 * 			a list of all patients
 	 */
 	public List<Patient> getPatients();
+
+	/**
+	 * @param staff
+	 * 			the staff
+	 * @return
+	 * 			a list of all patients readable by the staff
+	 */
+	public List<Patient> getPatients(Staff staff);
+
+	/**
+	 * @param dhs
+	 * 			the department group
+	 * @param staff
+	 * 			the staff
+	 * @return
+	 * 			a list of all patients in the department group readable by the staff
+	 */
+	public List<Patient> searchPatients(Department_Has_Staff dhs, Staff staff);
 
 	/**
 	 * @param activeUser
@@ -74,67 +102,24 @@ public interface IEntityManager {
 	public Patient getPatient(Staff activeUser, int patientid);
 
 	/**
-	 * Register a new staff.
-	 * @param staff
-	 * 			to be registered
-	 * @param admin
-	 * 			if is admin
-	 * @return
-	 * 			the registered staff
-	 */
-	public Staff registerNew(Staff staff, boolean admin);
-
-	/**
-	 * Update the active user.
-	 * @param activeUser
-	 * 			the active user
-	 */
-	public void updateStaff(Staff activeUser);
-
-	/**
-	 * Update the patient which is writable by the active user.
-	 * @param patient
-	 * 			to be updated
-	 * @param activeUser
-	 * 			the active user
-	 */
-	public void updatePatient(Patient patient, Staff activeUser);
-
-	/**
-	 * @param dhs
-	 * 			the department group
-	 * @param activeUser
-	 * 			the active user
-	 * @return
-	 * 			a list of all patients in the department group readable by the active user
-	 */
-	public List<Patient> searchPatients(Department_Has_Staff dhs, Staff activeUser);
-
-	/**
-	 * Create a new patient in the department group with the active user as the owner.
+	 * Create a new patient in the department group with the staff as the owner.
 	 * @param patient
 	 * 			the patient to be created
 	 * @param dhs
 	 * 			the department group
-	 * @param activeUser
-	 * 			the active user
+	 * @param staff
+	 * 			the staff
 	 */
-	public void createPatient(Patient patient, Department_Has_Staff dhs, Staff activeUser);
-	
-	//TODO
-	/** check for delete
-	 * @param id
-	 * @return
-	 */
-	@SuppressWarnings("rawtypes")
-	public abstract List<IQuestion> getQuestionnaris2(int id);
+	public void createPatient(Patient patient, Department_Has_Staff dhs, Staff staff);
 
 	/**
-	 * @param id
-	 * @return
+	 * Update the patient which is writable by the staff.
+	 * @param patient
+	 * 			to be updated
+	 * @param staff
+	 * 			the staff
 	 */
-	@SuppressWarnings("rawtypes")
-	public abstract List<IQuestion> getFilledQuestion2(int id);
+	public void updatePatient(Patient patient, Staff staff);
 
 	/** 
 	 * @param id its the identification number of a answer set

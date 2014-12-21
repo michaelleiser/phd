@@ -23,7 +23,7 @@ public class LoginFilterStatistician implements Filter {
 		if ((lc == null) || !lc.getLoggedin()) {
 			String contextPath = req.getContextPath();
 			res.sendRedirect(contextPath + "/home.xhtml");
-		} else if (lc.getStaff().getRole() != 2) {
+		} else if (lc.getActiveUser().getRole() != 2) {
 			String contextPath = req.getContextPath();
 			res.sendRedirect(contextPath + "/restricted/loggedin.xhtml");
 		} else {

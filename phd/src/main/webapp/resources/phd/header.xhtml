@@ -27,10 +27,10 @@
 			<div id="loggedinbox">
 				<h:form id="loggedinform">
 					<h:outputText rendered="#{loginController.loggedin}" value="#{msg['youareloggedin']}" /><br />
-					<h:commandLink id="activestaff" rendered="#{loginController.loggedin}" action="#{navigation.redirectToEditStaff}" value="#{(loginController.getStaff()).getName()}" /><br />
+					<h:commandLink id="activestaff" rendered="#{loginController.loggedin}" action="#{navigation.redirectToEditStaff}" value="#{(loginController.activeUser).getName()}" /><br />
 					<h:outputText rendered="#{loginController.loggedin}" value="#{loginController.getDepartment_Has_Staff().getDepartment().getName()}"/><br />
 				</h:form>
-				<h:inputHidden id="role" rendered="#{loginController.loggedin}" value="#{(loginController.getStaff()).getRole()}"/>
+				<h:inputHidden id="role" rendered="#{loginController.loggedin}" value="#{(loginController.activeUser).getRole()}"/>
 				<h:form id="logoutform" onsubmit="return clearSessionStorage();">
 					<h:commandButton action="#{loginController.logout}" rendered="#{loginController.loggedin}" value="Logout" />
 				</h:form>

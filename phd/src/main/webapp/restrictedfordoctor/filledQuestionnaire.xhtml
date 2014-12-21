@@ -56,7 +56,7 @@
 					</div>
 			
 					<h:form>
-						<h:commandButton action="#{navigation.redirectToEditQuestionnaire}" actionListener="#{editFilledQuestionnaire.nameListener}" rendered="#{loginController.loggedin and (loginController.getStaff()).getRole()=='1'}" value="Edit" />
+						<h:commandButton action="#{navigation.redirectToEditQuestionnaire}" actionListener="#{editFilledQuestionnaire.nameListener}" rendered="#{loginController.loggedin and (loginController.getActiveUser()).getRole()=='1'}" value="Edit" />
 					</h:form>
 			
 				</div>

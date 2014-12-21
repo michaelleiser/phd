@@ -23,7 +23,7 @@ public class LoginFilterDoctor implements Filter {
 		if ((lc == null) || !lc.getLoggedin()) {
 			String contextPath = req.getContextPath();
 			res.sendRedirect(contextPath + "/home.xhtml");
-		} else if (lc.getStaff().getRole() != 1) {
+		} else if (lc.getActiveUser().getRole() != 1) {
 			String contextPath = req.getContextPath();
 			res.sendRedirect(contextPath + "/restricted/loggedin.xhtml");
 		} else {

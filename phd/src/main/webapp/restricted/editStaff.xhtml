@@ -25,23 +25,23 @@
 					<h:form id="staffform" onsubmit="return validation();">
 						<h:panelGrid columns="2">
 							<h:outputText value="Staff id" />
-							<h:outputText value="#{loginController.getStaff().getId()}" />
+							<h:outputText value="#{loginController.activeUser.getId()}" />
 							<h:outputText value="Staff name" />
-							<h:outputText value="#{loginController.getStaff().getName()}" />
+							<h:outputText value="#{loginController.activeUser.getName()}" />
 							
 							<h:outputLabel for="newpass" value="New Password" />
-							<h:inputSecret id="newpass" required="true" value="#{loginController.getStaff().password}"/>		
+							<h:inputSecret id="newpass" required="true" value="#{loginController.activeUser.password}"/>		
 							<h:outputLabel for="confpass" value="Confirm Password" />
 							<h:inputSecret id="confpass" required="true" />		
 
 							<h:outputText />	
-							<h:commandButton action="#{loginController.updateStaff(loginController.getStaff(), groupKey.value)}" value="Update Password" />
+							<h:commandButton action="#{loginController.updateStaff(loginController.activeUser, groupKey.value)}" value="Update Password" />
 
 						</h:panelGrid>
 
-						<h:inputHidden id="salt" value="#{loginController.getStaff().salt}" />
-						<h:inputHidden id="encryptedPrivateKey" value="#{loginController.getStaff().privateKey}"/>	
-						<h:inputHidden id="publicKey" value="#{loginController.getStaff().publicKey}"/>	
+						<h:inputHidden id="salt" value="#{loginController.activeUser.salt}" />
+						<h:inputHidden id="encryptedPrivateKey" value="#{loginController.activeUser.privateKey}"/>	
+						<h:inputHidden id="publicKey" value="#{loginController.activeUser.publicKey}"/>	
 						<h:inputHidden id="encryptedGroupKey" binding="#{groupKey}" />
 						
 					</h:form>

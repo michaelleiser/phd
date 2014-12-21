@@ -26,13 +26,13 @@ public interface IAnswer<A, B> {
 	public void addAnswer(B o);
 
 	/**
+	 * @return the database primkey
+	 */
+	public int getDb();
+
+	/**
 	 * @param db
 	 *            set the database primkey
 	 */
 	public void setDb(int db);
-
-	/**
-	 * @return the database primkey
-	 */
-	public int getDb();
 }

@@ -8,12 +8,22 @@ import java.security.Security;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Hex;
 
+/**
+ * @author leism3, koblt1
+ *
+ */
 public class MyCrypto {
 
 	public MyCrypto(){
 		
 	}
 	
+	/**
+	 * @param s
+	 * 			the string
+	 * @return
+	 * 			the SHA-256 digest of the string
+	 */
 	public static String SHA1(String s){
 		Security.addProvider(new BouncyCastleProvider());
 		byte[] input = s.getBytes();
@@ -30,6 +40,12 @@ public class MyCrypto {
 		return new String(Hex.encode(digest));
 	}
 	
+	/**
+	 * @param s
+	 * 			the string
+	 * @return
+	 * 			the SHA-256 digest of the string
+	 */
 	public static String SHA256(String s){
 		Security.addProvider(new BouncyCastleProvider());
 		byte[] input = s.getBytes();
@@ -46,6 +62,12 @@ public class MyCrypto {
 		return new String(Hex.encode(digest));
 	}
 	
+	/**
+	 * @param s
+	 * 			the string
+	 * @return
+	 * 			the SHA-512 digest of the string
+	 */
 	public static String SHA512(String s){
 		Security.addProvider(new BouncyCastleProvider());
 		byte[] input = s.getBytes();
