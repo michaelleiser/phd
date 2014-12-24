@@ -7,6 +7,11 @@ import javax.faces.bean.RequestScoped;
 
 import org.bfh.phd.interfaces.IPatient;
 
+/**
+ * This patient has some personal information and can be threatened by one or more doctors.
+ * 
+ * @author leism3, koblt1
+ */
 @ManagedBean(name = "patient", eager = true)
 @RequestScoped
 public class Patient implements Serializable, IPatient {

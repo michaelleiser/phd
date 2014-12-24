@@ -16,9 +16,11 @@
 			<h:outputScript library="js" name="validate_login.js" />			
 		
 			<div id="content">
+			
 				<h1>
 					<h:outputText value="#{msg['home']}" />
 				</h1>
+			
 				<div class="formular">
 				
 					<h:form id="loginform" onsubmit="return validation();">
@@ -48,13 +50,16 @@
 					<h:inputHidden id="salt" value="#{loginController.getSaltFromStaff(name.value)}"/>
 											
 				</div>
+				
 				<div class="formular">
 					<h:form>
 						<h:commandButton action="#{navigation.redirectToRegisterNew}"
 							value="Register new" />
 					</h:form>
 				</div>
+			
 			</div>
+			
 		</ui:define>
 	</ui:composition>
 

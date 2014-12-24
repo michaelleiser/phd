@@ -15,9 +15,11 @@
 			<h:outputScript library="js" name="validate_patient.js" />
 					
 			<div id="content">
+			
 				<h1>
 					<h:outputText value="#{msg['editpatient']}" />
 				</h1>
+			
 				<div class="formular">
 				
 					<h:form action="#{navigation.redirectToLoggedin}" id="patientform" onsubmit="return validation();">
@@ -74,6 +76,7 @@
 					</h:form>
 
 				</div>
+				
 			</div>
 
 			<h:outputScript type="text/javascript">

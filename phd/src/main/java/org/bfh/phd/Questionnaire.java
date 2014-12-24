@@ -42,7 +42,7 @@ public class Questionnaire implements Serializable {
 	}
 	
 	public List<Questionnaire> getListOfQuestionnaris(){
-		return em.searchQuestionnaris(patient);
+		return em.searchQuestionnaires(patient);
 	}
 
 	public Date getDate() {

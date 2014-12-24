@@ -1,10 +1,12 @@
 package org.bfh.phd.interfaces;
 
 /**
+ * 
+ * 
  * @author leism3, koblt1
  *
- * @param <A> is the returntype of a answer (string or collection)
- * @param <B> is the type of a answer (string or collection)
+ * @param <A> is the type of an answer (string or collection)
+ * @param <B> is the type of an answer (string or collection)
  */
 public interface IAnswer<A, B> {
 

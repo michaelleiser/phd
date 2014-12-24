@@ -7,6 +7,11 @@ import javax.faces.bean.RequestScoped;
 
 import org.bfh.phd.interfaces.IDepartment;
 
+/**
+ * This is a simple department.
+ * 
+ * @author leism3, koblt1
+ */
 @ManagedBean(name = "department", eager = true)
 @RequestScoped
 public class Department implements Serializable, IDepartment {

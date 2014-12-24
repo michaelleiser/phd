@@ -34,8 +34,9 @@ import org.bfh.phd.questionnaire.QuestionString;
 import org.bfh.phd.questionnaire.QuestionnaireTools;
 
 /**
+ * 
+ * 
  * @author leism3, koblt1
- *
  */
 @ManagedBean(name = "entityManager", eager = true)
 @SessionScoped
@@ -105,7 +106,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		} finally {
 			close();
 		}
-		initStaff(); // TODO Da sonst nicht geupdated wird nach dem insert
+		initStaff();
 		return this.getStaff((int) l);
 	}
 
@@ -132,13 +133,16 @@ public class EntityManager implements IEntityManager, Serializable {
 			closeWithoutRs();
 		}
 		initStaff();
-		initDepartment_Has_Staff(); // TODO Da sonst nicht geupdated wird nach dem insert
+		initDepartment_Has_Staff();
 	}
 
 	/**
 	 * @param s
+	 * 			is the staff
 	 * @param dhs
+	 * 			is the department group
 	 * @param secret
+	 * 			is the encrypted group key
 	 */
 	public void setGroupKey(Staff s, Department_Has_Staff dhs, String secret) {
 		String stm = "UPDATE department_has_staff SET encryptedKey=? WHERE department_department_id=? AND staff_staff_id=?;";
@@ -156,12 +160,14 @@ public class EntityManager implements IEntityManager, Serializable {
 		} finally {
 			closeWithoutRs();
 		}
-		// initStaff(); // TODO Da sonst nicht geupdated wird nach dem insert
+		// initStaff();
 	}
 
 	/**
 	 * @param d
+	 * 			is the department
 	 * @return
+	 * 			the department group
 	 */
 	public Department_Has_Staff getDepartment_Has_Staff(Department d) {
 		Department_Has_Staff dhs = new Department_Has_Staff();
@@ -211,10 +217,11 @@ public class EntityManager implements IEntityManager, Serializable {
 	/**
 	 * Create a new department.
 	 * @param d
-	 * 				
+	 * 			is the department
 	 * @param s
-	 *            is the staff member they create the department
+	 *          is the staff that creates the department
 	 * @param key
+	 * 			is the encrypted group key from the staff
 	 */
 	public void createDepartment(Department d, Staff s, String key) {
 		String stm1 = "SELECT * FROM department WHERE name=?;";
@@ -227,7 +234,7 @@ public class EntityManager implements IEntityManager, Serializable {
 			pst.execute();
 			rs = pst.getResultSet();
 			if (rs.next()) {
-				// Department already exists
+				System.err.println("EntityManager - Department already exists");
 			} else {
 				pst = con.prepareStatement(stm2,
 						Statement.RETURN_GENERATED_KEYS);
@@ -251,15 +258,15 @@ public class EntityManager implements IEntityManager, Serializable {
 		} finally {
 			close();
 		}
-		initDepartment(); // TODO Da sonst nicht geupdated wird nach dem insert
+		initDepartment();
 	}
 
 	/**
 	 * Add a new staff member to a department.
 	 * @param name
-	 *            is the name of the department
+	 *          is the name of the department
 	 * @param s
-	 *            is the staff member
+	 * 			is the staff member
 	 */
 	public void addToDepartment(String name, Staff s) {
 		String stm1 = "SELECT * FROM department WHERE name=?;";
@@ -280,7 +287,7 @@ public class EntityManager implements IEntityManager, Serializable {
 				// pst.setString(4, "encryptedKey"); // Not necessary yet, written in activation process
 				pst.executeUpdate();
 			} else {
-				// Department does not exist
+				System.err.println("EntityManager - Department does not exist");
 			}
 			close();
 		} catch (SQLException e) {
@@ -288,7 +295,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		} finally {
 			close();
 		}
-		initDepartment(); // TODO Da sonst nicht geupdated wird nach dem insert
+		initDepartment();
 	}
 
 	@Override
@@ -308,10 +315,15 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	/**
+	 * Returns a list of staffs in a group except yourself.
 	 * @param name
+	 * 			of the staff
 	 * @param dhs
+	 * 			is the department group
 	 * @param staff
+	 * 			is you
 	 * @return
+	 * 			a list of staffs in a group except yourself.
 	 */
 	public List<Staff> searchStaffsInGroup(String name, Department_Has_Staff dhs,
 			Staff staff) {
@@ -374,42 +386,6 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	@Override
-	public List<Patient> getPatients(Staff activeUser) {
-		List<Patient> list = new ArrayList<Patient>();
-		for(Patient p : this.patients){
-			if(p.getReadaccess() || (p.getOwner().equals(activeUser))){
-				list.add(p);
-			}
-		}
-		return list;
-	}
-
-	@Override
-	public List<Patient> searchPatients(Department_Has_Staff dhs,
-			Staff s) {
-		List<Patient> patient = new ArrayList<Patient>();
-		for(Patient p : this.patients){
-			if(p.getDepartment().equals(dhs.getDepartment())){
-				if(p.getReadaccess() || (p.getOwner().equals(s))){
-					patient.add(p);		
-				}		
-			}
-		}
-		// paginatorPatient.setSize(patient.size());
-		return patient;
-	}
-
-	@Override
-	public Patient getPatient(Staff activeUser, int patientid) {
-		for(Patient p : this.patients){
-			if((p.getReadaccess() || (p.getOwner().equals(activeUser))) && (p.getPatientid() == patientid)){
-				return p;
-			}
-		}
-		return null;
-	}
-
-	@Override
 	public void createPatient(Patient p, Department_Has_Staff dhs, Staff s) {
 		String stm = "INSERT INTO patient(readaccess, writeaccess, insertaccess, staff_staff_id, encryptedPersonalData, department_department_id) VALUES(?, ?, ?, ?, ?, ?);";
 		init();
@@ -428,28 +404,26 @@ public class EntityManager implements IEntityManager, Serializable {
 		} finally {
 			closeWithoutRs();
 		}
-		initPatient(); // TODO da sonst nicht geupdated wird nach dem insert
+		initPatient();
 	}
 
 	@Override
 	public void updatePatient(Patient p, Staff s) {
-		if (this.writeaccess(p, s)) {
-			init();
-			String stm = "UPDATE patient SET readaccess=?, writeaccess=?, insertaccess=?, encryptedPersonalData=? WHERE patient_id=?";
-			try {
-				pst = con.prepareStatement(stm);
-				pst.setString(1, Boolean.toString(p.getReadaccess()));
-				pst.setString(2, Boolean.toString(p.getWriteaccess()));
-				pst.setString(3, Boolean.toString(p.getInsertaccess()));
-				pst.setString(4, p.getPersonalData());
-				pst.setInt(5, p.getPatientid());
-				pst.executeUpdate();
-				closeWithoutRs();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				closeWithoutRs();
-			}
+		init();
+		String stm = "UPDATE patient SET readaccess=?, writeaccess=?, insertaccess=?, encryptedPersonalData=? WHERE patient_id=?";
+		try {
+			pst = con.prepareStatement(stm);
+			pst.setString(1, Boolean.toString(p.getReadaccess()));
+			pst.setString(2, Boolean.toString(p.getWriteaccess()));
+			pst.setString(3, Boolean.toString(p.getInsertaccess()));
+			pst.setString(4, p.getPersonalData());
+			pst.setInt(5, p.getPatientid());
+			pst.executeUpdate();
+			closeWithoutRs();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeWithoutRs();
 		}
 	}
 
@@ -483,15 +457,15 @@ public class EntityManager implements IEntityManager, Serializable {
 		String stm2 = "UPDATE questionnaire_has_answer SET answer_id=? WHERE default_id=?;";
 		try {
 			int j = 0;
-				for (IQuestion iq : tmp.getQuestions()) {
-					int i = insertAnswer(iq.getAnswer().toString());
-					pst = con.prepareStatement(stm2);
-					pst.setInt(1, i);
-					pst.setInt(2, tmp.getAnswers().get(j).getDb());
-					System.out.println("ANSWER ID " + tmp.getAnswers().get(j).getDb());
-					pst.executeUpdate();
-					j++;
-				}
+			for (IQuestion iq : tmp.getQuestions()) {
+				int i = insertAnswer(iq.getAnswer().toString());
+				pst = con.prepareStatement(stm2);
+				pst.setInt(1, i);
+				pst.setInt(2, tmp.getAnswers().get(j).getDb());
+				System.out.println("ANSWER ID " + tmp.getAnswers().get(j).getDb());
+				pst.executeUpdate();
+				j++;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -572,7 +546,7 @@ public class EntityManager implements IEntityManager, Serializable {
 //	}
 
 	@Override
-	public List<Questionnaire> searchQuestionnaris(int id) {
+	public List<Questionnaire> searchQuestionnaires(int id) {
 		//TODO used?
 		System.out.println("entity 336");
 		init();
@@ -788,7 +762,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		try {
 			int i = 0;
 			if (typ != "String") {
-				i = setpossibilities(pos);
+				i = setPossibilities(pos);
 			}
 			int j = (Integer) map.get(typ);
 			pst = con.prepareStatement(stm, Statement.RETURN_GENERATED_KEYS);
@@ -841,7 +815,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	 * @return the generated key of this set of possibilities
 	 * @throws SQLException
 	 */
-	private int setpossibilities(List<String> pos) throws SQLException {
+	private int setPossibilities(List<String> pos) throws SQLException {
 		int i = 1;
 		int l = 0;
 		String stm = "SELECT MAX(id) FROM possibilities;";
@@ -940,7 +914,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	@Override
-	public void deletTemplateQuestion(QuestionnaireTools q) throws SQLException {
+	public void deleteTemplateQuestion(QuestionnaireTools q) throws SQLException {
 		init();
 		init2();
 		String stm = "DELETE FROM question WHERE id=?;";
@@ -1273,8 +1247,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	/**
-	 * Initialization of all departments
-	 * 
+	 * Initialization of all departments.
 	 */
 	private void initDepartment() {
 		departments = new ArrayList<Department>();
@@ -1298,6 +1271,9 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 
+	/**
+	 * Initialization of all staffs.
+	 */
 	private void initStaff() {
 		staffs = new ArrayList<Staff>();
 		String stm = "SELECT * FROM staff;";
@@ -1326,6 +1302,9 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 
+	/**
+	 * Initialization of all department groups.
+	 */
 	private void initDepartment_Has_Staff() {
 		this.department_Has_Staffs = new ArrayList<Department_Has_Staff>();
 		for(Department d: this.departments) {
@@ -1335,8 +1314,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	/**
-	 * Initialization of all patients
-	 *
+	 * Initialization of all patients.
 	 */
 	private void initPatient() {
 		patients = new ArrayList<Patient>();
@@ -1368,7 +1346,9 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 
-	@Override
+	/**
+	 * Initialization of all templates.
+	 */
 	public void initOperationTyp() {
 		operationtypes = new ArrayList<String>();
 		init();
@@ -1389,8 +1369,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	/**
-	 * Initialization of all question types
-	 *
+	 * Initialization of all question types.
 	 */
 	private void initTyp() {
 		typ = new HashMap<String, Integer>();
@@ -1411,8 +1390,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	/**
-	 * Initialization of all filled questionnaires
-	 * 
+	 * Initialization of all filled questionnaires.
 	 */
 	private void initQuestionnaire() {
 		init2();
@@ -1440,8 +1418,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	/**
-	 * Initialization of all filled questionnaires
-	 * 
+	 * Initialization of all filled questionnaires.
 	 */
 	private void initEmptyQuestionnaire() {
 		emptyQuestionnaires = new HashMap<String, FilledQuestionnaire>();
@@ -1451,20 +1428,21 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	/**
-	 * Initialization of the two database connections
-	 *
+	 * Initialization of the first database connection.
 	 */
 	private void init() {
 		con = mycon.getConnection();
 	}
 
+	/**
+	 * Initialization of the second database connection.
+	 */
 	private void init2(){
 		con2 = mycon.getConnection();
 	}
 
 	/**
-	 * Close the database connection with result set
-	 *
+	 * Closes the database connection with result set.
 	 */
 	private void close() {
 		try {
@@ -1499,8 +1477,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	/**
-	 * Close the database connection with result set
-	 *
+	 * Closes the database connection with result set.
 	 */
 	private void close2() {
 		if(rs2 != null){
@@ -1537,8 +1514,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	/**
-	 * Close the database connection without result set
-	 *
+	 * Closes the database connection without result set.
 	 */
 	private void closeWithoutRs() {
 		try {
@@ -1565,8 +1541,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	/**
-	 * Close the database connection without result set
-	 *
+	 * Closes the database connection without result set.
 	 */
 	private void closeWithoutRs2() {
 		try {
@@ -1590,34 +1565,6 @@ public class EntityManager implements IEntityManager, Serializable {
 				}
 			}
 		}
-	}
-	
-	public boolean isOwner(Patient p, Staff s) {
-		if (p.getOwner().equals(s)) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean readaccess(Patient p, Staff s) {
-		if (isOwner(p, s)) {
-			return true;
-		}
-		return p.getReadaccess();
-	}
-
-	public boolean writeaccess(Patient p, Staff s) {
-		if (isOwner(p, s)) {
-			return true;
-		}
-		return p.getWriteaccess();
-	}
-
-	public boolean insertaccess(Patient p, Staff s) {
-		if (isOwner(p, s)) {
-			return true;
-		}
-		return p.getInsertaccess();
 	}
 
 	public PaginatorPatientData getPaginatorPatientData() {

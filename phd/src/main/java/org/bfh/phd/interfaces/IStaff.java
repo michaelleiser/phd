@@ -1,8 +1,9 @@
 package org.bfh.phd.interfaces;
 
 /**
+ * A staff is a member of a department, which has some credentials to authenticate to a department.
+ * 
  * @author leism3, koblt1
- *
  */
 public interface IStaff {
 

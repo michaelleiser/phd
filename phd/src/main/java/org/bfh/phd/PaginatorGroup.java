@@ -2,6 +2,11 @@ package org.bfh.phd;
 
 import org.bfh.phd.interfaces.IPaginator;
 
+/**
+ * This paginator is used for a group list.
+ * 
+ * @author leism3, koblt1
+ */
 public class PaginatorGroup implements IPaginator{
 	
 	private static int pagesize = 10;

@@ -9,8 +9,9 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Hex;
 
 /**
+ * A crypto helper class which implements some hash functions and some encryption / decryption algorithms.
+ * 
  * @author leism3, koblt1
- *
  */
 public class MyCrypto {
 

@@ -56,7 +56,7 @@
 		<tracking-mode>COOKIE</tracking-mode>
 	</session-config>
 
-	<!-- Display error.xhtml on incorrect request/response -->
+	<!-- Display error.xhtml on incorrect requests -->
 	<error-page>
 		<location>/error.xhtml</location>
 	</error-page>

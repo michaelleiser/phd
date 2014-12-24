@@ -2,6 +2,11 @@
 //
 //import org.bfh.phd.interfaces.IPaginator;
 //
+///**
+// * This paginator is used for a patient list.
+// * 
+// * @author leism3, koblt1
+// */
 //public class PaginatorPatient implements IPaginator{
 //	
 //	private static int pagesize = 10;

@@ -13,6 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.bfh.phd.LoginController;
 
+/**
+ * This filter class let pass all messages sent from logged in users.
+ * 
+ * @author leism3, koblt1
+ */
 public class LoginFilter implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

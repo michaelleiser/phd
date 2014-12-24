@@ -13,6 +13,11 @@ import javax.faces.event.ActionEvent;
 
 import org.bfh.phd.interfaces.ILanguageController;
 
+/**
+ * This language controller is used for implementing different kinds of languages.
+ * 
+ * @author leism3, koblt1
+ */
 @ManagedBean(name = "languagecontrollertest", eager = true)
 @SessionScoped
 public class LanguageController implements ILanguageController, Serializable {

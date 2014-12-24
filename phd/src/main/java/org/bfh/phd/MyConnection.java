@@ -8,14 +8,15 @@ import java.util.Properties;
 
 import org.bfh.phd.interfaces.IConnection;
 
+/**
+ * This class makes a connection to a database.
+ * 
+ * @author leism3, koblt1
+ */
 public class MyConnection implements IConnection {
 
 	@Override
-	public Connection getConnection() {
-		
-//		FacesContext fc = FacesContext.getCurrentInstance();
-//		String driver = fc.getExternalContext().getInitParameter("JDBC-DRIVER");
-			
+	public Connection getConnection() {		
 		Properties prop = new Properties();
 		String propFile = "config.properties";
 		InputStream input = Patient.class.getClassLoader().getResourceAsStream(propFile);
@@ -30,14 +31,10 @@ public class MyConnection implements IConnection {
 		String driver = prop.getProperty("JDBC-DRIVER");
 			
 		Connection con = null;
-//		String url = "jdbc:mysql://localhost:3306/testdb";
-//		String user = "user";
-//		String password = "user";
-//		String driver = "com.mysql.jdbc.Driver";
+
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, user, password);
-//			System.out.println("Connection completed");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

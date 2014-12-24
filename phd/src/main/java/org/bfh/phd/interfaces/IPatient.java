@@ -4,8 +4,9 @@ import org.bfh.phd.Department;
 import org.bfh.phd.Staff;
 
 /**
+ * A patient has some personal information and can be threatened by one or more doctors.
+ * 
  * @author leism3, koblt1
- *
  */
 public interface IPatient {
 

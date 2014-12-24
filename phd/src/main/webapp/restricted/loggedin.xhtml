@@ -16,9 +16,11 @@
 			<h:outputScript library="js" name="sessionKeys.js" />
 		
 			<div id="content">
+			
 				<h1>
 					<h:outputText value="#{msg['loggedin']}" />
 				</h1>
+			
 				<div id="menu">
 					<h:form id="menuform">
 						<h:commandLink class="menuitem" action="#{navigation.redirectToNewPatient}" rendered="#{loginController.loggedin and (loginController.getActiveUser()).getRole()=='1'}" value="Create a new patient" />
@@ -29,6 +31,7 @@
 						<h:commandLink class="menuitem" action="#{navigation.redirectToEditGroup}" rendered="#{loginController.loggedin and (loginController.isOwnerOfGroup())}" value="Edit group" />
 					</h:form>
 				</div>
+			
 			</div>
 				
 			<!-- automatically load public private key in session storage -->			
@@ -37,6 +40,7 @@
 				<h:inputHidden id="publicKey" value="#{loginController.activeUser.getPublicKey()}" />
 				<h:inputHidden id="groupKey" value="#{loginController.getDepartment_Has_Staff().getEncryptedGroupKeyFromStaff(loginController.activeUser)}"/>
 			</h:form>
+			
 			<h:outputScript type="text/javascript">
 			    getSessionKeys();
      		</h:outputScript>

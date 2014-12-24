@@ -12,8 +12,9 @@ import org.bfh.phd.Staff;
 import org.bfh.phd.questionnaire.QuestionnaireTools;
 
 /**
+ * 
+ * 
  * @author leism3, koblt1
- *
  */
 public interface IEntityManager {
 
@@ -74,34 +75,6 @@ public interface IEntityManager {
 	public List<Patient> getPatients();
 
 	/**
-	 * @param staff
-	 * 			the staff
-	 * @return
-	 * 			a list of all patients readable by the staff
-	 */
-	public List<Patient> getPatients(Staff staff);
-
-	/**
-	 * @param dhs
-	 * 			the department group
-	 * @param staff
-	 * 			the staff
-	 * @return
-	 * 			a list of all patients in the department group readable by the staff
-	 */
-	public List<Patient> searchPatients(Department_Has_Staff dhs, Staff staff);
-
-	/**
-	 * @param activeUser
-	 * 			the active user
-	 * @param patientid
-	 * 			of the patient
-	 * @return
-	 * 			a patient with the the specified id readable by the active user
-	 */
-	public Patient getPatient(Staff activeUser, int patientid);
-
-	/**
 	 * Create a new patient in the department group with the staff as the owner.
 	 * @param patient
 	 * 			the patient to be created
@@ -132,7 +105,7 @@ public interface IEntityManager {
 	 * @param id is the patient identification number
 	 * @return a list of Questionnaire data set
 	 */
-	public abstract List<Questionnaire> searchQuestionnaris(int id);
+	public abstract List<Questionnaire> searchQuestionnaires(int id);
 
 	/**
 	 * Search all questions to an template
@@ -159,11 +132,6 @@ public interface IEntityManager {
 	public abstract void addQuestionnaireTemplate(String typ, String question, String nameOfTemplate, List<String> pos, int fragenr);
 
 	/**
-	 * Initialization of all Templates 
-	 */
-	public abstract void initOperationTyp();
-
-	/**
 	 * @return the types of question that is usable
 	 */
 	public Map<String, Integer> getType();
@@ -178,7 +146,7 @@ public interface IEntityManager {
 	 * @param q is the template question
 	 * @throws SQLException
 	 */
-	public void deletTemplateQuestion(QuestionnaireTools q) throws SQLException;
+	public void deleteTemplateQuestion(QuestionnaireTools q) throws SQLException;
 
 	/** edit a question from a template
 	 * @param q is the template question

@@ -9,6 +9,11 @@ import javax.faces.bean.RequestScoped;
 
 import org.bfh.phd.interfaces.IDepartment_Has_Staff;
 
+/**
+ * This is in fact the department, which contains several staffs and at minimum has an owner. Each staff has also an encrypted group key.
+ * 
+ * @author leism3, koblt1
+ */
 @ManagedBean(name = "department_has_staff", eager = true)
 @RequestScoped
 public class Department_Has_Staff implements Serializable, IDepartment_Has_Staff {

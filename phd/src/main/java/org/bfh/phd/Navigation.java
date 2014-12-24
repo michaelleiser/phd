@@ -5,6 +5,11 @@ import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+/**
+ * This navigation class is used for navigating to the different web pages.
+ * 
+ * @author leism3, koblt1
+ */
 @ManagedBean(name = "navigation", eager = true)
 @SessionScoped
 public class Navigation implements Serializable {

@@ -6,8 +6,10 @@ import org.bfh.phd.Department;
 import org.bfh.phd.Staff;
 
 /**
+ * This is in fact a department, which contains several staffs and at minimum has an owner.
+ * Each staff has also an encrypted group key.
+ * 
  * @author leism3, koblt1
- *
  */
 public interface IDepartment_Has_Staff {
 

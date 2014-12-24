@@ -1,14 +1,23 @@
 package org.bfh.phd;
 
+import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import org.bfh.phd.interfaces.IStaff;
 
+/**
+ * This staff is a member of a department, which has some credentials to authenticate to a department.
+ * 
+ * @author leism3, koblt1
+ */
 @ManagedBean(name = "staff", eager = true)
 @RequestScoped
-public class Staff implements IStaff{
-	
+public class Staff implements Serializable, IStaff{
+
+	private static final long serialVersionUID = 1L;
+
 	private int id;
 	private String name;
 	private String salt;
@@ -21,6 +30,10 @@ public class Staff implements IStaff{
 	
 	public Staff(){
 		
+	}
+	
+	public enum ROLE {
+		ADMIN, DOCTOR, STATISTICIAN
 	}
 
 	@Override

@@ -1,8 +1,9 @@
 package org.bfh.phd.interfaces;
 
 /**
+ * A paginator is actually a view on a list, which consists of several pages and is able to navigate through the list.
+ * 
  * @author leism3, koblt1
- *
  */
 public interface IPaginator {
 	

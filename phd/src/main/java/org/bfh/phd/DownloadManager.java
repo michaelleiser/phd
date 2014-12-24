@@ -16,8 +16,9 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 /**
+ * 
+ * 
  * @author leism3, koblt1
- *
  */
 @ManagedBean(name = "fileDownloadBean")
 @SessionScoped

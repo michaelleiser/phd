@@ -15,9 +15,11 @@
 			<h:outputScript library="js" name="validate_patient.js" />
 		
 			<div id="content">
+			
 				<h1>
 					<h:outputText value="#{msg['newpatient']}" />
 				</h1>
+			
 				<div class="formular">
 									
 					<h:form id="patientform" onsubmit="return validation();">
@@ -60,8 +62,11 @@
 						<h:inputHidden id="encryptedPersonalData" value="#{patient.personalData}" />
 						
 					</h:form>
+					
 				</div>
+				
 			</div>
+			
 		</ui:define>
 	</ui:composition>
 

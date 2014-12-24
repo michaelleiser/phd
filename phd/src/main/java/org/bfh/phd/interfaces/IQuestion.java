@@ -1,9 +1,11 @@
 package org.bfh.phd.interfaces;
 
 /**
+ * 
+ * 
  * @author leism3, koblt1
  *
- * @param <C> is the collection for answer possibilities
+ * @param <C> is a collection of answer possibilities
  * @param <D> is a string or collection of answers
  */
 public interface IQuestion <C, D> {

@@ -18,9 +18,11 @@
 			<h:outputScript library="js" name="validate_registernew.js" />		
 		
 			<div id="content">
+				
 				<h1>
 					<h:outputText value="#{msg['registernew']}" />
 				</h1>
+				
 				<div class="formular">
 									
 					<h:form id="registernewform" onsubmit="return validation();">
@@ -72,8 +74,11 @@
 						<h:inputHidden id="encryptedGroupKey" binding="#{groupKey}" />
 					
 					</h:form>
+				
 				</div>
+			
 			</div>
+			
 		</ui:define>
 	</ui:composition>
 

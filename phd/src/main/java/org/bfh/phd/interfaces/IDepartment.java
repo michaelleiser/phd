@@ -1,8 +1,9 @@
 package org.bfh.phd.interfaces;
 
 /**
+ * A simple department.
+ * 
  * @author leism3, koblt1
- *
  */
 public interface IDepartment {
 
