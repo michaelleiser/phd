@@ -110,13 +110,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		return this.getStaff((int) l);
 	}
 
-	/**
-	 * Activate or deactivate a staff member
-	 * @param s
-	 *            is the staff member
-	 * @param b
-	 *            activate = true / deactivate = false
-	 */
+	@Override
 	public void setActivateStaff(Staff s, boolean b) {
 		String stm = "UPDATE staff SET isActivated=? WHERE staff_id=?;";
 		init();
@@ -133,17 +127,10 @@ public class EntityManager implements IEntityManager, Serializable {
 			closeWithoutRs();
 		}
 		initStaff();
-		initDepartment_Has_Staff();
+		initDepartment_Has_Staff();	// TODO remove
 	}
 
-	/**
-	 * @param s
-	 * 			is the staff
-	 * @param dhs
-	 * 			is the department group
-	 * @param secret
-	 * 			is the encrypted group key
-	 */
+	@Override
 	public void setGroupKey(Staff s, Department_Has_Staff dhs, String secret) {
 		String stm = "UPDATE department_has_staff SET encryptedKey=? WHERE department_department_id=? AND staff_staff_id=?;";
 		init();
@@ -161,9 +148,11 @@ public class EntityManager implements IEntityManager, Serializable {
 			closeWithoutRs();
 		}
 		// initStaff();
+//		initDepartment_Has_Staff();	// TODO add
 	}
 
 	/**
+	 * Get the department group with all staffs of a specific department.
 	 * @param d
 	 * 			is the department
 	 * @return
@@ -197,32 +186,27 @@ public class EntityManager implements IEntityManager, Serializable {
 		return dhs;
 	}
 
+	@Override
 	public List<Department_Has_Staff> get_Department_Has_Staffs() {
 		return this.department_Has_Staffs;
 	}
 
-	private Department getDepartment(int i) {
+	@Override
+	public Department getDepartment(int id) {
 		for(Department d : this.departments) {
-			if(d.getDepartment_id() == i) {
+			if(d.getDepartment_id() == id) {
 				return d;
 			}
 		}
 		return null;
 	}
 
+	@Override
 	public List<Department> getDepartments() {
 		return this.departments;
 	}
 
-	/**
-	 * Create a new department.
-	 * @param d
-	 * 			is the department
-	 * @param s
-	 *          is the staff that creates the department
-	 * @param key
-	 * 			is the encrypted group key from the staff
-	 */
+	@Override
 	public void createDepartment(Department d, Staff s, String key) {
 		String stm1 = "SELECT * FROM department WHERE name=?;";
 		String stm2 = "INSERT INTO department(name) VALUES(?);";
@@ -261,13 +245,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		initDepartment();
 	}
 
-	/**
-	 * Add a new staff member to a department.
-	 * @param name
-	 *          is the name of the department
-	 * @param s
-	 * 			is the staff member
-	 */
+	@Override
 	public void addToDepartment(String name, Staff s) {
 		String stm1 = "SELECT * FROM department WHERE name=?;";
 		@SuppressWarnings("unused")
@@ -314,17 +292,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		return staff;
 	}
 
-	/**
-	 * Returns a list of staffs in a group except yourself.
-	 * @param name
-	 * 			of the staff
-	 * @param dhs
-	 * 			is the department group
-	 * @param staff
-	 * 			is you
-	 * @return
-	 * 			a list of staffs in a group except yourself.
-	 */
+	@Override
 	public List<Staff> searchStaffsInGroup(String name, Department_Has_Staff dhs,
 			Staff staff) {
 		List<Staff> staffs = new ArrayList<Staff>();
@@ -408,7 +376,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	@Override
-	public void updatePatient(Patient p, Staff s) {
+	public void updatePatient(Patient p) {
 		init();
 		String stm = "UPDATE patient SET readaccess=?, writeaccess=?, insertaccess=?, encryptedPersonalData=? WHERE patient_id=?";
 		try {

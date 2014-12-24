@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import org.bfh.phd.Department;
 import org.bfh.phd.Department_Has_Staff;
 import org.bfh.phd.FilledQuestionnaire;
 import org.bfh.phd.Patient;
@@ -28,7 +29,67 @@ public interface IEntityManager {
 	 * 			the registered staff
 	 */
 	public Staff registerNew(Staff staff, boolean admin);
+	
+	/**
+	 * Activate or deactivate a staff member
+	 * @param s
+	 *            is the staff member
+	 * @param b
+	 *            activate = true / deactivate = false
+	 */
+	public void setActivateStaff(Staff s, boolean b);
+	
+	/**
+	 * Set the group key for a staff in a department group.
+	 * @param s
+	 * 			is the staff
+	 * @param dhs
+	 * 			is the department group
+	 * @param secret
+	 * 			is the encrypted group key
+	 */
+	public void setGroupKey(Staff s, Department_Has_Staff dhs, String secret);
+	
+	/**
+	 * @return
+	 * 			a list of all department groups
+	 */
+	public List<Department_Has_Staff> get_Department_Has_Staffs();
 
+	/**
+	 * @param id
+	 * 			is the department id
+	 * @return
+	 * 			the department with the specified id
+	 */
+	public Department getDepartment(int id);
+
+	/**
+	 * @return
+	 * 			a list of all departments
+	 */
+	public List<Department> getDepartments();
+	
+	/**
+	 * Create a new department with the staff as the owner of the department group.
+	 * @param d
+	 * 			is the department
+	 * @param s
+	 *          is the staff that creates the department
+	 * @param key
+	 * 			is the encrypted group key from the staff
+	 */
+	public void createDepartment(Department d, Staff s, String key);
+
+	/**
+	 * Add a new staff member to a department group.
+	 * @param name
+	 *          is the name of the department
+	 * @param s
+	 * 			is the staff member
+	 */
+	public void addToDepartment(String name, Staff s);
+	
 	/**
 	 * @return
 	 * 			a list of all staffs
@@ -42,6 +103,19 @@ public interface IEntityManager {
 	 * 			a list of all staffs that contain the filter name
 	 */
 	public List<Staff> getStaffs(String name);
+	
+	/**
+	 * Returns a list of staffs in a group except yourself.
+	 * @param name
+	 * 			of the staff
+	 * @param dhs
+	 * 			is the department group
+	 * @param staff
+	 * 			is you
+	 * @return
+	 * 			a list of staffs in a group except yourself.
+	 */
+	public List<Staff> searchStaffsInGroup(String name, Department_Has_Staff dhs, Staff staff);
 
 	/**
 	 * @param id
@@ -86,13 +160,11 @@ public interface IEntityManager {
 	public void createPatient(Patient patient, Department_Has_Staff dhs, Staff staff);
 
 	/**
-	 * Update the patient which is writable by the staff.
+	 * Update the patient.
 	 * @param patient
 	 * 			to be updated
-	 * @param staff
-	 * 			the staff
 	 */
-	public void updatePatient(Patient patient, Staff staff);
+	public void updatePatient(Patient patient);
 
 	/** 
 	 * @param id its the identification number of a answer set
@@ -176,4 +248,5 @@ public interface IEntityManager {
 	 * @return a collection of FilledQuestionnaires
 	 */
 	public List<FilledQuestionnaire> getFilledQuestionnaires();
+
 }

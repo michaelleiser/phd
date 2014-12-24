@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.bfh.phd.LoginController;
+import org.bfh.phd.Staff;
 
 /**
  * This filter class let pass all messages sent from logged in doctors.
@@ -28,7 +29,7 @@ public class LoginFilterDoctor implements Filter {
 		if ((lc == null) || !lc.getLoggedin()) {
 			String contextPath = req.getContextPath();
 			res.sendRedirect(contextPath + "/home.xhtml");
-		} else if (lc.getActiveUser().getRole() != 1) {
+		} else if (lc.getActiveUser().getRole() != Staff.DOCTOR) {
 			String contextPath = req.getContextPath();
 			res.sendRedirect(contextPath + "/restricted/loggedin.xhtml");
 		} else {
