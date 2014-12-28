@@ -9,13 +9,13 @@ public interface IPaginator {
 	
 	/**
 	 * @return
-	 * 			the number of entries displayed in one page
+	 * 			the number of entries displayed on one page
 	 */
 	public int getPagesize();
 
 	/**
 	 * @param pagesize
-	 * 			the number of entries displayed in one page
+	 * 			the number of entries displayed on one page
 	 */
 	public void setPagesize(int pagesize);
 
@@ -57,13 +57,13 @@ public interface IPaginator {
 	
 	/**
 	 * @return
-	 * 			true if the current page has a previous one
+	 * 			true if the current page has a previous page
 	 */
 	public boolean hasPrevious();
 	
 	/**
 	 * @return
-	 * 			true if the current page has a next one
+	 * 			true if the current page has a next page
 	 */
 	public boolean hasNext();
 	

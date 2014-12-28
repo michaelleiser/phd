@@ -33,13 +33,13 @@ public interface IStaff {
 	
 	/**
 	 * @return
-	 * 			salt of the staff
+	 * 			salt of the staff's password
 	 */
 	public String getSalt();
 
 	/**
 	 * @param salt
-	 * 			of the staff
+	 * 			of the staff's password
 	 */
 	public void setSalt(String salt);	
 	

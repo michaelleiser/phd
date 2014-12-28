@@ -1,7 +1,7 @@
 package org.bfh.phd.interfaces;
 
 /**
- * A simple department.
+ * A simple department with a unique name.
  * 
  * @author leism3, koblt1
  */

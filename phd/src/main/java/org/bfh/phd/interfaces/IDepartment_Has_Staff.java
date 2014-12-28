@@ -6,7 +6,7 @@ import org.bfh.phd.Department;
 import org.bfh.phd.Staff;
 
 /**
- * This is in fact a department, which contains several staffs and at minimum has an owner.
+ * This is in fact a department group, which contains several staffs and at minimum has an owner.
  * Each staff has also an encrypted group key.
  * 
  * @author leism3, koblt1
@@ -85,6 +85,7 @@ public interface IDepartment_Has_Staff {
 
 	/**
 	 * @param staff
+	 * 			the staff
 	 * @return
 	 * 			the encrypted group key from the staff
 	 */
@@ -104,6 +105,7 @@ public interface IDepartment_Has_Staff {
 
 	/**
 	 * @param staff
+	 * 			the staff
 	 * @return
 	 * 			true if the staff is the owner of the department group
 	 */
@@ -111,6 +113,7 @@ public interface IDepartment_Has_Staff {
 
 	/**
 	 * @param staff
+	 * 			the staff
 	 * @return
 	 * 			true if the staff is a member of the department group
 	 */

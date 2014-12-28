@@ -26,12 +26,12 @@ public interface ILoginController {
 	 * @param staff
 	 * 			to be registered
 	 * @return
-	 * 			the newly created staff
+	 * 			the return page
 	 */
 	public String registerNew(Staff staff);
 
 	/**
-	 * Register a new staff in a new department.
+	 * Register a new staff in a new department, which has a unique group key.
 	 * @param staff
 	 * 			to be registered
 	 * @param department
@@ -39,7 +39,7 @@ public interface ILoginController {
 	 * @param groupKey
 	 * 			of the department group
 	 * @return
-	 * 			the newly created staff
+	 * 			the return page
 	 */
 	public String registerNewWithDepartment(Staff staff, Department department, String groupKey);
 	

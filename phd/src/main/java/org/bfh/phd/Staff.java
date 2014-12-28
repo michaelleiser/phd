@@ -8,7 +8,7 @@ import javax.faces.bean.RequestScoped;
 import org.bfh.phd.interfaces.IStaff;
 
 /**
- * This staff is a member of a department, which has some credentials to authenticate to a department.
+ * The staff is a member of a department, which has some credentials to authenticate to a department.
  * 
  * @author leism3, koblt1
  */

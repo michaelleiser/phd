@@ -8,7 +8,7 @@ import javax.faces.bean.RequestScoped;
 import org.bfh.phd.interfaces.IDepartment;
 
 /**
- * This is a simple department.
+ * This is a simple department with a unique name.
  * 
  * @author leism3, koblt1
  */

@@ -6,7 +6,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 /**
- * This navigation class is used for navigating to the different web pages.
+ * The navigation class is used for navigating to the different web pages.
  * 
  * @author leism3, koblt1
  */

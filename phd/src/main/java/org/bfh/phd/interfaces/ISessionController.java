@@ -92,6 +92,7 @@ public interface ISessionController {
 	public List<Patient> searchPatients();
 
 	/**
+	 * The patient with the specified id.
 	 * @param patientid
 	 * 			of the patient
 	 * @return
@@ -109,7 +110,7 @@ public interface ISessionController {
 	public String createPatient(Patient patient);
 
 	/**
-	 * Update a patient.
+	 * Update the patient.
 	 * @param patient
 	 * 			to be updated
 	 */
@@ -130,7 +131,6 @@ public interface ISessionController {
 	public boolean isOwner(Patient p);
 
 	/**
-	 * 
 	 * @param p
 	 * 			the patient
 	 * @return
@@ -153,9 +153,5 @@ public interface ISessionController {
 	 * 			true if the active staff has insert access for the patient
 	 */
 	public boolean insertAccess(Patient p);
-
-
-
-
 
 }

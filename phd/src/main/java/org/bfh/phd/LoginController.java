@@ -3,7 +3,6 @@ package org.bfh.phd;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -28,7 +27,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 /**
- * 
+ * The Login controller is used for login, logout, registering, accessibility on patients and patient's datas, session management, request filtering etc..
  * 
  * @author leism3, koblt1
  */
@@ -48,35 +47,17 @@ public class LoginController implements Serializable, ILoginController, ISession
 	private String departmentselected;
 	private Department_Has_Staff activeDepartment_Has_Staff;
 	
-	private Date from;
-	private Date to;
 	private EntityManager em;
 	private DownloadManager dm;
 
-
-//	private Logger log;
-	 
+	private Navigation navigation;
+ 
 	public LoginController() {
 		this.em = new EntityManager();
 		this.dm = new DownloadManager();
 		this.nonce = UUID.randomUUID().toString();
-		
-//		initLogger(); TODO write the loggincontroller
+		this.navigation = new Navigation();
 	}
-		
-//	private void initLogger() {
-//		log = Logger.getLogger(LoginController.class.getName());
-//		FileHandler fh;
-//		try {
-//			fh = new FileHandler(new Tools().getLogPath(), true);
-//			fh.setFormatter(new SimpleFormatter());
-//			log.addHandler(fh);
-//		} catch (SecurityException e) {
-//			em.setExeption(e);
-//		} catch (IOException e) {
-//			em.setExeption(e);
-//		}
-//	}
 
 	@Override
 	public String login(String name, String password) {
@@ -85,10 +66,10 @@ public class LoginController implements Serializable, ILoginController, ISession
 			activeUser = activeDepartment_Has_Staff.getStaff(name);
 			if(activeUser != null && activeUser.getActivated() && password.equals(MyCrypto.SHA256(nonce + "" + activeUser.getPassword())) && checkToken()){
 				setLoggedin(true);			
-				return "/restricted/loggedin?faces-redirect=true";
+				return navigation.redirectToLoggedin();
 			}
 		}
-		return "/home?faces-redirect=true";
+		return navigation.redirectToHome();
 	}
 
 	@Override
@@ -99,7 +80,7 @@ public class LoginController implements Serializable, ILoginController, ISession
 			if(FacesContext.getCurrentInstance() != null){
 				FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 			}
-			return "/home?faces-redirect=true";
+			return navigation.redirectToHome();
 		}
 		return null;
 	}
@@ -112,7 +93,7 @@ public class LoginController implements Serializable, ILoginController, ISession
 			Staff ss = em.registerNew(s, activated);
 			em.addToDepartment(this.departmentselected, ss);
 		}
-		return "/home?faces-redirect=true";
+		return navigation.redirectToHome();
 	}
 
 	@Override
@@ -123,7 +104,7 @@ public class LoginController implements Serializable, ILoginController, ISession
 			Staff ss = em.registerNew(s, activated);
 			em.createDepartment(d, ss, key);
 		}
-		return "/home?faces-redirect=true";
+		return navigation.redirectToHome();
 	}
 
 	@Override
@@ -294,7 +275,7 @@ public class LoginController implements Serializable, ILoginController, ISession
 		System.out.println("CREATE Patient..." + p);
 		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && checkToken()){
 			em.createPatient(p, activeDepartment_Has_Staff, activeUser);
-			return "/restricted/loggedin?faces-redirect=true";
+			return navigation.redirectToLoggedin();
 		}
 		return null;
 	}
@@ -321,8 +302,9 @@ public class LoginController implements Serializable, ILoginController, ISession
 	
 	public IFilledQuestionnaire getNewQuestion(){
 		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && checkToken()){
-		return em.getEmptyQuestionnaire(questionnaireName);
-		}else{return null;}
+			return em.getEmptyQuestionnaire(questionnaireName);
+		}
+		return null;
 	}
 	
 	public void updateAnswer(@SuppressWarnings("rawtypes") IQuestion iq){
@@ -366,44 +348,44 @@ public class LoginController implements Serializable, ILoginController, ISession
 		return null;
 	}
 
-	public int getQuestionnariId() {
+	public int getQuestionnariId() {	//TODO name !!!
 		return questionnaireId;
 	}
 
-	public void setQuestionnariId(int questionnariId) {
-		this.questionnaireId = questionnariId;
+	public void setQuestionnariId(int questionnaireId) {
+		this.questionnaireId = questionnaireId;
 	}
 	
-	public void addQuestionnaireTemplate(String typ,String question,String nameOfTemplate,List<String> pos, int fragenr){
+	public void addQuestionnaireTemplate(String type,String question,String nameOfTemplate,List<String> pos, int fragenr){
 		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && checkToken()){
-		em.addQuestionnaireTemplate(typ, question, nameOfTemplate, pos, fragenr);
+			em.addQuestionnaireTemplate(type, question, nameOfTemplate, pos, fragenr);
 		}
 	}
 	
 	public List<QuestionnaireTools> getTemplate(String name) {
 		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && checkToken()){
-		return em.getTemplate(name);
+			return em.getTemplate(name);
 		}
 		return null;
 	}
 
 	public void deleteTemplateQuestion(QuestionnaireTools q) {
 		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && checkToken()){
-		try {
-			em.deleteTemplateQuestion(q);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+			try {
+				em.deleteTemplateQuestion(q);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
 	public void editQuestion(QuestionnaireTools q) {
 		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && checkToken()){
-		try {
-			em.editQuestion(q);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+			try {
+				em.editQuestion(q);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -435,6 +417,7 @@ public class LoginController implements Serializable, ILoginController, ISession
 		UIComponent comp = evt.getComponent();
 		questionnaireName = (String) comp.getAttributes().get("value");
 	}
+	
 	public void export() {
 		String template = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("template");
 		if (this.loggedin && ((activeUser.getRole() == Staff.DOCTOR) || (activeUser.getRole() == Staff.STATISTICIAN)) && checkToken()) {
@@ -584,22 +567,6 @@ public class LoginController implements Serializable, ILoginController, ISession
 			return p.getInsertaccess();
 		}
 		return false;
-	}
-
-	public Date getFrom() {
-		return from;
-	}
-
-	public void setFrom(Date from) {
-		this.from = from;
-	}
-
-	public Date getTo() {
-		return to;
-	}
-
-	public void setTo(Date to) {
-		this.to = to;
 	}
 
 }

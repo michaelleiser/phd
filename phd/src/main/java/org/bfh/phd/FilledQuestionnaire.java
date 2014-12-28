@@ -48,8 +48,8 @@ public class FilledQuestionnaire implements IFilledQuestionnaire {
 	}	
 
 	@Override
-	public void addQuestions(IQuestion questions) {
-		this.questions.add(questions);
+	public void addQuestions(IQuestion question) {
+		this.questions.add(question);
 	}
 
 	@Override
@@ -63,12 +63,12 @@ public class FilledQuestionnaire implements IFilledQuestionnaire {
 	}
 
 	@Override
-	public void addAnswers(IAnswer answers) {
-		this.answers.add(answers);
+	public void addAnswers(IAnswer answer) {
+		this.answers.add(answer);
 	}
 
 	@Override
-	public ArrayList<ArrayList<String>> getList(){
+	public ArrayList<ArrayList<String>> getList(){		// TODO ???
 //		for(int i = 0; i<answers.size(); i++){
 //			ArrayList<String> a = new ArrayList<String>();
 //			a.add(questions.get(i).toString());
@@ -87,7 +87,7 @@ public class FilledQuestionnaire implements IFilledQuestionnaire {
 		this.id = id;
 	}
 	
-	public void save(LoginController lc){
+	public void save(LoginController lc){			// TODO ???
 		System.out.println("save");
 	}
 	

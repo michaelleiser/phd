@@ -12,7 +12,7 @@ public class ListOfQuestionnaire {
 
 	private int questId;
 	private Timestamp date;
-	private String typOfQuest;
+	private String typOfQuest;		// TODO name !!!
 	
 	public ListOfQuestionnaire(){
 		

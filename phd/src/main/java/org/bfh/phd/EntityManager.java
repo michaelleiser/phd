@@ -1,8 +1,5 @@
 package org.bfh.phd;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.util.Date;
@@ -34,7 +31,8 @@ import org.bfh.phd.questionnaire.QuestionString;
 import org.bfh.phd.questionnaire.QuestionnaireTools;
 
 /**
- * 
+ * The Entity manager contains all entities.
+ * All entities are manageable and manipulatable through this manager.
  * 
  * @author leism3, koblt1
  */
@@ -443,12 +441,6 @@ public class EntityManager implements IEntityManager, Serializable {
 		initQuestionnaire();
 	}
 
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.bfh.phd.Interfacetest#getFilledQuestion(int, java.lang.String)
-	 */
 	@SuppressWarnings("rawtypes")
 	@Override
 	public FilledQuestionnaire getFilledQuestion(int id,
@@ -497,21 +489,11 @@ public class EntityManager implements IEntityManager, Serializable {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
-				// close();
+//				 close();			// TODO should be closed!!!
 			}
 		}
 		return f;
 	}
-
-	
-
-//	public List<PatientData> getPatientdatas() {
-//		return patientdatas;
-//	}
-//
-//	public void setPatientdatas(List<PatientData> patientdatas) {
-//		this.patientdatas = patientdatas;
-//	}
 
 	@Override
 	public List<Questionnaire> searchQuestionnaires(int id) {
@@ -793,7 +775,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		pst.execute();
 		rs = pst.getResultSet();
 		if (rs.next()) {
-			i += rs.getInt("MAX(id)");
+			i += rs.getInt("MAX(id)");		// TODO ???
 		}
 		for (int j = 0; j < pos.size(); j++) {
 			pst = con.prepareStatement(stm2, Statement.RETURN_GENERATED_KEYS);
@@ -1099,7 +1081,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		rs2 = pst2.getResultSet();
 		if (rs2.next()) {
 			if (null != rs2.getObject(1)) {
-				i += rs2.getInt(1);
+				i += rs2.getInt(1);		// TODO ???
 			}
 		}
 		close2();

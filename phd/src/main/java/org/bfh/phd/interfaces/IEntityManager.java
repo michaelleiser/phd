@@ -13,7 +13,7 @@ import org.bfh.phd.Staff;
 import org.bfh.phd.questionnaire.QuestionnaireTools;
 
 /**
- * 
+ * An Entity manager contains all entities.
  * 
  * @author leism3, koblt1
  */

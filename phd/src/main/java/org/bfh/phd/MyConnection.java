@@ -9,7 +9,7 @@ import java.util.Properties;
 import org.bfh.phd.interfaces.IConnection;
 
 /**
- * This class makes a connection to a database.
+ * This class makes an authenticated connection to a specific database.
  * 
  * @author leism3, koblt1
  */

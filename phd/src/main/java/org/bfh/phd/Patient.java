@@ -8,7 +8,7 @@ import javax.faces.bean.RequestScoped;
 import org.bfh.phd.interfaces.IPatient;
 
 /**
- * This patient has some personal information and can be threatened by one or more doctors.
+ * The patient has some personal information and can be threatened by one or more doctors.
  * 
  * @author leism3, koblt1
  */
