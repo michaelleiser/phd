@@ -76,10 +76,10 @@ function renewStaff(newGroupKey){
 	}
 	var crypt = new JSEncrypt();
 	for(var i = 0 ; i < size ; i++){
+		var id = document.getElementById("staffform:stafftable:"+i+":id").value;
+		var pub = document.getElementById("staffform:stafftable:"+i+":publicKey").value;
 		var activated = document.getElementById("staffform:stafftable:"+i+":activated").value;
-		if(activated == "true"){
-			var id = document.getElementById("staffform:stafftable:"+i+":id").value;
-			var pub = document.getElementById("staffform:stafftable:"+i+":publicKey").value;
+		if((activated == "true") && (pub != "")){
 			crypt.setPublicKey(pub);
 			var encrypted = crypt.encrypt(newGroupKey);
 			obj[id] = encrypted;

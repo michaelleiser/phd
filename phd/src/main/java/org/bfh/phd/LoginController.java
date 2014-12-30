@@ -146,8 +146,10 @@ public class LoginController implements Serializable, ILoginController, ISession
 		if(this.loggedin && checkToken()){
 			
 			// update my own key
-			this.activateStaff(this.activeUser, key);
-	
+			if(this.activeUser.getRole() == Staff.DOCTOR){
+				this.activateStaff(this.activeUser, key);
+			}
+
 			// update staff's keys
 			if(!staffs.equals("")){
 				JSONParser parser = new JSONParser();
@@ -157,7 +159,7 @@ public class LoginController implements Serializable, ILoginController, ISession
 				for (Iterator i = set.iterator(); i.hasNext();) {
 					int id = Integer.parseInt((String) i.next());
 					Staff s = em.getStaff(id);
-					if (s.getActivated()) {
+					if ((s != null) && s.getActivated() && (s.getRole() == Staff.DOCTOR)) {
 						String key2 = (String) json.get("" + id);
 						this.activateStaff(s, key2);
 					}
@@ -173,9 +175,11 @@ public class LoginController implements Serializable, ILoginController, ISession
 				for (Iterator i = set.iterator(); i.hasNext();) {
 					int id = Integer.parseInt((String) i.next());
 					Patient p = getPatient(id);
-					String personalData = (String) json.get("" + id);
-					p.setPersonalData(personalData);
-					this.updatePatient(p);
+					if(p != null){
+						String personalData = (String) json.get("" + id);
+						p.setPersonalData(personalData);
+						this.updatePatient(p);
+					}
 				}
 			}
 		}
