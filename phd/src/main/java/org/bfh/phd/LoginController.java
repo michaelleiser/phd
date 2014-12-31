@@ -93,6 +93,9 @@ public class LoginController implements Serializable, ILoginController, ISession
 			Staff ss = em.registerNew(s, activated);
 			em.addToDepartment(this.departmentselected, ss);
 		}
+		if(FacesContext.getCurrentInstance() != null){
+			FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+		}
 		return navigation.redirectToHome();
 	}
 
@@ -103,6 +106,9 @@ public class LoginController implements Serializable, ILoginController, ISession
 			boolean activated = true;
 			Staff ss = em.registerNew(s, activated);
 			em.createDepartment(d, ss, key);
+		}
+		if(FacesContext.getCurrentInstance() != null){
+			FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		}
 		return navigation.redirectToHome();
 	}
@@ -115,6 +121,7 @@ public class LoginController implements Serializable, ILoginController, ISession
 			if(s.getRole() == Staff.DOCTOR){
 				em.setGroupKey(s, activeDepartment_Has_Staff,  groupKey);		
 			}
+			this.setDepartmentselected(this.departmentselected);
 		}
 	}
 
@@ -125,7 +132,8 @@ public class LoginController implements Serializable, ILoginController, ISession
 			em.setActivateStaff(s, false);
 			if(s.getRole() == Staff.DOCTOR){
 				em.setGroupKey(s, activeDepartment_Has_Staff, null);
-			}		
+			}
+			this.setDepartmentselected(this.departmentselected);
 		}
 	}
 

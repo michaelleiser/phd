@@ -125,7 +125,7 @@ public class EntityManager implements IEntityManager, Serializable {
 			closeWithoutRs();
 		}
 		initStaff();
-		initDepartment_Has_Staff();	// TODO remove
+		initDepartment_Has_Staff();
 	}
 
 	@Override
@@ -145,8 +145,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		} finally {
 			closeWithoutRs();
 		}
-		// initStaff();
-//		initDepartment_Has_Staff();	// TODO add
+		initDepartment_Has_Staff();
 	}
 
 	/**
@@ -158,8 +157,8 @@ public class EntityManager implements IEntityManager, Serializable {
 	 */
 	public Department_Has_Staff getDepartment_Has_Staff(Department d) {
 		Department_Has_Staff dhs = new Department_Has_Staff();
-		init();
 		String stm = "SELECT * FROM department_has_staff WHERE department_department_id=?;";
+		init();
 		try {
 			pst = con.prepareStatement(stm);
 			pst.setInt(1, d.getDepartment_id());
@@ -246,9 +245,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	@Override
 	public void addToDepartment(String name, Staff s) {
 		String stm1 = "SELECT * FROM department WHERE name=?;";
-		@SuppressWarnings("unused")
-		String stm2 = "INSERT INTO department(name) VALUES(?);";
-		String stm3 = "INSERT INTO department_has_staff(department_department_id, staff_staff_id, owner) VALUES(?,?,?);";
+		String stm2 = "INSERT INTO department_has_staff(department_department_id, staff_staff_id, owner) VALUES(?,?,?);";
 		init();
 		try {
 			pst = con.prepareStatement(stm1);
@@ -256,7 +253,7 @@ public class EntityManager implements IEntityManager, Serializable {
 			pst.execute();
 			rs = pst.getResultSet();
 			if (rs.next()) {
-				pst = con.prepareStatement(stm3);
+				pst = con.prepareStatement(stm2);
 				pst.setInt(1, rs.getInt("department_id"));
 				pst.setInt(2, s.getId());
 				pst.setString(3, "false");
@@ -291,12 +288,10 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	@Override
-	public List<Staff> searchStaffsInGroup(String name, Department_Has_Staff dhs,
-			Staff staff) {
+	public List<Staff> searchStaffsInGroup(String name, Department_Has_Staff dhs, Staff staff) {
 		List<Staff> staffs = new ArrayList<Staff>();
 		for (Staff s : dhs.getStaffs()) {
-			if (name.equals("")
-					|| s.getName().toUpperCase().contains(name.toUpperCase())) {
+			if (name.equals("") || s.getName().toUpperCase().contains(name.toUpperCase())) {
 				staffs.add(s);
 			}
 		}
@@ -327,8 +322,8 @@ public class EntityManager implements IEntityManager, Serializable {
 
 	@Override
 	public void updateStaff(Staff s) {
-		init();
 		String stm = "UPDATE staff SET name=?, salt=?, password=?, privateKey=?, publicKey=? WHERE staff_id=?";
+		init();
 		try {
 			pst = con.prepareStatement(stm);
 			pst.setString(1, s.getName());
@@ -375,8 +370,8 @@ public class EntityManager implements IEntityManager, Serializable {
 
 	@Override
 	public void updatePatient(Patient p) {
-		init();
 		String stm = "UPDATE patient SET readaccess=?, writeaccess=?, insertaccess=?, encryptedPersonalData=? WHERE patient_id=?";
+		init();
 		try {
 			pst = con.prepareStatement(stm);
 			pst.setString(1, Boolean.toString(p.getReadaccess()));

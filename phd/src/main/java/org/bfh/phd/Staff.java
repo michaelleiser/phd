@@ -117,7 +117,7 @@ public class Staff implements Serializable, IStaff{
 	
 	@Override
 	public String toString(){
-		return this.name + " : " + this.role;
+		return this.name + " : " + this.role + " : " + this.isActivated;
 	}
 
 	@Override
