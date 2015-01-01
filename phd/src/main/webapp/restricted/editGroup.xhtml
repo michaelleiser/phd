@@ -26,7 +26,7 @@
 					<h:form id="groupform" >
 						<div id="filter">
 							<h:inputText binding="#{staffname}" id="staffid"></h:inputText>
-							<h:commandButton value="Filter Staff">
+							<h:commandButton class="filterbutton" value="Filter Staff">
 								<f:ajax execute="staffid" render="outputMessage" />
 							</h:commandButton>
 						</div>
@@ -70,11 +70,13 @@
 								<f:facet name="footer">
 									<h:panelGroup>
 										<h:commandButton action="#{entityManager.getPaginatorGroup().backward}"
+											class="pagebutton"
 											rendered="#{entityManager.getPaginatorGroup().hasPrevious()}"
 											value="&lt;&lt; Page #{entityManager.getPaginatorGroup().pagenr - 1}" />
 										<h:outputText
 											value="Page #{entityManager.getPaginatorGroup().pagenr}" />
 										<h:commandButton action="#{entityManager.getPaginatorGroup().forward}"
+											class="pagebutton"
 											rendered="#{entityManager.getPaginatorGroup().hasNext()}"	
 											value="Page #{entityManager.getPaginatorGroup().pagenr + 1} &gt;&gt;" />
 									</h:panelGroup>

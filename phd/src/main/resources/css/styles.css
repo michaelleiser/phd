@@ -169,9 +169,27 @@ input[type=submit] {
 	background-color: #0088ff;
 	border-radius: 5px;
 	border-width: 1px;
-	color: #000000;
+	color: #ffffff;
 	font-size: medium;
+	font-weight: bold;
 	padding: 5px 10px 5px 10px;
+}
+input[type=submit]:hover{
+	background-color: #44aaff;
+}
+input[type=submit].filterbutton {
+	background-color: #000000;
+	color: #ffffff;
+	margin: 0px 0px 0px 10px;
+}
+input[type=submit].pagebutton {
+	background-color: #000000;
+	color: #ffffff;
+	margin: 0px 10px 0px 10px;
+}
+input[type=submit].cleanbutton {
+	background-color: #ffffff;
+	color: #000000;
 }
 textarea {
 	background-color: #ffffff;
@@ -206,7 +224,7 @@ input[type=radio] {
 	-webkit-transform: scale(1.5);
 }
 select {
-	background-color: #eeeeee;
+	background-color: #dddddd;
 	border-radius: 5px;
 	border-width: 1px;
 	color: #000000;

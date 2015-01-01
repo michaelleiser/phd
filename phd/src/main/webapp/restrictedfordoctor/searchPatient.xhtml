@@ -27,7 +27,7 @@
 										
 						<div id="filter">
 							<h:inputText id="filter" />
-							<h:commandButton onclick="return filter();" value="Filter Patient" />
+							<h:commandButton class="filterbutton" onclick="return filter();" value="Filter Patient" />
 						</div>
 						<div class="table">
 						<table id="patienttable">
@@ -57,7 +57,7 @@
 										<h:outputText id="birthday#{status.index}" />
 									</td>
 									<td class="table-column-button">
-										<h:commandButton action="#{loginController.setActivePatient(patient)}" id="patientdatas#{status.index}" value="Patient Datas" />
+										<h:commandButton action="#{loginController.setActivePatient(patient)}" class="cleanbutton" id="patientdatas#{status.index}" value="Patient Datas" />
 									</td>
 									<td class="table-column-data">
 										<h:outputText rendered="#{(loginController.isOwner(patient))}" value="Owner" />
@@ -68,9 +68,9 @@
 								</tr>
 							</c:forEach>							
 						</table>
-						<h:commandButton id="backward" onclick="return backward();" value="backward" />
+						<h:commandButton class="pagebutton" id="backward" onclick="return backward();" value="backward" />
 						<h:outputText id="pagenumber" value="Page 1" />
-						<h:commandButton id="forward" onclick="return forward();" value="forward" />
+						<h:commandButton class="pagebutton" id="forward" onclick="return forward();" value="forward" />
 						</div>
 					</h:form>
 				</div>
@@ -113,11 +113,13 @@
 							<f:facet name="footer">
 								<h:panelGroup>
 									<h:commandButton action="#{entityManager.getPaginatorPatientData().backward}"
+										class="pagebutton"
 										rendered="#{entityManager.getPaginatorPatientData().hasPrevious()}"	
 										value="&lt;&lt; Page #{entityManager.getPaginatorPatientData().pagenr - 1}" />
 									<h:outputText
 										value="Page #{entityManager.getPaginatorPatientData().pagenr}" />
 									<h:commandButton action="#{entityManager.getPaginatorPatientData().forward}"
+										class="pagebutton"
 										rendered="#{entityManager.getPaginatorPatientData().hasNext()}"	
 										value="Page #{entityManager.getPaginatorPatientData().pagenr + 1} &gt;&gt;" />
 								</h:panelGroup>
