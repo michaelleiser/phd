@@ -26,7 +26,7 @@
 				<div class="formular">
 									
 					<h:form id="registernewform" onsubmit="return validation();">
-						<h:panelGrid columns="2">
+						<h:panelGrid columns="2" columnClasses="table-column-label,table-column-input">
 							<h:outputLabel for="name" value="Username" />
 							<h:inputText id="name" required="true" value="#{staff.name}">
 								<f:validateRegex pattern="([A-Za-z0-9@.])+"/>
@@ -78,7 +78,7 @@
 				</div>
 			
 			</div>
-			
+
 		</ui:define>
 	</ui:composition>
 

@@ -31,14 +31,14 @@
 						</div>
 						<div class="table">
 						<table id="patienttable">
-							<thead>
-								<tr class="table-header" id="rowheader">
-									<th class="colid">ID</th>
-									<th class="colfirst">Firstname</th>
-									<th class="collast">Lastname</th>
-									<th class="colbirth">Birthday</th>
-								</tr>
-							</thead>
+<!-- 							<thead> -->
+<!-- 								<tr id="rowheader"> -->
+<!-- 									<th class="table-header">ID</th> -->
+<!-- 									<th class="table-header">Firstname</th> -->
+<!-- 									<th class="table-header">Lastname</th> -->
+<!-- 									<th class="table-header">Birthday</th> -->
+<!-- 								</tr> -->
+<!-- 							</thead> -->
 	
 							<c:forEach items="#{loginController.searchPatients()}" var="patient" varStatus="status">
 								<tr id="row#{status.index}">

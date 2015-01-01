@@ -25,7 +25,7 @@
 				<div class="formular">
 									
 					<h:form id="staffform" onsubmit="return validation();">
-						<h:panelGrid columns="2">
+						<h:panelGrid columns="2" columnClasses="table-column-label,table-column-input">
 							<h:outputText value="Staff id" />
 							<h:outputText value="#{loginController.activeUser.getId()}" />
 							<h:outputText value="Staff name" />

@@ -24,7 +24,7 @@
 				
 					<h:form action="#{navigation.redirectToLoggedin}" id="patientform" onsubmit="return validation();">
 					
-						<h:panelGrid columns="2">
+						<h:panelGrid columns="2" columnClasses="table-column-label,table-column-input">
 							<h:outputText value="ID" />
 							<h:outputText value="#{loginController.activePatient.patientid}" />
 							<h:outputLabel for="firstname" value="Firstname"/>

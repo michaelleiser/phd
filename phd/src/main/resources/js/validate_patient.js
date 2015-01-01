@@ -183,7 +183,7 @@ function decryptPersonalDataForSearchWebWorker() {
  * Decrypt the personal data of the patients and display the result set.
  */
 function decryptPersonalDataForSearch(){
-	size = document.getElementById("patienttable").rows.length - 1;	// -1 because of the header row
+	size = document.getElementById("patienttable").rows.length;	// -1 because of the header row
 	groupKey = self.sessionStorage.groupKey;
 	patients = new Array();
 	visiblerows = new Array();

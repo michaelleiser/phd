@@ -25,7 +25,7 @@
 				
 					<h:form id="loginform" onsubmit="return validation();">
 												
-						<h:panelGrid columns="2" rendered="#{!loginController.loggedin}">
+						<h:panelGrid columns="2" columnClasses="table-column-label,table-column-input" rendered="#{!loginController.loggedin}">
 							<h:outputLabel for="name" value="Username" />
 							<h:inputText id="name" binding="#{name}">
 								<f:validateRegex pattern="([A-Za-z0-9@.])+"/>
@@ -51,6 +51,8 @@
 											
 				</div>
 				
+				<hr />
+				
 				<div class="formular">
 					<h:form>
 						<h:commandButton action="#{navigation.redirectToRegisterNew}"
@@ -58,7 +60,7 @@
 					</h:form>
 				</div>
 			
-			</div>
+			</div>	
 			
 		</ui:define>
 	</ui:composition>
