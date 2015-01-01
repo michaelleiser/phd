@@ -252,11 +252,13 @@ function display(){
 		document.getElementById("searchform:backward").style.visibility = "hidden";
 	} else{
 		document.getElementById("searchform:backward").style.visibility = "visible";
+		document.getElementById("searchform:backward").value = "<< Page " + (pagenr - 1);
 	}
 	if(pagenr >= visiblerows.length/pagesize){
 		document.getElementById("searchform:forward").style.visibility = "hidden";
 	} else{
 		document.getElementById("searchform:forward").style.visibility = "visible";
+		document.getElementById("searchform:forward").value = "Page " + (pagenr + 1) + " >>";
 	}	
 }
 

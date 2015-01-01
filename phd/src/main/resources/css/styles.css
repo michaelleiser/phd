@@ -134,9 +134,14 @@ td {
 	padding: 10px 10px 10px 10px;
 }
 .table-column-id {
-	background-color: #0090d0;
+	background-color: #0088dd;
 	border-radius: 5px;
 	padding: 5px 5px 5px 5px;
+}
+.table-column-id:hover {
+	background-color: #00aaff;
+	transform: scale(1.1);
+	-webkit-transform: scale(1.1);
 }
 .table-column-data {
 	border-radius: 5px;
@@ -190,6 +195,9 @@ input[type=submit].pagebutton {
 input[type=submit].cleanbutton {
 	background-color: #ffffff;
 	color: #000000;
+}
+input[type=submit].cleanbutton:hover {
+	background-color: #cccccc;
 }
 textarea {
 	background-color: #ffffff;
