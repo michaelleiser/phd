@@ -14,7 +14,7 @@ import org.bfh.phd.interfaces.IDepartment;
  */
 @ManagedBean(name = "department", eager = true)
 @RequestScoped
-public class Department implements Serializable, IDepartment {
+public class Department implements Serializable, IDepartment, Comparable<Department> {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -73,6 +73,13 @@ public class Department implements Serializable, IDepartment {
 		} else if (!this.name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Department o) {
+		String myname = this.name;
+		String oname = o.name;
+		return myname.compareTo(oname);
 	}
 	
 }

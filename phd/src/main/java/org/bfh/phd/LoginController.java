@@ -3,6 +3,7 @@ package org.bfh.phd;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -195,7 +196,9 @@ public class LoginController implements Serializable, ILoginController, ISession
 	
 	@Override
 	public List<Department> getDepartments(){
-		return em.getDepartments();
+		List<Department> l = em.getDepartments();
+		Collections.sort(l);
+		return l;
 	}
 
 	@Override
