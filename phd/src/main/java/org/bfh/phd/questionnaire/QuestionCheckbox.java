@@ -1,24 +1,19 @@
 package org.bfh.phd.questionnaire;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import javax.faces.event.AjaxBehaviorEvent;
-
-import org.bfh.phd.EntityManager;
 import org.bfh.phd.LoginController;
 import org.bfh.phd.interfaces.IQuestion;
 
-
-public class QuestionCheckbox implements IQuestion <List<String>, List<String>> {
+public class QuestionCheckbox implements IQuestion <String[], String[]> {
 	
 	private String question;
 	private int id;
 	private static int dbId;
-	private List<String> answerPossibilities = new ArrayList<String>();
-	private List<String> answer = new ArrayList<String>();
+	private String[] answerPossibilities = new String[10];
+	private String[] answer;
 	private String type = "Checkbox";
+	private int i = 0;
 
 	@Override
 	public String getQuestion() {
@@ -37,11 +32,16 @@ public class QuestionCheckbox implements IQuestion <List<String>, List<String>> 
 
 	@Override
 	public void addAnswerPossibility(String o) {
-		answerPossibilities.add(o);
+		answerPossibilities[i] = o;
+		i++;
 	}
 
-	public List<String> getAnswerPossibilities() {
+	public String[] getAnswerPossibilities() {
 		return answerPossibilities;
+	}
+	
+	public String getAnswerPossibilitiesToString() {
+		return Arrays.toString(answerPossibilities);
 	}
 
 	@Override
@@ -59,17 +59,28 @@ public class QuestionCheckbox implements IQuestion <List<String>, List<String>> 
 	}
 
 	@Override
-	public List<String> getAnswer() {
+	public String[] getAnswer() {
 		return answer;
 	}
 	
 	@Override
-	public void setAnswerPossibilities(List<String> o) {
+	public void setAnswerPossibilities(String[] o) {
 		this.answerPossibilities = o;		
 	}
 
-	public void setAnswer(List<String> s) {
+	public void setAnswer(String[] s) {
+		if(s != null){
 		this.answer = s;
+		}
+	}
+	
+	public String getAnswerToString(){
+		StringBuilder sb = new StringBuilder();
+		for(String s: answer){
+			sb.append(s + ",");
+		}
+		sb.delete(sb.length()-1, sb.length());
+		return sb.toString();
 	}
 	
 	public void save(LoginController lc){
@@ -79,5 +90,10 @@ public class QuestionCheckbox implements IQuestion <List<String>, List<String>> 
 	@Override
 	public int getDBid() {
 		return dbId;
+	}
+	
+	@Override
+	public void setDBid(int i) {
+		dbId = i;
 	}
 }

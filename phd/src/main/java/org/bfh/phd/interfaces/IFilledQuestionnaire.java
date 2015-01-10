@@ -61,9 +61,4 @@ public interface IFilledQuestionnaire {
 	 * @param answer the answer that's add to the list
 	 */
 	public abstract void addAnswers(IAnswer answer);
-
-	/** Match all answers to a question.
-	 * @return a list with pairs of question and answer
-	 */
-	public abstract ArrayList<ArrayList<String>> getList();
 }

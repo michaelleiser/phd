@@ -42,5 +42,10 @@ public interface ILoginController {
 	 * 			the return page
 	 */
 	public String registerNewWithDepartment(Staff staff, Department department, String groupKey);
+
+	/**
+	 * Export a csv file
+	 */
+	void export();
 	
 }

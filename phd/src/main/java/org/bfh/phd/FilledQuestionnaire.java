@@ -8,6 +8,10 @@ import org.bfh.phd.interfaces.IAnswer;
 import org.bfh.phd.interfaces.IFilledQuestionnaire;
 import org.bfh.phd.interfaces.IQuestion;
 
+/**
+ * @author leism3, koblt1
+ *
+ */
 public class FilledQuestionnaire implements IFilledQuestionnaire {
 
 	private Timestamp date;
@@ -15,7 +19,6 @@ public class FilledQuestionnaire implements IFilledQuestionnaire {
 	private String questionnaireName;
 	private List<IAnswer> answers = new ArrayList<IAnswer>();
 	private List<IQuestion> questions = new ArrayList<IQuestion>();
-	private ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
 	
 	@Override
 	public String getQuestionnaireName() {
@@ -65,18 +68,6 @@ public class FilledQuestionnaire implements IFilledQuestionnaire {
 	@Override
 	public void addAnswers(IAnswer answer) {
 		this.answers.add(answer);
-	}
-
-	@Override
-	public ArrayList<ArrayList<String>> getList(){		// TODO ???
-//		for(int i = 0; i<answers.size(); i++){
-//			ArrayList<String> a = new ArrayList<String>();
-//			a.add(questions.get(i).toString());
-//			a.add(answers.get(i).toString());
-//			list.add(a);
-//		}
-//		return list;
-		return null;
 	}
 
 	public int getId() {

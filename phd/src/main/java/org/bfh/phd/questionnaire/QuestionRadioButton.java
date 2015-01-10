@@ -3,8 +3,6 @@ package org.bfh.phd.questionnaire;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.faces.event.AjaxBehaviorEvent;
-
 import org.bfh.phd.LoginController;
 import org.bfh.phd.interfaces.IQuestion;
 
@@ -84,5 +82,15 @@ public class QuestionRadioButton implements IQuestion <List<String>, String > {
 	@Override
 	public int getDBid() {
 		return this.dbId;
+	}
+
+	@Override
+	public void setDBid(int i) {
+		dbId = i;
+	}
+	
+	@Override
+	public String getAnswerToString() {
+		return answer;
 	}
 }

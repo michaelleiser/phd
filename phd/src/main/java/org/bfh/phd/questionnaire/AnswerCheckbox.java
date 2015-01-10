@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bfh.phd.interfaces.IAnswer;
 
-public class AnswerCheckbox implements IAnswer <List<String>, String> {
+public class AnswerCheckbox implements IAnswer <String[], String> {
 	
 	private List<String> answer = new ArrayList<String>();
 	private int db;
@@ -14,13 +14,24 @@ public class AnswerCheckbox implements IAnswer <List<String>, String> {
 	}
 	
 	@Override
-	public List<String> getAnswer() {
+	public String[] getAnswer() {
+		String[] s = new String[answer.size()];
+		for(int i = 0; i < answer.size(); i++){
+			s[i] = answer.get(i);
+		}
+		return s;
+	}
+	
+	public List<String> getAnswerList(){
 		return answer;
 	}
 
 	@Override
-	public void setAnswer(List<String> l) {
-		answer = l;
+	public void setAnswer(String[] l) {
+		answer = new ArrayList<String>();
+		for(int i = 0; i < l.length; i++){
+			answer.add(l[i]);
+		}
 	}
 
 	@Override
@@ -30,7 +41,8 @@ public class AnswerCheckbox implements IAnswer <List<String>, String> {
 	
 	@Override
 	public String toString(){;
-	return answer.toString().replace("[", "").replace("]", "");
+	System.out.println("Total" + answer.toString().replace("[", "\"").replace("]", "\""));
+	return answer.toString().replace("[", "\"").replace("]", "\"");
 	}
 
 	public String getAnswersAsString() {

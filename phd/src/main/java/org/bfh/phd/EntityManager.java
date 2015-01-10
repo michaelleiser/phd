@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +45,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	private List<Department_Has_Staff> department_Has_Staffs;
 	private List<Patient> patients;
 	private List<Department> departments;
+	@SuppressWarnings("rawtypes")
 	private List<IQuestion> questions;
 	private List<String> operationtypes;
 	private List<String> errors;
@@ -53,16 +53,15 @@ public class EntityManager implements IEntityManager, Serializable {
 	private HashMap<String, FilledQuestionnaire> emptyQuestionnaires;
 	private HashMap<String, String> csvs = new HashMap<String, String>();
 
-	private Map<String, Integer> typ;
+	private Map<String, Integer> type;
 	private String templatename = "";
-	private static FilledQuestionnaire tmp;
+	private FilledQuestionnaire tmp;
 
 	private MyConnection mycon = null;
 
 	private Connection con = null, con2 = null;
 	private PreparedStatement pst = null, pst2 = null;
 	private ResultSet rs = null, rs2 = null;
-	private boolean newTemplate = true;
 	
 	private PaginatorPatientData paginatorPatientData = new PaginatorPatientData();
 	private PaginatorGroup paginatorGroup = new PaginatorGroup();
@@ -74,7 +73,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		initDepartment_Has_Staff();
 		initPatient();
 		initOperationTyp();
-		initTyp();
+		initType();
 		initQuestionnaire();
 		initEmptyQuestionnaire();
 	}
@@ -413,17 +412,22 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public void updateQuestionnaireHasAnswer() {
 		init();
 		String stm2 = "UPDATE questionnaire_has_answer SET answer_id=? WHERE default_id=?;";
 		try {
 			int j = 0;
 			for (IQuestion iq : tmp.getQuestions()) {
-				int i = insertAnswer(iq.getAnswer().toString());
+				int i = 0;
+				if(iq instanceof QuestionCheckbox){
+					i = insertAnswer(iq.getAnswerToString());
+				}else{
+					i = insertAnswer(iq.getAnswer().toString());
+				}
 				pst = con.prepareStatement(stm2);
 				pst.setInt(1, i);
 				pst.setInt(2, tmp.getAnswers().get(j).getDb());
-				System.out.println("ANSWER ID " + tmp.getAnswers().get(j).getDb());
 				pst.executeUpdate();
 				j++;
 			}
@@ -432,11 +436,10 @@ public class EntityManager implements IEntityManager, Serializable {
 		} finally {
 			close();
 		}
-		newTemplate = true;
 		initQuestionnaire();
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public FilledQuestionnaire getFilledQuestion(int id,
 			String questionnaireName) {
@@ -448,16 +451,24 @@ public class EntityManager implements IEntityManager, Serializable {
 		if (q.size() == a.size()) {
 			for (int i = 0; i < a.size(); i++) {
 				if (q.get(i) instanceof QuestionCheckbox) {
-					AnswerCheckbox b = new AnswerCheckbox();
-					b.setDb(a.get(i).getDb());
-					b.setAnswer(Arrays.asList((a.get(i).toString().split(","))));
+					AnswerCheckbox b = (AnswerCheckbox) a.get(i);
+//					b.setDb(a.get(i).getDb());
+//					b.setAnswer(a.get(i).getAnswer());
+					q.get(i).setDBid(b.getDb());
 					f.addAnswers(b);
-					q.get(i).setAnswer(b.getAnswer());
+					String[] t = new String[b.getAnswerList().size()];
+					int j = 0;
+					for(String s : b.getAnswerList()){
+						t[j] = s;
+						j++;
+					}
+					q.get(i).setAnswer(t);
 					f.addQuestions(q.get(i));
 				} else if (q.get(i) instanceof QuestionRadioButton) {
 					AnswerRadioButton b = new AnswerRadioButton();
 					b.setDb(a.get(i).getDb());
 					b.setAnswer(a.get(i).toString());
+					q.get(i).setDBid(b.getDb());
 					f.addAnswers(b);
 					q.get(i).setAnswer(b.getAnswer());
 					f.addQuestions(q.get(i));
@@ -465,13 +476,14 @@ public class EntityManager implements IEntityManager, Serializable {
 					AnswerString b = new AnswerString();
 					b.setDb(a.get(i).getDb());
 					b.setAnswer(a.get(i).toString());
+					q.get(i).setDBid(b.getDb());
 					f.addAnswers(b);
 					q.get(i).setAnswer(b.getAnswer());
 					f.addQuestions(q.get(i));
 				} else {
 				}
 			}
-			String stm = "SELECT date FROM questionnaire q JOIN questionnaire_template_name tn ON q.template_name_id = tn.id WHERE answer_id = ?;";
+			String stm = "SELECT date FROM questionnaire q JOIN questionnaire_template_name tn ON q.questionnaire_template_name_id = tn.questionnaire_template_name_id WHERE questionnaire_has_answer_id = ?;";
 			try {
 				init();
 				pst = con.prepareStatement(stm);
@@ -484,11 +496,28 @@ public class EntityManager implements IEntityManager, Serializable {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
-//				 close();			// TODO should be closed!!!
+				 close();			// TODO should be closed!!!
 			}
 		}
 		return f;
 	}
+	
+	private String[] StringToArray(String s){
+	s = s.replace("[", "");
+	s = s.replace("]", "");
+	String[] list = s.split(",");
+	return list;
+}
+	
+//	private List<String> arrays(String s){
+//		ArrayList<String> list = new ArrayList<String>();
+//		s = s.replace("[", "");
+//		s = s.replace("]", "");
+//		for(String st : Arrays.asList(s)){
+//			list.add(st);
+//		}
+//		return list;
+//	}
 
 	@Override
 	public List<Questionnaire> searchQuestionnaires(int id) {
@@ -518,12 +547,16 @@ public class EntityManager implements IEntityManager, Serializable {
 		return questionnaris;
 	}
 
+	public List<String> getPos(int id){
+		return getPossibleAnswers(id);
+	}
+		
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public List<IQuestion> getQuestions(String quest) {
 		List<IQuestion> questions = new ArrayList<IQuestion>();
 		init();
-		String stm = "SELECT fragenr, typ, question, pos_id FROM testdb.question_has_template t JOIN questionnaire_template_name n ON t.id = n.id JOIN question q2 ON t.question_id = q2.id JOIN question_typ ON q2.type_id = question_typ.id WHERE name=?;";
+		String stm = "SELECT questionnumber, type, question, possibilities_id FROM question_has_template t JOIN questionnaire_template_name n ON t.questionnaire_template_name_id = n.questionnaire_template_name_id JOIN question q2 ON t.question_id = q2.question_id JOIN question_type ON q2.question_type_id = question_type.question_type_id WHERE name=? order by questionnumber;";
 		try {
 			pst = con.prepareStatement(stm);
 			pst.setString(1, quest);
@@ -531,9 +564,9 @@ public class EntityManager implements IEntityManager, Serializable {
 			rs = pst.getResultSet();
 			while (rs.next()) {
 				IQuestion question = null;
-				int id = rs.getInt("fragenr");
-				int pos_id = rs.getInt("pos_id");
-				String t = rs.getString("typ");
+				int id = rs.getInt("questionnumber");
+				int pos_id = rs.getInt("possibilities_id");
+				String t = rs.getString("type");
 				String q = rs.getString("question");
 				if (t.equals("String")) {
 					question = new QuestionString();
@@ -550,8 +583,8 @@ public class EntityManager implements IEntityManager, Serializable {
 					question = new QuestionCheckbox();
 					question.setId(id);
 					question.setQuestion(q);
-					question.setAnswerPossibilities(getPossibleAnswers(pos_id));
-					question.setAnswer(new ArrayList<String>());
+					question.setAnswerPossibilities(getPossibleAnswersAsArray(pos_id));
+					question.setAnswer(null);
 				} else {
 
 				}
@@ -578,7 +611,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	private List<String> getPossibleAnswers(int id) {
 		init2();
 		List<String> list = new ArrayList<String>();
-		String stm = "SELECT answer FROM possibilities p JOIN pos_answer pa ON p.pos_id=pa.id WHERE p.id=?;";
+		String stm = "SELECT answer FROM possibilities p JOIN pos_answer pa ON p.pos_answer_id=pa.pos_answer_id WHERE p.possibilities_id =?;";
 		try {
 			pst2 = con2.prepareStatement(stm);
 			pst2.setInt(1, id);
@@ -594,7 +627,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 		return list;
 	}
-
+	
 	/**
 	 * return the possible answers from the selected question
 	 * 
@@ -602,30 +635,47 @@ public class EntityManager implements IEntityManager, Serializable {
 	 *            the identifier key to find the possibilities into the database
 	 * @return the answer as a collection of Strings
 	 */
-	public List<String> getPossibilities(int id) {
-		List<String> possibilities = new ArrayList<String>();
-		String stm = "SELECT * FROM possibilities p INNER JOIN pos_answer a On p.pos_id = a.id WHERE p.id=?;";
-		try {
-			PreparedStatement pst = con.prepareStatement(stm);
-			pst.setInt(1, id);
-			pst.execute();
-			ResultSet rs = pst.getResultSet();
-			while (rs.next()) {
-				possibilities.add(rs.getString("answer"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
+	private String[] getPossibleAnswersAsArray(int id) {
+		List<String> list = getPossibleAnswers(id);
+		String[] s = new String[list.size()];
+		for(int j = 0; j < list.size(); j++){
+			s[j] = list.get(j);
 		}
-		return possibilities;
+		return s;
 	}
+
+//	/**
+//	 * return the possible answers from the selected question
+//	 * 
+//	 * @param id
+//	 *            the identifier key to find the possibilities into the database
+//	 * @return the answer as a collection of Strings
+//	 */
+//	public List<String> getPossibilities(int id) {
+//		// TODO same as getPossibleAnswer 484
+//		List<String> possibilities = new ArrayList<String>();
+//		String stm = "SELECT * FROM possibilities p INNER JOIN pos_answer a On p.pos_answer_id = a.pos_answer_id WHERE p.possibilities_id=?;";
+//		try {
+//			PreparedStatement pst = con.prepareStatement(stm);
+//			pst.setInt(1, id);
+//			pst.execute();
+//			ResultSet rs = pst.getResultSet();
+//			while (rs.next()) {
+//				possibilities.add(rs.getString("answer"));
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//		}
+//		return possibilities;
+//	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List<IAnswer> getAnswers(int id) {
 		List<IAnswer> answers = new ArrayList<IAnswer>();
 		init();
-		String stm = "SELECT default_id, answer, t.typ AS typ FROM testdb.questionnaire_has_answer qha JOIN answer a ON qha.answer_id = a.id JOIN question_typ t ON qha.typ = t.id WHERE qha.id = ? ORDER BY default_id asc;";
+		String stm = "SELECT default_id, answer, t.type AS type FROM questionnaire_has_answer qha JOIN answer a ON qha.answer_id = a.answer_id JOIN question_type t ON qha.question_type_id = t.question_type_id WHERE qha.questionnaire_id = ? ORDER BY default_id asc;";
 		try {
 			pst = con.prepareStatement(stm);
 			pst.setInt(1, id);
@@ -633,7 +683,7 @@ public class EntityManager implements IEntityManager, Serializable {
 			rs = pst.getResultSet();
 			while (rs.next()) {
 				IAnswer a = null;
-				String type = rs.getString("typ");
+				String type = rs.getString("type");
 				String answer = rs.getString("answer");
 				if (type.equals("String")) {
 					a = new AnswerString();
@@ -646,10 +696,12 @@ public class EntityManager implements IEntityManager, Serializable {
 				} else if (type.equals("Checkbox")) {
 					a = new AnswerCheckbox();
 					a.setDb(rs.getInt("default_id"));
-					a.setAnswer(Arrays.asList(answer.split(",")));
+					a.setAnswer(StringToArray(answer));
+					System.out.println();
 				} else {
 					throw new RuntimeException("QuestionType not implemented");
 				}
+				
 				answers.add(a);
 			}
 			close();
@@ -670,7 +722,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	 */
 	public List<ListOfQuestionnaire> searchDatas(int id) {
 		List<ListOfQuestionnaire> quest = new ArrayList<ListOfQuestionnaire>();
-		String stm = "SELECT date, answer_id, name FROM questionnaire q JOIN questionnaire_template_name n ON q.template_name_id = n.id WHERE q.patient_patient_id = ? ORDER BY date DESC;";
+		String stm = "SELECT date, questionnaire_has_answer_id AS answer_id, name FROM questionnaire q JOIN questionnaire_template_name n ON q.questionnaire_template_name_id = n.questionnaire_template_name_id WHERE q.patient_patient_id = ? ORDER BY date DESC;";
 		init();
 		try {
 			pst = con.prepareStatement(stm);
@@ -695,21 +747,22 @@ public class EntityManager implements IEntityManager, Serializable {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void addQuestionnaireTemplate(String typ, String question,
+	public void addQuestionnaireTemplate(String type, String question,
 			String nameOfTemplate, List<String> pos, int fragenr) {
+		System.out.println(type + question + nameOfTemplate + pos + fragenr);
 		init();
 		long key = 0, templatenr = 0;
-		String stm = "INSERT INTO question (pos_id, type_id, question, fragenr) VALUES(?,?,?,?);";
+		String stm = "INSERT INTO question (possibilities_id, question_type_id, question, questionnumber) VALUES(?,?,?,?);";
 		String stm2 = "INSERT INTO questionnaire_template_name(name) VALUES (?);";
-		String stm3 = "INSERT INTO question_has_template (id, question_id) VALUES (?,?);";
-		String stm4 = "SELECT id FROM questionnaire_template_name WHERE name = ?;";
+		String stm3 = "INSERT INTO question_has_template (questionnaire_template_name_id, question_id) VALUES (?,?);";
+		String stm4 = "SELECT questionnaire_template_name_id FROM questionnaire_template_name WHERE name = ?;";
 		Map map = getQuestType();
 		try {
 			int i = 0;
-			if (typ != "String") {
+			if (type != "String") {
 				i = setPossibilities(pos);
 			}
-			int j = (Integer) map.get(typ);
+			int j = (Integer) map.get(type);
 			pst = con.prepareStatement(stm, Statement.RETURN_GENERATED_KEYS);
 			pst.setInt(1, i);
 			pst.setInt(2, j);
@@ -725,7 +778,7 @@ public class EntityManager implements IEntityManager, Serializable {
 			pst.execute();
 			rs = pst.getResultSet();
 			if (rs.next()) {
-				templatenr = rs.getInt("id");
+				templatenr = rs.getInt("questionnaire_template_name_id");
 			} else {
 				pst = con.prepareStatement(stm2,
 						Statement.RETURN_GENERATED_KEYS);
@@ -763,14 +816,14 @@ public class EntityManager implements IEntityManager, Serializable {
 	private int setPossibilities(List<String> pos) throws SQLException {
 		int i = 1;
 		int l = 0;
-		String stm = "SELECT MAX(id) FROM possibilities;";
+		String stm = "SELECT MAX(possibilities_id) FROM possibilities;";
 		String stm2 = "INSERT INTO pos_answer (answer) VALUES (?);";
-		String stm3 = "INSERT INTO possibilities (id,pos_id) VALUES (?,?);";
+		String stm3 = "INSERT INTO possibilities (possibilities_id,pos_answer_id) VALUES (?,?);";
 		pst = con.prepareStatement(stm);
 		pst.execute();
 		rs = pst.getResultSet();
 		if (rs.next()) {
-			i += rs.getInt("MAX(id)");		// TODO ???
+			i += rs.getInt("MAX(possibilities_id)");
 		}
 		for (int j = 0; j < pos.size(); j++) {
 			pst = con.prepareStatement(stm2, Statement.RETURN_GENERATED_KEYS);
@@ -795,7 +848,7 @@ public class EntityManager implements IEntityManager, Serializable {
 
 	@Override
 	public Map<String, Integer> getType() {
-		return typ;
+		return type;
 	}
 
 	public List<String> getTemplateNames() {
@@ -806,13 +859,13 @@ public class EntityManager implements IEntityManager, Serializable {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private HashMap getQuestType() {
 		HashMap map = new HashMap();
-		String stm = "SELECT * FROM question_typ;";
+		String stm = "SELECT * FROM question_type;";
 		try {
 			pst = con.prepareStatement(stm);
 			pst.execute();
 			rs = pst.getResultSet();
 			while (rs.next()) {
-				map.put(rs.getString("typ"), rs.getInt("id"));
+				map.put(rs.getString("type"), rs.getInt("question_type_id"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -824,7 +877,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	public List<QuestionnaireTools> getTemplate(String name) {
 		init();
 		List<QuestionnaireTools> quest = new ArrayList<QuestionnaireTools>();
-		String stm = "SELECT fragenr, q.id, name, pos_id, question, typ FROM question_has_template t  join questionnaire_template_name n On n.id=t.id join question q On t.question_id=q.id join question_typ ty On q.type_id=ty.id WHERE name = ? ORDER BY fragenr;";
+		String stm = "SELECT questionnumber, q.question_id, name, q.possibilities_id, question, type FROM question_has_template t  join questionnaire_template_name n On n.questionnaire_template_name_id=t.questionnaire_template_name_id join question q On t.question_id=q.question_id join question_type ty On q.question_type_id=ty.question_type_id WHERE name = ? ORDER BY questionnumber;";
 		try {
 			pst = con.prepareStatement(stm);
 			pst.setString(1, name);
@@ -832,12 +885,12 @@ public class EntityManager implements IEntityManager, Serializable {
 			rs = pst.getResultSet();
 			while (rs.next()) {
 				QuestionnaireTools q = new QuestionnaireTools();
-				q.setId(rs.getInt("fragenr"));
-				q.setDbId(rs.getInt("id"));
+				q.setId(rs.getInt("questionnumber"));
+				q.setDbId(rs.getInt("question_id"));
 				q.setQuestion(rs.getString("question"));
-				q.setType(rs.getString("typ"));
+				q.setType(rs.getString("type"));
 
-				List<String> list = getPossibilities(rs.getInt("pos_id"));
+				List<String> list = getPossibleAnswers(rs.getInt("possibilities_id"));
 				for (String s : list) {
 					q.addPossibleAnswer(s);
 				}
@@ -862,12 +915,12 @@ public class EntityManager implements IEntityManager, Serializable {
 	public void deleteTemplateQuestion(QuestionnaireTools q) throws SQLException {
 		init();
 		init2();
-		String stm = "DELETE FROM question WHERE id=?;";
+		String stm = "DELETE FROM question WHERE question_id=?;";
 		if (q.getType() != "String") {
-			String stm1 = "SELECT pos_id FROM question WHERE id=?;";
-			String stm2 = "SELECT pos_id FROM possibilities WHERE id=?;";
-			String stm3 = "DELETE FROM possibilities WHERE id=?";
-			String stm4 = "DELETE FROM pos_answer WHERE id=?";
+			String stm1 = "SELECT possibilities_id FROM question WHERE question_id=?;";
+			String stm2 = "SELECT pos_answer_id FROM possibilities WHERE possibilities_id=?;";
+			String stm3 = "DELETE FROM possibilities WHERE possibilities_id=?";
+			String stm4 = "DELETE FROM pos_answer WHERE pos_answer_id=?";
 			int i = 0;
 
 			pst = con.prepareStatement(stm1);
@@ -875,7 +928,7 @@ public class EntityManager implements IEntityManager, Serializable {
 			pst.execute();
 			rs = pst.getResultSet();
 			if (rs.next()) {
-				i = rs.getInt("pos_id");
+				i = rs.getInt("possibilities_id");
 			}
 			pst = con.prepareStatement(stm2);
 			pst.setInt(1, i);
@@ -883,7 +936,7 @@ public class EntityManager implements IEntityManager, Serializable {
 			rs = pst.getResultSet();
 			while (rs.next()) {
 				pst2 = con2.prepareStatement(stm4);
-				pst2.setInt(1, rs.getInt("pos_id"));
+				pst2.setInt(1, rs.getInt("pos_answer_id"));
 				pst2.execute();
 			}
 			pst = con.prepareStatement(stm3);
@@ -902,10 +955,10 @@ public class EntityManager implements IEntityManager, Serializable {
 	public void editQuestion(QuestionnaireTools q) throws SQLException {
 		init();
 		init2();
-		String stm = "UPDATE question SET question=? WHERE id=?;";
-		String stm1 = "SELECT pos_id FROM question WHERE id=?;";
-		String stm2 = "SELECT pos_id FROM possibilities WHERE id=?;";
-		String stm3 = "UPDATE pos_answer SET answer=? WHERE id=?;";
+		String stm = "UPDATE question SET question=? WHERE question_id=?;";
+		String stm1 = "SELECT possibilities_id FROM question WHERE question_id=?;";
+		String stm2 = "SELECT pos_answer_id FROM possibilities WHERE possibilities_id=?;";
+		String stm3 = "UPDATE pos_answer SET answer=? WHERE pos_answer_id=?;";
 		pst = con.prepareStatement(stm);
 		pst.setString(1, q.getQuestion());
 		pst.setInt(2, q.getDbId());
@@ -916,7 +969,7 @@ public class EntityManager implements IEntityManager, Serializable {
 			pst.execute();
 			rs = pst.getResultSet();
 			if (rs.next()) {
-				int i = rs.getInt("pos_id");
+				int i = rs.getInt("possibilities_id");
 				pst = con.prepareStatement(stm2);
 				pst.setInt(1, i);
 				pst.execute();
@@ -925,7 +978,7 @@ public class EntityManager implements IEntityManager, Serializable {
 				while (rs.next()) {
 					pst2 = con2.prepareStatement(stm3);
 					pst2.setString(1, q.getAnswer().get(j));
-					pst2.setInt(2, rs.getInt("pos_id"));
+					pst2.setInt(2, rs.getInt("pos_answer_id"));
 					pst2.executeUpdate();
 					j++;
 				}
@@ -933,15 +986,14 @@ public class EntityManager implements IEntityManager, Serializable {
 		}
 		closeWithoutRs2();
 		close();
-		newTemplate = true;
 		initEmptyQuestionnaire();
 	}
 
 	@Override
 	public void changeQuestionNr(String templateNameSelected, int eNumber) {
 		init();
-		String stm = "SELECT q.id, fragenr FROM question q JOIN question_has_template t ON q.id = t.question_id JOIN questionnaire_template_name n ON t.id = n.id WHERE name = ? AND q.fragenr > ?;";
-		String stm2 = "UPDATE question SET fragenr=? WHERE id=?;";
+		String stm = "SELECT q.id, questionnumber FROM question q JOIN question_has_template t ON q.id = t.question_id JOIN questionnaire_template_name n ON t.id = n.id WHERE name = ? AND q.questionnumber > ?;";
+		String stm2 = "UPDATE question SET questionnumber=? WHERE id=?;";
 		try {
 			pst = con.prepareStatement(stm);
 			pst.setString(1, templateNameSelected);
@@ -966,7 +1018,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		init();
 		try {
 			int j = createQuestionnaireDataSet(activePatient.getPatientid(),
-					getLastInsertID(),
+					getNextInsertID(),
 					getTemplateNr(tmp.getQuestionnaireName()));
 			for (IAnswer a : tmp.getAnswers()) {
 				int k = insertAnswer(a.toString());
@@ -974,9 +1026,9 @@ public class EntityManager implements IEntityManager, Serializable {
 				if (a instanceof AnswerString) {
 					l = 1;
 				} else if (a instanceof AnswerCheckbox) {
-					l = 2;
-				} else {
 					l = 3;
+				} else {
+					l = 2;
 				}
 				insertDatasetToAnswer(j, k, l);
 			}
@@ -997,7 +1049,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	 */
 	private int getTemplateNr(String template) {
 		int i = 1;
-		String stm = "SELECT id FROM questionnaire_template_name WHERE name = ?;";
+		String stm = "SELECT questionnaire_template_name_id FROM questionnaire_template_name WHERE name = ?;";
 		try {
 			pst = con.prepareStatement(stm);
 			pst.setString(1, template);
@@ -1024,12 +1076,11 @@ public class EntityManager implements IEntityManager, Serializable {
 	 * @throws SQLException
 	 */
 	private void insertDatasetToAnswer(int j, int k, int l) throws SQLException {
-		String stm = "INSERT INTO questionnaire_has_answer (id, answer_id, typ) VALUES (?,?,?);";
+		String stm = "INSERT INTO questionnaire_has_answer (questionnaire_id, answer_id, question_type_id) VALUES (?,?,?);";
 		pst = con.prepareStatement(stm);
 		pst.setInt(1, j);
 		pst.setInt(2, k);
 		pst.setInt(3, l);
-		System.out.println(pst);
 		pst.execute();
 	}
 
@@ -1047,14 +1098,13 @@ public class EntityManager implements IEntityManager, Serializable {
 	 */
 	private int createQuestionnaireDataSet(int id, int i, int qId)
 			throws SQLException {
-		String stm = "INSERT INTO questionnaire (patient_patient_id, date, template_name_id, answer_id) VALUES (?,?,?,?);";
+		String stm = "INSERT INTO questionnaire (patient_patient_id, date, questionnaire_template_name_id, questionnaire_has_answer_id) VALUES (?,?,?,?);";
 		pst = con.prepareStatement(stm);
 		pst.setInt(1, id);
 		//TODO change to timestamp
 		Calendar c = Calendar.getInstance();
 		Date now = c.getTime();
 		pst.setTimestamp(2, new Timestamp(now.getTime()));
-//		pst.setDate(2, new java.sql.Date(new Date().getTime()));
 		pst.setInt(3, qId);
 		pst.setInt(4, i);
 		pst.execute();
@@ -1062,39 +1112,39 @@ public class EntityManager implements IEntityManager, Serializable {
 	}
 
 	/**
-	 * Search the last questionnaire_has_answer entry
+	 * Search the last questionnaire_has_answer entry and get back the next possible primary key
 	 * 
 	 * @return the the actual questionnaire_has_answer id
 	 * @throws SQLException
 	 */
-	private int getLastInsertID() throws SQLException {
+	private int getNextInsertID() throws SQLException {
 		init2();
-		int i = 1;
-		String stm = "SELECT MAX(id) FROM questionnaire_has_answer;";
+		int i = 0;
+		String stm = "SELECT MAX(questionnaire_id) FROM questionnaire_has_answer;";
 		pst2 = con2.prepareStatement(stm);
 		pst2.execute();
 		rs2 = pst2.getResultSet();
 		if (rs2.next()) {
 			if (null != rs2.getObject(1)) {
-				i += rs2.getInt(1);		// TODO ???
+				i = rs2.getInt(1);
 			}
 		}
 		close2();
-		return i;
+		return i++;
 	}
 
 	@Override
 	public int insertAnswer(String a) throws SQLException {
 		init2();
 		int i = 1;
-		String stm = "SELECT id FROM answer WHERE answer = ?;";
+		String stm = "SELECT answer_id FROM answer WHERE answer = ?;";
 		String stm2 = "INSERT INTO answer (answer) VALUES ('" + a + "');";
 		pst2 = con2.prepareStatement(stm);
 		pst2.setString(1, a);
 		pst2.execute();
 		rs2 = pst2.getResultSet();
 		if (rs2.next()) {
-			i = rs2.getInt("id");
+			i = rs2.getInt("answer_id");
 		} else {
 			pst2 = con2.prepareStatement(stm2, Statement.RETURN_GENERATED_KEYS);
 			pst2.executeUpdate();
@@ -1103,8 +1153,6 @@ public class EntityManager implements IEntityManager, Serializable {
 				i = rs2.getInt(1);
 			}
 		}
-		System.out.println(i);
-		System.out.println(a);
 		close2();
 		return i;
 	}
@@ -1150,44 +1198,43 @@ public class EntityManager implements IEntityManager, Serializable {
 		
 		String total = "";
 		String questionnaire = "";
-		
-		if(newTemplate){
-	
+			
 			for (int i = 0; i < operationtypes.size(); i++) {
 				String name = operationtypes.get(i);
 				total += name + "\n\n";
+				questionnaire += name + "\n\n";
 				FilledQuestionnaire eq = emptyQuestionnaires.get(name);
 				for (IQuestion iq : eq.getQuestions()) {
 					total += iq.getQuestion() + ";";
 					questionnaire += iq.getQuestion() + ";";
 				}
-				total += "\n";
-				questionnaire += "\n";
+				total += "\n\n";
+				questionnaire += "\n\n";
 				for (IFilledQuestionnaire fq : filledQuestionnaires) {
 					if (fq.getQuestionnaireName().equals(name)) {
 						for (IAnswer answer : fq.getAnswers()) {
 							String s = answer.toString();
 							s.replace("[", "");
 							s.replace("]", "");
-							total += "\"" + s + "\";";
-							questionnaire += "\"" + s + "\";";
+							total += s + ";";
+							questionnaire += s + ";";
 						}
 						total += "\n";
 						questionnaire += "\n";
 					}
 				}
 				csvs.put(templatename, questionnaire);
+				questionnaire = "";
 			}
 			csvs.put("total", total);
 			
-		}
 		endtime = System.currentTimeMillis();
 		System.err.println("Das erstellen der CSVs hat "
 				+ (endtime - starttime) + "[ms] benötigt");
-		newTemplate = false;
 	}
 
-	public Object getCSV(String template) {
+	public String getCSV(String template) {
+		template = template.replace("_", " ");
 		return csvs.get(template);
 	}
 
@@ -1316,16 +1363,16 @@ public class EntityManager implements IEntityManager, Serializable {
 	/**
 	 * Initialization of all question types.
 	 */
-	private void initTyp() {
-		typ = new HashMap<String, Integer>();
-		String stm = "SELECT * FROM question_typ";
+	private void initType() {
+		type = new HashMap<String, Integer>();
+		String stm = "SELECT * FROM question_type";
 		init();
 		try {
 			pst = con.prepareStatement(stm);
 			pst.execute();
 			rs = pst.getResultSet();
 			while (rs.next()) {
-				typ.put(rs.getString("typ"), rs.getInt("id"));
+				type.put(rs.getString("type"), rs.getInt("question_type_id"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1342,13 +1389,13 @@ public class EntityManager implements IEntityManager, Serializable {
 		List<Integer> i = new ArrayList<Integer>();
 		List<String> s = new ArrayList<String>();
 		filledQuestionnaires = new ArrayList<FilledQuestionnaire>();
-		String stm = "SELECT answer_id, name FROM questionnaire q JOIN questionnaire_template_name tn ON q.template_name_id = tn.id;";
+		String stm = "SELECT questionnaire_has_answer_id, name FROM questionnaire q JOIN questionnaire_template_name tn ON q.questionnaire_template_name_id = tn.questionnaire_template_name_id;";
 		try {
 			pst2 = con2.prepareStatement(stm);
 			pst2.execute();
 			rs2 = pst2.getResultSet();
 			while (rs2.next()) {
-				i.add(rs2.getInt("answer_id"));
+				i.add(rs2.getInt("questionnaire_has_answer_id"));
 				s.add(rs2.getString("name"));
 			}
 		} catch (Exception e) {
@@ -1528,4 +1575,11 @@ public class EntityManager implements IEntityManager, Serializable {
 		this.paginatorGroup = p;
 	}
 
+	public List<IQuestion> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<IQuestion> questions) {
+		this.questions = questions;
+	}
 }

@@ -77,4 +77,14 @@ public class QuestionString implements IQuestion <String, String> {
 	public int getDBid() {
 		return dbId;
 	}
+	
+	@Override
+	public void setDBid(int i) {
+		dbId = i;
+	}
+	
+	@Override
+	public String getAnswerToString() {
+		return answer;
+	}
 }

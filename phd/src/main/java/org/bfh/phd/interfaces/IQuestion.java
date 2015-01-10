@@ -51,6 +51,11 @@ public interface IQuestion <C, D> {
 	public D getAnswer();
 	
 	/**
+	 * @return the answer as String
+	 */
+	public String getAnswerToString();
+	
+	/**
 	 * @param o
 	 *            is the answer that is to set
 	 */
@@ -60,4 +65,6 @@ public interface IQuestion <C, D> {
 	 * @return the database primkey
 	 */
 	public int getDBid();
+	public void setDBid(int i);
+	
 }

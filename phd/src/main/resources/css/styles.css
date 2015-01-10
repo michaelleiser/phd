@@ -146,6 +146,7 @@ td {
 .table-column-data {
 	border-radius: 5px;
 	padding: 5px 5px 5px 5px;
+	vertical-align: top;
 }
 .table-column-button {
 	background-color: #eeeeee;

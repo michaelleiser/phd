@@ -312,7 +312,10 @@ public class LoginController implements Serializable, ILoginController, ISession
 	}
 	
 	public IFilledQuestionnaire getFilledQuestion(){
+		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && checkToken()){
 		return em.getFilledQuestionnaire2(questionnaireId);
+		}
+		return null;
 	}
 	
 	public IFilledQuestionnaire getNewQuestion(){
@@ -337,6 +340,7 @@ public class LoginController implements Serializable, ILoginController, ISession
 	}
 	
 	public void safe(ActionEvent evt){		// TODO rename save, used for what???
+		System.out.println("save");
 		System.out.println("->"+evt );
 	}
 	

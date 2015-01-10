@@ -1,13 +1,9 @@
 package org.bfh.phd;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.Properties;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -26,11 +22,10 @@ public class DownloadManager implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @param template
-	 * @throws Exception
-	 */
-	public void export(String template) throws Exception {
+	/** This method send the csv stream to the client as a file
+	 * @param template the name of the csv they needed
+	 */ 
+	public void export(String template){
 		EntityManager em = new EntityManager();
 		em.generateCsvFiles();
 		if (em.isLegalTemplate(template) || template.equals("total")) {
@@ -44,12 +39,12 @@ public class DownloadManager implements Serializable{
 			response.setHeader("Content-Disposition",
 					"attachment;filename="+ template +".csv");
 			try {
-				ServletOutputStream out = response.getOutputStream();
-				StringBuffer sb = new StringBuffer();
-				sb.append(em.getCSV(template));
+				ServletOutputStream out;
+				out = response.getOutputStream();
 
+				StringBuffer sb = new StringBuffer(em.getCSV(template));
 				InputStream in = new ByteArrayInputStream(sb.toString()
-						.getBytes("UTF-8"));
+						.getBytes("UTF-16"));
 
 				byte[] outputByte = new byte[4096];
 				// copy binary contect to output stream
@@ -60,32 +55,13 @@ public class DownloadManager implements Serializable{
 				in.close();
 				out.flush();
 				out.close();
-			} finally {
+				} catch (IOException e) {
+				e.printStackTrace();
+			}finally {
 				
 			}
 		} else {
 		}
 		return;
 	}
-
-	// TODO Anstelle file auslesen direkt senden
-//	private StringBuffer generateCsvFileBuffer(String template) {
-//		StringBuffer writer = new StringBuffer();
-//		writer.append();
-//		return writer;
-//	}
-
-//	private String getPath() {
-//		Properties prop = new Properties();
-//		String propFile = "config.properties";
-//		InputStream input = Patient.class.getClassLoader().getResourceAsStream(
-//				propFile);
-//		try {
-//			prop.load(input);
-//		} catch (IOException e1) {
-//			e1.printStackTrace();
-//		}
-//		String path = prop.getProperty("PATH");
-//		return path;
-//	}
 }

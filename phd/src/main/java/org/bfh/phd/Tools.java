@@ -8,13 +8,18 @@ import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 
 
+/**
+ * @author leism3, koblt1
+ *
+ */
 @ManagedBean(name = "tools", eager = true)
 @ViewScoped
 public class Tools implements Serializable{
+	
+	public Tools(){
+		System.out.println("tools used");
+	}
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String questselected = ""; 
 

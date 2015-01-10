@@ -46,10 +46,12 @@
 										<h:outputText value="#{quest.question}" />
 									</td>
 									<td class="table-column-data">
-										<ui:repeat var="answer" value="#{quest.answer}">
-											<h:outputText value="#{answer}" />
+										<ui:repeat var="a" value="#{quest.answer}" >
+											<li style="list-style: none;">
+											<h:outputText value="#{a}" />
+											</li>
 										</ui:repeat>
-									</td>		
+									</td>	
 								</tr>
 							</c:forEach>							
 						</table>

@@ -10,10 +10,15 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.event.ActionEvent;
 
+/**
+ * @author leism3, koblt1
+ *
+ */
 @ManagedBean(name = "type", eager = true)
 @RequestScoped
 public class Type implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private static Map<String, Integer> type;
 	private static String typeselected;
 	private static List<Integer> y;
