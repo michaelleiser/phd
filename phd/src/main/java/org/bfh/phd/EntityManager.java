@@ -496,7 +496,7 @@ public class EntityManager implements IEntityManager, Serializable {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {
-				 close();			// TODO should be closed!!!
+				 close();
 			}
 		}
 		return f;
@@ -697,11 +697,9 @@ public class EntityManager implements IEntityManager, Serializable {
 					a = new AnswerCheckbox();
 					a.setDb(rs.getInt("default_id"));
 					a.setAnswer(StringToArray(answer));
-					System.out.println();
 				} else {
-					throw new RuntimeException("QuestionType not implemented");
+					
 				}
-				
 				answers.add(a);
 			}
 			close();
@@ -749,7 +747,6 @@ public class EntityManager implements IEntityManager, Serializable {
 	@Override
 	public void addQuestionnaireTemplate(String type, String question,
 			String nameOfTemplate, List<String> pos, int fragenr) {
-		System.out.println(type + question + nameOfTemplate + pos + fragenr);
 		init();
 		long key = 0, templatenr = 0;
 		String stm = "INSERT INTO question (possibilities_id, question_type_id, question, questionnumber) VALUES(?,?,?,?);";
@@ -905,7 +902,7 @@ public class EntityManager implements IEntityManager, Serializable {
 		return quest;
 	}
 		
-	public void getS(){
+	public void getS(){			// TODO !?!?
 		for(String s : errors){
 		System.out.println(s);
 		}

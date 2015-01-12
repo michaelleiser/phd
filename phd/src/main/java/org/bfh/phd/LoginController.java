@@ -62,7 +62,7 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public String login(String name, String password) {
-		System.out.println("LOGIN");
+		System.out.println("LOGIN : " + name + " : " + this.activeDepartment_Has_Staff);
 		if(activeDepartment_Has_Staff != null){
 			activeUser = activeDepartment_Has_Staff.getStaff(name);
 			if(activeUser != null && activeUser.getActivated() && password.equals(MyCrypto.SHA256(nonce + "" + activeUser.getPassword())) && checkToken()){
@@ -75,7 +75,7 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public String logout(){
-		System.out.println("LOGOUT");
+		System.out.println("LOGOUT : " + this.activeUser);
 		if(this.loggedin && checkToken()){
 			setLoggedin(false);
 			if(FacesContext.getCurrentInstance() != null){
@@ -88,7 +88,7 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public String registerNew(Staff s) {
-		System.out.println("REGISTER NEW");
+		System.out.println("REGISTER NEW : " + s);
 		if(!this.activeDepartment_Has_Staff.getStaffs().contains(s)){
 			boolean activated = false;
 			Staff ss = em.registerNew(s, activated);
@@ -102,7 +102,7 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public String registerNewWithDepartment(Staff s, Department d, String key) {
-		System.out.println("REGISTER NEW");
+		System.out.println("REGISTER NEW : " + s + " : " + d);
 		if(!em.getDepartments().contains(d)){
 			boolean activated = true;
 			Staff ss = em.registerNew(s, activated);
@@ -116,7 +116,6 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public void activateStaff(Staff s, String groupKey){
-		System.out.println("ACTIVATE Staff..." + s);
 		if(this.loggedin && activeDepartment_Has_Staff.getOwner().equals(activeUser) && checkToken()){
 			em.setActivateStaff(s, true);
 			if(s.getRole() == Staff.DOCTOR){
@@ -128,7 +127,6 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public void deactivateStaff(Staff s){
-		System.out.println("DEACTIVATE Staff..." + s);
 		if(this.loggedin && activeDepartment_Has_Staff.getOwner().equals(activeUser) && checkToken()){
 			em.setActivateStaff(s, false);
 			if(s.getRole() == Staff.DOCTOR){
@@ -151,7 +149,7 @@ public class LoginController implements Serializable, ILoginController, ISession
 	 * @throws ParseException
 	 * 			on invalid JSON string
 	 */
-	public void renew(String key, String staffs, String patients) throws ParseException{
+	public void renew(String key, String staffs, String patients) {
 		if(this.loggedin && checkToken()){
 			
 			// update my own key
@@ -162,7 +160,12 @@ public class LoginController implements Serializable, ILoginController, ISession
 			// update staff's keys
 			if(!staffs.equals("")){
 				JSONParser parser = new JSONParser();
-				Object obj = parser.parse(staffs);
+				Object obj = null;
+				try {
+					obj = parser.parse(staffs);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				JSONObject json = (JSONObject) obj;
 				Set set = json.keySet();
 				for (Iterator i = set.iterator(); i.hasNext();) {
@@ -178,7 +181,12 @@ public class LoginController implements Serializable, ILoginController, ISession
 			// update patient's personal data
 			if(!patients.equals("")){
 				JSONParser parser = new JSONParser();
-				Object obj = parser.parse(patients);
+				Object obj = null;
+				try {
+					obj = parser.parse(patients);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 				JSONObject json = (JSONObject) obj;
 				Set set = json.keySet();
 				for (Iterator i = set.iterator(); i.hasNext();) {
@@ -203,7 +211,6 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public List<Staff> getStaffs(){
-		System.out.println("GET STAFFS");
 		if(this.loggedin && checkToken()){
 			return em.getStaffs();
 		}
@@ -212,7 +219,6 @@ public class LoginController implements Serializable, ILoginController, ISession
 	
 	@Override
 	public List<Staff> getStaffs(String name){
-		System.out.println("GET STAFFS name");
 		if(this.loggedin && checkToken()){
 			return em.getStaffs(name);
 		}
@@ -221,7 +227,6 @@ public class LoginController implements Serializable, ILoginController, ISession
 	
 	@Override
 	public List<Staff> searchStaffsInGroup(String name) {
-		System.out.println("SEARCHING Staff..." + name);
 		if(this.loggedin && checkToken()){
 			List<Staff> l = em.searchStaffsInGroup(name, activeDepartment_Has_Staff, activeUser);
 			return l;
@@ -231,7 +236,6 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public void updateStaff(Staff s, String groupKey){
-		System.out.println("update staff..." + s);
 		if(this.loggedin && checkToken()){
 			em.updateStaff(s);
 			if(s.getRole() == Staff.DOCTOR){
@@ -242,7 +246,6 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public List<Patient> getPatients(){
-		System.out.println("GetPatients");
 		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && checkToken()){
 			List<Patient> list = new ArrayList<Patient>();
 			for(Patient p : em.getPatients()){
@@ -257,7 +260,6 @@ public class LoginController implements Serializable, ILoginController, ISession
 	
 	@Override
 	public List<Patient> searchPatients() {
-		System.out.println("SEARCHING Patient...");
 		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && checkToken()){
 			List<Patient> patient = new ArrayList<Patient>();
 			for(Patient p : em.getPatients()){
@@ -274,7 +276,6 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public Patient getPatient(int patientid){
-		System.out.println("GetPatient " + patientid);
 		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && checkToken()){
 			for(Patient p : em.getPatients()){
 				if((p.getReadaccess() || (p.getOwner().equals(activeUser))) && (p.getPatientid() == patientid)){
@@ -287,7 +288,6 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public String createPatient(Patient p) {
-		System.out.println("CREATE Patient..." + p);
 		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && checkToken()){
 			em.createPatient(p, activeDepartment_Has_Staff, activeUser);
 			return navigation.redirectToLoggedin();
@@ -297,7 +297,6 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public void updatePatient(Patient p){
-		System.out.println("update patient..." + p);
 		if(this.loggedin && writeAccess(p) && checkToken()){
 			em.updatePatient(p);
 		}
@@ -339,20 +338,13 @@ public class LoginController implements Serializable, ILoginController, ISession
 		return em.getAnswers(i);
 	}
 	
-	public void safe(ActionEvent evt){		// TODO rename save, used for what???
-		System.out.println("save");
-		System.out.println("->"+evt );
-	}
-	
 	public void saveUpdate(){
-		System.out.println("Save Update");
 		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && checkToken()){
 			em.updateQuestionnaireHasAnswer();
 		}
 	}
 	
 	public void saveFilledQuestionnaire(){
-		System.out.println("Save filledquestionnaire");
 		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && (!questionnaireName.equals("")) && checkToken()){
 			em.addAnswer(activePatient);
 		}
@@ -489,17 +481,14 @@ public class LoginController implements Serializable, ILoginController, ISession
 	}
 
 	public void setActiveUser(Staff s){
-		System.out.println("SET ACTIVE USER");
 		this.activeUser = s;
 	}
 	
 	public Staff getActiveUser(){
-		System.out.println("GET ACTIVE USER");
 		return this.activeUser;
 	}
 
 	public Patient getActivePatient() {
-		System.out.println("ActivePatient");
 		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && checkToken()){
 			return activePatient;
 		}
@@ -542,7 +531,6 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public boolean isOwner(Patient p){
-		System.out.println("IsOwner");
 		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && checkToken()){
 			if (p.getOwner().equals(activeUser)) {
 				return true;
@@ -554,7 +542,6 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public boolean readAccess(Patient p){
-		System.out.println("ReadAccess");
 		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && checkToken()){
 			if (isOwner(p)) {
 				return true;
@@ -566,7 +553,6 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public boolean writeAccess(Patient p){
-		System.out.println("WriteAccess");
 		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && checkToken()){
 			if (isOwner(p)) {
 				return true;
@@ -578,7 +564,6 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public boolean insertAccess(Patient p){
-		System.out.println("InsertAccess");
 		if(this.loggedin && (activeUser.getRole() == Staff.DOCTOR) && checkToken()){
 			if (isOwner(p)) {
 				return true;
