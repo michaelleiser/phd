@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -62,7 +63,7 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public String login(String name, String password) {
-		System.out.println("LOGIN : " + name + " : " + this.activeDepartment_Has_Staff);
+		System.out.println(new Date() + " : LOGIN : " + name + " : " + this.activeDepartment_Has_Staff);
 		if(activeDepartment_Has_Staff != null){
 			activeUser = activeDepartment_Has_Staff.getStaff(name);
 			if(activeUser != null && activeUser.getActivated() && password.equals(MyCrypto.SHA256(nonce + "" + activeUser.getPassword())) && checkToken()){
@@ -75,7 +76,7 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public String logout(){
-		System.out.println("LOGOUT : " + this.activeUser);
+		System.out.println(new Date() + " : LOGOUT : " + this.activeUser);
 		if(this.loggedin && checkToken()){
 			setLoggedin(false);
 			if(FacesContext.getCurrentInstance() != null){
@@ -88,7 +89,7 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public String registerNew(Staff s) {
-		System.out.println("REGISTER NEW : " + s);
+		System.out.println(new Date() + " : REGISTER NEW : " + s);
 		if(!this.activeDepartment_Has_Staff.getStaffs().contains(s)){
 			boolean activated = false;
 			Staff ss = em.registerNew(s, activated);
@@ -102,7 +103,7 @@ public class LoginController implements Serializable, ILoginController, ISession
 
 	@Override
 	public String registerNewWithDepartment(Staff s, Department d, String key) {
-		System.out.println("REGISTER NEW : " + s + " : " + d);
+		System.out.println(new Date() + " : REGISTER NEW : " + s + " : " + d);
 		if(!em.getDepartments().contains(d)){
 			boolean activated = true;
 			Staff ss = em.registerNew(s, activated);
