@@ -61,4 +61,14 @@ public interface IFilledQuestionnaire {
 	 * @param answer the answer that's add to the list
 	 */
 	public abstract void addAnswers(IAnswer answer);
+	
+	/** This method get back the id of the patient
+	 * @return the id of patient
+	 */
+	public int getPatientId();
+	
+	/** Set the patient id
+	 * @param id the patient number
+	 */
+	public void setPatientId(int id);
 }

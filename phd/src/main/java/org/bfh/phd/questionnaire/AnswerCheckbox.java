@@ -41,7 +41,6 @@ public class AnswerCheckbox implements IAnswer <String[], String> {
 	
 	@Override
 	public String toString(){;
-	System.out.println("Total" + answer.toString().replace("[", "\"").replace("]", "\""));
 	return answer.toString().replace("[", "\"").replace("]", "\"");
 	}
 

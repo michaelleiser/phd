@@ -173,11 +173,11 @@ public interface IEntityManager {
 	 */
 	public abstract IFilledQuestionnaire getFilledQuestion(int id, String questionnaireName);
 
-	/** Search the Questionnaires from one person
-	 * @param id is the patient identification number
-	 * @return a list of Questionnaire data set
-	 */
-	public abstract List<Questionnaire> searchQuestionnaires(int id);
+//	/** Search the Questionnaires from one person
+//	 * @param id is the patient identification number
+//	 * @return a list of Questionnaire data set
+//	 */
+//	public abstract List<Questionnaire> searchQuestionnaires(int id);
 
 	/**
 	 * Search all questions to an template

@@ -79,7 +79,9 @@ public class QuestionCheckbox implements IQuestion <String[], String[]> {
 		for(String s: answer){
 			sb.append(s + ",");
 		}
+		if(sb.length()>1){
 		sb.delete(sb.length()-1, sb.length());
+		}
 		return sb.toString();
 	}
 	

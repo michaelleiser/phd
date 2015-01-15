@@ -15,7 +15,7 @@ import org.bfh.phd.interfaces.IQuestion;
 public class FilledQuestionnaire implements IFilledQuestionnaire {
 
 	private Timestamp date;
-	private int id;
+	private int id, patientid;
 	private String questionnaireName;
 	private List<IAnswer> answers = new ArrayList<IAnswer>();
 	private List<IQuestion> questions = new ArrayList<IQuestion>();
@@ -77,16 +77,22 @@ public class FilledQuestionnaire implements IFilledQuestionnaire {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
-	public void save(LoginController lc){			// TODO ???
-		System.out.println("save");
-	}
-	
+		
 	public void saveFilledQuestionnaire(LoginController lc){
 		lc.saveFilledQuestionnaire();
 	}
 	
 	public void saveUpdate(LoginController lc){
 		lc.saveUpdate();
+	}
+
+	@Override
+	public int getPatientId() {
+		return patientid;
+	}
+
+	@Override
+	public void setPatientId(int id) {
+		this.patientid = id;		
 	}
 }

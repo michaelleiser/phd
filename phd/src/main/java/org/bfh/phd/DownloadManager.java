@@ -41,7 +41,6 @@ public class DownloadManager implements Serializable{
 			try {
 				ServletOutputStream out;
 				out = response.getOutputStream();
-
 				StringBuffer sb = new StringBuffer(em.getCSV(template));
 				InputStream in = new ByteArrayInputStream(sb.toString()
 						.getBytes("UTF-16"));

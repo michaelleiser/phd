@@ -58,18 +58,16 @@ public class QuestionString implements IQuestion <String, String> {
 
 	@Override
 	public String getAnswerPossibilities() {
-		// TODO Auto-generated method stub
+		System.err.println("not possible");
 		return null;
 	}
 
 	@Override
 	public void setAnswerPossibilities(String o) {
-		// TODO Auto-generated method stub
+		System.err.println("not possible");
 	}
 	
 	public void save(LoginController lc){
-		System.out.println("save"+this);
-		System.out.println("save answer"+answer);
 		lc.updateAnswer(this);
 	}
 

@@ -84,12 +84,7 @@ public class Questionnaire implements Serializable {
 	public void setA(IAnswer a) {
 		this.a.add(a);
 	}
-	
-	public void safe(LoginController lc){
-		System.out.println("Questionnari.java anschauen aufruf save");
-		//lc.addAnswer(a, "");
-	}
-	
+		
 	public void addString(final AjaxBehaviorEvent event){
 		String i1 = event.getComponent().getId();
 		int i2 = Integer.parseInt(i1.substring(5));
