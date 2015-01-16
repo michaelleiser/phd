@@ -24,6 +24,7 @@ public class DownloadManager implements Serializable{
 
 	/** This method send the csv stream to the client as a file
 	 * @param template the name of the csv they needed
+	 * Code dieser Methode durch MKYONG entwickelt, durch uns auf unsere Bedürfnisse angepasst
 	 */ 
 	public void export(String template){
 		EntityManager em = new EntityManager();
