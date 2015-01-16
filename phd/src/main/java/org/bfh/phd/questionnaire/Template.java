@@ -272,7 +272,6 @@ public class Template {
 	public void saveEdit(LoginController lc) {
 		for (QuestionnaireTools q : edit) {
 			if (q.isEditable()) {
-				System.out.println(q.getAnswer());
 				q.setEditable(false);
 				lc.editQuestion(q);
 			}

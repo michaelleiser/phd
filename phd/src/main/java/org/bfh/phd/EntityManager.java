@@ -414,6 +414,7 @@ public class EntityManager implements IEntityManager, Serializable {
 
 	@SuppressWarnings("rawtypes")
 	public void updateQuestionnaireHasAnswer() {
+		System.out.println("update");
 		init();
 		String stm2 = "UPDATE questionnaire_has_answer SET answer_id=? WHERE default_id=?;";
 		try {
@@ -505,6 +506,7 @@ public class EntityManager implements IEntityManager, Serializable {
 	s = s.replace("[", "");
 	s = s.replace("]", "");
 	s = s.replace("\"", "");
+//	s = s.replace(", ", ",");
 	String[] list = s.split(",");
 	return list;
 }
@@ -710,7 +712,6 @@ public class EntityManager implements IEntityManager, Serializable {
 		String stm2 = "INSERT INTO questionnaire_template_name(name) VALUES (?);";
 		String stm3 = "INSERT INTO question_has_template (questionnaire_template_name_id, question_id) VALUES (?,?);";
 		String stm4 = "SELECT questionnaire_template_name_id FROM questionnaire_template_name WHERE name = ?;";
-//		Map map = getQuestType();
 		try {
 			int i = 0;
 			if (type != "String") {
@@ -944,7 +945,38 @@ public class EntityManager implements IEntityManager, Serializable {
 			close();
 		}
 	}
-
+	
+	// TODO delet after einfügen
+	@SuppressWarnings("rawtypes")
+	public void addAnswer(FilledQuestionnaire f) {
+		init();
+		try {
+			int j = createQuestionnaireDataSet(f.getPatientId(),
+					getNextInsertID(),
+					getTemplateNr(f.getQuestionnaireName()));
+			for (IAnswer a : f.getAnswers()) {
+				int k = insertAnswer(a.toString());
+				int l;
+				if (a instanceof AnswerString) {
+					l = 1;
+				} else if (a instanceof AnswerCheckbox) {
+					l = 3;
+				} else {
+					l = 2;
+				}
+				System.out.println(j);
+				System.out.println(k);
+				System.out.println(l);
+				insertDatasetToAnswer(j, k, l);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		initQuestionnaire();
+	}
+	
 	@SuppressWarnings("rawtypes")
 	public void addAnswer(Patient activePatient) {
 		init();
@@ -964,6 +996,7 @@ public class EntityManager implements IEntityManager, Serializable {
 				}
 				insertDatasetToAnswer(j, k, l);
 			}
+			close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

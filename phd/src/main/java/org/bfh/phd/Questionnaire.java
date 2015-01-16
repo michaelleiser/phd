@@ -21,6 +21,11 @@ import org.bfh.phd.questionnaire.AnswerString;
 @SessionScoped
 public class Questionnaire implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private EntityManager em = new EntityManager();
 	
 	private int quest;
@@ -32,6 +37,10 @@ public class Questionnaire implements Serializable {
 	private List<String> answerCheckbox;
 	private String answerRadioButton;
 	private String answerString;
+	
+	public Questionnaire() {
+		System.out.println("Questionnaire");		
+	}
 
 	public void setId(int id){
 		this.id = id;

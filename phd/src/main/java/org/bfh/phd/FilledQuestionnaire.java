@@ -77,7 +77,7 @@ public class FilledQuestionnaire implements IFilledQuestionnaire {
 	public void setId(int id) {
 		this.id = id;
 	}
-		
+	
 	public void saveFilledQuestionnaire(LoginController lc){
 		lc.saveFilledQuestionnaire();
 	}

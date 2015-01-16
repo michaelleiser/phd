@@ -1,15 +1,24 @@
-//package org.bfh.phd;
-//
-//import static org.junit.Assert.*;
-//
-//import java.sql.SQLException;
-//import java.util.ArrayList;
-//
-//import org.junit.After;
-//import org.junit.Before;
-//import org.junit.Test;
-//
-//public class TestEntityManager{
+package org.bfh.phd;
+
+import static org.junit.Assert.*;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class TestEntityManager{
+	CreateTestAnswers ta = new CreateTestAnswers();
+	
+//	@Test
+//	public void generate(){
+//		ta.createQuestionnaire();
+//		ta.createAnswers();
+//	}
+	
+}
 //
 //	EntityManager em;
 //	
